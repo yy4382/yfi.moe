@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+import PostCard from "../components/PostCard.astro";
+const allPosts = await getCollection("posts");
+allPosts.sort((a, b) => Number(b.data.date) - Number(a.data.date));
+---
+
+<div class="flex flex-col">
+  {
+    allPosts.map((post) => (
+        <PostCard post={post} />
+    ))
+  }
+</div>

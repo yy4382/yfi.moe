@@ -1,0 +1,14 @@
+---
+import { DateTime } from "luxon";
+import  PostAttr  from "../components/PostAttr.astro";
+const { post } = Astro.props;
+---
+
+<div class="card p-8 rounded-lg">
+  <h1 class="text-4xl font-extrabold dark:text-white text-wrap break-all"></h1class>{post.data.title}</h1>
+  <PostAttr post={post} />
+  <br />
+  <div class="prose dark:prose-invert max-w-full">
+    <slot />
+  </div>
+</div>

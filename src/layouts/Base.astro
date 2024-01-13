@@ -1,0 +1,35 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Sidebar from "./Sidebar.astro";
+const pageTitle = "首页";
+---
+
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-950">
+    <div
+      class="grid gap-4 m-auto max-m-sm md:max-w-md lg:max-w-5xl xl:max-w-6xl min-h-screen"
+      style="grid-template-columns: 70% auto; grid-template-rows: min-content auto min-content;"
+    >
+      <div class="col-span-2">
+        <Header />
+      </div>
+      <div class="col-span-2 lg:col-span-1">
+        <slot />
+      </div>
+      <div class="col-span-2 lg:col-span-1 grid grid-cols-2 lg:grid-cols-1">
+        <Sidebar />
+      </div>
+      <div class="col-span-2">
+        <Footer />
+      </div>
+    </div>
+  </body>
+</html>

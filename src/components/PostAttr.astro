@@ -1,0 +1,15 @@
+---
+import "../styles/utils.css";
+import { DateTime } from "luxon";
+const { post } = Astro.props;
+---
+<p class="text-gray-400 my-2">{DateTime.fromJSDate(post.data.date).toFormat('yyyy-MM-dd')}</p>
+{post.data.tags && (
+  <div class="flex flex-wrap">
+    {post.data.tags.map((tag:string) => (
+      <a href={`/tags/${tag}`} class="text-md btn-color rounded-lg px-3 py-1 mr-2 mb-2 before:content-['·']">
+        {tag}
+      </a>
+    ))}
+  </div>
+)}

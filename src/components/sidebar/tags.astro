@@ -1,0 +1,20 @@
+---
+import { getCollection } from "astro:content";
+import "../../styles/utils.css"
+const allPosts = await getCollection("posts");
+const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+---
+
+<div class="w-full card rounded-xl p-4">
+  <p class="text-gray-900 dark:text-white text-xl mb-4">标签</p>
+  {
+    tags.map((tag) => (
+      <a
+        href={`/tags/${tag}`}
+        class="inline-block rounded-lg px-3 py-1 text-sm font-semibold mr-2 mb-2 btn-color"
+      >
+        {tag}
+      </a>
+    ))
+  }
+</div>

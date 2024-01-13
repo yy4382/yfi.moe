@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-color {
+    @apply text-gray-500 bg-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-200;
+  }
+  .card {
+    @apply bg-white shadow dark:bg-gray-800;
+  }
+}
