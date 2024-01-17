@@ -21,5 +21,5 @@ pnpm-debug.log*
 .DS_Store
 
 # un-related files
-# src/content/posts/*
-# public/
+src/content/post/
+public/img/
