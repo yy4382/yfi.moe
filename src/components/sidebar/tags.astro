@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import "../../styles/utils.css"
-const allPosts = await getCollection("posts");
+import "../../styles/utils.css";
+const allPosts = await getCollection("post");
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
 ---
 

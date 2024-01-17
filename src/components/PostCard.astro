@@ -6,7 +6,7 @@ const { post } = Astro.props;
 
 <div class="rounded-lg card mb-4 flex flex-row h-52">
   <div class="overflow-hidden h-48 w-1/4 ml-2">
-    <a href={"/posts/" + post.slug} class="min-h-52">
+    <a href={"/post/" + post.slug} class="min-h-52">
       <img
         class="rounded-lg object-contain h-52"
         src={post.data.photos}
@@ -17,7 +17,7 @@ const { post } = Astro.props;
   </div>
   <div class="px-5 mt-2 flex flex-col justify-between h-full w-3/4">
     <div>
-      <a href={"/posts/" + post.slug}>
+      <a href={"/post/" + post.slug}>
         <h5
           class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
         >

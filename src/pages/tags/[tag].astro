@@ -4,7 +4,7 @@ import BlogPost from "../../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection("posts");
+  const allPosts = await getCollection("post");
 
   const uniqueTags = [
     ...new Set(allPosts.map((post) => post.data.tags).flat()),
@@ -16,18 +16,18 @@ export async function getStaticPaths() {
     );
     return {
       params: { tag },
-      props: { posts: filteredPosts },
+      props: { post: filteredPosts },
     };
   });
 }
 
 const { tag } = Astro.params;
-const { posts } = Astro.props;
+const { post } = Astro.props;
 ---
 
-<BaseLayout >
+<BaseLayout>
   <p>包含「{tag}」标签的文章</p>
   <ul>
-    {posts.map((post) => <BlogPost post={post} />)}
+    {post.map((post) => <BlogPost post={post} />)}
   </ul>
 </BaseLayout>
