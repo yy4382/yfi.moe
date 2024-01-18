@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from "astro:content";
+interface Props {
+  prev: CollectionEntry<"post">;
+  next: CollectionEntry<"post">;
+}
+const { prev, next } = Astro.props;
+if(prev&&prev.data.title.length>25){
+  prev.data.title=prev.data.title.slice(0,25)+"..."
+}
+if(next&&next.data.title.length>25){
+  next.data.title=next.data.title.slice(0,25)+"..."
+}
+
+---
+
+<div class="join grid grid-cols-2 mb-4 h-20 mx-1">
+  {
+    prev === undefined ? (
+      <a href="/">
+        <div class="prev-next-join ">
+          <div>Home</div>
+        </div>{" "}
+      </a>
+    ) : (
+      <a href={"/post/" + prev.slug}>
+        <div class="prev-next-join">
+          <div>{prev.data.title}</div>
+        </div>
+      </a>
+    )
+  }
+  {
+    next === undefined ? (
+      <a href="/">
+        <div class="prev-next-join">
+          <div>Home</div>
+        </div>{" "}
+      </a>
+    ) : (
+      <a href={"/post/" + next.slug}>
+        <div class="prev-next-join">
+          <div>{next.data.title}</div>
+        </div>
+      </a>
+    )
+  }
+</div>
+
+<style>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  @layer components {
+    .prev-next-join {
+      @apply join-item bg-base-200 border-2 border-base-content/20 p-2 w-full h-full flex justify-center items-center overflow-hidden text-ellipsis;
+    }
+  }
+</style>

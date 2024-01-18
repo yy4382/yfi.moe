@@ -1,8 +1,11 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import Sidebar from "./Sidebar.astro";
-const pageTitle = "首页";
+import ThemeControl from "../components/ThemeControl.vue";
+import Sidebar from "../components/Sidebar.astro";
+import NavBar from "../components/NavBar.vue";
+const { pageTitle } = Astro.props;
 ---
 
 <html lang="zh-cn">
@@ -12,22 +15,27 @@ const pageTitle = "首页";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
+    <ViewTransitions />
   </head>
-  <body class="bg-gray-100 dark:bg-gray-950">
+  <body>
     <div
-      class="grid gap-4 m-auto max-m-sm md:max-w-md lg:max-w-5xl xl:max-w-6xl min-h-screen"
+      class="flex flex-col m-auto max-w-sm md:max-w-md lg:max-w-5xl xl:max-w-6xl min-h-screen"
       style="grid-template-columns: 70% auto; grid-template-rows: min-content auto min-content;"
     >
-      <div class="col-span-2">
-        <Header />
+      <div class="">
+        <NavBar>
+          <ThemeControl client:only slot="ThemeControl" />
+        </NavBar>
       </div>
-      <div class="col-span-2 lg:col-span-1">
-        <slot />
+      <div class="mt-4 flex flex-col lg:flex-row">
+        <div class="lg:w-3/4 lg:mr-4">
+          <slot />
+        </div>
+        <div class="lg:w-1/4">
+          <Sidebar />
+        </div>
       </div>
-      <div class="col-span-2 lg:col-span-1 grid grid-cols-2 lg:grid-cols-1">
-        <Sidebar />
-      </div>
-      <div class="col-span-2">
+      <div class="">
         <Footer />
       </div>
     </div>

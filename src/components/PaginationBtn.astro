@@ -1,0 +1,13 @@
+---
+const { page } = Astro.props;
+---
+
+<div class="join">
+  <button class="join-item btn">
+    {page.currentPage > 1 ? <a href={page.url.prev}>«</a> : "x"}
+  </button>
+  <button class="join-item btn">Page {page.currentPage} in {page.lastPage}</button>
+  <button class="join-item btn">
+    {page.currentPage !== page.lastPage ? <a href={page.url.next}>»</a> : "x"}
+  </button>
+</div>

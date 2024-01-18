@@ -23,3 +23,5 @@ pnpm-debug.log*
 # un-related files
 src/content/post/
 public/img/
+
+.vscode

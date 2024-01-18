@@ -1,10 +1,15 @@
 ---
-import { getCollection } from "astro:content";
+import Base from "./Base.astro";
 import PostCard from "../components/PostCard.astro";
-const allPosts = await getCollection("post");
-allPosts.sort((a, b) => Number(b.data.date) - Number(a.data.date));
+import PaginationBtn from "../components/PaginationBtn.astro";
+const { page } = Astro.props;
 ---
 
-<div class="flex flex-col">
-  {allPosts.map((post) => <PostCard post={post} />)}
-</div>
+<Base pageTitle="Home">
+  <div class="flex flex-col">
+    {page.data.map((post: any) => <PostCard post={post} />)}
+    <div class="self-center mb-4">
+      <PaginationBtn page={page} />
+    </div>
+  </div>
+</Base>

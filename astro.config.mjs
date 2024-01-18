@@ -6,5 +6,8 @@ import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), vue(), icon()]
+  integrations: [tailwind(), vue(), icon()],
+  redirects:{
+    "/": "/1"
+  }
 });

@@ -3,7 +3,7 @@ import "../styles/utils.css";
 import { DateTime } from "luxon";
 const { post } = Astro.props;
 ---
-<p class="text-gray-400 my-2">{DateTime.fromJSDate(post.data.date).toFormat('yyyy-MM-dd')}</p>
+<p class="my-2">{DateTime.fromJSDate(post.data.date).toFormat('yyyy-MM-dd')}</p>
 {post.data.tags && (
   <div class="flex flex-wrap">
     {post.data.tags.map((tag:string) => (
