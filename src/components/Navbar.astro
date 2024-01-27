@@ -1,0 +1,131 @@
+---
+import { Icon } from "astro-icon/components";
+import { type NavMenu, navMenu } from "../config";
+import { siteConfig } from "../config";
+---
+
+<div
+  class="card-color rounded-b-lg h-18 px-3 min-h-[4.5rem] flex justify-between"
+>
+  <div class="navbar-start self-center">
+    <a
+      class="flex items-center text-xl btn-color text-primary dark:text-primary_d"
+      href="/"
+    >
+      <svg
+        class="mr-1"
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill="currentColor"
+          d="m12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81zM12 3L2 12h3v8h6v-6h2v6h6v-8h3"
+        ></path>
+      </svg>
+      {siteConfig.title}
+    </a>
+  </div>
+  <div class="hidden lg:flex lg:min-h-full">
+    <ul class="flex gap-1 items-center" id="navList">
+      {
+        navMenu.map((item: NavMenu) => (
+          <li class="btn-plain flex items-center my-auto px-2 rounded-md font-semibold min-h-12">
+            <a href={item.link} class="">
+              {item.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <div class="flex items-center">
+    <div class="self-center mr-2">
+      <slot name="ThemeControl" />
+    </div>
+    <button class="toggle-theme btn-plain flex items-center h-fit rounded-md mr-2">
+      <Icon id="theme-controller" name="ic:outline-wb-sunny" class="w-9 h-9 p-1" />
+    </button>
+    <button class="toggle-menu btn-plain flex items-center h-fit rounded-md lg:hidden">
+      <Icon name="ic:outline-menu" class="w-9 h-9" />
+    </button>
+  </div>
+  <div
+    id="navListMobile"
+    class="absolute hidden flex-col z-10 btn-card rounded-md border-2 top-20 right-2"
+  >
+    {
+      navMenu.map((item) => {
+        return (
+          <a
+            href={item.link}
+            class="btn-plain flex-grow my-auto px-2 py-2 rounded-md font-semibold text-center flex"
+          >
+            {item.text}
+            <Icon
+              name="mdi:chevron-right"
+              class="w-5 h-5 self-center text-primary dark:text-primary_d"
+              size={20}
+            />
+          </a>
+        );
+      })
+    }
+  </div>
+</div>
+
+<script>
+  function setup() {
+    const menuBtns = document.querySelectorAll("button.toggle-menu");
+    menuBtns.forEach((button) => {
+      button.addEventListener("click", () => {
+        const navList = document.getElementById("navListMobile");
+        navList?.classList.toggle("hidden");
+        navList?.classList.toggle("flex");
+      });
+    });
+    initTheme()
+    preToggleTheme()
+  }
+  function initTheme(){
+    const themeIcon = document.getElementById("theme-controller")
+    let dark = true
+    if(localStorage.theme === "dark") dark = true
+    else if(localStorage.theme === "light") dark = false
+    else if(window.matchMedia('(prefers-color-scheme: dark)').matches) dark = true
+    else dark = false
+
+    if(dark) {
+      themeIcon?.setAttribute("name", "ic:outline-nights-stay")
+      document.documentElement.classList.add('dark')
+    } else {
+      themeIcon?.setAttribute("name", "ic:outline-wb-sunny")
+      document.documentElement.classList.remove('dark')
+    }
+  }
+  function preToggleTheme(){
+    const themeBtns = document.querySelectorAll("button.toggle-theme");
+    themeBtns.forEach((button) => {
+      button.addEventListener("click", () => {
+        const themeIcon = document.getElementById("theme-controller")
+        if(document.documentElement.classList.contains("dark")) {
+          themeIcon?.setAttribute("name", "ic:outline-wb-sunny")
+          document.documentElement.classList.remove('dark')
+          localStorage.setItem("theme", "light");
+        } else {
+          themeIcon?.setAttribute("name", "ic:outline-nights-stay")
+          document.documentElement.classList.add('dark')
+          localStorage.setItem("theme", "dark");
+        }
+      });
+    });
+  }
+  document.addEventListener(
+    "astro:page-load",
+    () => {
+      setup();
+    },
+    { once: false }
+  );
+</script>

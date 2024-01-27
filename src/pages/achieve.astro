@@ -1,20 +1,8 @@
 ---
-import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/Base.astro";
-import "../styles/utils.css";
-const allPosts = await getCollection("post");
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AchieveCard from "../components/AchieveCard.astro";
 ---
 
-<BaseLayout>
-  <div class="card text-gray-900 dark:text-white p-8 rounded-lg">
-    <ul>
-      {
-        allPosts.map((post) => (
-          <li>
-            <a href={`/post/${post.slug}`}>{post.data.title}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+<BaseLayout pageTitle="时间线">
+  <AchieveCard keyword="时间线" />
 </BaseLayout>

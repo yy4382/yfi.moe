@@ -1,0 +1,38 @@
+---
+import SideCard from "./SideCard.astro";
+
+import { type TocItem } from "../../config";
+interface Props {
+  tocList: TocItem[];
+}
+
+const { tocList } = Astro.props;
+
+let query = [0, 0, 0, 0, 0, 0];
+for (let tocItem of tocList) {
+  query[tocItem.depth] += 1;
+  tocItem.text = `${query.slice(2, tocItem.depth + 1).join(".")}. ${
+    tocItem.text
+  }`;
+}
+
+// const tocHtml = generateNestedList(tocList);
+---
+
+<SideCard cardTitle="目录" cardLink="#">
+  <ul class="list-none">
+    {
+      tocList.map((tocItem: TocItem) => (
+        <li
+          class:list={[
+            `btn-plain hover:translate-x-1 overflow-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none ml-${
+              tocItem.depth - 2
+            }`,
+          ]}
+        >
+          <a href={"#" + tocItem.slug}>{tocItem.text}</a>
+        </li>
+      ))
+    }
+  </ul>
+</SideCard>

@@ -1,7 +1,7 @@
 ---
-import BaseLayout from "../../layouts/Base.astro";
-import BlogPost from "../../components/PostCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import AchieveCard from "../../components/AchieveCard.astro";
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("post");
@@ -22,12 +22,8 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
-const { post } = Astro.props;
 ---
 
-<BaseLayout>
-  <p>包含「{tag}」标签的文章</p>
-  <ul>
-    {post.map((post) => <BlogPost post={post} />)}
-  </ul>
+<BaseLayout pageTitle={tag + " 标签"}>
+  <AchieveCard tags={[tag]} keyword={"#" + tag} />
 </BaseLayout>

@@ -1,0 +1,126 @@
+---
+interface Props {
+  keyword?: string;
+  tags?: string[];
+  categories?: string[];
+}
+const { keyword, tags, categories } = Astro.props;
+
+import { getCollection, type CollectionEntry } from "astro:content";
+
+let posts = (await getCollection("post")).sort(
+  (a, b) => Number(b.data.date) - Number(a.data.date)
+);
+
+if (Array.isArray(tags) && tags.length > 0) {
+  posts = posts.filter(
+    (post) =>
+      Array.isArray(post.data.tags) &&
+      post.data.tags.some((tag) => tags.includes(tag))
+  );
+}
+
+// if (Array.isArray(categories) && categories.length > 0) {
+//     posts = posts.filter(post =>
+//         (post.data.category && categories.includes(post.data.category)) ||
+//         (!post.data.category && categories.includes(UNCATEGORIZED))
+//     );
+// }
+
+const groups = (function () {
+  const groupedPosts = posts.reduce(
+    (grouped: any, post: CollectionEntry<"post">) => {
+      const year = post.data.date.getFullYear();
+      if (!grouped[year]) {
+        grouped[year] = [];
+      }
+      grouped[year].push(post);
+      return grouped;
+    },
+    {}
+  );
+
+  // convert the object to an array
+  const groupedPostsArray = Object.keys(groupedPosts).map((key) => ({
+    year: key,
+    posts: groupedPosts[key],
+  }));
+
+  // sort years by latest first
+  groupedPostsArray.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+  return groupedPostsArray;
+})();
+
+function formatDate(date: Date) {
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${month}-${day}`;
+}
+
+function formatTag(tag: string[]) {
+  return tag.map((t) => `#${t}`).join(" ");
+}
+---
+<div class="card-color py-8 px-4 lg:px-8 rounded-lg">
+  {keyword ? <h1 class="text-3xl font-semibold tracking-tight text-black/90 dark:text-white/90 text-wrap mb-4 relative
+    before:w-1 before:h-5 before:rounded-md before:bg-primary
+    before:absolute before:top-2 before:-left-4 before:hidden lg:before:block">{keyword}</h1>: null}
+  {groups.map(group => (
+    <div>
+      <!-- headers -->
+      <div class="flex flex-row w-full items-center h-[3.75rem]">
+        <!-- year -->
+        <div class="w-[15%] md:w-[10%] transition text-2xl font-bold text-right text-black/75 dark:text-white/75">
+          {group.year}
+        </div>
+        <!-- dot and line -->
+        <div class="w-[15%] md:w-[10%]">
+          <div class="h-3 w-3 bg-none rounded-full outline outline-primary dark:outline-primary_d mx-auto -outline-offset-[2px] z-50 outline-3"></div>
+        </div>
+        <!-- post count -->
+        <div class="w-[70%] md:w-[80%] transition text-left text-black/50 dark:text-white/50">
+          {group.posts.length}
+        </div>
+      </div>
+      {group.posts.map((post: CollectionEntry<'post'>) => (
+        <a href={"/post/" + post.slug} aria-label={post.data.title} class="group">
+          <div class="btn-plain w-full h-10 rounded-lg">
+            <div class="flex flex-row justify-start items-center h-full">
+              <!-- date -->
+              <div class="w-[15%] md:w-[10%] transition text-sm text-right text-black/50 dark:text-white/50">
+                {formatDate(post.data.date)}
+              </div>
+              <!-- dot and line -->
+              <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
+                <div class="transition-all mx-auto w-1 h-1 rounded group-hover:h-5 bg-[oklch(0.5_0.05_var(--hue))] group-hover:bg-primary dark:group-hover:bg-primary_d outline outline-4 z-50 outline-card_bg dark:outline-card_bg_d group-hover:outline-btn_plain_h dark:group-hover:outline-btn_plain_h_d group-active:outline-btn_plain_a dark:group-active:outline-btn_plain_a_d"/>
+              </div>
+              <!-- post title -->
+              <div class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold group-hover:translate-x-1 transition-all group-hover:text-primary dark:group-hover:text-primary_d text-black/80 dark:text-white/80 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden">
+                {post.data.title}
+              </div>
+              <!-- tag list -->
+              <div class="hidden md:block md:w-[15%] text-left text-sm transition whitespace-nowrap overflow-ellipsis overflow-hidden text-black/30 dark:text-white/30">
+                {formatTag(post.data.tags)}
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  ))}
+</div>
+
+<style>
+  @tailwind components;
+  @tailwind utilities;
+
+  @layer components {
+    .dash-line {
+    }
+    .dash-line::before {
+      content: "";
+      @apply w-[10%] h-full absolute -top-1/2 left-[calc(50%_-_1px)] border-l-[2px]
+      border-dashed pointer-events-none border-black/10 dark:border-white/10 transition;
+    }
+  }
+</style>

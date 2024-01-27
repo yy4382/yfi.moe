@@ -7,10 +7,10 @@ const postsCollection = defineCollection({
     title: z.string(),
     date: z.date(),
     description: z.string().optional(),
-    // author: z.string(),
+    author: z.string().default("Yunfi"),
     photos: z.string().default("/img/meta/default_cover.webp"),
     updated: z.date(),
-    // categories: z.array(z.string()),
+    categories: z.union([z.union([z.string().array(),z.string()]).array(),z.string().optional()]),
     tags: z.array(z.string()),
   }),
 });

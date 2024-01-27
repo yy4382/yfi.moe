@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
 interface Props {
   prev: CollectionEntry<"post">;
   next: CollectionEntry<"post">;
@@ -8,10 +9,7 @@ const { prev, next } = Astro.props;
 const prev1 = prev
   ? {
       url: "/post/" + prev.slug,
-      title:
-        prev.data.title.length > 25
-          ? prev.data.title.slice(0, 25) + "..."
-          : prev.data.title,
+      title: prev.data.title,
     }
   : {
       url: "/",
@@ -20,10 +18,7 @@ const prev1 = prev
 const next1 = next
   ? {
       url: "/post/" + next.slug,
-      title:
-        next.data.title.length > 25
-          ? next.data.title.slice(0, 25) + "..."
-          : next.data.title,
+      title: next.data.title,
     }
   : {
       url: "/",
@@ -31,35 +26,40 @@ const next1 = next
     };
 ---
 
-<div class="join grid grid-cols-2 mb-4 mx-1">
-  {
-    (
-      <a href={prev1.url}>
-        <div class="prev-next-join ">
-          <div class="overflow-hidden mx-2 max-w-fit text-ellipsis text-nowrap">{prev1.title}</div>
+<div
+  class="flex flex-col md:flex-row justify-between gap-4 overflow-hidden w-full"
+>
+  <a href={prev1.url} class="w-full font-bold overflow-hidden active:scale-95">
+    {
+      (
+        <div class="btn-card w-full max-w-full h-10 px-4 rounded-2xl flex items-center justify-start gap-4">
+          <Icon
+            name="mdi:chevron-left"
+            size={32}
+            class="text-[var(--primary)]"
+          />
+          <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] ">
+            {prev1.title}
+          </div>
         </div>
-      </a>
-    )
-  }
-  {
-    (
-      <a href={next1.url}>
-        <div class="prev-next-join">
-          <div class="overflow-hidden max-2 max-w-fit text-ellipsis text-nowrap">{next1.title}</div>
-        </div>
-      </a>
-    )
-  }
-</div>
-
-<style>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-
-  @layer components {
-    .prev-next-join {
-      @apply join-item bg-base-200 border-2 border-base-content/20 p-2 w-full flex justify-center items-center;
+      )
     }
-  }
-</style>
+  </a>
+
+  <a href={next1.url} class="w-full font-bold overflow-hidden active:scale-95">
+    {
+      (
+        <div class="btn-card w-full max-w-full h-10 px-4 rounded-2xl flex items-center justify-end gap-4">
+          <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] ">
+            {next1.title}
+          </div>
+          <Icon
+            name="mdi:chevron-right"
+            size={32}
+            class="text-[var(--primary)]"
+          />
+        </div>
+      )
+    }
+  </a>
+</div>

@@ -1,0 +1,66 @@
+@import "utils.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .custom-md {
+    @apply prose dark:prose-invert;
+  }
+  .custom-md a {
+    @apply relative bg-none m-[-0.25rem] p-[0.25rem] rounded-[0.375rem] text-primary no-underline hover:bg-link_h dark:hover:bg-link_h_d active:bg-link_a dark:active:bg-link_a_d;
+  }
+
+  .custom-md code {
+    @apply font-mono px-1 py-[0.125rem] rounded-md overflow-hidden before:content-none after:content-none bg-btn_bg dark:bg-btn_bg_d text-btn_c dark:text-btn_c_d;
+  }
+  .custom-md pre {
+    @apply bg-codeblock_bg dark:bg-codeblock_bg_d rounded-md px-5 !important;
+  }
+  .my-bg-none {
+    background: none;
+  }
+  .custom-md pre code {
+    @apply text-[unset] text-sm p-0 selection:bg-codeblock_sel my-bg-none dark:my-bg-none;
+  }
+  .custom-md ul li,
+  .custom-md ol li {
+    @apply marker:text-primary dark:marker:text-primary_d;
+  }
+  .custom-md blockquote {
+    @apply not-italic font-normal relative border-l-transparent before:content-[''] before:absolute before:-left-1 before:block before:transition-[background_0.15s_ease-in-out] before:bg-btn_bg before:h-full before:w-1 before:rounded-[1rem];
+  }
+  .custom-md blockquote p {
+    @apply before:content-none after:content-none;
+  }
+  .custom-md img {
+    @apply rounded-xl;
+  }
+  .custom-md hr {
+    @apply border-black/20 dark:border-white/20 border-dashed;
+  }
+  .custom-md iframe {
+    @apply rounded-xl mx-auto max-w-full;
+  }
+  .card-desp{
+    @apply leading-normal
+  }
+  .card-desp h1,
+  .card-desp h2,
+  .card-desp h3,
+  .card-desp h4,
+  .card-desp h5,
+  .card-desp h6 {
+    @apply my-0 text-xl font-semibold;
+  }
+  .card-desp p,
+  .card-desp ul,
+  .card-desp ol,
+  .card-desp blockquote,
+  .card-desp a,
+  .card-desp hr,
+  .card-desp pre,
+  .card-desp li {
+    @apply my-0;
+  }
+}

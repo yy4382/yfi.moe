@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import SideCard from "./SideCard.astro";
+const allPosts = await getCollection("post");
+const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+---
+
+<SideCard cardTitle="标签" cardLink="/tags">
+  <div>
+    {
+      tags.map((tag) => (
+        <a
+          href={`/tags/${tag}`}
+          class="inline-block rounded-lg px-3 py-1 text-sm font-semibold mr-2 mb-2 btn-regular"
+        >
+          {tag}
+        </a>
+      ))
+    }
+  </div>
+</SideCard>

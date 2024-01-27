@@ -1,6 +1,5 @@
 ---
 import { Icon } from "astro-icon/components";
-import "../../styles/utils.css";
 const name = "Yunfi";
 const avatar = "/img/meta/ava.webp";
 const description = "Undergraduate";
@@ -13,10 +12,14 @@ const contact = {
     link: "https://twitter.com/yunfini",
     icon: "mdi:twitter",
   },
+  rss: {
+    link: "/feed.xml",
+    icon: "mdi:rss",
+  },
 };
 ---
 
-<div class="w-full card-i rounded-xl pb-4 mb-4">
+<div class="w-full card-color rounded-xl pb-4">
   <div class="flex flex-col items-center">
     <img class="w-full rounded-xl shadow-lg" src={avatar} alt="Yunfi image" />
     <h5 class="mt-3 mb-1 text-xl font-medium text-gray-900 dark:text-white">
@@ -28,7 +31,7 @@ const contact = {
         Object.entries(contact).map(([key, value]) => (
           <a
             href={value.link}
-            class="inline-flex items-center justify-center w-10 h-10 mt-3 mx-1 rounded-md btn-color"
+            class="inline-flex items-center justify-center w-10 h-10 mt-3 mx-1 rounded-md btn-regular"
             aria-label={key}
             target="blank"
           >

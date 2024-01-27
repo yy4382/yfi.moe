@@ -1,6 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-import Index from "../layouts/Index.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import PaginationBtn from "../components/PaginationBtn.astro";
+import "../styles/markdown.css";
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getCollection("post");
   allPosts.sort((a, b) => Number(b.data.date) - Number(a.data.date));
@@ -9,4 +12,11 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
 const { page } = Astro.props as { page: any };
 ---
 
-<Index page={page} />
+<BaseLayout pageTitle="首页">
+  <div class="flex flex-col gap-4">
+    {page.data.map((post: any) => <PostCard post={post}/>)}
+    <div class="self-center">
+      <PaginationBtn page={page} />
+    </div>
+  </div>
+</BaseLayout>

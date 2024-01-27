@@ -1,0 +1,20 @@
+---
+import type { TocItem } from "../../config";
+import AuthorCard from "./SideCardAuthor.astro";
+import SideCardRecent from "./SideCardRecent.astro";
+import Tags from "./SideCardTags.astro";
+import SideCardToc from "./SideCardToc.astro";
+interface Props {
+  tocList?: TocItem[];
+}
+const { tocList } = Astro.props;
+---
+
+<div class="sidebar-container flex flex-col mx-4 lg:mx-0 gap-4 mb-4">
+  <AuthorCard />
+  <Tags />
+</div>
+<div class="sidebar-container flex flex-col mx-4 lg:mx-0 gap-4 sticky top-4">
+  {tocList && <SideCardToc tocList={tocList} />}
+  <SideCardRecent />
+</div>

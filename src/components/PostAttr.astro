@@ -1,15 +1,40 @@
 ---
-import "../styles/utils.css";
 import { DateTime } from "luxon";
+import { Icon } from "astro-icon/components";
 const { post } = Astro.props;
 ---
-<p class="my-2">{DateTime.fromJSDate(post.data.date).toFormat('yyyy-MM-dd')}</p>
-{post.data.tags && (
-  <div class="flex flex-wrap">
-    {post.data.tags.map((tag:string) => (
-      <a href={`/tags/${tag}`} class="text-md btn-color rounded-lg px-3 py-1 mr-2 mb-2 before:content-['·']">
-        {tag}
-      </a>
-    ))}
-  </div>
-)}
+
+<div class="flex flex-wrap items-center gap-2 lg:gap-3">
+  <!-- Date -->
+  <a class="meta-icon btn-regular" href="/achieve">
+    <Icon name="mdi:calendar-blank-outline" class="text-xl mr-1" />
+    {DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd")}
+  </a>
+
+  <!-- Tags -->
+  {
+    post.data.tags && (
+      <div class="flex flex-wrap items-center gap-1 lg:gap-2">
+        {post.data.tags.map((tag: string) => (
+          <a
+            href={`/tags/${tag}`}
+            class="text-md btn-regular rounded-lg px-3 py-1 flex items-center justify-center"
+          >
+            <Icon name="mdi:tag-outline" class="text-xl mr-1" />
+            {tag}
+          </a>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  @tailwind components;
+
+  @layer components {
+    .meta-icon {
+      @apply px-3 h-8 transition rounded-md flex items-center justify-center mr-2;
+    }
+  }
+</style>

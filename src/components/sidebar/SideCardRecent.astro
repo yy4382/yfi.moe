@@ -1,0 +1,21 @@
+---
+import SideCard from "./SideCard.astro";
+import { getSortedPosts } from "../../utils/urlUtils";
+const allPosts = await getSortedPosts();
+const recentPosts = allPosts.slice(0, 5);
+---
+
+<SideCard cardTitle="最近文章" cardLink="#">
+  <ul class="flex flex-col -m-2 mt-1">
+    {
+      recentPosts.map((entry) => (
+        <a
+          href={entry.slug}
+          class="btn-plain hover:translate-x-1 overflow-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none"
+        >
+          {entry.data.title}
+        </a>
+      ))
+    }
+  </ul>
+</SideCard>

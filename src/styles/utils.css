@@ -1,12 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --hue: 280;
+}
 
 @layer components {
-  .btn-color {
-    @apply bg-base-200 hover:bg-base-300 text-base-content/70;
-  }
-  .card-i {
-    @apply rounded-lg shadow-md bg-base-100 border-base-content/20 border-2;
+  .card-color {
+    @apply transition bg-card_bg dark:bg-card_bg_d;
   }
 }
