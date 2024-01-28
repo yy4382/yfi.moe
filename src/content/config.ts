@@ -14,7 +14,17 @@ const postsCollection = defineCollection({
     tags: z.array(z.string()),
   }),
 });
+const pageCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    updated: z.date().optional(),
+    author: z.string().default("Yunfi"),
+  }),
+});
 // 导出一个单独的 `collections` 对象来注册你的集合
 export const collections = {
   post: postsCollection,
+  page: pageCollection,
 };

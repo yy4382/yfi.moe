@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MdRender from "../components/MdRender.astro";
+import "../styles/utils.css";
+import "../styles/markdown.css";
+export async function getStaticPaths() {
+  const pages = await getCollection("page");
+  return pages.map((page) => ({
+    params: { rootPage: page.slug },
+    props: { page },
+  }));
+}
+const { page } = Astro.props;
+const { Content } = await page.render();
+---
+
+<BaseLayout pageTitle={page.data.title}>
+  <div class="card-base">
+    <h1 class="card-heading">
+      {page.data.title}
+    </h1>
+    <MdRender>
+      <Content />
+    </MdRender>
+  </div>
+</BaseLayout>
