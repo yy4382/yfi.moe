@@ -27,11 +27,9 @@ const { Content, headings } = await post.render();
 
 <BaseLayout pageTitle={post.data.title} tocList={headings}>
   <div class="flex flex-col gap-4">
-    <div class="p-4 pt-4 lg:p-8 card-color rounded-xl">
+    <div class="card-base">
       <h1
-        class="text-xl lg:text-3xl font-semibold tracking-tight text-black/90 dark:text-white/90 text-wrap mb-4 relative
-        before:w-1 before:h-5 before:rounded-md before:bg-primary
-        before:absolute before:top-2 before:-left-4 before:hidden lg:before:block"
+        class="card-heading mb-4"
       >
         {post.data.title}
       </h1>

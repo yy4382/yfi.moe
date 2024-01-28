@@ -4,6 +4,7 @@ interface Props {
   post: CollectionEntry<"post">;
 }
 import PostAttr from "./PostAttr.astro";
+import "../styles/utils.css"
 const { post } = Astro.props;
 import { renderDesp } from "../utils/mdUtils";
 
@@ -16,14 +17,11 @@ if (post.data.description === undefined) {
 ---
 
 <div
-  class="card-color rounded-xl relative px-4 lg:px-8 py-4 lg:py-8 flex flex-col gap-2 lg:gap-4"
+  class="card-base flex flex-col gap-2 lg:gap-4"
 >
   <a
     href={"/post/" + post.slug}
-    class="transition relative
-          text-xl lg:text-3xl font-semibold tracking-tight text-black/90 dark:text-white/90 hover:text-primary dark:hover:text-primary_d
-          before:w-1 before:h-5 before:rounded-md before:bg-primary
-          before:absolute before:top-2 before:-left-4 before:hidden lg:before:block"
+    class="card-heading"
   >
     <h5>
       {post.data.title}

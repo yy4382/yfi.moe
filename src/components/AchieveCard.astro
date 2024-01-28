@@ -7,6 +7,7 @@ interface Props {
 const { keyword, tags, categories } = Astro.props;
 
 import { getCollection, type CollectionEntry } from "astro:content";
+import "../styles/utils.css";
 
 let posts = (await getCollection("post")).sort(
   (a, b) => Number(b.data.date) - Number(a.data.date)
@@ -61,10 +62,8 @@ function formatTag(tag: string[]) {
   return tag.map((t) => `#${t}`).join(" ");
 }
 ---
-<div class="card-color py-8 px-4 lg:px-8 rounded-lg">
-  {keyword ? <h1 class="text-3xl font-semibold tracking-tight text-black/90 dark:text-white/90 text-wrap mb-4 relative
-    before:w-1 before:h-5 before:rounded-md before:bg-primary
-    before:absolute before:top-2 before:-left-4 before:hidden lg:before:block">{keyword}</h1>: null}
+<div class="card-base">
+  {keyword ? <h1 class="card-heading mb-4">{keyword}</h1>: null}
   {groups.map(group => (
     <div>
       <!-- headers -->

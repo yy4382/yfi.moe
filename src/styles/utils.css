@@ -9,4 +9,12 @@
   .card-color {
     @apply transition bg-card_bg dark:bg-card_bg_d;
   }
+  .card-base {
+    @apply card-color p-4 lg:p-8 rounded-lg;
+  }
+  .card-heading {
+    @apply transition text-3xl font-semibold tracking-tight text-black/90 dark:text-white/90 text-wrap relative
+    before:w-1 before:h-5 before:rounded-md before:bg-primary
+    before:absolute before:top-2 before:-left-4 before:hidden lg:before:block;
+  }
 }
