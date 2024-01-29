@@ -23,14 +23,24 @@ export async function getStaticPaths() {
 const { post, prev, next } = Astro.props;
 
 const { Content, headings } = await post.render();
+
+import { Seo } from "../../config";
+import { getDesp } from "../../utils/mdUtils";
+const seoConfig = new Seo(
+  post.data.title,
+  post.data.description || getDesp(post.body),
+  Astro.url.origin + post.data.image,
+  "article"
+).get();
 ---
 
-<BaseLayout pageTitle={post.data.title} tocList={headings}>
+<BaseLayout
+  tocList={headings}
+  seoConfig={seoConfig}
+>
   <div class="flex flex-col gap-4">
     <div class="card-base">
-      <h1
-        class="card-heading mb-4"
-      >
+      <h1 class="card-heading mb-4">
         {post.data.title}
       </h1>
       <PostAttr post={post} />

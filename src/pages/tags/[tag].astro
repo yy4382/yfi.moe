@@ -22,8 +22,10 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
+import { Seo } from "../../config";
+const seoConfig = new Seo("#" + tag).get();
 ---
 
-<BaseLayout pageTitle={tag + " 标签"}>
+<BaseLayout seoConfig={seoConfig}>
   <AchieveCard tags={[tag]} keyword={"#" + tag} />
 </BaseLayout>

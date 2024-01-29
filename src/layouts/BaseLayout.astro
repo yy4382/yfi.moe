@@ -3,20 +3,23 @@ import { ViewTransitions } from "astro:transitions";
 import Footer from "../components/Footer.astro";
 import SideBar from "../components/sidebar/SideBar.astro";
 import Navbar from "../components/Navbar.astro";
+import { SEO } from "astro-seo";
 import "../styles/utils.css";
 import "../styles/buttons.css";
-import { type TocItem } from "../config";
+import { type TocItem, type SeoConfig } from "../config";
 interface Props {
-  pageTitle: string;
   tocList?: TocItem[];
+  seoConfig: SeoConfig;
 }
-const { pageTitle, tocList } = Astro.props;
+const { tocList, seoConfig } = Astro.props;
 ---
 
 <html lang="zh-cn" class="dark">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="256x256"/>
+    <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64"/>
     {
       Astro.url.hostname !== "localhost" &&
       Astro.url.hostname !== "127.0.0.1" ? (
@@ -29,9 +32,9 @@ const { pageTitle, tocList } = Astro.props;
         ""
       )
     }
+    <SEO {...seoConfig} titleTemplate="%s - Yunfi's blog" titleDefault="Yunfi's Blog" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle + "Yunfi's Blog"}</title>
     <ViewTransitions />
   </head>
   <body
@@ -41,7 +44,7 @@ const { pageTitle, tocList } = Astro.props;
       class="flex flex-col m-auto max-w-sm md:max-w-md lg:max-w-5xl xl:max-w-6xl min-h-screen gap-4"
     >
       <div class="">
-        <Navbar/>
+        <Navbar />
       </div>
       <div class="flex flex-col lg:flex-row flex-grow gap-4">
         <div class="lg:w-3/4">

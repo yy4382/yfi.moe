@@ -1,8 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Seo } from "../config";
+const seoConfig = (new Seo("关于")).get();
 ---
 
-<BaseLayout pageTitle="关于我">
+<BaseLayout seoConfig={seoConfig}>
   <div class="card-base mb-4">
     <h1
       class="card-heading"

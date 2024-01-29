@@ -20,6 +20,7 @@
     "@types/luxon": "^3.4.0",
     "astro": "^4.1.1",
     "astro-icon": "^1.0.2",
+    "astro-seo": "^0.8.0",
     "luxon": "^3.4.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",

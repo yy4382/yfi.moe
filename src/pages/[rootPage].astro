@@ -4,6 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import MdRender from "../components/MdRender.astro";
 import "../styles/utils.css";
 import "../styles/markdown.css";
+import { getDesp } from "../utils/mdUtils";
 export async function getStaticPaths() {
   const pages = await getCollection("page");
   return pages.map((page) => ({
@@ -13,9 +14,17 @@ export async function getStaticPaths() {
 }
 const { page } = Astro.props;
 const { Content } = await page.render();
+const desp = page.data.description || getDesp(page.body);
+import { Seo } from "../config";
+const seoConfig = new Seo(
+  page.data.title,
+  desp,
+  Astro.url.origin + page.data.image,
+  "article"
+).get();
 ---
 
-<BaseLayout pageTitle={page.data.title}>
+<BaseLayout seoConfig={seoConfig}>
   <div class="card-base">
     <h1 class="card-heading">
       {page.data.title}

@@ -8,7 +8,7 @@ const postsCollection = defineCollection({
     date: z.date(),
     description: z.string().optional(),
     author: z.string().default("Yunfi"),
-    photos: z.string().default("/img/meta/default_cover.webp"),
+    image: z.string().default("/img/meta/default_cover.webp"),
     updated: z.date(),
     categories: z.union([z.union([z.string().array(),z.string()]).array(),z.string().optional()]),
     tags: z.array(z.string()),
@@ -21,6 +21,8 @@ const pageCollection = defineCollection({
     date: z.date(),
     updated: z.date().optional(),
     author: z.string().default("Yunfi"),
+    description: z.string().optional(),
+    image: z.string().optional(),
   }),
 });
 // 导出一个单独的 `collections` 对象来注册你的集合

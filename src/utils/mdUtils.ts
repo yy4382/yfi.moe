@@ -20,6 +20,23 @@ function truncateAtClosestNewline(str: string, targetPosition: number = 150) {
   return str.substring(0, newPosition);
 }
 
+export function getDesp(content: string, length?: number, tryMore?: boolean) {
+  content = content.trim();
+  if (tryMore) {
+    const moreIndex = content.indexOf("<!--more-->");
+    if (moreIndex !== -1) {
+      content = content
+        .substring(0, moreIndex)
+        .trim();
+    } else {
+      content = truncateAtClosestNewline(content, length);
+    }
+  } else {
+    content = truncateAtClosestNewline(content, length);
+  }
+  return content;
+}
+
 /**
  * Renders the description of the content.
  *
@@ -36,27 +53,14 @@ export async function renderDesp(
   length?: number,
   tryMore?: boolean
 ) {
-  while (content.startsWith("\n")) {
-    content = content.slice(1);
-  }
-  if (tryMore) {
-    const moreIndex = content.indexOf("<!--more-->");
-    if (moreIndex !== -1) {
-      content = content.substring(0, moreIndex);
-    } else {
-      content = truncateAtClosestNewline(content, length);
-    }
-  } else {
-    content = truncateAtClosestNewline(content, length);
-  }
-  return await renderMd(content);
+  return await renderMd(getDesp(content, length, tryMore));
 }
 
-export async function renderMd(content:string){
+export async function renderMd(content: string) {
   const HTML = await unified()
-  .use(remarkParse)
-  .use(remarkRehype)
-  .use(rehypeStringify)
-  .process(content);
-return HTML.value.toString();
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeStringify)
+    .process(content);
+  return HTML.value.toString();
 }
