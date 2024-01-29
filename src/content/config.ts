@@ -8,7 +8,7 @@ const postsCollection = defineCollection({
     date: z.date(),
     description: z.string().optional(),
     author: z.string().default("Yunfi"),
-    image: z.string().default("/img/meta/default_cover.webp"),
+    image: z.string().optional(),
     updated: z.date(),
     categories: z.union([z.union([z.string().array(),z.string()]).array(),z.string().optional()]),
     tags: z.array(z.string()),
