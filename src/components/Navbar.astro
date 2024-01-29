@@ -41,12 +41,12 @@ import { siteConfig } from "../config";
     </ul>
   </div>
   <div class="flex items-center">
-    <div class="self-center mr-2">
-      <slot name="ThemeControl" />
-    </div>
     <button class="toggle-theme btn-plain flex items-center h-fit rounded-md mr-2">
       <Icon id="theme-controller" name="ic:outline-wb-sunny" class="w-9 h-9 p-1" />
     </button>
+    <a href="/feed.xml" class="btn-plain flex items-center h-fit rounded-md mr-2">
+      <Icon name="ic:outline-rss-feed" class="w-9 h-9 p-1" />
+    </a>
     <button class="toggle-menu btn-plain flex items-center h-fit rounded-md lg:hidden">
       <Icon name="ic:outline-menu" class="w-9 h-9" />
     </button>
