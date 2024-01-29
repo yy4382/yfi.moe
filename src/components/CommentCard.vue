@@ -14,7 +14,7 @@ const path = props.path;
 const dark = 'html[class="dark"]'
 </script>
 <template>
-  <div class="card-base px-2">
+  <div class="card-base p-2">
     <Waline :serverURL="serverURL" :path="path" :dark="dark" />
   </div>
 </template>
