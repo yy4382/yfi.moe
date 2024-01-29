@@ -14,7 +14,7 @@ import { Seo } from "../config";
 const seoConfig = new Seo("首页", "笔记与分享，代码和生活").get();
 ---
 
-<BaseLayout pageTitle="首页" seoConfig={seoConfig}>
+<BaseLayout seoConfig={seoConfig}>
   <div class="flex flex-col gap-4">
     {page.data.map((post: any) => <PostCard post={post} />)}
     <div class="self-center">
