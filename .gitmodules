@@ -1,0 +1,3 @@
+[submodule "src/content/post"]
+	path = src/content/post
+	url = https://github.com/yy4382/blog-posts.git
