@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        # with:
-        #   submodules: 'recursive'
+        with:
+          submodules: 'recursive'
         #   fetch-depth: '0'
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
