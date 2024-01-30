@@ -1,11 +1,11 @@
 name: build public
 on:
   workflow_dispatch:
-  repository_dispatch: 
-    types: 
+  repository_dispatch:
+    types:
       - public-build
 
-permissions: 
+permissions:
   contents: write
 jobs:
   build_public:
@@ -13,10 +13,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: 'recursive'
-          token: ${{ secrets.DEPLOY_SECRET }}
+        # with:
+        #   submodules: 'recursive'
+        #   token: ${{ secrets.DEPLOY_SECRET }}
         #   fetch-depth: '0'
+
+      - name: Checkout posts
+        uses: actions/checkout@v4
+        with:
+          repository: yy4382/blog-posts
+          path: src/content/post
+          token: ${{ secrets.DEPLOY_SECRET }}
+
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
         with:
@@ -37,5 +45,5 @@ jobs:
         with:
           branch: main
           folder: dist
-          repository-name:  yy4382/blog-public
+          repository-name: yy4382/blog-public
           token: ${{ secrets.DEPLOY_SECRET }}
