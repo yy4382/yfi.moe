@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import vue from "@astrojs/vue";
+import remarkGithubAlerts from "remark-github-alerts";
 
 import icon from "astro-icon";
 
@@ -10,5 +11,10 @@ export default defineConfig({
   integrations: [tailwind(), vue(), icon()],
   redirects:{
     "/": "/1"
+  },
+  markdown: {
+    remarkPlugins: [
+      remarkGithubAlerts,
+    ]
   }
 });

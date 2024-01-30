@@ -1,6 +1,7 @@
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import remarkGithubAlerts from "remark-github-alerts";
 import { unified } from "unified";
 
 function truncateAtClosestNewline(str: string, targetPosition: number = 150) {
@@ -25,9 +26,7 @@ export function getDesp(content: string, length?: number, tryMore?: boolean) {
   if (tryMore) {
     const moreIndex = content.indexOf("<!--more-->");
     if (moreIndex !== -1) {
-      content = content
-        .substring(0, moreIndex)
-        .trim();
+      content = content.substring(0, moreIndex).trim();
     } else {
       content = truncateAtClosestNewline(content, length);
     }
@@ -59,8 +58,9 @@ export async function renderDesp(
 export async function renderMd(content: string) {
   const HTML = await unified()
     .use(remarkParse)
-    .use(remarkRehype)
-    .use(rehypeStringify)
+    .use(remarkGithubAlerts)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStringify, { allowDangerousHtml: true })
     .process(content);
   return HTML.value.toString();
 }

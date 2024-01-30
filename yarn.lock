@@ -3742,6 +3742,13 @@ remark-gfm@^4.0.0:
     remark-stringify "^11.0.0"
     unified "^11.0.0"
 
+remark-github-alerts@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/remark-github-alerts/-/remark-github-alerts-0.0.4.tgz#15615febbf11ad1675b91c0dd2ef37e01f93fbde"
+  integrity sha512-cGO8CrGb4Vvawn71inAv6VNRL8CKkHYwKpI91ZvbuLhW8W5EkLReQOjqsnj18Hw99X5u44hKyYssOzXLlZdGHQ==
+  dependencies:
+    unist-util-visit "^5.0.0"
+
 remark-parse@^11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/remark-parse/-/remark-parse-11.0.0.tgz#aa60743fcb37ebf6b069204eb4da304e40db45a1"
