@@ -41,8 +41,8 @@
   .custom-md iframe {
     @apply rounded-xl mx-auto max-w-full;
   }
-  .card-desp{
-    @apply leading-normal max-w-full
+  .card-desp {
+    @apply leading-normal max-w-full;
   }
   .card-desp h1,
   .card-desp h2,

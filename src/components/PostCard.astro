@@ -4,7 +4,7 @@ interface Props {
   post: CollectionEntry<"post">;
 }
 import PostAttr from "./PostAttr.astro";
-import "../styles/utils.css"
+import "../styles/utils.css";
 const { post } = Astro.props;
 import { renderDesp } from "../utils/mdUtils";
 
@@ -16,13 +16,8 @@ if (post.data.description === undefined) {
 }
 ---
 
-<div
-  class="card-base flex flex-col gap-2 lg:gap-4"
->
-  <a
-    href={"/post/" + post.slug}
-    
-  >
+<div class="card-base flex flex-col gap-2 lg:gap-4">
+  <a href={"/post/" + post.slug}>
     <h5 class="card-heading">
       {post.data.title}
     </h5>

@@ -1,5 +1,5 @@
 <script setup>
-import { Waline } from '@waline/client/component';
+import { Waline } from "@waline/client/component";
 const props = defineProps({
   path: {
     type: String,
@@ -7,11 +7,11 @@ const props = defineProps({
   },
 });
 
-import '@waline/client/style';
+import "@waline/client/style";
 
-const serverURL = 'https://waline.yfi.moe';
+const serverURL = "https://waline.yfi.moe";
 const path = props.path;
-const dark = 'html[class="dark"]'
+const dark = 'html[class="dark"]';
 </script>
 <template>
   <div class="card-base p-2">

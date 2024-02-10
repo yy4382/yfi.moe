@@ -50,7 +50,7 @@ export function getDesp(content: string, length?: number, tryMore?: boolean) {
 export async function renderDesp(
   content: string,
   length?: number,
-  tryMore?: boolean
+  tryMore?: boolean,
 ) {
   return await renderMd(getDesp(content, length, tryMore));
 }

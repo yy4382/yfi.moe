@@ -25,7 +25,7 @@ export default {
         btn_plain_h_d: "oklch(0.17 0.017 var(--hue))",
         btn_plain_a: "oklch(0.98 0.01 var(--hue)) ",
         btn_plain_a_d: "oklch(0.19 0.017 var(--hue))lain",
-        
+
         codeblock_bg: "oklch(0.2 0.015 var(--hue))",
         codeblock_bg_d: "oklch(0.17 0.015 var(--hue))",
         codeblock_sel: "oklch(0.40 0.08 var(--hue))",

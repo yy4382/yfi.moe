@@ -14,7 +14,12 @@ export interface SeoConfig {
 }
 export class Seo {
   config: SeoConfig;
-  constructor(title: string, description?: string, image?: string, type: string = "website") {
+  constructor(
+    title: string,
+    description?: string,
+    image?: string,
+    type: string = "website",
+  ) {
     this.config = {
       title: title,
       description: description,
