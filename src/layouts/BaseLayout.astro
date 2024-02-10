@@ -23,11 +23,17 @@ const { tocList, seoConfig } = Astro.props;
     {
       Astro.url.hostname !== "localhost" &&
       Astro.url.hostname !== "127.0.0.1" ? (
-        <script
-          defer
-          data-domain="blog.yfi.moe"
-          src="https://analy.yfi.moe/js/script.js"
-        />
+        <>
+          <script
+            async
+            src="https://analy.yfi.moe/script.js"
+            data-website-id="3c89f8f6-9432-4ceb-a404-f22f2b0cf94d"
+          />
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-1MPEY5XJ9V"
+          />
+        </>
       ) : (
         ""
       )
