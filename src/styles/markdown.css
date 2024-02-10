@@ -42,7 +42,7 @@
     @apply rounded-xl mx-auto max-w-full;
   }
   .card-desp{
-    @apply leading-normal
+    @apply leading-normal max-w-full
   }
   .card-desp h1,
   .card-desp h2,
@@ -50,7 +50,7 @@
   .card-desp h4,
   .card-desp h5,
   .card-desp h6 {
-    @apply my-0 text-xl font-semibold;
+    @apply my-0 text-xl font-normal;
   }
   .card-desp p,
   .card-desp ul,
