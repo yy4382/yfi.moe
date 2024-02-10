@@ -18,8 +18,8 @@ const { tocList, seoConfig } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/favicon.png" sizes="256x256"/>
-    <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64"/>
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="256x256" />
+    <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64" />
     {
       Astro.url.hostname !== "localhost" &&
       Astro.url.hostname !== "127.0.0.1" ? (
@@ -32,7 +32,11 @@ const { tocList, seoConfig } = Astro.props;
         ""
       )
     }
-    <SEO {...seoConfig} titleTemplate="%s - Yunfi's blog" titleDefault="Yunfi's Blog" />
+    <SEO
+      {...seoConfig}
+      titleTemplate="%s - Yunfi's blog"
+      titleDefault="Yunfi's Blog"
+    />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions />
@@ -40,22 +44,23 @@ const { tocList, seoConfig } = Astro.props;
   <body
     class="bg-[oklch(0.95_0.01_var(--hue))] dark:bg-[oklch(16%_0.014_var(--hue))] transition"
   >
-    <div
-      class="flex flex-col m-auto max-w-sm md:max-w-md lg:max-w-5xl xl:max-w-6xl min-h-screen gap-4"
-    >
-      <div class="">
-        <Navbar />
-      </div>
-      <div class="flex flex-col lg:flex-row flex-grow gap-4">
-        <div class="lg:w-3/4">
+    <div class="w-[calc(100%-2rem)] xl:max-w-6xl mx-auto min-h-screen">
+      <div class="grid w-full
+      grid-cols-1 lg:grid-cols-[75%_25%]">
+        <nav class="lg:col-span-2 mb-4">
+          <Navbar />
+        </nav>
+
+        <div class="mb-4 lg:mr-4">
           <slot />
         </div>
-        <div class="lg:w-1/4">
+        <div class="mb-4 mx-4 lg:mx-0">
           <SideBar tocList={tocList} />
         </div>
-      </div>
-      <div class="">
-        <Footer />
+
+        <div class="lg:col-span-2">
+          <Footer />
+        </div>
       </div>
     </div>
   </body>
