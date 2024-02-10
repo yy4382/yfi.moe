@@ -7,7 +7,7 @@
 
 @layer components {
   .card-color {
-    @apply transition bg-card_bg dark:bg-card_bg_d;
+    @apply transition bg-card_bg dark:bg-card_bg_d shadow-lg;
   }
   .card-base {
     @apply card-color p-4 lg:p-8 rounded-lg;
