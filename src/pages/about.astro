@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/utils.css";
+import { Seo } from "../config";
+const seoConfig = new Seo("关于", "website").get();
+---
+
+<BaseLayout seoConfig={seoConfig}>
+  <div class="card-base">
+    <h1 class="card-heading">关于</h1>
+    <div class="mt-6 flex flex-col relative">
+      <a class="btn-regular p-2 rounded-lg w-fit" href="https://yfi.moe">
+        查看 yfi.moe
+      </a>
+      <iframe
+        class="rounded-xl mx-auto max-w-full mt-3"
+        width="1000"
+        height="650"
+        src="https://yfi.moe"></iframe>
+      <div class="w-full h-1 bg-black/50 dark:bg-white/50 rounded-full my-4"></div>
+      <a href="/site-history" class="btn-plain w-fit p-2 rounded-xl underline">
+        站志 - 本站时间轴
+      </a>
+    </div>
+  </div>
+</BaseLayout>
