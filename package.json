@@ -19,7 +19,6 @@
     "@iconify-json/mdi": "^1.1.64",
     "@tailwindcss/typography": "^0.5.10",
     "@types/luxon": "^3.4.0",
-    "@waline/client": "^3.0.0-alpha.11",
     "astro": "^4.1.1",
     "astro-icon": "^1.0.2",
     "astro-seo": "^0.8.0",
