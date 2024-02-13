@@ -18,7 +18,7 @@ export class Seo {
     title: string,
     description?: string,
     image?: string,
-    type: string = "website",
+    type: string = "website"
   ) {
     this.config = {
       title: title,
@@ -58,19 +58,19 @@ export interface NavMenu {
 }
 export const navMenu: NavMenu[] = [
   {
-    text: "Home",
+    text: "首页",
     link: "/1",
   },
   {
-    text: "Achieve",
+    text: "时间轴",
     link: "/achieve",
   },
   {
-    text: "Tags",
+    text: "标签",
     link: "/tags",
   },
   {
-    text: "About",
+    text: "关于",
     link: "/about",
   },
 ];
