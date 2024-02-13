@@ -4,6 +4,7 @@ import vue from "@astrojs/vue";
 import remarkGithubAlerts from "remark-github-alerts";
 
 import icon from "astro-icon";
+import remarkReadingTime from "./src/utils/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,6 +14,6 @@ export default defineConfig({
     "/": "/1",
   },
   markdown: {
-    remarkPlugins: [remarkGithubAlerts],
+    remarkPlugins: [remarkGithubAlerts,remarkReadingTime],
   },
 });

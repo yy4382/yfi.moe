@@ -1,4 +1,15 @@
 ---
+// Calculate the number of articles, words, and tags
+import { getCollection } from "astro:content";
+const posts = await getCollection("post");
+let articles = posts.length;
+let words = 0;
+for (const post of posts) {
+  const { remarkPluginFrontmatter } = await post.render();
+  words += remarkPluginFrontmatter.words;
+}
+const tags = [...new Set(posts.map((post) => post.data.tags).flat())].length;
+
 import { Icon } from "astro-icon/components";
 const name = "Yunfi";
 const avatar = "/ava.webp";
@@ -38,6 +49,26 @@ const contact = {
       </a>
     </h5>
     <span class="text-sm text-gray-500 dark:text-gray-400">{description}</span>
+    <div class="flex">
+      <div class="flex flex-col items-center mx-4">
+        <span class="text-lg font-semibold text-gray-900 dark:text-white">
+          {articles}
+        </span>
+        <span class="text-sm text-gray-500 dark:text-gray-400">文章</span>
+      </div>
+      <div class="flex flex-col items-center mx-4">
+        <span class="text-lg font-semibold text-gray-900 dark:text-white">
+          {(words/10000).toFixed(1)}
+        </span>
+        <span class="text-sm text-gray-500 dark:text-gray-400">万字</span>
+      </div>
+      <div class="flex flex-col items-center mx-4">
+        <span class="text-lg font-semibold text-gray-900 dark:text-white">
+          {tags}
+        </span>
+        <span class="text-sm text-gray-500 dark:text-gray-400">标签</span>
+      </div>
+    </div>
     <div class="flex">
       {
         Object.entries(contact).map(([key, value]) => (
