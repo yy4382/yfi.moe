@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   return blogEntries
     .sort(
       (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
     )
     .map((post, i) => ({
       params: { slug: post.slug },
@@ -30,20 +30,19 @@ const seoConfig = new Seo(
   post.data.title,
   post.data.description || getDesp(post.body),
   Astro.url.origin + post.data.image,
-  "article"
+  "article",
 ).get();
 ---
 
-<BaseLayout
-  tocList={headings}
-  seoConfig={seoConfig}
->
+<BaseLayout tocList={headings} seoConfig={seoConfig}>
   <div class="flex flex-col gap-4">
-    <div class="card-base">
+    <div class="card-base" data-pagefind-body>
       <h1 class="card-heading mb-4">
         {post.data.title}
       </h1>
-      <PostAttr post={post} />
+      <div data-pagefind-weight="0.8">
+        <PostAttr post={post} />
+      </div>
       <MdRender>
         <Content />
       </MdRender>

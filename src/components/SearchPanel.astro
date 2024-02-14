@@ -1,0 +1,92 @@
+---
+import { Icon } from "astro-icon/components";
+import Search from "astro-pagefind/components/Search";
+---
+
+<div id="search-icon" class="btn-plain flex items-center h-fit rounded-md mr-2">
+  <Icon name="mdi:search" class="w-9 h-9 p-1" />
+</div>
+<div
+  id="search-bg"
+  class="fixed top-0 left-0 w-full h-full bg-black/50 dark:bg-black/70 z-40 hidden"
+>
+</div>
+<div
+  id="search-div"
+  class="fixed top-[10vh] left-8 right-8 lg:left-1/4 lg:right-1/4 z-50 hidden shadow-lg"
+>
+  <Search
+    id="search"
+    className="pagefind-ui"
+    uiOptions={{ showImages: false }}
+  />
+</div>
+<style is:global>
+  @tailwind components;
+  @layer components {
+    .aaa {
+      @apply bg-red-500;
+    }
+    .pagefind-ui__drawer {
+      @apply bg-white p-4 -mt-8 max-h-[60vh] overflow-y-scroll rounded-b-lg;
+    }
+    .pagefind-ui__result-inner {
+      @apply break-words;
+    }
+  }
+</style>
+<script>
+  function openSearch() {
+    // 显示搜索框
+    document.getElementById("search-div")?.classList.remove("hidden");
+    document.getElementById("search-bg")?.classList.remove("hidden");
+    // 聚焦搜索框
+    const searchInput = document
+      .getElementsByClassName("pagefind-ui__search-input")
+      .item(0) as HTMLInputElement;
+    searchInput.focus();
+    // 取消监听打开搜索框的键盘事件
+    document.removeEventListener("keydown", openKeyEventHandler);
+    // 监听关闭搜索框的事件
+    document.addEventListener("keydown", closeKeyEventHandler);
+  }
+  function closeSearch() {
+    // 隐藏搜索框
+    document.getElementById("search-div")?.classList.add("hidden");
+    document.getElementById("search-bg")?.classList.add("hidden");
+    // 监听打开搜索框的键盘事件
+    document.addEventListener("keydown", openKeyEventHandler);
+    // 取消监听关闭搜索框的事件
+    document.removeEventListener("keydown", closeKeyEventHandler);
+  }
+
+  function openKeyEventHandler(event: KeyboardEvent) {
+    const isCmdOrCtrl = event.metaKey || event.ctrlKey;
+    if ((isCmdOrCtrl && event.key === "k") || event.key === "/") {
+      event.preventDefault();
+      openSearch();
+    }
+  }
+  function closeKeyEventHandler(event: KeyboardEvent) {
+    if (event.key === "Escape") {
+      closeSearch();
+    }
+  }
+
+  function setup() {
+    document.addEventListener("keydown", openKeyEventHandler);
+    document.getElementById("search-icon")?.addEventListener("click", () => {
+      openSearch();
+    });
+    document.getElementById("search-bg")?.addEventListener("click", () => {
+      closeSearch();
+    });
+  }
+  document.addEventListener(
+    "astro:page-load",
+    () => {
+      setup();
+    },
+    { once: false },
+  );
+</script>

@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 import { type NavMenu, navMenu } from "../config";
 import { siteConfig } from "../config";
+import SearchPanel from "./SearchPanel.astro";
 ---
 
 <div
@@ -41,6 +42,7 @@ import { siteConfig } from "../config";
     </ul>
   </div>
   <div class="flex items-center">
+    <SearchPanel />
     <button class="toggle-theme btn-plain flex items-center h-fit rounded-md mr-2">
       <Icon id="theme-controller" name="ic:outline-wb-sunny" class="w-9 h-9 p-1" />
     </button>

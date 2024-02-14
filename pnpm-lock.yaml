@@ -38,6 +38,9 @@ dependencies:
   astro-icon:
     specifier: ^1.1.0
     version: 1.1.0
+  astro-pagefind:
+    specifier: ^1.4.0
+    version: 1.4.0(astro@4.3.6)
   astro-seo:
     specifier: ^0.8.0
     version: 0.8.0
@@ -47,6 +50,9 @@ dependencies:
   mdast-util-to-string:
     specifier: ^4.0.0
     version: 4.0.0
+  pagefind:
+    specifier: ^1.0.4
+    version: 1.0.4
   reading-time:
     specifier: ^1.5.0
     version: 1.5.0
@@ -882,12 +888,60 @@ packages:
       fastq: 1.17.1
     dev: false
 
+  /@pagefind/darwin-arm64@1.0.4:
+    resolution: {integrity: sha512-2OcthvceX2xhm5XbgOmW+lT45oLuHqCmvFeFtxh1gsuP5cO8vcD8ZH8Laj4pXQFCcK6eAdSShx+Ztx/LsQWZFQ==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@pagefind/darwin-x64@1.0.4:
+    resolution: {integrity: sha512-xkdvp0D9Ld/ZKsjo/y1bgfhTEU72ITimd2PMMQtts7jf6JPIOJbsiErCvm37m/qMFuPGEq/8d+fZ4pydOj08HQ==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@pagefind/default-ui@1.0.4:
+    resolution: {integrity: sha512-edkcaPSKq67C49Vehjo+LQCpT615v4d7JRhfGzFPccePvdklaL+VXrfghN/uIfsdoG+HoLI1PcYy2iFcB9CTkw==}
+    dev: false
+
+  /@pagefind/linux-arm64@1.0.4:
+    resolution: {integrity: sha512-jGBrcCzIrMnNxLKVtogaQyajVfTAXM59KlBEwg6vTn8NW4fQ6nuFbbhlG4dTIsaamjEM5e8ZBEAKZfTB/qd9xw==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@pagefind/linux-x64@1.0.4:
+    resolution: {integrity: sha512-LIn/QcvcEtLEBqKe5vpSbSC2O3fvqbRCWOTIklslqSORisCsvzsWbP6j+LYxE9q0oWIfkdMoWV1vrE/oCKRxHg==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@pagefind/windows-x64@1.0.4:
+    resolution: {integrity: sha512-QlBCVeZfj9fc9sbUgdOz76ZDbeK4xZihOBAFqGuRJeChfM8pnVeH9iqSnXgO3+m9oITugTf7PicyRUFAG76xeQ==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
     requiresBuild: true
     dev: false
     optional: true
+
+  /@polka/url@1.0.0-next.24:
+    resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
+    dev: false
 
   /@rollup/rollup-android-arm-eabi@4.10.0:
     resolution: {integrity: sha512-/MeDQmcD96nVoRumKUljsYOLqfv1YFJps+0pTrb2Z9Nl/w5qNUysMaWQsrd1mvAlNT4yza1iVyIu4Q4AgF6V3A==}
@@ -1422,6 +1476,17 @@ packages:
       '@iconify/utils': 2.1.22
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /astro-pagefind@1.4.0(astro@4.3.6):
+    resolution: {integrity: sha512-WMUlS0TTqIDqygplj/cxKU+l3oI+zB2qgYNMZed5R5nXuw8HhAKATog9zazuN05TOSWxI2Ap9+9WAYnnJ+4C7A==}
+    peerDependencies:
+      astro: ^2.0.4 || ^3.0.0 || ^4.0.0
+    dependencies:
+      '@pagefind/default-ui': 1.0.4
+      astro: 4.3.6(typescript@5.3.3)
+      pagefind: 1.0.4
+      sirv: 2.0.4
     dev: false
 
   /astro-seo@0.8.0:
@@ -3384,6 +3449,11 @@ packages:
       ufo: 1.4.0
     dev: false
 
+  /mrmime@2.0.0:
+    resolution: {integrity: sha512-eu38+hdgojoyq63s+yTpN4XMBdt5l8HhMhc4VKLO9KM5caLIBvUm4thi7fFaxyTmCKeNnXZ5pAlBwCUnhA09uw==}
+    engines: {node: '>=10'}
+    dev: false
+
   /ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
     dev: false
@@ -3584,6 +3654,17 @@ packages:
   /p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
+    dev: false
+
+  /pagefind@1.0.4:
+    resolution: {integrity: sha512-oRIizYe+zSI2Jw4zcMU0ebDZm27751hRFiSOBLwc1OIYMrsZKk+3m8p9EVaOmc6zZdtqwwdilNUNxXvBeHcP9w==}
+    hasBin: true
+    optionalDependencies:
+      '@pagefind/darwin-arm64': 1.0.4
+      '@pagefind/darwin-x64': 1.0.4
+      '@pagefind/linux-arm64': 1.0.4
+      '@pagefind/linux-x64': 1.0.4
+      '@pagefind/windows-x64': 1.0.4
     dev: false
 
   /parse-latin@5.0.1:
@@ -4178,6 +4259,15 @@ packages:
     dev: false
     optional: true
 
+  /sirv@2.0.4:
+    resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@polka/url': 1.0.0-next.24
+      mrmime: 2.0.0
+      totalist: 3.0.1
+    dev: false
+
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
     dev: false
@@ -4470,6 +4560,11 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
+    dev: false
+
+  /totalist@3.0.1:
+    resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
+    engines: {node: '>=6'}
     dev: false
 
   /trim-lines@3.0.1:
