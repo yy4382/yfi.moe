@@ -5,7 +5,7 @@ import PostAttr from "../../components/PostAttr.astro";
 import PrevNext from "../../components/PrevNext.astro";
 import MdRender from "../../components/MdRender.astro";
 import "../../styles/markdown.css";
-// import CommentCard from "../../components/CommentCard.vue";
+import CommentCard from "../../components/CommentCard.vue";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");
@@ -48,6 +48,6 @@ const seoConfig = new Seo(
       </MdRender>
     </div>
     <PrevNext prev={prev} next={next} />
-    <!-- <CommentCard client:visible path={"/post/" + post.slug} /> -->
+    <CommentCard client:visible path={"/post/" + post.slug} />
   </div>
 </BaseLayout>
