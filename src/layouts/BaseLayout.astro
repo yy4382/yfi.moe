@@ -10,8 +10,9 @@ import { type TocItem, type SeoConfig } from "../config";
 interface Props {
   tocList?: TocItem[];
   seoConfig: SeoConfig;
+  stopTrack?: boolean;
 }
-const { tocList, seoConfig } = Astro.props;
+const { tocList, seoConfig, stopTrack } = Astro.props;
 ---
 
 <html lang="zh-cn" class="dark">
@@ -21,8 +22,7 @@ const { tocList, seoConfig } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon.png" sizes="256x256" />
     <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64" />
     {
-      Astro.url.hostname !== "localhost" &&
-      Astro.url.hostname !== "127.0.0.1" ? (
+      import.meta.env.PROD && !stopTrack ? (
         <>
           <script
             async
