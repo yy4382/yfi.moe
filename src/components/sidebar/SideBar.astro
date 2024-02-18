@@ -4,10 +4,12 @@ import AuthorCard from "./SideCardAuthor.astro";
 import SideCardRecent from "./SideCardRecent.astro";
 import Tags from "./SideCardTags.astro";
 import SideCardToc from "./SideCardToc.astro";
+import SideCardSeries from "./SideCardSeries.astro";
 interface Props {
   tocList?: TocItem[];
+  seriesID?: string;
 }
-const { tocList } = Astro.props;
+const { tocList, seriesID } = Astro.props;
 ---
 
 <div class="flex flex-col gap-4 mb-4">
@@ -15,6 +17,7 @@ const { tocList } = Astro.props;
   <Tags />
 </div>
 <div class="flex flex-col gap-4 sticky top-4">
+  {seriesID && <SideCardSeries id={seriesID} />}
   {tocList && <SideCardToc tocList={tocList} />}
   <SideCardRecent />
 </div>

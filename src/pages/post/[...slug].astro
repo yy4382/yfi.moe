@@ -34,7 +34,7 @@ const seoConfig = new Seo(
 ).get();
 ---
 
-<BaseLayout tocList={headings} seoConfig={seoConfig}>
+<BaseLayout tocList={headings} seoConfig={seoConfig} seriesID={post.data.series?.id}>
   <div class="flex flex-col gap-4">
     <div class="card-base" data-pagefind-body>
       <h1 class="card-heading mb-4">

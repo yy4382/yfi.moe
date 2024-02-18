@@ -1,0 +1,48 @@
+---
+import SideCard from "./SideCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+
+const entries = await getCollection(
+  "post",
+  (entry: CollectionEntry<"post">) => entry.data.series?.id === id,
+);
+
+if (entries[0].data.series?.order) {
+  entries.sort((a, b) => {
+    const orderA: number = a.data.series!.order ?? 0;
+    const orderB: number = b.data.series!.order ?? 0;
+    return orderA - orderB;
+  });
+} else {
+  entries.sort((a, b) => Number(b.data.date) - Number(a.data.date));
+}
+const titleSet = new Set(
+  entries
+    .map((entry) => entry.data.series?.title)
+    .filter((e) => e !== undefined),
+);
+if (titleSet.size !== 1) {
+  throw new Error("Series title is not consistent");
+}
+const title = titleSet.values().next().value;
+---
+
+<SideCard cardTitle={"系列：" + title} cardLink="#">
+  <ul class="flex flex-col -m-2 mt-1">
+    {
+      entries.map((entry) => (
+        <a
+          href={"/post/" + entry.slug}
+          class="btn-plain hover:translate-x-1 p-2 rounded-md select-none
+            overflow-ellipsis whitespace-nowrap overflow-hidden"
+        >
+          {entry.data.title}
+        </a>
+      ))
+    }
+  </ul>
+</SideCard>

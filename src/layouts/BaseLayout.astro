@@ -9,10 +9,11 @@ import "../styles/buttons.css";
 import { type TocItem, type SeoConfig } from "../config";
 interface Props {
   tocList?: TocItem[];
+  seriesID?: string;
   seoConfig: SeoConfig;
   stopTrack?: boolean;
 }
-const { tocList, seoConfig, stopTrack } = Astro.props;
+const { tocList,seriesID, seoConfig, stopTrack } = Astro.props;
 ---
 
 <html lang="zh-cn" class="dark">
@@ -61,7 +62,7 @@ const { tocList, seoConfig, stopTrack } = Astro.props;
           <slot />
         </div>
         <div class="mb-4 mx-4 lg:mx-0">
-          <SideBar tocList={tocList} />
+          <SideBar tocList={tocList} seriesID={seriesID} />
         </div>
 
         <div class="lg:col-span-2">
