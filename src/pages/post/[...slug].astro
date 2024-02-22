@@ -25,10 +25,10 @@ const { post, prev, next } = Astro.props;
 const { Content, headings } = await post.render();
 
 import { Seo } from "../../config";
-import { getDesp } from "../../utils/mdUtils";
+import { getDesc } from "../../utils/mdUtils";
 const seoConfig = new Seo(
   post.data.title,
-  post.data.description || getDesp(post.body),
+  post.data.description || getDesc(post.body),
   Astro.url.origin + post.data.image,
   "article",
 ).get();

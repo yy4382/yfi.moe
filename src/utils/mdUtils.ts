@@ -21,7 +21,7 @@ function truncateAtClosestNewline(str: string, targetPosition: number = 150) {
   return str.substring(0, newPosition);
 }
 
-export function getDesp(content: string, length?: number, tryMore?: boolean) {
+export function getDesc(content: string, length?: number, tryMore?: boolean) {
   content = content.trim();
   if (tryMore) {
     const moreIndex = content.indexOf("<!--more-->");
@@ -47,12 +47,12 @@ export function getDesp(content: string, length?: number, tryMore?: boolean) {
  * @param tryMore - Indicates whether to try to find the "<!--more-->" marker to truncate the content (optional).
  * @returns The rendered description as a string.
  */
-export async function renderDesp(
+export async function renderDesc(
   content: string,
   length?: number,
   tryMore?: boolean,
 ) {
-  return await renderMd(getDesp(content, length, tryMore));
+  return await renderMd(getDesc(content, length, tryMore));
 }
 
 export async function renderMd(content: string) {

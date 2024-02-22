@@ -41,25 +41,25 @@
   .custom-md iframe {
     @apply rounded-xl mx-auto max-w-full;
   }
-  .card-desp {
+  .card-desc {
     @apply leading-normal max-w-full;
   }
-  .card-desp h1,
-  .card-desp h2,
-  .card-desp h3,
-  .card-desp h4,
-  .card-desp h5,
-  .card-desp h6 {
+  .card-desc h1,
+  .card-desc h2,
+  .card-desc h3,
+  .card-desc h4,
+  .card-desc h5,
+  .card-desc h6 {
     @apply my-0 text-xl font-normal;
   }
-  .card-desp p,
-  .card-desp ul,
-  .card-desp ol,
-  .card-desp blockquote,
-  .card-desp a,
-  .card-desp hr,
-  .card-desp pre,
-  .card-desp li {
+  .card-desc p,
+  .card-desc ul,
+  .card-desc ol,
+  .card-desc blockquote,
+  .card-desc a,
+  .card-desc hr,
+  .card-desc pre,
+  .card-desc li {
     @apply my-0;
   }
 }

@@ -6,11 +6,11 @@ interface Props {
 import PostAttr from "./PostAttr.astro";
 import "../styles/utils.css";
 const { post } = Astro.props;
-import { renderDesp } from "../utils/mdUtils";
+import { renderDesc } from "../utils/mdUtils";
 
 let desc = "";
 if (post.data.description === undefined) {
-  desc = await renderDesp(post.body);
+  desc = await renderDesc(post.body);
 } else {
   desc = post.data.description || "";
 }
@@ -23,5 +23,5 @@ if (post.data.description === undefined) {
     </h5>
   </a>
   <PostAttr post={post} />
-  <div class="custom-md card-desp" set:html={desc} />
+  <div class="custom-md card-desc" set:html={desc} />
 </div>
