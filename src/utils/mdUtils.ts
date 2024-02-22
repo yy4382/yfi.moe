@@ -21,7 +21,7 @@ function truncateAtClosestNewline(str: string, targetPosition: number = 150) {
   return str.substring(0, newPosition);
 }
 
-export function getDesc(content: string, length?: number, tryMore?: boolean) {
+export function getDesc(content: string, length?: number, tryMore: boolean= true) {
   content = content.trim();
   if (tryMore) {
     const moreIndex = content.indexOf("<!--more-->");
