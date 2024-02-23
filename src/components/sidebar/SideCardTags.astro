@@ -1,21 +1,50 @@
 ---
 import { getCollection } from "astro:content";
 import SideCard from "./SideCard.astro";
+import { Icon } from "astro-icon/components";
 const allPosts = await getCollection("post");
-const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+const tagsWithCount = allPosts.reduce((acc: Record<string, number>, post) => {
+  post.data.tags.forEach((tag) => {
+    if (acc[tag]) {
+      acc[tag]++;
+    } else {
+      acc[tag] = 1;
+    }
+  });
+  return acc;
+}, {});
+interface Props {
+  showAll?: boolean;
+}
+const { showAll = false } = Astro.props;
+const maxTags = showAll ? Object.keys(tagsWithCount).length : 12;
 ---
 
-<SideCard cardTitle="标签" cardLink="/tags">
+<SideCard cardTitle={showAll ? "标签" : "热门标签"} cardLink="/tags">
   <div>
     {
-      tags.map((tag) => (
-        <a
-          href={`/tags/${tag}`}
-          class="inline-block rounded-lg px-3 py-1 text-sm font-semibold mr-2 mb-2 btn-regular"
-        >
-          {tag}
-        </a>
-      ))
+      Object.keys(tagsWithCount)
+        .slice(0, maxTags)
+        .map((tag) => (
+          <a
+            href={`/tags/${tag}`}
+            class="inline-block rounded-lg px-3 py-1 text-sm font-semibold mr-2 mb-2 btn-regular"
+          >
+            {tag}
+          </a>
+        ))
+    }
+    {
+      !showAll && (
+        <div class="flex">
+          <a
+            class="ml-auto w-fit btn-regular text-right px-2 py-1 rounded-lg inline-flex items-center gap-2"
+            href="/tags"
+          >
+            查看全部 <Icon name="fa6-solid:arrow-up-right-from-square" />
+          </a>
+        </div>
+      )
     }
   </div>
 </SideCard>
