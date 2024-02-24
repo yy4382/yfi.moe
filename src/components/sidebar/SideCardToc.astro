@@ -29,10 +29,9 @@ for (let tocItem of tocList) {
         <a
           href={"#" + tocItem.slug}
           class:list={[
-            `btn-plain hover:translate-x-1 overflow-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none ml${
-              tocItem.depth - 2
-            }`,
+            `btn-plain hover:translate-x-1 overflow-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none`,
           ]}
+          style={`margin-left: calc(0.75rem * ${tocItem.depth - 2});`}
         >
           {tocItem.text}
         </a>
@@ -40,21 +39,3 @@ for (let tocItem of tocList) {
     }
   </div>
 </SideCard>
-
-<style>
-.ml0 {
-  margin-left: 0;
-}
-.ml1 {
-  margin-left: 0.25rem;
-}
-.ml2 {
-  margin-left: 0.5rem;
-}
-.ml3 {
-  margin-left: 0.75rem;
-}
-.ml4 {
-  margin-left: 1rem;
-}
-</style>
