@@ -61,9 +61,9 @@ const { tocList,seriesID, seoConfig, stopTrack } = Astro.props;
         <div class="mb-4 lg:mr-4">
           <slot />
         </div>
-        <div class="mb-4 mx-4 lg:mx-0">
+        <aside class="mb-4 mx-4 lg:mx-0">
           <SideBar tocList={tocList} seriesID={seriesID} />
-        </div>
+        </aside>
 
         <div class="lg:col-span-2">
           <Footer />
