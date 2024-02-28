@@ -11,11 +11,10 @@ import "@waline/client/style";
 
 const serverURL = "https://waline.yfi.moe";
 const path = props.path;
-const dark = 'html[class="dark"]';
 </script>
 <template>
   <div class="card-base p-2">
-    <Waline :serverURL="serverURL" :path="path" :dark="dark" />
+    <Waline :serverURL="serverURL" :path="path"/>
   </div>
 </template>
 
