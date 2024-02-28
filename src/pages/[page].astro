@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import PaginationBtn from "../components/PaginationBtn.astro";
-import "../styles/markdown.css";
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getCollection("post");
   allPosts.sort((a, b) => Number(b.data.date) - Number(a.data.date));

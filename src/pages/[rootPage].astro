@@ -2,8 +2,6 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import MdRender from "../components/MdRender.astro";
-import "../styles/utils.css";
-import "../styles/markdown.css";
 import { getDesc } from "../utils/mdUtils";
 export async function getStaticPaths() {
   const pages = await getCollection("page");

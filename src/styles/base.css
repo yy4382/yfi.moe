@@ -3,31 +3,74 @@
 @tailwind utilities;
 
 @layer components {
+  /* Buttons */
+  .btn-regular-base {
+    @apply bg-btn-regular-bg-light dark:bg-btn-regular-bg-dark
+      text-btn-regular-text-light dark:text-btn-regular-text-dark;
+  }
+  .btn-regular {
+    @apply btn-regular-base
+      hover:bg-btn-regular-bg-light-hover dark:hover:bg-btn-regular-bg-dark-hover
+      active:bg-btn-regular-bg-light-active dark:active:bg-btn-regular-bg-dark-active;
+  }
+
+  .btn-card-base {
+    @apply transition bg-card dark:bg-card-dark 
+      text-black/75 dark:text-white/75;
+  }
+  .btn-card {
+    @apply btn-card-base 
+    hover:bg-btn-card-bg-light-hover dark:hover:bg-btn-card-bg-dark-hover 
+    active:bg-btn-card-bg-light-active dark:active:bg-btn-card-bg-dark-active;
+  }
+
+  .btn-plain-base {
+    @apply bg-none
+      text-black/75 dark:text-white/75
+      hover:text-primary dark:hover:text-primary-dark;
+  }
+  .btn-plain {
+    @apply btn-plain-base
+      hover:bg-btn-plain-bg-light-hover dark:hover:bg-btn-plain-bg-dark-hover
+      active:bg-btn-plain-bg-light-active dark:active:bg-btn-plain-bg-dark-active;
+  }
+
+  /* Markdown */
   .custom-md {
     @apply prose dark:prose-invert;
   }
   .custom-md a {
-    @apply relative bg-none m-[-0.25rem] p-[0.25rem] rounded-[0.375rem] text-primary no-underline hover:bg-link_h dark:hover:bg-link_h_d active:bg-link_a dark:active:bg-link_a_d;
+    @apply relative no-underline 
+      hover:text-primary dark:hover:text-primary-dark
+      transition-colors
+      ease-[cubic-bezier(0,1,0.5,1)] duration-500
+      before:content-[''] before:absolute 
+      before:bottom-0 before:left-0 before:right-0 
+      before:h-2 before:hover:h-[0.2rem]
+      before:bg-link/30 before:hover:bg-link
+      before:dark:bg-link-dark/20 before:dark:hover:bg-link-dark
+      before:transition-[height,background-color]
+      before:ease-[cubic-bezier(0,1,0.5,1)] before:duration-500;
   }
 
   .custom-md code {
-    @apply font-mono px-1 py-[0.125rem] rounded-md overflow-hidden before:content-none after:content-none bg-btn_bg dark:bg-btn_bg_d text-btn_c dark:text-btn_c_d;
+    @apply font-mono px-1 py-[0.125rem] rounded-md overflow-hidden before:content-none after:content-none btn-regular-base;
   }
   .custom-md pre {
-    @apply bg-codeblock_bg dark:bg-codeblock_bg_d rounded-md px-5 !important;
+    @apply bg-codeblock dark:bg-codeblock-dark rounded-md px-5 !important;
   }
   .my-bg-none {
     background: none;
   }
   .custom-md pre code {
-    @apply text-[unset] text-sm p-0 selection:bg-codeblock_sel my-bg-none dark:my-bg-none;
+    @apply text-[unset] text-sm p-0 selection:bg-codeblock-sel my-bg-none dark:my-bg-none;
   }
   .custom-md ul li,
   .custom-md ol li {
-    @apply marker:text-primary dark:marker:text-primary_d;
+    @apply marker:text-primary dark:marker:text-primary-dark;
   }
   .custom-md blockquote {
-    @apply not-italic font-normal relative border-l-transparent before:content-[''] before:absolute before:-left-1 before:block before:transition-[background_0.15s_ease-in-out] before:bg-btn_bg before:h-full before:w-1 before:rounded-[1rem];
+    @apply not-italic font-normal relative border-l-transparent before:content-[''] before:absolute before:-left-1 before:block before:transition-[background_0.15s_ease-in-out] before:bg-btn-regular-bg-light before:dark:bg-btn-regular-bg-dark before:h-full before:w-1 before:rounded-[1rem];
   }
   .custom-md blockquote p {
     @apply before:content-none after:content-none;
@@ -62,8 +105,19 @@
   .card-desc li {
     @apply my-0;
   }
-}
 
+  .card-color {
+    @apply bg-card dark:bg-card-dark shadow-lg;
+  }
+  .card-base {
+    @apply card-color p-4 lg:p-8 rounded-lg;
+  }
+  .card-heading {
+    @apply transition text-2xl font-[450] tracking-tight text-black/90 dark:text-white/90 text-wrap relative
+    before:w-1 before:h-5 before:rounded-md before:bg-primary
+    before:absolute before:top-[0.375rem] before:-left-4 before:hidden lg:before:block;
+  }
+}
 .markdown-alert {
   padding: 0.5rem 1rem;
   margin: 1rem 0;

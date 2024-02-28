@@ -7,7 +7,6 @@ interface Props {
 const { keyword, tags, categories } = Astro.props;
 
 import { getCollection, type CollectionEntry } from "astro:content";
-import "../styles/utils.css";
 
 let posts = (await getCollection("post")).sort(
   (a, b) => Number(b.data.date) - Number(a.data.date)
@@ -74,7 +73,7 @@ function formatTag(tag: string[]) {
         </div>
         <!-- dot and line -->
         <div class="w-[15%] md:w-[10%]">
-          <div class="h-3 w-3 bg-none rounded-full outline outline-primary dark:outline-primary_d mx-auto -outline-offset-[2px] z-50 outline-3"></div>
+          <div class="h-3 w-3 bg-none rounded-full outline outline-primary dark:outline-primary-dark mx-auto -outline-offset-[2px] z-50 outline-3"></div>
         </div>
         <!-- post count -->
         <div class="w-[70%] md:w-[80%] transition text-left text-black/50 dark:text-white/50">
@@ -91,10 +90,18 @@ function formatTag(tag: string[]) {
               </div>
               <!-- dot and line -->
               <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
-                <div class="transition-all mx-auto w-1 h-1 rounded group-hover:h-5 bg-[oklch(0.5_0.05_var(--hue))] group-hover:bg-primary dark:group-hover:bg-primary_d outline outline-4 z-50 outline-card_bg dark:outline-card_bg_d group-hover:outline-btn_plain_h dark:group-hover:outline-btn_plain_h_d group-active:outline-btn_plain_a dark:group-active:outline-btn_plain_a_d"/>
+                <div class="transition-all mx-auto w-1 h-1 rounded 
+                  group-hover:h-5 bg-[oklch(0.5_0.05_280)] 
+                  group-hover:bg-primary dark:group-hover:bg-primary-dark 
+                  outline outline-4 z-50 outline-card dark:outline-card-dark 
+                  group-hover:outline-btn-plain-bg-light-hover 
+                  dark:group-hover:outline-btn-plain-bg-dark-hover 
+                  group-active:outline-btn-plain-bg-light-active
+                  dark:group-active:outline-btn-plain-bg-dark-active"
+                />
               </div>
               <!-- post title -->
-              <div class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-[450] group-hover:translate-x-1 transition-all group-hover:text-primary dark:group-hover:text-primary_d text-black/80 dark:text-white/80 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden">
+              <div class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-[450] group-hover:translate-x-1 transition-all group-hover:text-primary dark:group-hover:text-primary-dark text-black/80 dark:text-white/80 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden">
                 {post.data.title}
               </div>
               <!-- tag list -->

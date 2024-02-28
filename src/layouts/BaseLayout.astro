@@ -4,8 +4,7 @@ import Footer from "../components/Footer.astro";
 import SideBar from "../components/sidebar/SideBar.astro";
 import Navbar from "../components/Navbar.astro";
 import { SEO } from "astro-seo";
-import "../styles/utils.css";
-import "../styles/buttons.css";
+import "../styles/base.css"
 import { type TocItem, type SeoConfig } from "../config";
 interface Props {
   tocList?: TocItem[];
@@ -49,7 +48,7 @@ const { tocList,seriesID, seoConfig, stopTrack } = Astro.props;
     <ViewTransitions />
   </head>
   <body
-    class="bg-[oklch(0.95_0.01_var(--hue))] dark:bg-[oklch(16%_0.014_var(--hue))] transition"
+    class="bg-[oklch(0.95_0.01_280)] dark:bg-[oklch(16%_0.014_280)] transition"
   >
     <div class="w-[calc(100%-2rem)] xl:max-w-6xl mx-auto min-h-screen">
       <div class="grid w-full

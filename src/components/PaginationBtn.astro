@@ -5,7 +5,7 @@ const { page } = Astro.props;
 
 <div class="flex rounded-md justify-center">
   <div
-    class="btn-regular bg-white w-8 h-8 flex items-center justify-center rounded-l-md"
+    class="btn-regular w-8 h-8 flex items-center justify-center rounded-l-md"
   >
     {
       page.currentPage > 1 ? (
@@ -18,14 +18,16 @@ const { page } = Astro.props;
     }
   </div>
   <div
-    class="btn-regular-base bg-white w-fit h-8 px-2 tracking-wider
+    class="btn-regular-base w-fit h-8 px-2 tracking-wider
           flex items-center justify-center
-          border-x-2 border-btn_bg dark:border-btn_bg_d"
+          border-x-2
+          border-btn-regular-bg-light
+          dark:border-regular-bg-dark"
   >
     {page.currentPage}/{page.lastPage}
   </div>
   <div
-    class="btn-regular bg-white w-8 h-8 flex items-center justify-center rounded-r-md"
+    class="btn-regular w-8 h-8 flex items-center justify-center rounded-r-md"
   >
     {
       page.currentPage !== page.lastPage ? (
