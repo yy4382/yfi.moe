@@ -43,15 +43,6 @@ import SearchPanel from "./SearchPanel.astro";
   </div>
   <div class="flex items-center">
     <SearchPanel />
-    <button
-      class="toggle-theme btn-plain flex items-center h-fit rounded-md mr-2"
-    >
-      <Icon
-        id="theme-controller"
-        name="ic:outline-wb-sunny"
-        class="w-9 h-9 p-1"
-      />
-    </button>
     <a
       href="/feed.xml"
       class="btn-plain flex items-center h-fit rounded-md mr-2"
@@ -99,43 +90,8 @@ import SearchPanel from "./SearchPanel.astro";
         navList?.classList.toggle("flex");
       });
     });
-    initTheme();
-    preToggleTheme();
   }
-  function initTheme() {
-    const themeIcon = document.getElementById("theme-controller");
-    let dark = true;
-    if (localStorage.theme === "dark") dark = true;
-    else if (localStorage.theme === "light") dark = false;
-    else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
-      dark = true;
-    else dark = false;
 
-    if (dark) {
-      themeIcon?.setAttribute("name", "ic:outline-nights-stay");
-      document.documentElement.classList.add("dark");
-    } else {
-      themeIcon?.setAttribute("name", "ic:outline-wb-sunny");
-      document.documentElement.classList.remove("dark");
-    }
-  }
-  function preToggleTheme() {
-    const themeBtns = document.querySelectorAll("button.toggle-theme");
-    themeBtns.forEach((button) => {
-      button.addEventListener("click", () => {
-        const themeIcon = document.getElementById("theme-controller");
-        if (document.documentElement.classList.contains("dark")) {
-          themeIcon?.setAttribute("name", "ic:outline-wb-sunny");
-          document.documentElement.classList.remove("dark");
-          localStorage.setItem("theme", "light");
-        } else {
-          themeIcon?.setAttribute("name", "ic:outline-nights-stay");
-          document.documentElement.classList.add("dark");
-          localStorage.setItem("theme", "dark");
-        }
-      });
-    });
-  }
   document.addEventListener(
     "astro:page-load",
     () => {
