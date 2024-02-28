@@ -47,9 +47,9 @@
       ease-[cubic-bezier(0,1,0.5,1)] duration-500
       before:content-[''] before:absolute 
       before:bottom-0 before:left-0 before:right-0 
-      before:h-2 before:hover:h-[0.2rem]
-      before:bg-link/30 before:hover:bg-link
-      before:dark:bg-link-dark/20 before:dark:hover:bg-link-dark
+      before:h-[0.6rem] before:hover:h-[0.2rem]
+      before:bg-link/40 before:hover:bg-link
+      before:dark:bg-link-dark/40 before:dark:hover:bg-link-dark
       before:transition-[height,background-color]
       before:ease-[cubic-bezier(0,1,0.5,1)] before:duration-500;
   }
