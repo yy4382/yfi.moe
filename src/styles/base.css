@@ -40,7 +40,8 @@
     @apply prose dark:prose-invert;
   }
   .custom-md a {
-    @apply relative no-underline 
+    @apply relative inline-flex items-center gap-1 
+      no-underline font-medium
       hover:text-primary dark:hover:text-primary-dark
       transition-colors
       ease-[cubic-bezier(0,1,0.5,1)] duration-500
