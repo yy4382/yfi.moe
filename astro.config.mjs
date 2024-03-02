@@ -20,35 +20,36 @@ export default defineConfig({
       [
         rehypeExtendedLinks,
         {
-          preContentMap: new Map([
-            [
-              /^(https?:\/\/)?(www\.)?github\.com\/.*/i,
-              {
-                type: "element",
-                tagName: "span",
-                properties: {
-                  className: ["rh-pre-content"],
-                },
-                children: [
-                  {
-                    type: "element",
-                    tagName: "svg",
-                    properties: {},
-                    children: [
-                      {
-                        type: "element",
-                        tagName: "use",
-                        properties: {
-                          href: "#github-icon",
-                        },
-                        children: [],
-                      },
-                    ],
-                  },
-                ],
+          preContent(node) {
+            const url = node.properties.href;
+            if (!url) return undefined;
+            const regex = /^(https?:\/\/)?(www\.)?github\.com\/.*/i;
+            if (!regex.test(url)) return undefined;
+            return {
+              type: "element",
+              tagName: "span",
+              properties: {
+                className: ["rh-pre-content"],
               },
-            ],
-          ]),
+              children: [
+                {
+                  type: "element",
+                  tagName: "svg",
+                  properties: {},
+                  children: [
+                    {
+                      type: "element",
+                      tagName: "use",
+                      properties: {
+                        href: "#github-icon",
+                      },
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            };
+          },
           content: {
             type: "element",
             tagName: "span",
