@@ -47,26 +47,25 @@
     @apply inline-flex;
   }
   .custom-md .rh-pre-content {
-    @apply mr-1;
+    @apply mr-0.5;
   }
 
   .custom-md .rh-post-content > svg {
-    @apply translate-y-[0.15em]
+    @apply ml-0.5;
   }
   .custom-md .wrapped-link-container > span > svg {
-    @apply inline h-[1em] w-[1em] translate-y-[0.125em];
+    @apply inline h-[1em] w-[1em] translate-y-[0.15em];
   }
 
   .custom-md a {
-    @apply no-underline font-medium text-current
-      bg-[length:0%_2px] hover:bg-[length:100%_2px]
-      bg-[left_1.05em]
-      bg-no-repeat bg-gradient-to-r from-primary to-primary
-      transition-[background-size] ease-[cubic-bezier(0,1,0.5,1)] duration-500;
-    background-image: linear-gradient(
-      var(--color-important),
-      var(--color-important)
-    );
+    @apply no-underline font-medium text-current relative
+      before:content-[''] before:absolute 
+      before:-bottom-0.5 before:left-0 before:right-0 
+      before:h-2 before:hover:h-[0.2rem]
+      before:bg-link/30 before:hover:bg-link
+      before:dark:bg-link-dark/30 before:dark:hover:bg-link-dark
+      before:transition-[height,background-color]
+      before:ease-[cubic-bezier(0,1,0.5,1)] before:duration-500;
   }
 
   .custom-md code {
