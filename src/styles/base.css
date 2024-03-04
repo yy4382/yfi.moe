@@ -5,7 +5,8 @@
 @layer components {
   /* Buttons */
   .btn-regular-base {
-    @apply bg-btn-regular-bg-light dark:bg-btn-regular-bg-dark
+    @apply transition-all ease-in-out duration-200
+     bg-btn-regular-bg-light dark:bg-btn-regular-bg-dark
       text-btn-regular-text-light dark:text-btn-regular-text-dark;
   }
   .btn-regular {
@@ -25,7 +26,7 @@
   }
 
   .btn-plain-base {
-    @apply bg-none
+    @apply bg-none transition-all ease-[cubic-bezier(0.5,0,0,1)] duration-200
       text-black/75 dark:text-white/75
       hover:text-primary dark:hover:text-primary-dark;
   }
