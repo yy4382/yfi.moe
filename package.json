@@ -40,5 +40,8 @@
     "typescript": "^5.3.3",
     "unified": "^11.0.4",
     "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "prettier-plugin-tailwindcss": "^0.5.11"
   }
 }
