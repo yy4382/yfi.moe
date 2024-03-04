@@ -36,6 +36,9 @@
       active:bg-btn-plain-bg-light-active dark:active:bg-btn-plain-bg-dark-active;
   }
 
+  .copy-code {
+    @apply absolute top-1 right-1 px-2 py-1 text-xs btn-regular !rounded-lg;
+  }
   /* Markdown */
   .custom-md {
     @apply prose dark:prose-invert;
