@@ -65,6 +65,10 @@ export default defineConfig({
           }]
         }]
       }
-    }]]
+    }]],
+    remarkRehype: {allowDangerousHtml: true},
+    shikiConfig: {
+      theme: "catppuccin-macchiato",
+    }
   }
 });
