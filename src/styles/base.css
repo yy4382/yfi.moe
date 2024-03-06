@@ -1,7 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+:root {
+  --tw-prose-code-bg: oklch(0.95 0.025 280);
+  --tw-prose-a-bgi: linear-gradient(to right, rgb(221 214 254 / 0.8), rgb(221 214 254 / 0.8));
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tw-prose-code-bg: oklch(0.33 0.035 280);
+    --tw-prose-a-bgi: linear-gradient(to right, rgb(109 40 217 / 0.8), rgb(109 40 217 / 0.8));
+  }
+}
 @layer components {
   /* Buttons */
   .btn-regular-base {
@@ -59,44 +68,6 @@
   }
   .custom-md .wrapped-link-container > span > svg {
     @apply inline h-[1em] w-[1em] translate-y-[0.15em];
-  }
-
-  .custom-md a {
-    @apply bg-gradient-to-r from-violet-200/80 to-violet-200/80
-    bg-[length:100%] bg-[left_0.6em]
-    bg-no-repeat font-medium
-    text-current no-underline transition-[background-position] duration-500
-    ease-[cubic-bezier(0,1,0.5,1)] hover:bg-[left_0.85em] dark:from-violet-700/80
-    dark:to-violet-700/80;
-  }
-
-  .custom-md code {
-    @apply btn-regular-base overflow-hidden rounded-md px-1 py-[0.125rem] font-mono before:content-none after:content-none;
-  }
-  .custom-md pre {
-    @apply rounded-md bg-codeblock px-5 dark:bg-codeblock-dark !important;
-  }
-  .my-bg-none {
-    background: none;
-  }
-  .custom-md pre code {
-    @apply my-bg-none dark:my-bg-none p-0 text-sm text-[unset] selection:bg-codeblock-sel;
-  }
-  .custom-md ul li,
-  .custom-md ol li {
-    @apply marker:text-primary dark:marker:text-primary-dark;
-  }
-  .custom-md blockquote {
-    @apply relative border-l-transparent font-normal not-italic before:absolute before:-left-1 before:block before:h-full before:w-1 before:rounded-[1rem] before:bg-btn-regular-bg-light before:transition-[background_0.15s_ease-in-out] before:content-[''] before:dark:bg-btn-regular-bg-dark;
-  }
-  .custom-md blockquote p {
-    @apply before:content-none after:content-none;
-  }
-  .custom-md img {
-    @apply rounded-xl;
-  }
-  .custom-md hr {
-    @apply border-dashed border-black/20 dark:border-white/20;
   }
   .custom-md iframe {
     @apply mx-auto max-w-full rounded-xl;
