@@ -19,7 +19,7 @@
     );
   }
 }
-@layer components {
+@layer utilities {
   /* Buttons */
   .btn-regular-base {
     @apply bg-btn-regular-bg-light text-btn-regular-text-light transition-all
