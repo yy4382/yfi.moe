@@ -28,7 +28,7 @@ const { tocList } = Astro.props;
         <a
           href={"#" + tocItem.slug}
           class:list={[
-            `btn-plain hover:translate-x-1 overflow-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none`,
+            `btn-plain hover:translate-x-1 text-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none`,
           ]}
           style={`margin-left: calc(0.75rem * ${tocItem.depth - 2});`}
         >
