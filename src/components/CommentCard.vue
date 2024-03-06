@@ -14,7 +14,7 @@ const path = props.path;
 </script>
 <template>
   <div class="card-base p-2">
-    <Waline :serverURL="serverURL" :path="path"/>
+    <Waline :serverURL="serverURL" :path="path" dark="auto" />
   </div>
 </template>
 
