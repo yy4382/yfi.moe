@@ -1,24 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root {
-  --tw-prose-code-bg: oklch(0.95 0.025 280);
-  --tw-prose-a-bgi: linear-gradient(
-    to right,
-    rgb(221 214 254 / 0.8),
-    rgb(221 214 254 / 0.8)
-  );
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --tw-prose-code-bg: oklch(0.33 0.035 280);
-    --tw-prose-a-bgi: linear-gradient(
-      to right,
-      rgb(109 40 217 / 0.8),
-      rgb(109 40 217 / 0.8)
-    );
-  }
-}
+
 @layer utilities {
   /* Buttons */
   .btn-regular-base {

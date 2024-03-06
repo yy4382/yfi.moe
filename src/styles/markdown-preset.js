@@ -1,24 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   theme: {
+    "prose-a-bgi": {
+      DEFAULT:
+        "linear-gradient(to right, rgb(221 214 254 / 0.8), rgb(221 214 254 / 0.8))",
+      dark: "linear-gradient(to right, rgb(109 40 217 / 0.8), rgb(109 40 217 / 0.8))",
+    },
     extend: {
+      colors: {
+        "prose-code-bg": "oklch(0.95 0.025 280)",
+        "prose-invert-code-bg": "oklch(0.33 0.035 280)",
+      },
       typography: ({ theme }) => ({
+        invert: {
+          css: {
+            a: {
+              backgroundImage: theme("prose-a-bgi.dark"),
+            },
+            code: {
+              backgroundColor: theme("colors.prose-invert-code-bg"),
+            },
+          },
+        },
         DEFAULT: {
           css: {
-            // Additional styles for reference. Put in the base CSS file
-            // Looking for a way to insert css variables in this file
-            //
-            // :root {
-            //   --tw-prose-code-bg: oklch(0.95 0.025 280);
-            //   --tw-prose-a-bgi: linear-gradient(to right, rgb(221 214 254 / 0.8), rgb(221 214 254 / 0.8));
-            // }
-            // @media (prefers-color-scheme: dark) {
-            //   :root {
-            //     --tw-prose-code-bg: oklch(0.33 0.035 280);
-            //     --tw-prose-a-bgi: linear-gradient(to right, rgb(109 40 217 / 0.8), rgb(109 40 217 / 0.8));
-            //   }
-            // }
-
             "--tw-prose-code": theme("colors.btn.regular.text.light"),
             "--tw-prose-invert-code": theme("colors.btn.regular.text.dark"),
 
@@ -35,7 +40,7 @@ module.exports = {
             "--tw-prose-invert-quote-borders": "oklch(0.33 0.035 280)",
 
             a: {
-              backgroundImage: "var(--tw-prose-a-bgi)",
+              backgroundImage: theme("prose-a-bgi.DEFAULT"),
               backgroundSize: "100%",
               backgroundPosition: "left 0.6em",
               backgroundRepeat: "no-repeat",
@@ -50,8 +55,7 @@ module.exports = {
               },
             },
             code: {
-              backgroundColor: "var(--tw-prose-code-bg)",
-              color: "var(--tw-prose-code)",
+              backgroundColor: theme("colors.prose-code-bg"),
               overflow: "hidden",
               borderRadius: "0.375rem",
               padding: "0.125rem 0.25rem",
@@ -65,7 +69,7 @@ module.exports = {
             },
             pre: {
               borderRadius: "0.375rem",
-              padding: "0 1rem",
+              padding: "1rem 1rem",
             },
             blockquote: {
               fontWeight: "500",
