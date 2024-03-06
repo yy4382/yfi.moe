@@ -3,12 +3,20 @@
 @tailwind utilities;
 :root {
   --tw-prose-code-bg: oklch(0.95 0.025 280);
-  --tw-prose-a-bgi: linear-gradient(to right, rgb(221 214 254 / 0.8), rgb(221 214 254 / 0.8));
+  --tw-prose-a-bgi: linear-gradient(
+    to right,
+    rgb(221 214 254 / 0.8),
+    rgb(221 214 254 / 0.8)
+  );
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --tw-prose-code-bg: oklch(0.33 0.035 280);
-    --tw-prose-a-bgi: linear-gradient(to right, rgb(109 40 217 / 0.8), rgb(109 40 217 / 0.8));
+    --tw-prose-a-bgi: linear-gradient(
+      to right,
+      rgb(109 40 217 / 0.8),
+      rgb(109 40 217 / 0.8)
+    );
   }
 }
 @layer components {
@@ -48,50 +56,36 @@
   .copy-code {
     @apply btn-regular absolute right-1 top-1 !rounded-lg px-2 py-1 text-xs;
   }
-  /* Markdown */
-  .custom-md {
-    @apply prose dark:prose-invert;
-  }
 
-  .custom-md .wrapped-link-container {
+  /* Markdown */
+  .prose .wrapped-link-container,
+  .prose-invert .wrapped-link-container {
     @apply inline;
   }
-  .custom-md .wrapped-link-container > span {
+
+  .prose .wrapped-link-container > span,
+  .prose-invert .wrapped-link-container > span {
     @apply inline-flex;
   }
-  .custom-md .rh-pre-content {
+
+  .prose .rh-pre-content,
+  .prose-invert .rh-pre-content {
     @apply mr-0.5;
   }
 
-  .custom-md .rh-post-content > svg {
+  .prose .rh-post-content > svg,
+  .prose-invert .rh-post-content > svg {
     @apply ml-0.5;
   }
-  .custom-md .wrapped-link-container > span > svg {
+
+  .prose .wrapped-link-container > span > svg,
+  .prose-invert .wrapped-link-container > span > svg {
     @apply inline h-[1em] w-[1em] translate-y-[0.15em];
   }
-  .custom-md iframe {
+
+  .prose iframe,
+  .prose-invert iframe {
     @apply mx-auto max-w-full rounded-xl;
-  }
-  .card-desc {
-    @apply max-w-full leading-normal;
-  }
-  .card-desc h1,
-  .card-desc h2,
-  .card-desc h3,
-  .card-desc h4,
-  .card-desc h5,
-  .card-desc h6 {
-    @apply my-0 text-xl font-normal;
-  }
-  .card-desc p,
-  .card-desc ul,
-  .card-desc ol,
-  .card-desc blockquote,
-  .card-desc a,
-  .card-desc hr,
-  .card-desc pre,
-  .card-desc li {
-    @apply my-0;
   }
 
   .card-color {
