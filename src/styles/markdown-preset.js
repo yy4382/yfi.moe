@@ -4,7 +4,7 @@ module.exports = {
     "prose-a-bgi": {
       DEFAULT:
         "linear-gradient(to right, rgb(221 214 254 / 0.8), rgb(221 214 254 / 0.8))",
-      dark: "linear-gradient(to right, rgb(109 40 217 / 0.8), rgb(109 40 217 / 0.8))",
+      dark: "linear-gradient(to right, hsl(236 100% 81% / 0.7), hsl(236 100% 81% / 0.7))",
     },
     extend: {
       colors: {
@@ -19,6 +19,9 @@ module.exports = {
             },
             code: {
               backgroundColor: theme("colors.prose-invert-code-bg"),
+            },
+            "pre code": {
+              backgroundColor: "transparent",
             },
           },
         },
@@ -42,7 +45,7 @@ module.exports = {
             a: {
               backgroundImage: theme("prose-a-bgi.DEFAULT"),
               backgroundSize: "100%",
-              backgroundPosition: "left 0.6em",
+              backgroundPosition: "left 0.7em",
               backgroundRepeat: "no-repeat",
               color: "currentColor",
               textDecoration: "none",
@@ -51,7 +54,7 @@ module.exports = {
               transitionDuration: "0.5s",
               transitionTimingFunction: "cubic-bezier(0,1,0.5,1)",
               "&:hover": {
-                backgroundPosition: "left 0.85em",
+                backgroundPosition: "left 0.95em",
               },
             },
             code: {
