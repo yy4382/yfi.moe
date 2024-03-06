@@ -5,14 +5,12 @@ import SideBar from "../components/sidebar/SideBar.astro";
 import Navbar from "../components/Navbar.astro";
 import { SEO } from "astro-seo";
 import "../styles/base.css";
-import { type TocItem, type SeoConfig } from "../config";
+import { type SeoConfig } from "../config";
 interface Props {
-  tocList?: TocItem[];
-  seriesID?: string;
   seoConfig: SeoConfig;
   stopTrack?: boolean;
 }
-const { tocList, seriesID, seoConfig, stopTrack } = Astro.props;
+const { seoConfig, stopTrack } = Astro.props;
 ---
 
 <html lang="zh-cn">
@@ -24,12 +22,12 @@ const { tocList, seriesID, seoConfig, stopTrack } = Astro.props;
     {
       import.meta.env.PROD && !stopTrack ? (
         <>
-          <script
+          <script is:inline
             async
             src="https://analy.yfi.moe/script.js"
             data-website-id="3c89f8f6-9432-4ceb-a404-f22f2b0cf94d"
           />
-          <script
+          <script is:inline
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-1MPEY5XJ9V"
           />
@@ -47,9 +45,7 @@ const { tocList, seriesID, seoConfig, stopTrack } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions />
   </head>
-  <body
-    class="bg-[oklch(0.95_0.01_280)] dark:bg-[oklch(16%_0.014_280)] transition"
-  >
+  <body class="bg-gray-100 dark:bg-gray-950 transition">
     <div class="w-[calc(100%-2rem)] xl:max-w-6xl mx-auto min-h-screen">
       <div class="grid w-full
       grid-cols-1 lg:grid-cols-[75%_25%]">
@@ -61,12 +57,14 @@ const { tocList, seriesID, seoConfig, stopTrack } = Astro.props;
           <slot />
         </div>
         <aside class="mb-4 mx-4 lg:mx-0">
-          <SideBar tocList={tocList} seriesID={seriesID} />
+          <slot name="sidebar">
+            <SideBar />
+          </slot>
         </aside>
 
-        <div class="lg:col-span-2">
+        <footer class="lg:col-span-2">
           <Footer />
-        </div>
+        </footer>
       </div>
     </div>
     <svg class="hidden">
@@ -78,16 +76,19 @@ const { tocList, seriesID, seoConfig, stopTrack } = Astro.props;
       </symbol>
     </svg>
     <svg class="hidden">
-      <symbol viewBox="0 0 24 24" id="external-link-icon"
-        ><g fill="none"
-          ><path
+      <symbol viewBox="0 0 24 24" id="external-link-icon">
+        <g fill="none">
+          <path
             d="M24 0v24H0V0zM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.105.074l.014.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.016-.018m.264-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.092l.01-.009l.004-.011l.017-.43l-.003-.012l-.01-.01z"
-          ></path><path
+          >
+          </path>
+          <path
             fill="#888888"
             d="M18 4.5A1.5 1.5 0 0 1 19.5 6v8a1.5 1.5 0 0 1-3 0V9.621l-9.097 9.097a1.5 1.5 0 0 1-2.12-2.122L14.377 7.5H10a1.5 1.5 0 1 1 0-3z"
-          ></path></g
-        ></symbol
-      >
+          >
+          </path>
+        </g>
+      </symbol>
     </svg>
   </body>
 </html>

@@ -6,6 +6,7 @@ interface Props {
 import PostAttr from "./PostAttr.astro";
 const { post } = Astro.props;
 import { renderDesc } from "../utils/mdUtils";
+import Card from "./base/Card.astro";
 
 let desc = "";
 if (post.data.description === undefined) {
@@ -15,18 +16,29 @@ if (post.data.description === undefined) {
 }
 ---
 
-<div class="card-base flex flex-col gap-2 lg:gap-4">
+<Card class="space-y-2 lg:space-y-3 px-4 py-2 lg:p-8 lg:py-5">
+  <a
+    href={"/post/" + post.slug}
+    class="card-heading hover:text-portage-400 active:text-portage-500
+     hover:dark:text-portage-300 active:dark:text-portage-200
+     transition-colors duration-300 ease-in-out"
+  >
+    <h2>{post.data.title}</h2>
+  </a>
+  <PostAttr post={post} />
+  <div
+    class="prose dark:prose-invert max-w-none leading-normal text-sm
+    prose-headings:my-1 prose-headings:text-xl prose-headings:font-normal
+    prose-p:my-1 prose-blockquote:my-1 prose-li:my-1 prose-ul:my-1 prose-ol:my-1
+    prose-hr:my-1 prose-pre:my-1"
+    set:html={desc}
+  />
+</Card>
+<!-- <div class="card-base flex flex-col gap-2 lg:gap-4">
   <a href={"/post/" + post.slug}>
     <h5 class="card-heading">
       {post.data.title}
     </h5>
   </a>
-  <PostAttr post={post} />
-  <div
-    class="prose dark:prose-invert max-w-none leading-normal
-    prose-headings:my-0 prose-headings:text-xl prose-headings:font-normal
-    prose-p:my-0 prose-blockquote:my-0 prose-li:my-0 prose-ul:my-0 prose-ol:my-0
-    prose-hr:my-0 prose-pre:my-0"
-    set:html={desc}
-  />
-</div>
+
+</div> -->

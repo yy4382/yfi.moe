@@ -1,10 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostAttr from "../../components/PostAttr.astro";
 import PrevNext from "../../components/PrevNext.astro";
-import MdRender from "../../components/MdRender.astro";
 import CommentCard from "../../components/CommentCard.vue";
+import Article from "../../components/views/Article.astro";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");
@@ -25,6 +24,7 @@ const { Content, headings } = await post.render();
 
 import { Seo } from "../../config";
 import { getDesc } from "../../utils/mdUtils";
+import SideBar from "../../components/sidebar/SideBar.astro";
 const seoConfig = new Seo(
   post.data.title,
   post.data.description || getDesc(post.body),
@@ -33,20 +33,17 @@ const seoConfig = new Seo(
 ).get();
 ---
 
-<BaseLayout tocList={headings} seoConfig={seoConfig} seriesID={post.data.series?.id}>
+<BaseLayout
+  seoConfig={seoConfig}
+>
   <div class="flex flex-col gap-4">
-    <div class="card-base" data-pagefind-body>
-      <h1 class="card-heading mb-4">
-        {post.data.title}
-      </h1>
-      <div data-pagefind-weight="0.8">
-        <PostAttr post={post} />
-      </div>
-      <MdRender>
-        <Content />
-      </MdRender>
-    </div>
+    <Article entry={post}>
+      <Content />
+    </Article>
     <PrevNext prev={prev} next={next} />
     <CommentCard client:visible path={"/post/" + post.slug} />
   </div>
+  <Fragment slot="sidebar">
+    <SideBar tocList={headings} seriesID={post.data.series?.id} />
+  </Fragment>
 </BaseLayout>

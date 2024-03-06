@@ -1,12 +1,26 @@
+const plugin = require("tailwindcss/plugin");
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
-  presets: [
-    require('./src/styles/markdown-preset.js')
-  ],
+  presets: [require("./src/styles/markdown-preset.js")],
   theme: {
     extend: {
       colors: {
+        portage: {
+          50: "hsl(230, 100%, 96%)",
+          100: "hsl(234, 100%, 94%)",
+          200: "hsl(234, 100%, 89%)",
+          300: "hsl(236, 100%, 81%)",
+          400: "hsl(241, 95%, 74%)",
+          500: "hsl(246, 89%, 67%)",
+          600: "hsl(250, 80%, 59%)",
+          700: "hsl(251, 62%, 51%)",
+          800: "hsl(251, 58%, 41%)",
+          900: "hsl(249, 51%, 34%)",
+          950: "hsl(252, 51%, 20%)",
+        },
+
         primary: {
           DEFAULT: "oklch(0.7 0.15 280 / <alpha-value>)",
           dark: "oklch(0.75 0.14 280)",

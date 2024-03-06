@@ -7,6 +7,7 @@ interface Props {
 const { keyword, tags, categories } = Astro.props;
 
 import { getCollection, type CollectionEntry } from "astro:content";
+import Card from "./base/Card.astro";
 
 let posts = (await getCollection("post")).sort(
   (a, b) => Number(b.data.date) - Number(a.data.date)
@@ -61,7 +62,7 @@ function formatTag(tag: string[]) {
   return tag.map((t) => `#${t}`).join(" ");
 }
 ---
-<div class="card-base">
+<Card class="px-4 py-2 lg:p-8 lg:py-5">
   {keyword ? <h1 class="card-heading mb-4">{keyword}</h1>: null}
   {groups.map(group => (
     <div>
@@ -114,7 +115,7 @@ function formatTag(tag: string[]) {
       ))}
     </div>
   ))}
-</div>
+</Card>
 
 <style>
   @tailwind components;

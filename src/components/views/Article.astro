@@ -1,0 +1,22 @@
+---
+import Card from "../base/Card.astro";
+import PostAttr from "../PostAttr.astro";
+import MdRender from "../MdRender.astro";
+import type { CollectionEntry } from "astro:content";
+interface Props {
+  entry: CollectionEntry<"post"> | CollectionEntry<"page">;
+}
+const { entry } = Astro.props;
+---
+
+<Card data-pagefind-body class="px-4 py-2 lg:p-8 lg:py-5 space-y-4">
+  <h1 class="card-heading">
+    {entry.data.title}
+  </h1>
+  <div data-pagefind-weight="0.8">
+    <PostAttr post={entry} />
+  </div>
+  <MdRender>
+    <slot />
+  </MdRender>
+</Card>

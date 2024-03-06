@@ -11,6 +11,7 @@ for (const post of posts) {
 const tags = [...new Set(posts.map((post) => post.data.tags).flat())].length;
 
 import { Icon } from "astro-icon/components";
+import Card from "../base/Card.astro";
 const name = "Yunfi";
 const avatar = "/ava.webp";
 const description = "Undergraduate";
@@ -29,8 +30,7 @@ const contact = {
   },
 };
 ---
-
-<div class="w-full card-color rounded-xl pb-4">
+<Card class="w-full pb-4">
   <div class="flex flex-col items-center">
     <a href="https://yfi.moe" class="w-48 lg:w-full mt-4 lg:mt-0">
       <img class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg" src={avatar} alt="Yunfi avatar" />
@@ -84,4 +84,4 @@ const contact = {
       }
     </div>
   </div>
-</div>
+</Card>

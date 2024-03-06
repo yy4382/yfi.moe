@@ -1,12 +1,12 @@
 ---
-import type { TocItem } from "../../config";
 import AuthorCard from "./SideCardAuthor.astro";
 import SideCardRecent from "./SideCardRecent.astro";
 import Tags from "./SideCardTags.astro";
 import SideCardToc from "./SideCardToc.astro";
 import SideCardSeries from "./SideCardSeries.astro";
+import type { MarkdownHeading } from "astro";
 interface Props {
-  tocList?: TocItem[];
+  tocList?: MarkdownHeading[];
   seriesID?: string;
 }
 const { tocList, seriesID } = Astro.props;

@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import MdRender from "../components/MdRender.astro";
+import Article from "../components/views/Article.astro";
 import { getDesc } from "../utils/mdUtils";
 export async function getStaticPaths() {
   const pages = await getCollection("page");
@@ -11,24 +12,23 @@ export async function getStaticPaths() {
   }));
 }
 const { page } = Astro.props;
-const { Content } = await page.render();
+const { Content, headings } = await page.render();
 const desc = page.data.description || getDesc(page.body);
 import { Seo } from "../config";
+import SideBar from "../components/sidebar/SideBar.astro";
 const seoConfig = new Seo(
   page.data.title,
   desc,
   Astro.url.origin + page.data.image,
-  "article"
+  "article",
 ).get();
 ---
 
 <BaseLayout seoConfig={seoConfig}>
-  <div class="card-base" data-pagefind-body>
-    <h1 class="card-heading">
-      {page.data.title}
-    </h1>
-    <MdRender>
-      <Content />
-    </MdRender>
-  </div>
+  <Article entry={page}>
+    <Content />
+  </Article>
+  <Fragment slot="sidebar">
+    <SideBar tocList={headings} />
+  </Fragment>
 </BaseLayout>

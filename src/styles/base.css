@@ -5,14 +5,14 @@
 @layer utilities {
   /* Buttons */
   .btn-regular-base {
-    @apply bg-btn-regular-bg-light text-btn-regular-text-light transition-all
-     duration-200 ease-in-out
-      dark:bg-btn-regular-bg-dark dark:text-btn-regular-text-dark;
+    @apply bg-portage-100/60 dark:bg-portage-200/20 text-sm
+      text-portage-600/80 transition-all duration-200
+      ease-in-out dark:text-gray-300/90;
   }
   .btn-regular {
     @apply btn-regular-base
-      hover:bg-btn-regular-bg-light-hover active:bg-btn-regular-bg-light-active
-      dark:hover:bg-btn-regular-bg-dark-hover dark:active:bg-btn-regular-bg-dark-active;
+      hover:bg-portage-200/80 active:bg-portage-300/80
+      dark:hover:bg-portage-200/40 dark:active:bg-portage-200/60;
   }
 
   .btn-card-base {
@@ -78,9 +78,9 @@
     @apply card-color rounded-lg p-4 lg:p-8;
   }
   .card-heading {
-    @apply relative text-wrap text-2xl font-[450] tracking-tight text-black/90 transition before:absolute
-    before:-left-4 before:top-[0.375rem] before:hidden before:h-5
-    before:w-1 before:rounded-md before:bg-primary lg:before:block dark:text-white/90;
+    @apply relative text-wrap text-xl font-medium tracking-tight text-gray-900 transition before:absolute
+    before:-left-4 before:top-1 before:hidden before:h-5
+    before:w-1 before:rounded-md before:bg-primary lg:before:block dark:text-gray-100;
   }
 }
 .markdown-alert {

@@ -1,4 +1,5 @@
 ---
+import Card from "../base/Card.astro";
 interface Props {
   cardTitle: string;
   cardLink: string;
@@ -6,17 +7,19 @@ interface Props {
 const { cardTitle, cardLink } = Astro.props;
 ---
 
-<div class="w-full card-color rounded-xl p-4 relative">
-  <a
-    href={cardLink}
-    class="transition pb-2 block
+<Card class="w-full p-4 relative">
+  <Fragment slot="heading">
+    <a
+      href={cardLink}
+      class="transition pb-2 block
       text-xl font-bold tracking-tight text-black/90 dark:text-white/90 hover:text-primary dark:hover:text-primary-dark
       before:w-1 before:h-5 before:rounded-md before:bg-primary
       before:absolute before:top-5 before:left-4 before:hidden lg:before:block"
-  >
-    <h5 class="lg:pl-2">
-      {cardTitle}
-    </h5>
-  </a>
+    >
+      <h5 class="lg:pl-2">
+        {cardTitle}
+      </h5>
+    </a>
+  </Fragment>
   <slot />
-</div>
+</Card>

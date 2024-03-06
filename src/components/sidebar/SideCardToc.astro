@@ -1,31 +1,30 @@
 ---
 import SideCard from "./SideCard.astro";
+import type { MarkdownHeading } from "astro";
 
-import { type TocItem } from "../../config";
 interface Props {
-  tocList: TocItem[];
+  tocList: MarkdownHeading[];
 }
 
 const { tocList } = Astro.props;
 
-let query = [0, 0, 0, 0, 0, 0];
-for (let tocItem of tocList) {
-  query[tocItem.depth] += 1;
-  for (let i = tocItem.depth + 1; i < query.length; i++) {
-    query[i] = 0;
-  }
-  tocItem.text = `${query.slice(2, tocItem.depth + 1).join(".")}. ${
-    tocItem.text
-  }`;
-}
+// let query = [0, 0, 0, 0, 0, 0];
+// for (let tocItem of tocList) {
+//   query[tocItem.depth] += 1;
+//   for (let i = tocItem.depth + 1; i < query.length; i++) {
+//     query[i] = 0;
+//   }
+//   tocItem.text = `${query.slice(2, tocItem.depth + 1).join(".")}. ${
+//     tocItem.text
+//   }`;
+// }
 
-// const tocHtml = generateNestedList(tocList);
 ---
 
 <SideCard cardTitle="目录" cardLink="#">
-  <div class="flex flex-col">
+  <div class="first:pt-0 last:pb-0 flex flex-col text-sm">
     {
-      tocList.map((tocItem: TocItem) => (
+      tocList.map((tocItem) => (
         <a
           href={"#" + tocItem.slug}
           class:list={[

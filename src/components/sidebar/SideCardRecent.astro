@@ -11,7 +11,7 @@ const recentPosts = allPosts.slice(0, 5);
       recentPosts.map((entry) => (
         <a
           href={"/post/" + entry.slug}
-          class="btn-plain hover:translate-x-1 overflow-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none"
+          class="btn-plain hover:translate-x-1 overflow-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none text-sm"
         >
           {entry.data.title}
         </a>

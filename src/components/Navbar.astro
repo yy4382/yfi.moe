@@ -3,11 +3,9 @@ import { Icon } from "astro-icon/components";
 import { type NavMenu, navMenu } from "../config";
 import { siteConfig } from "../config";
 import SearchPanel from "./SearchPanel.astro";
+import Card from "./base/Card.astro";
 ---
-
-<div
-  class="card-color rounded-b-lg h-18 px-3 min-h-[4.5rem] flex justify-between"
->
+<Card class="rounded-t-none h-18 px-3 min-h-16 flex justify-between">
   <div class="navbar-start self-center">
     <a
       class="flex items-center text-xl btn-color text-primary dark:text-primary-dark"
@@ -78,8 +76,7 @@ import SearchPanel from "./SearchPanel.astro";
       })
     }
   </div>
-</div>
-
+</Card>
 <script>
   function setup() {
     const menuBtns = document.querySelectorAll("button.toggle-menu");
