@@ -1,5 +1,4 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
 import vue from "@astrojs/vue";
 import remarkGithubAlerts from "remark-github-alerts";
 import pagefind from "astro-pagefind";
@@ -17,7 +16,6 @@ export default defineConfig({
     UnoCSS({
       injectReset: true, // or a path to the reset file
     }),
-    // tailwind(),
     vue(),
     icon(),
     pagefind(),
