@@ -74,7 +74,10 @@ function formatTag(tag: string[]) {
         </div>
         <!-- dot and line -->
         <div class="w-[15%] md:w-[10%]">
-          <div class="h-3 w-3 bg-none rounded-full outline outline-primary dark:outline-primary-dark mx-auto -outline-offset-[2px] z-50 outline-3"></div>
+          <div 
+            class="h-3 w-3 bg-none rounded-full mx-auto z-50"
+            outline="~ 3 portage-300 offset-[-2px]"
+          />
         </div>
         <!-- post count -->
         <div class="w-[70%] md:w-[80%] transition text-left text-black/50 dark:text-white/50">
@@ -92,13 +95,11 @@ function formatTag(tag: string[]) {
               <!-- dot and line -->
               <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
                 <div class="transition-all mx-auto w-1 h-1 rounded 
-                  group-hover:h-5 bg-[oklch(0.5_0.05_280)] 
-                  group-hover:bg-primary dark:group-hover:bg-primary-dark 
-                  outline outline-4 z-50 outline-card dark:outline-card-dark 
-                  group-hover:outline-btn-plain-bg-light-hover 
-                  dark:group-hover:outline-btn-plain-bg-dark-hover 
-                  group-active:outline-btn-plain-bg-light-active
-                  dark:group-active:outline-btn-plain-bg-dark-active"
+                  group-hover:h-5 
+                  z-50
+                  "
+                  bg="white dark:gray-900 group-hover:portage-300"
+                  outline="~ 3 portage-300 group-hover:transparent"
                 />
               </div>
               <!-- post title -->
@@ -118,16 +119,13 @@ function formatTag(tag: string[]) {
 </Card>
 
 <style>
-  @tailwind components;
-  @tailwind utilities;
 
-  @layer components {
-    .dash-line {
-    }
-    .dash-line::before {
-      content: "";
-      @apply w-[10%] h-full absolute -top-1/2 left-[calc(50%_-_1px)] border-l-[2px]
-      border-dashed pointer-events-none border-black/10 dark:border-white/10 transition;
-    }
+  .dash-line {
   }
+  .dash-line::before {
+    content: "";
+    @apply w-[10%] h-full absolute -top-1/2 left-[calc(50%_-_1px)] border-l-[2px]
+    border-dashed pointer-events-none border-black/10 dark:border-white/30 transition;
+  }
+
 </style>
