@@ -1,14 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Seo } from "../config";
+import Card from "../components/base/Card.astro";
 const seoConfig = new Seo("404").get();
 ---
 
 <BaseLayout seoConfig={seoConfig} stopTrack>
-  <div class="card-base">
+  <Card class="p-4 lg:p-8">
     <h1 class="card-heading mb-4">404: 网页走丢啦！</h1>
     <div class="flex gap-4 justify-center">
       <a class="btn-regular p-2 rounded-md" href="/1">返回首页</a>
     </div>
-  </div>
+  </Card>
 </BaseLayout>

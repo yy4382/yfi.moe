@@ -1,71 +1,10 @@
-/* Buttons */
-
-/* .btn-card-base {
-  @apply bg-card text-black/75 transition 
-      dark:bg-card-dark dark:text-white/75;
-}
-.btn-card {
-  @apply btn-card-base 
-    hover:bg-btn-card-bg-light-hover active:bg-btn-card-bg-light-active 
-    dark:hover:bg-btn-card-bg-dark-hover dark:active:bg-btn-card-bg-dark-active;
-} */
-
-/* .btn-plain-base {
-  @apply bg-none text-black/75 transition-all duration-200
-      ease-[cubic-bezier(0.5,0,0,1)] hover:text-primary
-      dark:text-white/75 dark:hover:text-primary-dark;
-}
-.btn-plain {
-  @apply btn-plain-base
-      hover:bg-btn-plain-bg-light-hover active:bg-btn-plain-bg-light-active
-      dark:hover:bg-btn-plain-bg-dark-hover dark:active:bg-btn-plain-bg-dark-active;
-} */
-
 .copy-code {
   @apply btn-regular absolute right-1 top-1 !rounded-lg px-2 py-1 text-xs;
-}
-
-/* Markdown */
-.prose .wrapped-link-container,
-.prose-invert .wrapped-link-container {
-  @apply inline;
-}
-
-.prose .wrapped-link-container > span,
-.prose-invert .wrapped-link-container > span {
-  @apply inline-flex;
-}
-
-.prose .rh-pre-content,
-.prose-invert .rh-pre-content {
-  @apply mr-0.5;
-}
-
-.prose .rh-post-content > svg,
-.prose-invert .rh-post-content > svg {
-  @apply ml-0.5;
-}
-
-.prose .wrapped-link-container > span > svg,
-.prose-invert .wrapped-link-container > span > svg {
-  @apply inline h-[1em] w-[1em] translate-y-[0.15em];
 }
 
 .prose iframe,
 .prose-invert iframe {
   @apply mx-auto max-w-full rounded-xl;
-}
-
-.card-color {
-  @apply bg-card shadow-lg dark:bg-card-dark;
-}
-.card-base {
-  @apply card-color rounded-lg p-4 lg:p-8;
-}
-.card-heading {
-  @apply relative text-wrap text-xl font-medium tracking-tight text-gray-900 transition before:absolute
-    before:-left-4 before:top-1 before:hidden before:h-5
-    before:w-1 before:rounded-md before:bg-primary lg:before:block dark:text-gray-100;
 }
 
 .markdown-alert {

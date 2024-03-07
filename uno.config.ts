@@ -10,7 +10,7 @@ import {
   transformerVariantGroup,
 } from "unocss";
 
-// TODO 
+// TODO
 // blockquote border and marker color
 // link decoration
 
@@ -52,6 +52,17 @@ export default defineConfig({
     }),
     presetTypography({
       cssExtend: {
+        a: {
+          "text-decoration": "none",
+          "border-bottom": "2px solid rgba(125, 125, 125, .5)",
+          "transition": "border-bottom .15s ease-in-out",
+        },
+        "a:hover": {
+          "border-bottom": "2px solid rgba(125, 125, 125, .8)",
+        },
+        "a:active": {
+          "border-bottom": "2px solid rgba(125, 125, 125, 1)",
+        },
         "*:not(pre) > code": {
           "white-space": "pre-wrap",
           "word-break": "break-word",
@@ -80,7 +91,10 @@ export default defineConfig({
 
     "btn-plain": `bg-none text-gray-700 btn-transition
       hover:bg-portage-200/80 active:bg-portage-300/80 
-      dark:( text-gray-300/90 
-      hover:bg-gray-950)`,
+      dark:( text-gray-300/90 hover:bg-gray-950)`,
+
+    "card-heading": `relative text-wrap text-xl font-medium tracking-tight
+      text-gray-900 transition dark:text-gray-100
+      before:(absolute hidden -left-4 top-1 h-5 w-1 rounded-md bg-portage-300 lg:block content-[""])`,
   },
 });

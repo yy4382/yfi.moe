@@ -9,16 +9,16 @@ import Card from "./base/Card.astro";
     <span class="text-sm text-gray-500 dark:text-gray-400">
       © 2023-2024 <a
         href="https://blog.yfi.moe"
-        class="hover:underline text-primary dark:text-primary-dark">Yunfi</a
+        class="hover:underline link">Yunfi</a
       >.<br />Powered by <a
         href="https://astro.build"
-        class="hover:underline text-primary dark:text-primary-dark">Astro</a
+        class="hover:underline link">Astro</a
       >. Inspired by <a
         href="https://github.com/saicaca/hexo-theme-vivia"
-        class="hover:underline text-primary dark:text-primary-dark">vivia</a
+        class="hover:underline link">vivia</a
       > & <a
         href="https://github.com/saicaca/fuwari"
-        class="hover:underline text-primary dark:text-primary-dark">Fuwari</a
+        class="hover:underline link">Fuwari</a
       >.
     </span>
     <ul
@@ -30,3 +30,9 @@ import Card from "./base/Card.astro";
     </ul>
   </div>
 </Card>
+
+<style>
+  .link {
+    @apply text-portage-400
+  }
+</style>
