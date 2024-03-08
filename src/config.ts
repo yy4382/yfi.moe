@@ -18,7 +18,7 @@ export class Seo {
     title: string,
     description?: string,
     image?: string,
-    type: string = "website"
+    type: string = "website",
   ) {
     this.config = {
       title: title,

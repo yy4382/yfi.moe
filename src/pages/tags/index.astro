@@ -1,10 +1,10 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro"
-import SideCardTags from "../../components/sidebar/SideCardTags.astro"
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SideCardTags from "../../components/sidebar/SideCardTags.astro";
 import { Seo } from "../../config";
-const seoConfig = (new Seo("标签")).get();
+const seoConfig = new Seo("标签").get();
 ---
 
 <BaseLayout seoConfig={seoConfig}>
-    <SideCardTags showAll />
+  <SideCardTags showAll />
 </BaseLayout>

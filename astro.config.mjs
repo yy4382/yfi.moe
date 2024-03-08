@@ -41,7 +41,7 @@ export default defineConfig({
               properties: {
                 className: ["i-mingcute-github-fill"],
               },
-              children: []
+              children: [],
             };
           },
           content: {

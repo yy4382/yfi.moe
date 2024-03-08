@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AchieveCard from "../components/AchieveCard.astro";
 import { Seo } from "../config";
-const seoConfig = (new Seo("时间线")).get();
+const seoConfig = new Seo("时间线").get();
 ---
 
 <BaseLayout seoConfig={seoConfig}>

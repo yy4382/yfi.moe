@@ -15,11 +15,13 @@ const postsCollection = defineCollection({
       z.string().optional(),
     ]),
     tags: z.array(z.string()),
-    series: z.object({
-      title: z.string().optional(),
-      id: z.string(),
-      order: z.number().optional(),
-    }).optional(),
+    series: z
+      .object({
+        title: z.string().optional(),
+        id: z.string(),
+        order: z.number().optional(),
+      })
+      .optional(),
   }),
 });
 const pageCollection = defineCollection({

@@ -12,7 +12,6 @@ import {
 
 // TODO
 // blockquote border and marker color
-// link decoration
 
 export default defineConfig({
   transformers: [
@@ -55,7 +54,7 @@ export default defineConfig({
         a: {
           "text-decoration": "none",
           "border-bottom": "2px solid rgba(125, 125, 125, .5)",
-          "transition": "border-bottom .15s ease-in-out",
+          transition: "border-bottom .15s ease-in-out",
         },
         "a:hover": {
           "border-bottom": "2px solid rgba(125, 125, 125, .8)",
