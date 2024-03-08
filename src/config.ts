@@ -59,15 +59,15 @@ export interface NavMenu {
 export const navMenu: NavMenu[] = [
   {
     text: "首页",
-    link: "/1",
+    link: "/",
+  },
+  {
+    text: "文章",
+    link: "/post/1",
   },
   {
     text: "时间轴",
     link: "/achieve",
-  },
-  {
-    text: "标签",
-    link: "/tags",
   },
   {
     text: "关于",

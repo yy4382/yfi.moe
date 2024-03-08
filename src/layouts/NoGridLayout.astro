@@ -14,22 +14,14 @@ const { seoConfig, stopTrack } = Astro.props;
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
   <div class="bg-gray-100 dark:bg-gray-950">
     <div class="w-[calc(100%-2rem)] xl:max-w-6xl mx-auto min-h-screen">
-      <div class="grid w-full
-      grid-cols-1 lg:grid-cols-[75%_25%]">
-        <nav class="lg:col-span-2 mb-4">
+      <div class="w-full space-y-4">
+        <nav class="mb-4">
           <Navbar />
         </nav>
 
-        <div class="mb-4 lg:mr-4">
-          <slot />
-        </div>
-        <aside class="mb-4 mx-4 lg:mx-0">
-          <slot name="sidebar">
-            <SideBar />
-          </slot>
-        </aside>
+        <slot />
 
-        <footer class="lg:col-span-2">
+        <footer>
           <Footer />
         </footer>
       </div>

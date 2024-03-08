@@ -22,6 +22,7 @@ const postsCollection = defineCollection({
         order: z.number().optional(),
       })
       .optional(),
+    highlight: z.boolean().optional(),
   }),
 });
 const pageCollection = defineCollection({

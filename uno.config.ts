@@ -95,5 +95,9 @@ export default defineConfig({
     "card-heading": `relative text-wrap text-xl font-medium tracking-tight
       text-gray-900 transition dark:text-gray-100
       before:(absolute hidden -left-4 top-1 h-5 w-1 rounded-md bg-portage-300 lg:block content-[""])`,
+
+    "text-content": `text-gray-700 dark:text-gray-300`,
+    "text-heading": `text-gray-900 dark:text-gray-100`,
+    "text-primary": `text-portage-400 dark:text-portage-400`,
   },
 });

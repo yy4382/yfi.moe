@@ -1,23 +1,34 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
-import PaginationBtn from "../components/PaginationBtn.astro";
-export async function getStaticPaths({ paginate }: { paginate: any }) {
-  const allPosts = await getCollection("post");
-  allPosts.sort((a, b) => Number(b.data.date) - Number(a.data.date));
-  return paginate(allPosts, { pageSize: 10 });
+import MdRender from "../components/MdRender.astro";
+import Article from "../components/views/Article.astro";
+import { getDesc } from "../utils/mdUtils";
+export async function getStaticPaths() {
+  const pages = await getCollection("page");
+  return pages.map((page) => ({
+    params: { page: page.slug },
+    props: { page },
+  }));
 }
-const { page } = Astro.props as { page: any };
+const { page } = Astro.props;
+const { Content, headings } = await page.render();
+const desc = page.data.description || getDesc(page.body);
 import { Seo } from "../config";
-const seoConfig = new Seo("首页", "笔记与分享，代码和生活").get();
+import SideBar from "../components/sidebar/SideBar.astro";
+const seoConfig = new Seo(
+  page.data.title,
+  desc,
+  Astro.url.origin + page.data.image,
+  "article",
+).get();
 ---
 
 <BaseLayout seoConfig={seoConfig}>
-  <div class="flex flex-col gap-4">
-    {page.data.map((post: any) => <PostCard post={post} />)}
-    <div class="self-center">
-      <PaginationBtn page={page} />
-    </div>
-  </div>
+  <Article entry={page}>
+    <Content />
+  </Article>
+  <Fragment slot="sidebar">
+    <SideBar tocList={headings} />
+  </Fragment>
 </BaseLayout>

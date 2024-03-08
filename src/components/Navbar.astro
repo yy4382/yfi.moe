@@ -6,9 +6,9 @@ import SearchPanel from "./SearchPanel.astro";
 import Card from "./base/Card.astro";
 ---
 
-<Card class="rounded-t-none h-18 px-3 min-h-16 flex justify-between">
+<Card class="rounded-t-none h-16 px-3 min-h-16 flex justify-between">
   <div class="navbar-start self-center">
-    <a class="flex items-center text-xl btn-color" href="/1">
+    <a class="flex items-center text-xl btn-color" href="/">
       <img src="/ava.webp" alt="logo" class="w-8 h-8 rounded-full mr-2" />
       {siteConfig.title}
     </a>
@@ -17,7 +17,7 @@ import Card from "./base/Card.astro";
     <ul class="flex gap-1 items-center" id="navList">
       {
         navMenu.map((item: NavMenu) => (
-          <li class="btn-plain flex items-center my-auto px-2 rounded-md font-semibold min-h-12">
+          <li class="btn-plain flex items-center py-1 px-2 rounded-md font-semibold">
             <a href={item.link} class="">
               {item.text}
             </a>

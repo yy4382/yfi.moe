@@ -12,11 +12,11 @@ let desc = "";
 if (post.data.description === undefined) {
   desc = await renderDesc(post.body);
 } else {
-  desc = post.data.description || "";
+  desc = "<p>" + post.data.description + "</p>" || "";
 }
 ---
 
-<Card class="space-y-2 lg:space-y-3 px-4 py-2 lg:p-8 lg:py-5">
+<Card class="space-y-2 lg:space-y-3 px-4 pt-4 lg:(px-8 pt-5) hover:-translate-y-0.5 transition">
   <a
     href={"/post/" + post.slug}
     class="card-heading hover:text-portage-400 active:text-portage-500
@@ -27,10 +27,7 @@ if (post.data.description === undefined) {
   </a>
   <PostAttr post={post} />
   <div
-    class="prose dark:prose-invert max-w-none leading-normal text-sm
-    prose-headings:my-1 prose-headings:text-xl prose-headings:font-normal
-    prose-p:my-1 prose-blockquote:my-1 prose-li:my-1 prose-ul:my-1 prose-ol:my-1
-    prose-hr:my-1 prose-pre:my-1"
+    class="prose dark:prose-invert max-w-none leading-normal text-sm"
     set:html={desc}
   />
 </Card>

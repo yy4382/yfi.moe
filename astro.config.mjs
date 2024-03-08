@@ -21,9 +21,6 @@ export default defineConfig({
     pagefind(),
     partytown(),
   ],
-  redirects: {
-    "/": "/1",
-  },
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [

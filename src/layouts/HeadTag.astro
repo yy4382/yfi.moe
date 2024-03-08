@@ -1,0 +1,50 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import { SEO } from "astro-seo";
+import "../styles/base.css";
+import { type SeoConfig } from "../config";
+interface Props {
+  seoConfig: SeoConfig;
+  stopTrack?: boolean;
+}
+const { seoConfig, stopTrack } = Astro.props;
+---
+
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="256x256" />
+    <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64" />
+    {
+      import.meta.env.PROD && !stopTrack ? (
+        <>
+          <script
+            is:inline
+            async
+            src="https://analy.yfi.moe/script.js"
+            data-website-id="3c89f8f6-9432-4ceb-a404-f22f2b0cf94d"
+          />
+          <script
+            is:inline
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-1MPEY5XJ9V"
+          />
+        </>
+      ) : (
+        ""
+      )
+    }
+    <SEO
+      {...seoConfig}
+      titleTemplate="%s - Yunfi's blog"
+      titleDefault="Yunfi's Blog"
+    />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <ViewTransitions />
+  </head>
+  <body>
+    <slot></slot>
+  </body>
+</html>
