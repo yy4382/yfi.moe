@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "../ProjectCard.astro";
+const projects = (await getCollection("project")).slice(0, 3);
+---
+
+<div class="flex flex-col space-y-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <h2 class="text-3xl self-center text-center font-serif text-heading">
+      <i
+        class="i-mingcute-github-fill text-black dark:text-white -translate-y-0.5"
+      ></i>
+      <span>My Projects</span>
+    </h2>
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+  <a
+    class="btn-plain mx-5 p-2
+      font-serif text-center text-xl rounded-lg col-span-2"
+    href="/projects"
+  >
+    More <i class="i-mingcute-arrow-right-line"></i>
+  </a>
+</div>

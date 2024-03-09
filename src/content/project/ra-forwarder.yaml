@@ -1,0 +1,10 @@
+name: Microsoft Read Aloud forwarder for ifreetime
+description: >-
+  Use Microsoft Edge's Read Aloud feature in Novel Reading Softwares such as
+  iFreeTime.
+language:
+  - "devicon-plain:html5"
+  - "devicon-plain:typescript"
+links:
+  - icon: "mingcute:github-line"
+    url: "https://github.com/yy4382/ms-ra-forwarder-for-ifreetime"

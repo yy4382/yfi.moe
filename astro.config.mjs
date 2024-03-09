@@ -45,7 +45,7 @@ export default defineConfig({
             type: "element",
             tagName: "span",
             properties: {
-              className: ["i-mingcute-arrow-right-up-fill"],
+              className: ["i-mingcute-external-link-line"],
             },
             children: [],
           },

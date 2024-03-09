@@ -1,0 +1,11 @@
+name: Azure TTS Importer
+description: A tool to import Azure TTS to Novel Reading Softwares.
+language:
+  - 'devicon-plain:nuxtjs'
+  - 'devicon-plain:vuejs'
+  - 'devicon-plain:typescript'
+links:
+  - icon: 'mingcute:web-line'
+    url: 'https://tts-importer.yfi.moe'
+  - icon: 'mingcute:github-line'
+    url: 'https://github.com/yy4382/tts-importer'

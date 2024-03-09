@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Card from "./base/Card.astro";
+import { Icon } from "astro-icon/components";
+interface Props {
+  project: CollectionEntry<"project">;
+}
+const { project: projectRaw } = Astro.props;
+const project = projectRaw.data;
+---
+
+<Card class="p-4 space-y-4 flex flex-col justify-between">
+  <div class="space-y-4">
+    <h2 class="text-xl text-heading">{project.name}</h2>
+    <p class="text-sm text-gray-400 dark:text-gray-600">
+      {project.description}
+    </p>
+  </div>
+  <div class="flex justify-between">
+    <div class="flex items-center">
+      {
+        project.language.map((lang) => (
+          <div class="p-2">
+            <Icon name={lang} size={24} />
+          </div>
+        ))
+      }
+    </div>
+    <div class="flex items-center">
+      {
+        project.links.map((link) => (
+          <a href={link.url} class="btn-plain rounded-full p-2">
+            <Icon name={link.icon} size={24} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Card>

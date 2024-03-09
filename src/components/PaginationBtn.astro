@@ -10,7 +10,7 @@ const { page } = Astro.props;
     {
       page.currentPage > 1 ? (
         <a href={page.url.prev}>
-          <Icon name="mdi:chevron-double-left" size={32} />
+          <Icon name="mingcute:arrows-left-line" size={32} />
         </a>
       ) : (
         <Icon name="fa6-solid:xmark" size={32} />
@@ -32,7 +32,7 @@ const { page } = Astro.props;
     {
       page.currentPage !== page.lastPage ? (
         <a href={page.url.next} aria-label="button to next page">
-          <Icon name="mdi:chevron-double-right" size={32} />
+          <Icon name="mingcute:arrows-right-line" size={32} />
         </a>
       ) : (
         <Icon name="fa6-solid:xmark" size={32} />

@@ -2,7 +2,7 @@
 import { getSortedPosts } from "../../utils/urlUtils";
 import HighlightCard from "./HighlightCard.astro";
 const posts = await getSortedPosts();
-const highlights = posts.slice(0, 5);
+const recents = posts.slice(0, 5);
 ---
 
 <div class="flex flex-col space-y-4">
@@ -11,7 +11,7 @@ const highlights = posts.slice(0, 5);
       <i class="i-mingcute-calendar-fill text-blue -translate-y-0.5"></i>
       <span>Recent Posts</span>
     </h2>
-    {highlights.map((highlight) => <HighlightCard post={highlight} />)}
+    {recents.map((recent) => <HighlightCard post={recent} />)}
   </div>
   <a
     class="btn-plain mx-5 p-2
@@ -21,17 +21,3 @@ const highlights = posts.slice(0, 5);
     More <i class="i-mingcute-arrow-right-line"></i>
   </a>
 </div>
-<!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <h2 class="text-3xl self-center text-center font-serif text-heading">
-    <i class="i-mingcute-calendar-fill text-blue -translate-y-0.5"></i>
-    <span>Recent Posts</span>
-  </h2>
-  {recents.map((recent) => <HighlightCard post={recent} />)}
-  <a
-    class="btn-plain mx-2 p-2
-      font-serif text-center text-xl rounded-lg col-span-2"
-    href="/post/1"
-  >
-    More <i class="i-mingcute-arrow-right-line"></i>
-  </a>
-</div> -->
