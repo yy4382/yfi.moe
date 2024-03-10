@@ -5,7 +5,7 @@ language:
   - 'devicon-plain:vuejs'
   - 'devicon-plain:typescript'
 links:
-  - icon: 'mingcute:web-line'
+  - icon: 'mingcute:earth-line'
     url: 'https://tts-importer.yfi.moe'
   - icon: 'mingcute:github-line'
     url: 'https://github.com/yy4382/tts-importer'
