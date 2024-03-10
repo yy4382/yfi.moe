@@ -71,18 +71,18 @@ function formatTag(tag: string[]) {
         {/* headers */}
         <div class="flex flex-row w-full items-center h-[3.75rem]">
           {/* year */}
-          <div class="w-[15%] md:w-[10%] transition text-2xl font-bold text-right text-black/75 dark:text-white/75">
+          <div class="w-[12%] md:w-[10%] transition text-[1.15rem] font-bold text-right text-black/75 dark:text-white/75">
             {group.year}
           </div>
           {/* dot and line */}
-          <div class="w-[15%] md:w-[10%]">
+          <div class="w-[7%] md:w-[10%]">
             <div
               class="h-3 w-3 bg-none rounded-full mx-auto z-50"
               outline="~ 3 portage-300 offset-[-2px]"
             />
           </div>
           {/* post count */}
-          <div class="w-[70%] md:w-[80%] transition text-left text-black/50 dark:text-white/50">
+          <div class="w-[81%] md:w-[80%] transition text-left text-black/50 dark:text-white/50">
             {group.posts.length}
           </div>
         </div>
@@ -95,11 +95,11 @@ function formatTag(tag: string[]) {
             <div class="btn-plain w-full h-10 rounded-lg">
               <div class="flex flex-row justify-start items-center h-full">
                 {/* date */}
-                <div class="w-[15%] md:w-[10%] transition text-sm text-right text-black/50 dark:text-white/50">
+                <div class="w-[12%] md:w-[10%] transition text-sm text-right text-black/50 dark:text-white/50">
                   {formatDate(post.data.date)}
                 </div>
                 {/* dot and line */}
-                <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
+                <div class="w-[7%] md:w-[10%] relative dash-line h-full flex items-center">
                   <div
                     class="transition-all mx-auto w-1 h-1 rounded 
                   group-hover:h-5 
@@ -111,8 +111,8 @@ function formatTag(tag: string[]) {
                 </div>
                 {/* post title */}
                 <div
-                  class="w-[70%] md:max-w-[65%] md:w-[65%] font-[450] group-hover:translate-x-1 transition-all pr-8 whitespace-nowrap overflow-hidden"
-                  text="left group-hover:(portage-700 dark:portage-300) gray-800 dark:gray-200 ellipsis"
+                  class="w-[81%] md:max-w-[65%] md:w-[65%] font-[450] group-hover:translate-x-1 transition-all pr-8 whitespace-nowrap overflow-hidden"
+                  text="left group-hover:(portage-700 dark:portage-300) gray-800 dark:gray-200 ellipsis sm"
                 >
                   {post.data.title}
                 </div>
