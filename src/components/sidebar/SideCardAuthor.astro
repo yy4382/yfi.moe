@@ -16,41 +16,39 @@ const avatar = "/ava.webp";
 const description = "Undergraduate";
 ---
 
-<Card class="w-full pb-4">
-  <div class="flex flex-col items-center">
-    <div class="w-48 lg:w-full mt-4 lg:mt-0">
+<Card class="w-full lg:p-0 lg:pb-4 p-4">
+  <div class="flex lg:flex-col items-center gap-4 justify-center">
+    <div class="w-32 lg:w-full mt-0">
       <img
         class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg"
         src={avatar}
         alt="Yunfi avatar"
       />
     </div>
-    <h5 class="mt-3 mb-1 text-2xl font-medium text-gray-900 dark:text-white">
-      <div
-        class="transition-colors flex items-center gap-2"
-      >
-        {name}
-      </div>
-    </h5>
-    <span class="text-sm text-gray-500 dark:text-gray-400">{description}</span>
-    <div class="flex mt-2">
-      <div class="flex flex-col items-center mx-4">
-        <span class="text-lg font-semibold text-gray-900 dark:text-white">
-          {articles}
-        </span>
-        <span class="text-sm text-gray-500 dark:text-gray-400">文章</span>
-      </div>
-      <div class="flex flex-col items-center mx-4">
-        <span class="text-lg font-semibold text-gray-900 dark:text-white">
-          {(words / 10000).toFixed(1)}
-        </span>
-        <span class="text-sm text-gray-500 dark:text-gray-400">万字</span>
-      </div>
-      <div class="flex flex-col items-center mx-4">
-        <span class="text-lg font-semibold text-gray-900 dark:text-white">
-          {tags}
-        </span>
-        <span class="text-sm text-gray-500 dark:text-gray-400">标签</span>
+    <div class="flex flex-col gap-2 items-center">
+      <h5 class="text-2xl font-medium text-gray-900 dark:text-white">
+          {name}
+      </h5>
+      <span class="text-sm text-gray-500">{description}</span>
+      <div class="flex">
+        <div class="flex flex-col items-center mx-4">
+          <span class="text-lg font-semibold text-gray-900 dark:text-white">
+            {articles}
+          </span>
+          <span class="text-sm text-gray-500">文章</span>
+        </div>
+        <div class="flex flex-col items-center mx-4">
+          <span class="text-lg font-semibold text-gray-900 dark:text-white">
+            {(words / 10000).toFixed(1)}
+          </span>
+          <span class="text-sm text-gray-500">万字</span>
+        </div>
+        <div class="flex flex-col items-center mx-4">
+          <span class="text-lg font-semibold text-gray-900 dark:text-white">
+            {tags}
+          </span>
+          <span class="text-sm text-gray-500">标签</span>
+        </div>
       </div>
     </div>
   </div>
