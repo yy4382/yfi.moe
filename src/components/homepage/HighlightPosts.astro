@@ -1,7 +1,8 @@
 ---
-import { getCollection } from "astro:content";
+import { getSortedPosts } from "../../utils/urlUtils";
 import HighlightCard from "./HighlightCard.astro";
-const highlights = await getCollection("post", ({ data }) => data.highlight);
+const all = await getSortedPosts();
+const highlights = all.filter((post) => post.data.highlight);
 ---
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -13,10 +14,7 @@ const highlights = await getCollection("post", ({ data }) => data.highlight);
   {
     highlights.length % 2 === 0 && (
       <div class="hidden md:flex items-center justify-center">
-        <a
-          class="btn-plain p-2 font-serif text-xl rounded-lg"
-          href="/post/1"
-        >
+        <a class="btn-plain p-2 font-serif text-xl rounded-lg" href="/post/1">
           Article list <i class="i-mingcute-arrow-right-line" />
         </a>
       </div>
