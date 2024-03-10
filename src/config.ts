@@ -60,7 +60,6 @@ export interface NavMenu {
 export const navMenu: NavMenu[] = [
   {
     text: "首页",
-    link: "/",
     icon: "mingcute:dot-grid-fill",
     subMenu: [
       { text: "自述", link: "/" },
@@ -74,11 +73,7 @@ export const navMenu: NavMenu[] = [
     link: "/post/1",
     icon: "mingcute:edit-4-line",
   },
-  {
-    text: "项目",
-    link: "/projects",
-    icon: "mingcute:github-line",
-  },
+
   {
     text: "时间轴",
     link: "/achieve",
@@ -92,6 +87,10 @@ export const navMenu: NavMenu[] = [
         text: "关于本站",
         link: "/about",
         icon: "mingcute:information-line",
+      },
+      {
+        text: "我的项目",
+        link: "/projects",
       },
     ],
   },

@@ -1,10 +1,11 @@
 ---
 import { Icon } from "astro-icon/components";
-import { type NavMenu, navMenu } from "../../config";
+import { navMenu } from "../../config";
 import { siteConfig } from "../../config";
 import SearchPanel from "./SearchPanel.astro";
 import MobileMenu from "./MobileMenu.astro";
 import Card from "../base/Card.astro";
+import NavContainer from "./NavContainer.astro";
 ---
 
 <Card
@@ -19,15 +20,24 @@ import Card from "../base/Card.astro";
       <span class="hidden md:inline">{siteConfig.title}</span>
     </a>
   </div>
-  <div class="hidden lg:flex lg:min-h-full">
+  <div class="hidden md:flex h-full">
     <ul class="flex gap-1 items-center" id="navList">
       {
-        navMenu.map((item: NavMenu) => (
-          <li class="btn-plain flex items-center w-16 text-center py-1 px-2 rounded-md font-semibold">
-            <a href={item.link} class="w-full">
-              {item.text}
-            </a>
-          </li>
+        navMenu.map((item) => (
+          <>
+            {"subMenu" in item ? (
+              <NavContainer nav={item} />
+            ) : (
+              <li class="w-20 text-center font-medium h-full flex">
+                <a
+                  href={item.link}
+                  class="w-full hover:text-portage-300 self-center"
+                >
+                  {item.text}
+                </a>
+              </li>
+            )}
+          </>
         ))
       }
     </ul>
@@ -38,7 +48,7 @@ import Card from "../base/Card.astro";
     class="bg-white dark:bg-gray-950 w-screen rounded-lg shadow-lg relative backdrop:bg-[rgba(0,0,0,0.3)] p-8 mt-18"
   >
     <MobileMenu />
-    <button id="close-moblie-list" class="absolute top-8 right-8">
+    <button id="close-mobile-list" class="absolute top-8 right-8">
       <Icon name="mingcute:close-fill" />
     </button>
   </dialog>
@@ -50,7 +60,7 @@ import Card from "../base/Card.astro";
     const mobileList = document.getElementById(
       "nav-mobile",
     ) as HTMLDialogElement;
-    const closeBtn = document.getElementById("close-moblie-list");
+    const closeBtn = document.getElementById("close-mobile-list");
 
     menuBtn?.addEventListener("click", () => {
       mobileList.showModal();
@@ -107,9 +117,7 @@ import Card from "../base/Card.astro";
       background-color: rgba(0, 0, 0, 0);
     }
   }
-</style>
-<style is:global>
-  .full-screen {
-    @apply w-screen -translate-x-[calc(50vw-50%)];
+  .parent-item:hover .children-item {
+    display: block !important;
   }
 </style>
