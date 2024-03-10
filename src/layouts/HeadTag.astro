@@ -18,22 +18,13 @@ const { seoConfig, stopTrack } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {
-      import.meta.env.PROD && !stopTrack ? (
-        <>
-          <script
-            is:inline
-            async
-            src="https://analy.yfi.moe/script.js"
-            data-website-id="3c89f8f6-9432-4ceb-a404-f22f2b0cf94d"
-          />
-          <script
-            is:inline
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-1MPEY5XJ9V"
-          />
-        </>
-      ) : (
-        ""
+      import.meta.env.PROD && !stopTrack && (
+        <script
+          is:inline
+          async
+          src="https://analy.yfi.moe/script.js"
+          data-website-id="3c89f8f6-9432-4ceb-a404-f22f2b0cf94d"
+        />
       )
     }
     <SEO
@@ -46,6 +37,6 @@ const { seoConfig, stopTrack } = Astro.props;
     <ViewTransitions />
   </head>
   <body>
-    <slot></slot>
+    <slot />
   </body>
 </html>
