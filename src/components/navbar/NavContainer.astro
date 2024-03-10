@@ -7,11 +7,11 @@ const { nav } = Astro.props;
 ---
 
 <li class="w-20 text-center font-medium relative group h-full flex">
-  <span class="w-full hover:text-portage-300 self-center z-1">
+  <a href={nav.link} class="w-full hover:text-portage-300 self-center z-1 select-none">
     {nav.text}
-  </span>
+  </a>
   {
-    nav.subMenu!.length > 0 && (
+    nav.subMenu && nav.subMenu.length > 0 && (
       <>
         <div class="absolute top-0 -bottom-2 left-0 right-0 z-0" />
         <ul

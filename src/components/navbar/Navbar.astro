@@ -22,24 +22,7 @@ import NavContainer from "./NavContainer.astro";
   </div>
   <div class="hidden md:flex h-full">
     <ul class="flex gap-1 items-center" id="navList">
-      {
-        navMenu.map((item) => (
-          <>
-            {"subMenu" in item ? (
-              <NavContainer nav={item} />
-            ) : (
-              <li class="w-20 text-center font-medium h-full flex">
-                <a
-                  href={item.link}
-                  class="w-full hover:text-portage-300 self-center"
-                >
-                  {item.text}
-                </a>
-              </li>
-            )}
-          </>
-        ))
-      }
+      {navMenu.map((item) => <NavContainer nav={item} />)}
     </ul>
   </div>
   <SearchPanel />
