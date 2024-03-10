@@ -92,7 +92,7 @@ export default defineConfig({
 
     "btn-plain": `bg-none text-gray-700 btn-transition
       hover:bg-portage-200/80 active:bg-portage-300/80 
-      dark:( text-gray-300/90 hover:bg-gray-950)`,
+      dark:( text-gray-300/90 hover:bg-portage-100/20)`,
 
     "card-heading": `relative text-wrap text-xl font-medium tracking-tight
       text-gray-900 transition dark:text-gray-100
