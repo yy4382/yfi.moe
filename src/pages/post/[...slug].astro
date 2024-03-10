@@ -25,6 +25,8 @@ const { Content, headings } = await post.render();
 import { Seo } from "../../config";
 import { getDesc } from "../../utils/mdUtils";
 import SideBar from "../../components/sidebar/SideBar.astro";
+import TocMobile from "../../components/sidebar/TocMobile.astro";
+
 const seoConfig = new Seo(
   post.data.title,
   post.data.description || getDesc(post.body),
@@ -41,6 +43,8 @@ const seoConfig = new Seo(
     <PrevNext prev={prev} next={next} />
     <CommentCard client:visible path={"/post/" + post.slug} />
   </div>
+  <TocMobile headings={headings}>
+  
   <Fragment slot="sidebar">
     <SideBar tocList={headings} seriesID={post.data.series?.id} />
   </Fragment>
