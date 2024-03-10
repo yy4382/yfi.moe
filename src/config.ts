@@ -60,6 +60,7 @@ export interface NavMenu {
 export const navMenu: NavMenu[] = [
   {
     text: "首页",
+    link: "/",
     icon: "mingcute:dot-grid-fill",
     subMenu: [
       { text: "自述", link: "/" },
