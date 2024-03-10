@@ -5,56 +5,48 @@ import pagefind from "astro-pagefind";
 import icon from "astro-icon";
 import remarkReadingTime from "./src/utils/remark-reading-time.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
-
 import partytown from "@astrojs/partytown";
 import UnoCSS from "unocss/astro";
+
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://blog.yfi.moe/",
-  integrations: [
-    UnoCSS({
-      injectReset: true, // or a path to the reset file
-    }),
-    vue(),
-    icon(),
-    pagefind(),
-    partytown(),
-  ],
+  integrations: [UnoCSS({
+    injectReset: true // or a path to the reset file
+  }), vue(), icon(), pagefind(), partytown(), sitemap()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
-    rehypePlugins: [
-      [
-        rehypeExtendedLinks,
-        {
-          preContent(node) {
-            const url = node.properties.href;
-            if (!url) return undefined;
-            const regex = /^(https?:\/\/)?(www\.)?github\.com\/.*/i;
-            if (!regex.test(url)) return undefined;
-            return {
-              type: "element",
-              tagName: "span",
-              properties: {
-                className: ["i-mingcute-github-fill"],
-              },
-              children: [],
-            };
+    rehypePlugins: [[rehypeExtendedLinks, {
+      preContent(node) {
+        const url = node.properties.href;
+        if (!url) return undefined;
+        const regex = /^(https?:\/\/)?(www\.)?github\.com\/.*/i;
+        if (!regex.test(url)) return undefined;
+        return {
+          type: "element",
+          tagName: "span",
+          properties: {
+            className: ["i-mingcute-github-fill"]
           },
-          content: {
-            type: "element",
-            tagName: "span",
-            properties: {
-              className: ["i-mingcute-external-link-line"],
-            },
-            children: [],
-          },
+          children: []
+        };
+      },
+      content: {
+        type: "element",
+        tagName: "span",
+        properties: {
+          className: ["i-mingcute-external-link-line"]
         },
-      ],
-    ],
-    remarkRehype: { allowDangerousHtml: true },
-    shikiConfig: {
-      theme: "catppuccin-macchiato",
+        children: []
+      }
+    }]],
+    remarkRehype: {
+      allowDangerousHtml: true
     },
-  },
+    shikiConfig: {
+      theme: "catppuccin-macchiato"
+    }
+  }
 });
