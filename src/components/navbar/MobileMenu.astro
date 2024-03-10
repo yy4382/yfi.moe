@@ -9,7 +9,7 @@ import { navMenu } from "../../config";
       <section>
         <a
           href={nav.link}
-          class="inline-flex items-center gap-2 modal-link font-medium"
+          class="inline-flex items-center gap-2 modal-link font-medium text-heading"
         >
           <Icon name={nav.icon} size={20} /> {nav.text}
         </a>
@@ -17,7 +17,10 @@ import { navMenu } from "../../config";
           <ul class="grid grid-cols-2 gap-2 my-2">
             {nav.subMenu.map((child) => (
               <li>
-                <a href={child.link} class="modal-link p-4 text-sm">
+                <a
+                  href={child.link}
+                  class="modal-link p-4 text-sm text-content"
+                >
                   {child.text}
                 </a>
               </li>
