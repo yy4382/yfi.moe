@@ -3,8 +3,8 @@ import { Icon } from "astro-icon/components";
 import Search from "astro-pagefind/components/Search";
 ---
 
-<div id="search-icon" class="btn-plain flex items-center h-fit rounded-md mr-2">
-  <Icon name="mingcute:search-2-fill" class="w-9 h-9 p-1" />
+<div id="search-icon" class="btn-plain p-1 rounded-md">
+  <Icon name="mingcute:search-2-fill" size={32} />
 </div>
 <div
   id="search-bg"
@@ -22,17 +22,11 @@ import Search from "astro-pagefind/components/Search";
   />
 </div>
 <style is:global>
-  @tailwind components;
-  @layer components {
-    .aaa {
-      @apply bg-red-500;
-    }
-    .pagefind-ui__drawer {
-      @apply bg-white p-4 -mt-8 max-h-[60vh] overflow-y-scroll rounded-b-lg;
-    }
-    .pagefind-ui__result-inner {
-      @apply break-words;
-    }
+  .pagefind-ui__drawer {
+    @apply bg-white p-4 -mt-8 max-h-[60vh] overflow-y-scroll rounded-b-lg;
+  }
+  .pagefind-ui__result-inner {
+    @apply break-words;
   }
 </style>
 <script>

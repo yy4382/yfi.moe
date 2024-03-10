@@ -53,28 +53,46 @@ export const siteConfig: SiteConfig = {
 };
 export interface NavMenu {
   text: string;
-  link: string;
+  link?: string;
+  icon?: string;
   subMenu?: NavMenu[];
 }
 export const navMenu: NavMenu[] = [
   {
     text: "首页",
     link: "/",
+    icon: "mingcute:dot-grid-fill",
+    subMenu: [
+      { text: "自述", link: "/" },
+      { text: "高亮文章", link: "/#highlights" },
+      { text: "最近文章", link: "/#recent" },
+      { text: "首页项目", link: "/#projects" },
+    ],
   },
   {
     text: "文章",
     link: "/post/1",
+    icon: "mingcute:edit-4-line",
   },
   {
     text: "项目",
     link: "/projects",
+    icon: "mingcute:github-line",
   },
   {
     text: "时间轴",
     link: "/achieve",
+    icon: "mingcute:history-anticlockwise-line",
   },
   {
-    text: "关于",
-    link: "/about",
+    text: "更多",
+    icon: "mingcute:information-line",
+    subMenu: [
+      {
+        text: "关于本站",
+        link: "/about",
+        icon: "mingcute:information-line",
+      },
+    ],
   },
 ];

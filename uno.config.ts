@@ -9,6 +9,7 @@ import {
   transformerCompileClass,
   transformerVariantGroup,
 } from "unocss";
+import presetAnimations from "unocss-preset-animations";
 
 // TODO
 // blockquote border and marker color
@@ -43,6 +44,7 @@ export default defineConfig({
     presetUno({
       dark: "media",
     }),
+    presetAnimations(),
     presetIcons({
       extraProperties: {
         display: "inline-block",

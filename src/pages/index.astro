@@ -11,13 +11,22 @@ const seoConfig = new Seo("首页", "笔记与分享，代码和生活").get();
 <NoGridLayout seoConfig={seoConfig}>
   <div class="max-w-4xl mx-auto">
     <IndexCard />
-    <div class="min-h-[100vh] flex items-center justify-center pt-12">
+    <div
+      class="min-h-[100vh] flex items-center justify-center pt-12"
+      id="highlights"
+    >
       <HighlightPosts />
     </div>
-    <div class="min-h-[100vh] flex items-center justify-center pt-12">
+    <div
+      class="min-h-[100vh] flex items-center justify-center pt-12"
+      id="recent"
+    >
       <HomeRecent />
     </div>
-    <div class="min-h-[100vh] flex items-center justify-center pt-12">
+    <div
+      class="min-h-[100vh] flex items-center justify-center pt-12"
+      id="projects"
+    >
       <HomeProjects />
     </div>
   </div>
