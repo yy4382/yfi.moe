@@ -43,8 +43,7 @@ const seoConfig = new Seo(
     <PrevNext prev={prev} next={next} />
     <CommentCard client:visible path={"/post/" + post.slug} />
   </div>
-  <TocMobile headings={headings}>
-  
+  <TocMobile headings={headings} />
   <Fragment slot="sidebar">
     <SideBar tocList={headings} seriesID={post.data.series?.id} />
   </Fragment>
