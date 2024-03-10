@@ -94,3 +94,6 @@
   --color-caution: #d1242f;
   --color-important: #8250df;
 }
+:root {
+  scroll-behavior: smooth;
+}
