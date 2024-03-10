@@ -5,7 +5,7 @@ const { headings } = Astro.props;
 ---
 
 <div
-  class="hidden z-50 fixed right-6 rounded-lg bottom-18 border
+  class="hidden z-50 fixed right-6 rounded-lg bottom-18 border dark:border-gray-700
   animate-in slide-in-r"
   id="mobile-toc"
 >
@@ -13,8 +13,10 @@ const { headings } = Astro.props;
 </div>
 <button
   class="fixed bottom-8 right-8 z-10 lg:hidden rounded-full p-2
-    ring ring-gray-200 shadow-lg bg-white dark:bg-gray-700
+    shadow-lg text-heading
     active:scale-90 transition duration-75"
+  bg="white dark:gray-800 opacity-90"
+  ring="3 gray-200 dark:gray-600"
   id="mobile-toc-btn"
 >
   <Icon name="mingcute:list-check-fill" />
