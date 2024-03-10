@@ -83,15 +83,9 @@ export const navMenu: NavMenu[] = [
     text: "更多",
     icon: "mingcute:information-line",
     subMenu: [
-      {
-        text: "关于本站",
-        link: "/about",
-        icon: "mingcute:information-line",
-      },
-      {
-        text: "我的项目",
-        link: "/projects",
-      },
+      { text: "关于本站", link: "/about" },
+      { text: "我的项目", link: "/projects" },
+      { text: "订阅 RSS", link: "/feed.xml" },
     ],
   },
 ];
