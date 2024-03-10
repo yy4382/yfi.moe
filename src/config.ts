@@ -66,6 +66,10 @@ export const navMenu: NavMenu[] = [
     link: "/post/1",
   },
   {
+    text: "项目",
+    link: "/projects",
+  },
+  {
     text: "时间轴",
     link: "/achieve",
   },

@@ -20,15 +20,6 @@ dependencies:
   '@iconify-json/devicon-plain':
     specifier: ^1.1.34
     version: 1.1.34
-  '@iconify-json/fa6-solid':
-    specifier: ^1.1.20
-    version: 1.1.20
-  '@iconify-json/ic':
-    specifier: ^1.1.17
-    version: 1.1.17
-  '@iconify-json/mdi':
-    specifier: ^1.1.64
-    version: 1.1.64
   '@iconify-json/mingcute':
     specifier: ^1.1.16
     version: 1.1.16
@@ -928,24 +919,6 @@ packages:
 
   /@iconify-json/devicon-plain@1.1.34:
     resolution: {integrity: sha512-2sh5uYYmkx9Bg4GZucL1Y+s4+B4XurYT8HDPt1sOeWrCXtfl+uSiHrxmOmlNQPDPlFeRiaGXPHzpx6mufeDjUQ==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: false
-
-  /@iconify-json/fa6-solid@1.1.20:
-    resolution: {integrity: sha512-99P9zOacNS56MNNT7Mzih2Loe3jzwNFKFBOiVh+kF+4D+AHW5zyksyvMizIgGu2cizFz6npaATlCtl3E5Zfjbw==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: false
-
-  /@iconify-json/ic@1.1.17:
-    resolution: {integrity: sha512-EvAjZzVESmN36zlyefylePUNaU2BQ3eRKVZ6KQSQ2bG01ppoZaiFZRri74VTyvp5Mlv2yn68ux1fgCoT+etGmA==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: false
-
-  /@iconify-json/mdi@1.1.64:
-    resolution: {integrity: sha512-zGeo5TjhNFAY6FmSDBLAzDO811t77r6v/mDi7CAL9w5eXqKez6bIjk8R9AL/RHIeq44ALP4Ozr4lMqFTkHr7ug==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false

@@ -10,48 +10,27 @@ for (const post of posts) {
 }
 const tags = [...new Set(posts.map((post) => post.data.tags).flat())].length;
 
-import { Icon } from "astro-icon/components";
 import Card from "../base/Card.astro";
 const name = "Yunfi";
 const avatar = "/ava.webp";
 const description = "Undergraduate";
-const contact = {
-  github: {
-    link: "https://github.com/yy4382",
-    icon: "mdi:github",
-  },
-  telegram: {
-    link: "https://t.me/YunfiChannel",
-    icon: "mdi:telegram",
-  },
-  email: {
-    link: "mailto:i@yfi.moe",
-    icon: "mdi:email",
-  },
-};
 ---
 
 <Card class="w-full pb-4">
   <div class="flex flex-col items-center">
-    <a href="https://yfi.moe" class="w-48 lg:w-full mt-4 lg:mt-0">
+    <div class="w-48 lg:w-full mt-4 lg:mt-0">
       <img
         class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg"
         src={avatar}
         alt="Yunfi avatar"
       />
-    </a>
+    </div>
     <h5 class="mt-3 mb-1 text-2xl font-medium text-gray-900 dark:text-white">
-      <a
-        href="https://yfi.moe"
-        class="hover:text-portage-300 transition-colors flex items-center gap-2"
+      <div
+        class="transition-colors flex items-center gap-2"
       >
         {name}
-        <Icon
-          name="fa6-solid:arrow-up-right-from-square"
-          class="text-gray-900/60 dark:text-white/60 mt-[2px]"
-          size={14}
-        />
-      </a>
+      </div>
     </h5>
     <span class="text-sm text-gray-500 dark:text-gray-400">{description}</span>
     <div class="flex mt-2">
@@ -73,20 +52,6 @@ const contact = {
         </span>
         <span class="text-sm text-gray-500 dark:text-gray-400">标签</span>
       </div>
-    </div>
-    <div class="flex">
-      {
-        Object.entries(contact).map(([key, value]) => (
-          <a
-            href={value.link}
-            class="inline-flex items-center justify-center w-10 h-10 mt-3 mx-1 rounded-md btn-regular"
-            aria-label={key}
-            target="blank"
-          >
-            <Icon name={value.icon} class="text-4xl" />
-          </a>
-        ))
-      }
     </div>
   </div>
 </Card>

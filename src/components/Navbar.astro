@@ -17,8 +17,8 @@ import Card from "./base/Card.astro";
     <ul class="flex gap-1 items-center" id="navList">
       {
         navMenu.map((item: NavMenu) => (
-          <li class="btn-plain flex items-center py-1 px-2 rounded-md font-semibold">
-            <a href={item.link} class="">
+          <li class="btn-plain flex items-center w-16 text-center py-1 px-2 rounded-md font-semibold">
+            <a href={item.link} class="w-full">
               {item.text}
             </a>
           </li>
@@ -33,12 +33,12 @@ import Card from "./base/Card.astro";
       class="btn-plain flex items-center h-fit rounded-md mr-2"
       aria-label="RSS feed link"
     >
-      <Icon name="ic:outline-rss-feed" class="w-9 h-9 p-1" />
+      <Icon name="mingcute:rss-2-fill" class="w-9 h-9 p-1" />
     </a>
     <button
-      class="toggle-menu btn-plain flex items-center h-fit rounded-md lg:hidden"
+      class="toggle-menu btn-plain flex items-center h-fit rounded-md lg:hidden p-1"
     >
-      <Icon name="ic:outline-menu" class="w-9 h-9" />
+      <Icon name="mingcute:menu-fill" class="w-9 h-9" />
     </button>
   </div>
   <div
@@ -54,7 +54,7 @@ import Card from "./base/Card.astro";
           >
             {item.text}
             <Icon
-              name="mdi:chevron-right"
+              name="mingcute:right-fill"
               class="w-5 h-5 self-center"
               size={20}
             />
