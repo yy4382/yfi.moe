@@ -4,32 +4,24 @@ import Card from "./base/Card.astro";
 
 <Card class="rounded-b-none">
   <div
-    class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
+    class="w-full p-4"
   >
-    <span class="text-sm text-gray-500 dark:text-gray-400">
-      © 2023-2024 <a href="https://blog.yfi.moe" class="hover:underline link"
-        >Yunfi</a
-      >.<br />Powered by <a
-        href="https://astro.build"
-        class="hover:underline link">Astro</a
-      >. Inspired by <a
-        href="https://github.com/saicaca/hexo-theme-vivia"
-        class="hover:underline link">vivia</a
-      > & <a
-        href="https://github.com/saicaca/fuwari"
-        class="hover:underline link">Fuwari</a
-      >.
-    </span>
-    <ul class="flex flex-wrap items-center text-sm">
-      <li>
-        <a href="/about" class="btn-plain me-4 md:me-6 p-2 rounded-md">About</a>
-      </li>
-    </ul>
+    <div class="flex flex-col">
+      <span class="text-sm text-gray-500 dark:text-gray-400">
+        © 2023-2024
+        <a href="https://blog.yfi.moe"> Yunfi</a>.
+        <span class="opacity-50">|</span>
+        <a href="/feed.xml">RSS</a>
+        <span class="opacity-50">|</span>
+        <a href="/sitemap-index.xml">SITEMAP</a>
+      </span>
+      <span class="text-sm text-gray-500 dark:text-gray-400">
+        Powered by
+        <a href="https://astro.build"> Astro</a>. Inspired by
+        <a href="https://github.com/saicaca/hexo-theme-vivia"> vivia </a>
+        &
+        <a href="https://github.com/saicaca/fuwari"> Fuwari</a>.
+      </span>
+    </div>
   </div>
 </Card>
-
-<style>
-  .link {
-    @apply text-portage-400;
-  }
-</style>
