@@ -1,0 +1,38 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import CategoryTitle from "../../components/CategoryTitle.vue";
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("post");
+  console.log(posts[0].data.categories);
+  const categoriesWithPosts: Record<string, CollectionEntry<"post">[]> = {};
+  posts.forEach((post: CollectionEntry<"post">) => {
+    if (!post.data.categories) return;
+    post.data.categories = Array.isArray(post.data.categories)
+      ? post.data.categories[0]
+      : post.data.categories;
+    const categories = post.data.categories as string;
+    categoriesWithPosts[categories] = categoriesWithPosts[categories] || [];
+    categoriesWithPosts[categories].push(post);
+  });
+  const paths = Object.keys(categoriesWithPosts).map((categories) => ({
+    params: { categories: categories },
+    props: { categories: categories, posts: categoriesWithPosts[categories] },
+  }));
+  console.log(paths);
+  return paths;
+}) satisfies GetStaticPaths;
+
+const { categories, posts } = Astro.props;
+import { Seo } from "../../config";
+const seoConfig = new Seo("分类：" + categories).get(); // !TODO
+---
+
+<BaseLayout seoConfig={seoConfig}>
+  <CategoryTitle title={categories} count={posts.length} />
+  <div class="flex flex-col gap-4">
+    {posts.map((post: any) => <PostCard post={post} />)}
+  </div>
+</BaseLayout>

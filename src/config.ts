@@ -73,6 +73,12 @@ export const navMenu: NavMenu[] = [
     text: "文章",
     link: "/post/1",
     icon: "mingcute:edit-4-line",
+    subMenu: [
+      { text: "介绍 & 教程", link: "/categories/介绍 & 教程" },
+      { text: "编程 & 技术", link: "/categories/编程 & 技术" },
+      { text: "记录 & 分享", link: "/categories/记录 & 分享" },
+      { text: "折腾 & 笔记", link: "/categories/折腾 & 笔记" },
+    ],
   },
 
   {

@@ -10,10 +10,7 @@ const postsCollection = defineCollection({
     author: z.string().default("Yunfi"),
     image: z.string().optional(),
     updated: z.date(),
-    categories: z.union([
-      z.union([z.string().array(), z.string()]).array(),
-      z.string().optional(),
-    ]),
+    categories: z.union([z.string().array(), z.string()]),
     tags: z.array(z.string()),
     series: z
       .object({
