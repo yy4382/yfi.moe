@@ -1,10 +1,10 @@
 ---
-import { CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 import PaginationBtn from "../../components/PaginationBtn.astro";
 import { getSortedPosts } from "../../utils/urlUtils";
-export async function getStaticPaths({ paginate }) {
+export async function getStaticPaths({ paginate}: { paginate: any }) {
   const allPosts = await getSortedPosts();
   return paginate(allPosts, { pageSize: 10 });
 }
@@ -13,7 +13,7 @@ interface Props {
 }
 const { page } = Astro.props;
 import { Seo } from "../../config";
-const seoConfig = new Seo("首页", "笔记与分享，代码和生活").get();
+const seoConfig = new Seo("文章列表").get();
 ---
 
 <BaseLayout seoConfig={seoConfig}>
