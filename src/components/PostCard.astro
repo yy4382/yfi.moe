@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 interface Props {
   post: CollectionEntry<"post">;
 }
-import PostAttr from "./PostAttr.astro";
+import PostAttr from "./PostAttr.vue";
 const { post } = Astro.props;
 import { renderDesc } from "../utils/mdUtils";
 import Card from "./base/Card.astro";

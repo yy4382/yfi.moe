@@ -1,6 +1,6 @@
 ---
 import Card from "../base/Card.astro";
-import PostAttr from "../PostAttr.astro";
+import PostAttr from "../PostAttr.vue";
 import MdRender from "../MdRender.astro";
 import type { CollectionEntry } from "astro:content";
 interface Props {
@@ -14,7 +14,7 @@ const { entry } = Astro.props;
     {entry.data.title}
   </h1>
   <div data-pagefind-weight="0.8">
-    <PostAttr post={entry} />
+    <PostAttr post={entry as any} />
   </div>
   <MdRender>
     <slot />
