@@ -12,27 +12,26 @@ const post = computed(() => props.post);
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center gap-2 lg:gap-3 text-sm">
+  <div
+    class="flex flex-wrap items-center gap-2 lg:gap-3 text-[0.8rem] text-gray-500 dark:text-gray-400"
+  >
     <!-- Date -->
-    <VButton link="/achieve" type="primary" class="meta-icon">
-      <MingcuteCalendarLine class="text-lg mr-1" />
+    <div class="flex select-none items-center">
+      <MingcuteCalendarLine class="text-base mr-1" />
       {{ DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd") }}
-    </VButton>
-
+    </div>
     <!-- Tags -->
-    <VButton type="primary" class="meta-icon" disabled v-if="post.data.tags">
-      <MingcuteHashtagLine class="text-lg mr-1" />
+    <div class="flex select-none items-center">
+      <MingcuteHashtagLine class="text-base mr-1" />
       <span class="space-x-1">
-        <a
-          class=""
-          v-for="(tag, index) in post.data.tags"
-          :key="tag"
-          :href="'/tags/' + tag"
-        >
-          {{ (index === 0 ? "" : "/ ") + tag }}
-        </a>
+        <span class="" v-for="(tag, index) in post.data.tags" :key="tag">
+          <span v-if="index !== 0" class="text-gray-500">/ </span>
+          <a :href="'/tags/' + tag" class="hover:text-portage-300 transition">{{
+            tag
+          }}</a>
+        </span>
       </span>
-    </VButton>
+    </div>
   </div>
 </template>
 <style scoped>

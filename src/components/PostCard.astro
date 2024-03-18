@@ -16,7 +16,9 @@ if (post.data.description === undefined) {
 }
 ---
 
-<Card class="space-y-2 lg:space-y-3 px-4 pt-4 lg:(px-8 pt-5) hover:-translate-y-0.5 transition">
+<Card
+  class="space-y-2 lg:space-y-3 p-4 lg:px-8 lg:py-5 hover:-translate-y-0.5 transition"
+>
   <a
     href={"/post/" + post.slug}
     class="card-heading hover:text-portage-400 active:text-portage-500
@@ -25,9 +27,9 @@ if (post.data.description === undefined) {
   >
     <h2>{post.data.title}</h2>
   </a>
-  <PostAttr post={post} />
   <div
     class="prose dark:prose-invert max-w-none leading-normal text-sm"
     set:html={desc}
   />
+  <PostAttr post={post} />
 </Card>
