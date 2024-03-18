@@ -33,17 +33,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        # with:
-        #   submodules: 'recursive'
-        #   token: ${{ secrets.DEPLOY_SECRET }}
-        #   fetch-depth: '0'
-
-      - name: Checkout posts
-        uses: actions/checkout@v4
         with:
-          repository: yy4382/blog-posts
-          path: src/content/post
+          submodules: 'recursive'
           token: ${{ secrets.DEPLOY_SECRET }}
+        #   fetch-depth: '0'
 
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
