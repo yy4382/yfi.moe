@@ -6,7 +6,6 @@ import PostCard from "../../components/PostCard.astro";
 import CategoryTitle from "../../components/CategoryTitle.vue";
 export const getStaticPaths = (async () => {
   const posts = await getCollection("post");
-  console.log(posts[0].data.categories);
   const categoriesWithPosts: Record<string, CollectionEntry<"post">[]> = {};
   posts.forEach((post: CollectionEntry<"post">) => {
     if (!post.data.categories) return;
@@ -21,7 +20,6 @@ export const getStaticPaths = (async () => {
     params: { categories: categories },
     props: { categories: categories, posts: categoriesWithPosts[categories] },
   }));
-  console.log(paths);
   return paths;
 }) satisfies GetStaticPaths;
 

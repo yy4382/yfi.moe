@@ -49,13 +49,11 @@ import NavContainer from "./NavContainer.astro";
       mobileList.showModal();
     });
     function eventListener() {
-      console.log("eventListener");
       mobileList.classList.remove("hide");
       mobileList.close();
       mobileList.removeEventListener("animationend", eventListener, false);
     }
     closeBtn?.addEventListener("click", () => {
-      console.log("close");
       mobileList.classList.add("hide");
       mobileList.addEventListener("animationend", eventListener, false);
     });
