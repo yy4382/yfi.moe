@@ -31,5 +31,5 @@ if (post.data.description === undefined) {
     class="prose dark:prose-invert max-w-none leading-normal text-sm"
     set:html={desc}
   />
-  <PostAttr post={post} />
+  <PostAttr post={post} client:load />
 </Card>

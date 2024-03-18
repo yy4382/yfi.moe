@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DateTime } from "luxon";
-import VButton from "./base/VButton.vue";
+import VTooltip from "./base/VTooltip.vue";
 import MingcuteCalendarLine from "./icons/MingcuteCalendarLine.vue";
 import MingcuteHashtagLine from "./icons/MingcuteHashtagLine.vue";
 import { defineProps, computed } from "vue";
@@ -16,10 +16,19 @@ const post = computed(() => props.post);
     class="flex flex-wrap items-center gap-2 lg:gap-3 text-[0.8rem] text-gray-500 dark:text-gray-400"
   >
     <!-- Date -->
-    <div class="flex select-none items-center">
-      <MingcuteCalendarLine class="text-base mr-1" />
-      {{ DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd") }}
-    </div>
+    <VTooltip>
+      <div class="flex select-none items-center">
+        <MingcuteCalendarLine class="text-base mr-1" />
+        {{ DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd") }}
+      </div>
+      <template #tooltip>
+        <div class="bg-white dark:bg-gray-900 rounded-md border w-fit whitespace-nowrap
+          shadow-[0px_0px_6px_2px_rgba(0,0,0,0.1)] px-2 py-0.5">
+          修改于 {{ DateTime.fromJSDate(post.data.updated).toFormat("yyyy-MM-dd") }}
+        </div>
+      </template>
+    </VTooltip>
+
     <!-- Tags -->
     <div class="flex select-none items-center">
       <MingcuteHashtagLine class="text-base mr-1" />
