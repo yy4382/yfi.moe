@@ -5,7 +5,7 @@ import { siteConfig } from "../../config";
 import SearchPanel from "./SearchPanel.astro";
 import MobileMenu from "./MobileMenu.astro";
 import Card from "../base/Card.astro";
-import NavContainer from "./NavContainer.astro";
+import NavContainer from "./NavContainer.vue";
 ---
 
 <Card
@@ -22,7 +22,7 @@ import NavContainer from "./NavContainer.astro";
   </div>
   <div class="hidden md:flex h-full">
     <ul class="flex gap-1 items-center" id="navList">
-      {navMenu.map((item) => <NavContainer nav={item} />)}
+      {navMenu.map((item) => <NavContainer client:load nav={item} />)}
     </ul>
   </div>
   <SearchPanel />
