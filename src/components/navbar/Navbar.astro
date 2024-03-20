@@ -1,9 +1,8 @@
 ---
-import { Icon } from "astro-icon/components";
 import { navMenu } from "../../config";
 import { siteConfig } from "../../config";
 import SearchPanel from "./SearchPanel.astro";
-import MobileMenu from "./MobileMenu.astro";
+import MobileMenu from "./MobileMenu.vue";
 import Card from "../base/Card.astro";
 import NavContainer from "./NavContainer.vue";
 ---
@@ -11,9 +10,7 @@ import NavContainer from "./NavContainer.vue";
 <Card
   class="rounded-t-none h-16 px-3 min-h-16 flex justify-between items-center"
 >
-  <button id="toggle-menu" class="md:hidden btn-plain p-1 rounded-md">
-    <Icon name="mingcute:menu-line" size={32} />
-  </button>
+  <div class="md:hidden h-8"><MobileMenu client:load /></div>
   <div class="self-center">
     <a class="flex items-center text-xl" href="/">
       <img src="/ava.webp" alt="logo" class="w-8 h-8 rounded-lg mr-3" />
@@ -26,79 +23,4 @@ import NavContainer from "./NavContainer.vue";
     </ul>
   </div>
   <SearchPanel />
-  <dialog
-    id="nav-mobile"
-    class="bg-white dark:bg-gray-950 w-screen rounded-lg shadow-lg relative backdrop:bg-[rgba(0,0,0,0.3)] p-8 mt-18"
-  >
-    <MobileMenu />
-    <button id="close-mobile-list" class="absolute top-8 right-8" autofocus>
-      <Icon name="mingcute:close-fill" class="text-heading" />
-    </button>
-  </dialog>
 </Card>
-<script>
-  function setup() {
-    const nav = document.getElementById("nav");
-    const menuBtn = document.getElementById("toggle-menu");
-    const mobileList = document.getElementById(
-      "nav-mobile",
-    ) as HTMLDialogElement;
-    const closeBtn = document.getElementById("close-mobile-list");
-
-    menuBtn?.addEventListener("click", () => {
-      mobileList.showModal();
-    });
-    function eventListener() {
-      mobileList.classList.remove("hide");
-      mobileList.close();
-      mobileList.removeEventListener("animationend", eventListener, false);
-    }
-    closeBtn?.addEventListener("click", () => {
-      mobileList.classList.add("hide");
-      mobileList.addEventListener("animationend", eventListener, false);
-    });
-  }
-  document.addEventListener(
-    "astro:page-load",
-    () => {
-      setup();
-    },
-    { once: false },
-  );
-</script>
-<style>
-  dialog[open] {
-    /* animation: show 0.3s; */
-    @apply animate-in slide-in-t slide-in-l-1/3 zoom-in-1/2;
-  }
-  dialog[open]::backdrop {
-    animation: backdrop-show 0.15s;
-  }
-
-  @keyframes backdrop-show {
-    0% {
-      background-color: rgba(0, 0, 0, 0);
-    }
-    100% {
-      background-color: rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  .hide {
-    @apply !animate-out !slide-out-t !slide-out-l-1/3 !zoom-out-1/2;
-  }
-  .hide::backdrop {
-    animation: backdrop-hide 0.15s !important;
-  }
-  @keyframes backdrop-hide {
-    0% {
-      background-color: rgba(0, 0, 0, 0.3);
-    }
-    100% {
-      background-color: rgba(0, 0, 0, 0);
-    }
-  }
-  .parent-item:hover .children-item {
-    display: block !important;
-  }
-</style>
