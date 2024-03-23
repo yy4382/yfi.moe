@@ -12,7 +12,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://blog.yfi.moe/",
+  site: "https://yfi.moe/",
   integrations: [UnoCSS({
     injectReset: true // or a path to the reset file
   }), vue(), icon(), pagefind(), partytown(), sitemap()],
