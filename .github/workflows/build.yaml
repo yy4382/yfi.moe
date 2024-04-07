@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types:
       - public-build
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
