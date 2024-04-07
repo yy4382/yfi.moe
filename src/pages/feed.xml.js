@@ -20,5 +20,6 @@ export async function GET(context) {
     description: "记录折腾，分享经验",
     site: context.site,
     items: items,
+    stylesheet: "/rss-style.xsl",
   });
 }
