@@ -14,7 +14,7 @@ const { entry } = Astro.props;
     {entry.data.title}
   </h1>
   <div data-pagefind-weight="0.8">
-    <PostAttr post={entry as any} />
+    <PostAttr post={entry as any} client:load />
   </div>
   <MdRender>
     <slot />
