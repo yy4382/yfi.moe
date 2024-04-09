@@ -8,10 +8,11 @@ import {
   AisConfigure,
   AisSnippet,
 } from "vue-instantsearch/vue3/es";
+import { algoliaConfig } from "../../config";
 import algoliasearch from "algoliasearch/lite";
 const searchClient = algoliasearch(
-  "1348UVS1GQ",
-  "c1c21db7f7677a90c797ea5f411d8940",
+  algoliaConfig.appId,
+  algoliaConfig.readonlyKey
 );
 // import "instantsearch.css/themes/algolia-min.css";
 import "instantsearch.css/themes/satellite.css";

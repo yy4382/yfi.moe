@@ -1,11 +1,12 @@
 import algoliasearch from "algoliasearch";
 import { getCollection, type CollectionEntry } from "astro:content";
 import removeMD from "remove-markdown";
-if (!process.env.ALGOLIA_APP_ID || !process.env.ALGOLIA_WRITE_API_KEY) {
+if (!process.env.ALGOLIA_WRITE_API_KEY) {
   throw new Error("Algolia environment variables not set");
 }
+import { algoliaConfig } from "../config";
 const client = algoliasearch(
-  process.env.ALGOLIA_APP_ID,
+  algoliaConfig.appId,
   process.env.ALGOLIA_WRITE_API_KEY,
 );
 

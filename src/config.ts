@@ -97,3 +97,8 @@ export const navMenu: NavMenu[] = [
     ],
   },
 ];
+
+export const algoliaConfig = {
+  appId: "1348UVS1GQ",
+  readonlyKey: "c1c21db7f7677a90c797ea5f411d8940",
+};
