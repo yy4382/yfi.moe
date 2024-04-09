@@ -1,7 +1,6 @@
 import { defineConfig } from "astro/config";
 import vue from "@astrojs/vue";
 import remarkGithubAlerts from "remark-github-alerts";
-import pagefind from "astro-pagefind";
 import icon from "astro-icon";
 import remarkReadingTime from "./src/utils/remark-reading-time.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
@@ -15,7 +14,7 @@ export default defineConfig({
   site: "https://yfi.moe/",
   integrations: [UnoCSS({
     injectReset: true // or a path to the reset file
-  }), vue(), icon(), pagefind(), partytown(), sitemap()],
+  }), vue(), icon(), partytown(), sitemap()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [[rehypeExtendedLinks, {

@@ -9,11 +9,11 @@ interface Props {
 const { entry } = Astro.props;
 ---
 
-<Card data-pagefind-body class="px-4 py-2 lg:p-8 lg:py-5 space-y-4">
+<Card class="px-4 py-2 lg:p-8 lg:py-5 space-y-4">
   <h1 class="card-heading">
     {entry.data.title}
   </h1>
-  <div data-pagefind-weight="0.8">
+  <div>
     <PostAttr post={entry as any} client:load />
   </div>
   <MdRender>

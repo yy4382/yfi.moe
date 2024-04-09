@@ -1,7 +1,7 @@
 ---
 import { navMenu } from "../../config";
 import { siteConfig } from "../../config";
-import SearchPanel from "./SearchPanel.astro";
+import SearchIcon from "./SearchIcon.vue";
 import MobileMenu from "./MobileMenu.vue";
 import Card from "../base/Card.astro";
 import NavContainer from "./NavContainer.vue";
@@ -22,5 +22,5 @@ import NavContainer from "./NavContainer.vue";
       {navMenu.map((item) => <NavContainer client:load nav={item} />)}
     </ul>
   </div>
-  <SearchPanel />
+  <SearchIcon client:load />
 </Card>
