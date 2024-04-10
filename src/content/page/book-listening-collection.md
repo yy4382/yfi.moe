@@ -37,7 +37,7 @@ slug: book-listening-collection
 
 ### 大声朗读（Read Aloud）
 
-🔗 [微软TTS Vercel部署教程](post/ifreetime-mstts-vercel)
+🔗 [微软TTS Vercel部署教程](/post/ifreetime-mstts-vercel)
 
 最受欢迎的教程。可能也是最简单的教程。适用于（安卓的）阅读、爱阅书香、爱阅记。
 
