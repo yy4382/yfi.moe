@@ -2,9 +2,9 @@
 import { ViewTransitions } from "astro:transitions";
 import { SEO } from "astro-seo";
 import "../styles/base.css";
-import { type SeoConfig } from "../config";
+import { type SEOProps } from "astro-seo";
 interface Props {
-  seoConfig: SeoConfig;
+  seoConfig: SEOProps;
   stopTrack?: boolean;
 }
 const { seoConfig, stopTrack } = Astro.props;

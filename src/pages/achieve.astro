@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AchieveCard from "../components/AchieveCard.astro";
-import { Seo } from "../config";
-const seoConfig = new Seo("时间线").get();
+import { getSeo } from "@utils/SEO";
+const seoConfig = getSeo({ title: "时间线" });
 ---
 
 <BaseLayout seoConfig={seoConfig}>

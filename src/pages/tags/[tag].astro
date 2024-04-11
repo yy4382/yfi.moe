@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 
   return uniqueTags.map((tag) => {
     const filteredPosts = allPosts.filter((post) =>
-      post.data.tags.includes(tag),
+      post.data.tags.includes(tag)
     );
     return {
       params: { tag },
@@ -22,8 +22,8 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
-import { Seo } from "../../config";
-const seoConfig = new Seo("#" + tag).get();
+import { getSeo } from "@utils/SEO";
+const seoConfig = getSeo({ title: "#" + tag });
 ---
 
 <BaseLayout seoConfig={seoConfig}>

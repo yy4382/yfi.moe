@@ -3,9 +3,12 @@ import NoGridLayout from "../layouts/NoGridLayout.astro";
 import IndexCard from "../components/homepage/MainHome.astro";
 import HomeRecent from "../components/homepage/HomeRecent.astro";
 import HomeProjects from "../components/homepage/HomeProjects.astro";
-import { Seo } from "../config";
+import { getSeo } from "@utils/SEO";
 import HighlightPosts from "../components/homepage/HighlightPosts.astro";
-const seoConfig = new Seo("首页", "笔记与分享，代码和生活").get();
+const seoConfig = getSeo({
+  title: "首页",
+  description: "笔记与分享，代码和生活",
+});
 ---
 
 <NoGridLayout seoConfig={seoConfig}>

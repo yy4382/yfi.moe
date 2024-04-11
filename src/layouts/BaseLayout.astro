@@ -3,16 +3,18 @@ import Footer from "../components/Footer.astro";
 import SideBar from "../components/sidebar/SideBar.astro";
 import Navbar from "../components/navbar/Navbar.astro";
 import HeadTag from "./HeadTag.astro";
-import { type SeoConfig } from "../config";
+import type { SEOProps } from "astro-seo";
 interface Props {
-  seoConfig: SeoConfig;
+  seoConfig: SEOProps;
   stopTrack?: boolean;
 }
 const { seoConfig, stopTrack } = Astro.props;
 ---
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
-  <div class="bg-gradient-to-br via-violet-100 from-portage-100 to-pink-100 dark:(bg-gradient-to-br from-gray-950 to-slate-900)">
+  <div
+    class="bg-gradient-to-br via-violet-100 from-portage-100 to-pink-100 dark:(bg-gradient-to-br from-gray-950 to-slate-900)"
+  >
     <div class="w-[calc(100%-2rem)] xl:max-w-6xl mx-auto min-h-screen">
       <div class="grid w-full
       grid-cols-1 lg:grid-cols-[75%_25%]">

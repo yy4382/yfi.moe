@@ -2,14 +2,14 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { Seo } from "../config";
-const seoConfig = new Seo("我的项目").get();
+import { getSeo } from "@utils/SEO";
+const seoConfig = getSeo({ title: "我的项目" });
 const projects = await getCollection("project");
 ---
 
 <BaseLayout seoConfig={seoConfig}>
-  <h1 class="text-3xl text-heading"> My Projects </h1>
-  <hr class="bg-gray-600/20 dark:bg-gray-400/20 my-4 w-2/3 h-0.5 border-none">
+  <h1 class="text-3xl text-heading">My Projects</h1>
+  <hr class="bg-gray-600/20 dark:bg-gray-400/20 my-4 w-2/3 h-0.5 border-none" />
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     {projects.map((project) => <ProjectCard project={project} />)}
   </div>

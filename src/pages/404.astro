@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { Seo } from "../config";
 import Card from "../components/base/Card.astro";
-const seoConfig = new Seo("404").get();
+import { getSeo } from "@utils/SEO";
+const seoConfig = getSeo({ title: "404" });
 ---
 
 <BaseLayout seoConfig={seoConfig} stopTrack>

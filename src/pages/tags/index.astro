@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SideCardTags from "../../components/sidebar/SideCardTags.astro";
-import { Seo } from "../../config";
-const seoConfig = new Seo("标签").get();
+import { getSeo } from "@utils/SEO";
+const seoConfig = getSeo({ title: "标签" });
 ---
 
 <BaseLayout seoConfig={seoConfig}>

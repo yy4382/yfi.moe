@@ -10,7 +10,7 @@ export async function getStaticPaths() {
   return blogEntries
     .sort(
       (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
     )
     .map((post, i) => ({
       params: { slug: post.slug },
@@ -22,17 +22,17 @@ const { post, prev, next } = Astro.props;
 
 const { Content, headings } = await post.render();
 
-import { Seo } from "../../config";
+import { getSeo } from "@utils/SEO";
 import { getDesc } from "../../utils/mdUtils";
 import SideBar from "../../components/sidebar/SideBar.astro";
 import TocMobile from "../../components/sidebar/TocMobile.astro";
 
-const seoConfig = new Seo(
-  post.data.title,
-  post.data.description || getDesc(post.body),
-  Astro.url.origin + post.data.image,
-  "article",
-).get();
+const seoConfig = getSeo({
+  title: post.data.title,
+  description: post.data.description || getDesc(post.body),
+  image: Astro.url.origin + post.data.image,
+  type: "article",
+});
 ---
 
 <BaseLayout seoConfig={seoConfig}>

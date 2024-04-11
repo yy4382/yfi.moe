@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 import PaginationBtn from "../../components/PaginationBtn.astro";
 import { getSortedPosts } from "../../utils/urlUtils";
-export async function getStaticPaths({ paginate}: { paginate: any }) {
+export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getSortedPosts();
   return paginate(allPosts, { pageSize: 10 });
 }
@@ -11,8 +11,8 @@ interface Props {
   page: any;
 }
 const { page } = Astro.props;
-import { Seo } from "../../config";
-const seoConfig = new Seo("文章列表").get();
+import { getSeo } from "@utils/SEO";
+const seoConfig = getSeo({ title: "文章列表" });
 ---
 
 <BaseLayout seoConfig={seoConfig}>

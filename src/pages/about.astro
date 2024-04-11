@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { Seo } from "../config";
+import { getSeo } from "@utils/SEO";
 import Card from "../components/base/Card.astro";
-const seoConfig = new Seo("关于", "website").get();
+const seoConfig = getSeo({ title: "关于", type: "website" });
 ---
 
 <BaseLayout seoConfig={seoConfig}>

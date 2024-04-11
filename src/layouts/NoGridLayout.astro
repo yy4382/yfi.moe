@@ -2,9 +2,9 @@
 import Footer from "../components/Footer.astro";
 import Navbar from "../components/navbar/Navbar.astro";
 import HeadTag from "./HeadTag.astro";
-import { type SeoConfig } from "../config";
+import { type SEOProps } from "astro-seo";
 interface Props {
-  seoConfig: SeoConfig;
+  seoConfig: SEOProps;
   stopTrack?: boolean;
 }
 const { seoConfig, stopTrack } = Astro.props;

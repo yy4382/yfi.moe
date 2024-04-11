@@ -24,8 +24,8 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { categories, posts } = Astro.props;
-import { Seo } from "../../config";
-const seoConfig = new Seo("分类：" + categories).get(); // !TODO
+import { getSeo } from "@utils/SEO";
+const seoConfig = getSeo({ title: "分类：" + categories }); // !TODO
 ---
 
 <BaseLayout seoConfig={seoConfig}>
