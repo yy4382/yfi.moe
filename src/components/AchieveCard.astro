@@ -4,20 +4,20 @@ interface Props {
   tags?: string[];
   categories?: string[];
 }
-const { keyword, tags, categories } = Astro.props;
+const { keyword, tags /*, categories*/ } = Astro.props;
 
 import { getCollection, type CollectionEntry } from "astro:content";
 import Card from "./base/Card.astro";
 
 let posts = (await getCollection("post")).sort(
-  (a, b) => Number(b.data.date) - Number(a.data.date),
+  (a, b) => Number(b.data.date) - Number(a.data.date)
 );
 
 if (Array.isArray(tags) && tags.length > 0) {
   posts = posts.filter(
     (post) =>
       Array.isArray(post.data.tags) &&
-      post.data.tags.some((tag) => tags.includes(tag)),
+      post.data.tags.some((tag) => tags.includes(tag))
   );
 }
 
@@ -38,7 +38,7 @@ const groups = (function () {
       grouped[year].push(post);
       return grouped;
     },
-    {},
+    {}
   );
 
   // convert the object to an array

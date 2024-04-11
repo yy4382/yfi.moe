@@ -58,17 +58,6 @@ await client
   .saveObjects(JSON.parse(JSON.stringify(index)))
   .then((res) => console.log(res, "algolia index updated"));
 
-export async function GET({
-  params,
-  request,
-}: {
-  params: Record<string, string>;
-  request: Request;
-}) {
-  return new Response(
-    JSON.stringify({
-      name: "Astro",
-      url: "https://astro.build/",
-    }),
-  );
+export async function GET() {
+  return new Response("You shouldn't be here", { status: 404 });
 }

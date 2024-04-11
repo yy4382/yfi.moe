@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import SideCard from "./SideCard.astro";
-import { Icon } from "astro-icon/components";
 const allPosts = await getCollection("post");
 const tagsWithCount = allPosts.reduce((acc: Record<string, number>, post) => {
   post.data.tags.forEach((tag) => {
