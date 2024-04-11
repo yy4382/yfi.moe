@@ -1,5 +1,4 @@
-<script setup>
-// @ts-ignore
+<script setup lang="ts">
 import {
   AisSearchBox,
   AisInstantSearch,
@@ -12,9 +11,8 @@ import { algoliaConfig } from "../../config";
 import algoliasearch from "algoliasearch/lite";
 const searchClient = algoliasearch(
   algoliaConfig.appId,
-  algoliaConfig.readonlyKey
+  algoliaConfig.readonlyKey,
 );
-// import "instantsearch.css/themes/algolia-min.css";
 import "instantsearch.css/themes/satellite.css";
 </script>
 <template>
@@ -28,9 +26,11 @@ import "instantsearch.css/themes/satellite.css";
       :hits-per-page.camel="4"
     />
     <AisSearchBox />
-    <AisInfiniteHits class="overflow-y-auto max-h-80vh">
+    <AisInfiniteHits class="">
       <template #item="{ item }">
-        <div class="flex flex-col space-y-0.5 whitespace-break-spaces break-all">
+        <div
+          class="flex flex-col space-y-0.5 whitespace-break-spaces break-all"
+        >
           <a :href="item.slug" class="text-xl">
             <AisHighlight attribute="title" :hit="item" />
           </a>
@@ -40,22 +40,3 @@ import "instantsearch.css/themes/satellite.css";
     </AisInfiniteHits>
   </AisInstantSearch>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active,
-.move-enter-active,
-.move-leave-active {
-  transition: all 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-.move-enter-from,
-.move-leave-to {
-  opacity: 0;
-  transform: translateY(-20%), scale(0.5);
-}
-</style>

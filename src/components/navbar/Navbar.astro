@@ -1,7 +1,7 @@
 ---
 import { navMenu } from "../../config";
 import { siteConfig } from "../../config";
-import SearchIcon from "./SearchIcon.vue";
+import { Icon } from "astro-icon/components";
 import MobileMenu from "./MobileMenu.vue";
 import Card from "../base/Card.astro";
 import NavContainer from "./NavContainer.vue";
@@ -22,5 +22,7 @@ import NavContainer from "./NavContainer.vue";
       {navMenu.map((item) => <NavContainer client:load nav={item} />)}
     </ul>
   </div>
-  <SearchIcon client:load />
+  <a href="/search">
+    <Icon name={"mingcute:search-2-line"} size={32} />
+  </a>
 </Card>

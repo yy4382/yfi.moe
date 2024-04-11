@@ -1,0 +1,14 @@
+---
+import { getSeo } from "@utils/SEO";
+import NoGridLayout from "src/layouts/NoGridLayout.astro";
+import SearchPanel from "@components/navbar/SearchPanel.vue";
+const seo = getSeo({ title: "Search", noindex: true });
+---
+
+<NoGridLayout seoConfig={seo} stopTrack>
+  <div class="container">
+    <p> the style on this page is still in progress</p>
+    <p> 这个页面的样式仍在施工中 🚧</p>
+    <SearchPanel client:load class="md:max-w-[70%] mx-auto" />
+  </div>
+</NoGridLayout>
