@@ -8,7 +8,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "build:fetch": "git clone \"https://$ARTICLE_PAT@github.com/yy4382/blog-posts.git\" --depth 1 --branch main --single-branch --quiet src/content/post && astro build",
+    "build:fetch": "sh get-article.sh && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
