@@ -18,7 +18,7 @@ const { seoConfig, stopTrack } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {
-      import.meta.env.PROD && !stopTrack && (
+      import.meta.env.PROD && !import.meta.env.LIVE_PREVIEW && !stopTrack && (
         <script
           is:inline
           async
