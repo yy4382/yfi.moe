@@ -14,9 +14,9 @@ const { headings } = Astro.props;
 <button
   class="fixed bottom-8 right-8 z-10 lg:hidden rounded-full p-2
     shadow-lg text-heading
-    active:scale-90 transition duration-75"
-  bg="white dark:gray-800 opacity-90"
-  ring="3 gray-200 dark:gray-600"
+    active:scale-90 transition duration-75
+    bg-white dark:bg-gray-800 bg-opacity-90
+    ring-3 ring-gray-200 dark:ring-gray-600"
   id="mobile-toc-btn"
 >
   <Icon name="mingcute:list-check-fill" />
@@ -59,7 +59,7 @@ const { headings } = Astro.props;
     () => {
       setup();
     },
-    { once: false },
+    { once: false }
   );
 </script>
 

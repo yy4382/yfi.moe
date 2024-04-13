@@ -76,10 +76,7 @@ function formatTag(tag: string[]) {
           </div>
           {/* dot and line */}
           <div class="w-[15%] md:w-[10%]">
-            <div
-              class="h-3 w-3 bg-none rounded-full mx-auto z-50"
-              outline="~ 3 portage-300 offset-[-2px]"
-            />
+            <div class="h-3 w-3 bg-none rounded-full mx-auto z-50 outline outline-portage-300 outline-offset-[2px]" />
           </div>
           {/* post count */}
           <div class="w-[70%] md:w-[80%] transition text-left text-black/50 dark:text-white/50">
@@ -104,15 +101,15 @@ function formatTag(tag: string[]) {
                     class="transition-all mx-auto w-1 h-1 rounded 
                   group-hover:h-5 
                   z-50
+                  bg-white dark:bg-gray-900 group-hover:bg-portage-300
+                  outline outline-portage-300 group-hover:outline-transparent
                   "
-                    bg="white dark:gray-900 group-hover:portage-300"
-                    outline="~ 3 portage-300 group-hover:transparent"
                   />
                 </div>
                 {/* post title */}
                 <div
-                  class="w-[70%] md:max-w-[65%] md:w-[65%] font-[450] group-hover:translate-x-1 transition-all pr-8 whitespace-nowrap overflow-hidden"
-                  text="left group-hover:(portage-700 dark:portage-300) gray-800 dark:gray-200 ellipsis"
+                  class="w-[70%] md:max-w-[65%] md:w-[65%] font-[450] group-hover:translate-x-1 transition-all pr-8 whitespace-nowrap overflow-hidden
+                  text-left text-gray-800 dark:text-gray-200 text-ellipsis group-hover:text-portage-700 dark:group-hover:text-portage-300"
                 >
                   {post.data.title}
                 </div>

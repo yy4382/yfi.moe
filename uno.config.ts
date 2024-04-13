@@ -1,12 +1,12 @@
 // uno.config.ts
 import {
   defineConfig,
-  presetAttributify,
+  // presetAttributify,
   presetUno,
   presetIcons,
   presetTypography,
   transformerDirectives,
-  transformerCompileClass,
+  // transformerCompileClass,
   transformerVariantGroup,
 } from "unocss";
 import presetAnimations from "unocss-preset-animations";
@@ -17,7 +17,7 @@ import presetAnimations from "unocss-preset-animations";
 export default defineConfig({
   transformers: [
     transformerDirectives(),
-    transformerCompileClass(),
+    // transformerCompileClass(),
     transformerVariantGroup(),
   ],
   theme: {
@@ -38,9 +38,9 @@ export default defineConfig({
     },
   },
   presets: [
-    presetAttributify({
-      /* preset options */
-    }),
+    // presetAttributify({
+    //   /* preset options */
+    // }),
     presetUno({
       dark: "media",
     }),
