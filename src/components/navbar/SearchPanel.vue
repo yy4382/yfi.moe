@@ -6,6 +6,7 @@ import {
   AisHighlight,
   AisConfigure,
   AisSnippet,
+  // @ts-ignore
 } from "vue-instantsearch/vue3/es";
 import { algoliaConfig } from "../../config";
 import algoliasearch from "algoliasearch/lite";
@@ -31,7 +32,7 @@ import "instantsearch.css/themes/satellite.css";
         <div
           class="flex flex-col space-y-0.5 whitespace-break-spaces break-all"
         >
-          <a :href="item.slug" class="text-xl">
+          <a :href="'/post/' + item.slug" class="text-xl">
             <AisHighlight attribute="title" :hit="item" />
           </a>
           <AisSnippet attribute="content" :hit="item" />
