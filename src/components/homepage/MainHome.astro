@@ -94,7 +94,12 @@ export const socials: Social[] = [
         ring-offset-gray-100 dark:ring-offset-gray-950
         rounded-full w-52 h-52 overflow-hidden mx-auto"
     >
-      <Image src={avatar} alt="avatar" />
+      <Image
+        src={avatar}
+        alt="avatar"
+        widths={[240, 540, 720, avatar.width]}
+        loading={"eager"}
+      />
     </div>
   </div>
   <i
@@ -107,7 +112,8 @@ export const socials: Social[] = [
 
 <style>
   @keyframes bounce {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0);
     }
     50% {
