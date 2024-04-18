@@ -5,6 +5,8 @@ import { Icon } from "astro-icon/components";
 import MobileMenu from "./MobileMenu.vue";
 import Card from "../base/Card.astro";
 import NavContainer from "./NavContainer.vue";
+import { Image } from "astro:assets";
+import logo from "@assets/logo.jpeg";
 ---
 
 <Card
@@ -13,16 +15,19 @@ import NavContainer from "./NavContainer.vue";
   <div class="md:hidden h-8"><MobileMenu client:load /></div>
   <div class="self-center">
     <a class="flex items-center text-xl" href="/">
-      <img src="/ava.webp" alt="logo" class="w-8 h-8 rounded-lg mr-3" />
+      <Image
+        src={logo}
+        alt="logo"
+        loading={"eager"}
+        class="w-8 h-8 rounded-lg mr-3"
+      />
       <span class="hidden md:inline">{siteConfig.title}</span>
     </a>
   </div>
-  <div class="hidden md:flex h-full">
-    <ul class="flex gap-1 items-center" id="navList">
-      {navMenu.map((item) => <NavContainer client:load nav={item} />)}
-    </ul>
+  <div class="hidden md:flex h-full items-center space-x-1">
+    {navMenu.map((item) => <NavContainer client:load nav={item} />)}
   </div>
-  <a href="/search">
+  <a href="/search" aria-label="Search Button">
     <Icon name={"mingcute:search-2-line"} size={32} />
   </a>
 </Card>

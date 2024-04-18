@@ -12,16 +12,18 @@ const tags = [...new Set(posts.map((post) => post.data.tags).flat())].length;
 
 import Card from "../base/Card.astro";
 const name = "Yunfi";
-const avatar = "/ava.webp";
 const description = "Undergraduate";
+import { Image } from "astro:assets";
+import avatar from "@assets/avatar.jpeg";
 ---
 
 <Card class="w-full lg:p-0 lg:pb-4 p-4">
   <div class="flex lg:flex-col items-center gap-4 justify-center">
     <div class="w-32 lg:w-full mt-0">
-      <img
+      <Image
         class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg"
         src={avatar}
+        loading={"eager"}
         alt="Yunfi avatar"
       />
     </div>
