@@ -1,5 +1,7 @@
 ---
 import Card from "../base/Card.astro";
+import { Image } from "astro:assets";
+import avatar from "@assets/avatar.jpeg";
 
 interface Social {
   name: string;
@@ -92,7 +94,7 @@ export const socials: Social[] = [
         ring-offset-gray-100 dark:ring-offset-gray-950
         rounded-full w-52 h-52 overflow-hidden mx-auto"
     >
-      <img src="/ava.webp" alt="avatar" />
+      <Image src={avatar} alt="avatar" />
     </div>
   </div>
   <i

@@ -13,7 +13,7 @@ const post = computed(() => props.post);
 
 <template>
   <div
-    class="flex flex-wrap items-center gap-2 lg:gap-3 text-[0.8rem] text-gray-500 dark:text-gray-400"
+    class="flex flex-wrap items-center gap-2 lg:gap-3 text-[0.8rem] text-comment"
   >
     <!-- Date -->
     <VTooltip>
@@ -34,7 +34,7 @@ const post = computed(() => props.post);
       <MingcuteHashtagLine class="text-base mr-1" />
       <span class="space-x-1">
         <span class="" v-for="(tag, index) in post.data.tags" :key="tag">
-          <span v-if="index !== 0" class="text-gray-500">/ </span>
+          <span v-if="index !== 0" class="text-comment">/ </span>
           <a :href="'/tags/' + tag" class="hover:text-portage-300 transition">{{
             tag
           }}</a>

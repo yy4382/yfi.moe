@@ -5,7 +5,7 @@ import VTooltip from "../base/VTooltip.vue";
 const props = defineProps<{ nav: NavMenu }>();
 </script>
 <template>
-  <li class="w-20 font-medium justify-center items-center h-full flex">
+  <div class="w-20 font-medium justify-center items-center h-full flex">
     <VTooltip class="self-center h-full">
       <div class="h-full flex justify-center items-center">
         <a
@@ -29,5 +29,5 @@ const props = defineProps<{ nav: NavMenu }>();
         </ul>
       </template>
     </VTooltip>
-  </li>
+  </div>
 </template>

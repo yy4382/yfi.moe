@@ -20,12 +20,6 @@ export const navMenu: NavMenu[] = [
     text: "首页",
     link: "/",
     icon: "mingcute:dot-grid-fill",
-    subMenu: [
-      { text: "自述", link: "/" },
-      { text: "高亮文章", link: "/#highlights" },
-      { text: "最近文章", link: "/#recent" },
-      { text: "首页项目", link: "/#projects" },
-    ],
   },
   {
     text: "文章",

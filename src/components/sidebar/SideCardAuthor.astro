@@ -28,28 +28,28 @@ import avatar from "@assets/avatar.jpeg";
       />
     </div>
     <div class="flex flex-col gap-2 items-center">
-      <h5 class="text-2xl font-medium text-gray-900 dark:text-white">
-          {name}
+      <h5 class="text-2xl font-medium text-heading relative">
+        {name}
       </h5>
-      <span class="text-sm text-gray-500">{description}</span>
+      <span class="text-sm text-comment">{description}</span>
       <div class="flex">
         <div class="flex flex-col items-center mx-4">
-          <span class="text-lg font-semibold text-gray-900 dark:text-white">
+          <span class="text-lg font-semibold text-content">
             {articles}
           </span>
-          <span class="text-sm text-gray-500">文章</span>
+          <span class="text-sm text-comment">文章</span>
         </div>
         <div class="flex flex-col items-center mx-4">
-          <span class="text-lg font-semibold text-gray-900 dark:text-white">
+          <span class="text-lg font-semibold text-content">
             {(words / 10000).toFixed(1)}
           </span>
-          <span class="text-sm text-gray-500">万字</span>
+          <span class="text-sm text-comment">万字</span>
         </div>
         <div class="flex flex-col items-center mx-4">
-          <span class="text-lg font-semibold text-gray-900 dark:text-white">
+          <span class="text-lg font-semibold text-content">
             {tags}
           </span>
-          <span class="text-sm text-gray-500">标签</span>
+          <span class="text-sm text-comment">标签</span>
         </div>
       </div>
     </div>

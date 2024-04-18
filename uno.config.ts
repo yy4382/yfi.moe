@@ -1,25 +1,16 @@
 // uno.config.ts
 import {
   defineConfig,
-  // presetAttributify,
   presetUno,
   presetIcons,
   presetTypography,
   transformerDirectives,
-  // transformerCompileClass,
   transformerVariantGroup,
 } from "unocss";
 import presetAnimations from "unocss-preset-animations";
 
-// TODO
-// blockquote border and marker color
-
 export default defineConfig({
-  transformers: [
-    transformerDirectives(),
-    // transformerCompileClass(),
-    transformerVariantGroup(),
-  ],
+  transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
     colors: {
       portage: {
@@ -38,9 +29,6 @@ export default defineConfig({
     },
   },
   presets: [
-    // presetAttributify({
-    //   /* preset options */
-    // }),
     presetUno({
       dark: "media",
     }),
@@ -90,9 +78,9 @@ export default defineConfig({
       dark:(bg-gray-900 text-gray-300/90
       hover:bg-portage-100/20 active:bg-portage-200/40)`,
 
-    "btn-plain": `bg-none text-gray-700 btn-transition
+    "btn-plain": `bg-none btn-transition text-content
       hover:bg-portage-200/80 active:bg-portage-300/80 
-      dark:( text-gray-300/90 hover:bg-portage-100/20)`,
+      dark:hover:bg-portage-100/20`,
 
     "card-heading": `relative text-wrap text-xl font-medium tracking-tight
       text-gray-900 transition dark:text-gray-100
@@ -100,6 +88,10 @@ export default defineConfig({
 
     "text-content": `text-gray-700 dark:text-gray-300`,
     "text-heading": `text-gray-900 dark:text-gray-100`,
+    "text-comment": `text-gray-600 dark:text-gray-400`,
     "text-primary": `text-portage-400 dark:text-portage-400`,
+
+    "bg-card": "bg-white dark:bg-gray-900",
+    "shape-card": "rounded-xl shadow-lg",
   },
 });
