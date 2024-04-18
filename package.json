@@ -2,7 +2,7 @@
   "name": "blog-astro",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@8.15.2",
+  "packageManager": "pnpm@9.0.2+sha256.d6fc013639b81658ff175829ebb9435bcb89eff206769e460fd3ae27c2054df6",
   "license": "UNLICENSED",
   "scripts": {
     "dev": "astro dev",
@@ -15,15 +15,15 @@
   "dependencies": {
     "@astrojs/check": "^0.5.10",
     "@astrojs/rss": "^4.0.5",
-    "@astrojs/sitemap": "^3.1.2",
+    "@astrojs/sitemap": "^3.1.3",
     "@astrojs/vue": "^4.1.0",
-    "@iconify-json/devicon-plain": "^1.1.36",
+    "@iconify-json/devicon-plain": "^1.1.37",
     "@iconify-json/mingcute": "^1.1.17",
     "@iconify/vue": "^4.1.1",
     "@types/luxon": "^3.4.2",
-    "@unocss/preset-attributify": "^0.59.1",
+    "@unocss/preset-attributify": "^0.59.4",
     "@waline/client": "^3.1.3",
-    "astro": "^4.6.0",
+    "astro": "^4.6.2",
     "astro-icon": "^1.1.0",
     "astro-seo": "^0.8.3",
     "instantsearch.css": "^8.1.0",
@@ -38,16 +38,17 @@
     "remark-rehype": "^11.1.0",
     "typescript": "^5.4.5",
     "unified": "^11.0.4",
-    "vue": "^3.4.21",
+    "vue": "^3.4.23",
     "vue-instantsearch": "^4.15.0"
   },
   "devDependencies": {
     "@types/remove-markdown": "^0.3.4",
-    "@unocss/reset": "^0.59.1",
+    "@unocss/reset": "^0.59.4",
     "algoliasearch": "^4.23.3",
     "prettier-plugin-astro": "^0.13.0",
     "remove-markdown": "^0.5.0",
-    "unocss": "^0.59.1",
+    "sharp": "^0.33.3",
+    "unocss": "^0.59.4",
     "unocss-preset-animations": "^1.0.2"
   }
 }
