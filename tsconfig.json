@@ -8,6 +8,7 @@
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@utils/*": ["src/utils/*"],
+      "@config": ["src/config"],
     }
   },
   "exclude": ["dist"]
