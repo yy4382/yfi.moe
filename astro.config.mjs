@@ -2,7 +2,7 @@ import { defineConfig } from "astro/config";
 import vue from "@astrojs/vue";
 import remarkGithubAlerts from "remark-github-alerts";
 import icon from "astro-icon";
-import remarkReadingTime from "src/utils/readingTime.ts";
+import remarkReadingTime from "./src/utils/remark-reading-time.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
 import UnoCSS from "unocss/astro";
 import sitemap from "@astrojs/sitemap";
