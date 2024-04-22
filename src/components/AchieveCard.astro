@@ -7,7 +7,7 @@ interface Props {
 const { keyword, tags /*, categories*/ } = Astro.props;
 
 import { getCollection, type CollectionEntry } from "astro:content";
-import Card from "./base/Card.astro";
+import Card from "@comp/base/Card.astro";
 
 let posts = (await getCollection("post")).sort(
   (a, b) => Number(b.data.date) - Number(a.data.date)

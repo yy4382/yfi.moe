@@ -1,8 +1,8 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostCard from "../../components/PostCard.astro";
-import PaginationBtn from "../../components/PaginationBtn.astro";
-import { getSortedPosts } from "../../utils/urlUtils";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PostCard from "@comp/PostCard.astro";
+import PaginationBtn from "@comp/PaginationBtn.astro";
+import { getSortedPosts } from "@utils/urlUtils";
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getSortedPosts();
   return paginate(allPosts, { pageSize: 10 });

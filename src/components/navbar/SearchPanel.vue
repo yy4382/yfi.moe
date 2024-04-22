@@ -8,7 +8,7 @@ import {
   AisSnippet,
   // @ts-ignore
 } from "vue-instantsearch/vue3/es";
-import { algoliaConfig } from "../../config";
+import { algoliaConfig } from "@config";
 import algoliasearch from "algoliasearch/lite";
 const searchClient = algoliasearch(
   algoliaConfig.appId,

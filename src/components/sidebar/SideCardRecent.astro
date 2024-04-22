@@ -1,6 +1,6 @@
 ---
 import SideCard from "./SideCard.astro";
-import { getSortedPosts } from "../../utils/urlUtils";
+import { getSortedPosts } from "@utils/urlUtils";
 const allPosts = await getSortedPosts();
 const recentPosts = allPosts.slice(0, 5);
 ---

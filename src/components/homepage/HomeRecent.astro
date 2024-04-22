@@ -1,6 +1,6 @@
 ---
-import { getSortedPosts } from "../../utils/urlUtils";
-import HighlightCard from "./HighlightCard.astro";
+import { getSortedPosts } from "@utils/urlUtils";
+import HighlightCard from "@comp/homepage/HighlightCard.astro";
 const posts = await getSortedPosts();
 const recents = posts.slice(0, 5);
 ---

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { NavMenu } from "../../config";
+import type { NavMenu } from "@config";
 import { defineProps } from "vue";
-import VTooltip from "../base/VTooltip.vue";
+import VTooltip from "@comp/base/VTooltip.vue";
 const props = defineProps<{ nav: NavMenu }>();
 </script>
 <template>

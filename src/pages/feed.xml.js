@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
-import { renderMd } from "../utils/mdUtils";
-import { getSortedPosts } from "../utils/urlUtils";
+import { renderMd } from "@utils/mdUtils";
+import { getSortedPosts } from "@utils/urlUtils";
 
 export async function GET(context) {
   const entries = await getSortedPosts();

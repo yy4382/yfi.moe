@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import ProjectCard from "../ProjectCard.astro";
+import ProjectCard from "@comp/ProjectCard.astro";
 const projects = (await getCollection("project")).slice(0, 3);
 ---
 

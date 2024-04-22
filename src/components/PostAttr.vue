@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { DateTime } from "luxon";
-import VTooltip from "./base/VTooltip.vue";
-import MingcuteCalendarLine from "./icons/MingcuteCalendarLine.vue";
-import MingcuteHashtagLine from "./icons/MingcuteHashtagLine.vue";
+import VTooltip from "@comp/base/VTooltip.vue";
+import MingcuteCalendarLine from "@icons/MingcuteCalendarLine.vue";
+import MingcuteHashtagLine from "@icons/MingcuteHashtagLine.vue";
 import { defineProps, computed } from "vue";
 import { type CollectionEntry } from "astro:content";
 const props = defineProps<{

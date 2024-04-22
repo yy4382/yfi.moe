@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import MingCuteMenuLine from "../icons/MingcuteMenuLine.vue";
-import MingcuteCloseFill from "../icons/MingcuteCloseFill.vue";
-import { navMenu } from "../../config";
+import MingCuteMenuLine from "@icons/MingcuteMenuLine.vue";
+import MingcuteCloseFill from "@icons/MingcuteCloseFill.vue";
+import { navMenu } from "@config";
 import { Icon } from "@iconify/vue";
 import {
   DialogClose,

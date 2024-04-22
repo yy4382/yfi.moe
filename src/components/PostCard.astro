@@ -3,10 +3,10 @@ import type { CollectionEntry } from "astro:content";
 interface Props {
   post: CollectionEntry<"post">;
 }
-import PostAttr from "./PostAttr.vue";
+import PostAttr from "@comp/PostAttr.vue";
 const { post } = Astro.props;
-import { renderDesc } from "../utils/mdUtils";
-import Card from "./base/Card.astro";
+import { renderDesc } from "@utils/mdUtils";
+import Card from "@comp/base/Card.astro";
 
 let desc = "";
 if (post.data.description === undefined) {

@@ -5,10 +5,13 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
+      "@comp/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@utils/*": ["src/utils/*"],
       "@config": ["src/config"],
+      "@layouts/*": ["src/layouts/*"],
+      "@icons/*": ["src/components/icons/*"],
+      "@styles/*": ["src/styles/*"],
     }
   },
   "exclude": ["dist"]

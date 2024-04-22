@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import PrevNext from "../../components/PrevNext.astro";
-import CommentCard from "../../components/CommentCard.vue";
-import Article from "../../components/views/Article.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PrevNext from "@comp/PrevNext.astro";
+import CommentCard from "@comp/CommentCard.vue";
+import Article from "@comp/views/Article.astro";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");
@@ -23,9 +23,9 @@ const { post, prev, next } = Astro.props;
 const { Content, headings } = await post.render();
 
 import { getSeo } from "@utils/SEO";
-import { getDesc } from "../../utils/mdUtils";
-import SideBar from "../../components/sidebar/SideBar.astro";
-import TocMobile from "../../components/sidebar/TocMobile.astro";
+import { getDesc } from "@utils/mdUtils";
+import SideBar from "@comp/sidebar/SideBar.astro";
+import TocMobile from "@comp/sidebar/TocMobile.astro";
 
 const seoConfig = getSeo({
   title: post.data.title,

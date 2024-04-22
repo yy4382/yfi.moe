@@ -1,10 +1,10 @@
 ---
-import NoGridLayout from "../layouts/NoGridLayout.astro";
-import IndexCard from "../components/homepage/MainHome.astro";
-import HomeRecent from "../components/homepage/HomeRecent.astro";
-import HomeProjects from "../components/homepage/HomeProjects.astro";
+import NoGridLayout from "@layouts/NoGridLayout.astro";
+import IndexCard from "@comp/homepage/MainHome.astro";
+import HomeRecent from "@comp/homepage/HomeRecent.astro";
+import HomeProjects from "@comp/homepage/HomeProjects.astro";
 import { getSeo } from "@utils/SEO";
-import HighlightPosts from "../components/homepage/HighlightPosts.astro";
+import HighlightPosts from "@comp/homepage/HighlightPosts.astro";
 const seoConfig = getSeo({
   title: "首页",
   description: "笔记与分享，代码和生活",
