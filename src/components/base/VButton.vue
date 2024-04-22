@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref, computed } from "vue";
+import { computed } from "vue";
 type ButtonType = "primary" | "card" | "plain";
 const props = defineProps<{
   type?: ButtonType;

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { NavMenu } from "@config";
-import { defineProps } from "vue";
 import VTooltip from "@comp/base/VTooltip.vue";
+import { computed } from "vue";
 const props = defineProps<{ nav: NavMenu }>();
+const nav = computed(() => props.nav);
 </script>
 <template>
   <div class="w-20 font-medium justify-center items-center h-full flex">
