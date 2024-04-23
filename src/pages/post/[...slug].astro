@@ -23,7 +23,7 @@ const { post, prev, next } = Astro.props;
 const { Content, headings } = await post.render();
 
 import { getSeo } from "@utils/SEO";
-import { getDesc } from "@utils/mdUtils";
+import { getDesc } from "@utils/markdown";
 import SideBar from "@comp/sidebar/SideBar.astro";
 import TocMobile from "@comp/sidebar/TocMobile.astro";
 

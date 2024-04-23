@@ -1,11 +1,12 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import * as path from "@utils/path";
 interface Props {
   post: CollectionEntry<"post">;
 }
 import PostAttr from "@comp/PostAttr.vue";
 const { post } = Astro.props;
-import { renderDesc } from "@utils/mdUtils";
+import { renderDesc } from "@utils/markdown";
 import Card from "@comp/base/Card.astro";
 
 let desc = "";
@@ -20,7 +21,7 @@ if (post.data.description === undefined) {
   class="space-y-2 lg:space-y-3 p-4 lg:px-8 lg:py-5 md:hover:-translate-y-0.5 transition"
 >
   <a
-    href={"/post/" + post.slug}
+    href={path.getPostLink(post.slug)}
     class="card-heading hover:text-portage-400 active:text-portage-500
      hover:dark:text-portage-300 active:dark:text-portage-200
      transition-colors duration-300 ease-in-out"

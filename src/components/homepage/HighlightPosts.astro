@@ -1,5 +1,5 @@
 ---
-import { getSortedPosts } from "@utils/urlUtils";
+import { getSortedPosts } from "@utils/content";
 import HighlightCard from "@comp/homepage/HighlightCard.astro";
 const all = await getSortedPosts();
 const highlights = all.filter((post) => post.data.highlight);

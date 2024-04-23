@@ -1,8 +1,8 @@
 import rss from "@astrojs/rss";
-import { renderMd } from "@utils/mdUtils";
-import { getSortedPosts } from "@utils/urlUtils";
+import { renderMd } from "@utils/markdown.ts";
+import { getSortedPosts } from "@utils/content.ts";
 
-export async function GET(context) {
+export async function GET(context: any) {
   const entries = await getSortedPosts();
   let items = [];
   for (let i = 0; i < 8; i++) {
@@ -12,7 +12,7 @@ export async function GET(context) {
       pubDate: entry.data.date,
       description: entry.data.description,
       link: `/post/${entry.slug}/`,
-      content: await renderMd(entry.body),
+      content: await renderMd(entry.body)
     });
   }
   return rss({
@@ -20,6 +20,6 @@ export async function GET(context) {
     description: "记录折腾，分享经验",
     site: context.site,
     items: items,
-    stylesheet: "/rss-style.xsl",
+    stylesheet: "/rss-style.xsl"
   });
 }

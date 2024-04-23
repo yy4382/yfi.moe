@@ -8,6 +8,7 @@ const { keyword, tags /*, categories*/ } = Astro.props;
 
 import { getCollection, type CollectionEntry } from "astro:content";
 import Card from "@comp/base/Card.astro";
+import * as pathUtil from "@utils/path";
 
 let posts = (await getCollection("post")).sort(
   (a, b) => Number(b.data.date) - Number(a.data.date)
@@ -85,7 +86,7 @@ function formatTag(tag: string[]) {
         </div>
         {group.posts.map((post: CollectionEntry<"post">) => (
           <a
-            href={"/post/" + post.slug}
+            href={pathUtil.getPostLink(post.slug)}
             aria-label={post.data.title}
             class="group"
           >
