@@ -1,6 +1,7 @@
 ---
 import SideCard from "./SideCard.astro";
 import { getSortedPosts } from "@utils/content";
+import { getPostPath } from "@utils/path";
 const allPosts = await getSortedPosts();
 const recentPosts = allPosts.slice(0, 5);
 ---
@@ -10,7 +11,7 @@ const recentPosts = allPosts.slice(0, 5);
     {
       recentPosts.map((entry, index) => (
         <li class="btn-plain hover:translate-x-1 rounded-md px-2 py-1">
-          <a href={"/post/" + entry.slug} class="select-none text-sm line-clamp-2">
+          <a href={getPostPath(entry)} class="select-none text-sm line-clamp-2">
             {entry.data.title}
           </a>
         </li>

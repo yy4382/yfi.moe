@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 interface Props {
   post: CollectionEntry<"post">;
 }
+import { getPostPath } from "@utils/path";
 import PostAttr from "@comp/PostAttr.vue";
 const { post } = Astro.props;
 import Card from "@comp/base/Card.astro";
@@ -13,7 +14,7 @@ import Card from "@comp/base/Card.astro";
     hover:-translate-y-0.5 transition`
 >
   <a
-    href={"/post/" + post.slug}
+    href={getPostPath(post)}
     class="text-heading text-xl font-medium
      hover:text-portage-400 active:text-portage-500
      hover:dark:text-portage-300 active:dark:text-portage-200

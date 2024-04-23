@@ -1,5 +1,6 @@
 ---
 import { getSortedPosts } from "@utils/content";
+import { path } from "@config";
 import HighlightCard from "@comp/homepage/HighlightCard.astro";
 const all = await getSortedPosts();
 const highlights = all.filter((post) => post.data.highlight);
@@ -14,7 +15,7 @@ const highlights = all.filter((post) => post.data.highlight);
   {
     highlights.length % 2 === 0 && (
       <div class="hidden md:flex items-center justify-center">
-        <a class="btn-plain p-2 font-serif text-xl rounded-lg" href="/post/1">
+        <a class="btn-plain p-2 font-serif text-xl rounded-lg" href={path.postList}>
           Article list <i class="i-mingcute-arrow-right-line" />
         </a>
       </div>

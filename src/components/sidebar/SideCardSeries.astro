@@ -1,6 +1,7 @@
 ---
 import SideCard from "./SideCard.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
+import { getPostPath } from "@utils/path";
 interface Props {
   id: string;
 }
@@ -36,7 +37,7 @@ const title = titleSet.values().next().value;
     {
       entries.map((entry) => (
         <a
-          href={"/post/" + entry.slug}
+          href={getPostPath(entry)}
           class="btn-plain hover:translate-x-1 p-2 rounded-md select-none
             text-ellipsis whitespace-nowrap overflow-hidden"
         >

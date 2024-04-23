@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
+import { getPostPath } from "@utils/path";
 interface Props {
   prev: CollectionEntry<"post">;
   next: CollectionEntry<"post">;
@@ -8,7 +9,7 @@ interface Props {
 const { prev, next } = Astro.props;
 const prev1 = prev
   ? {
-      url: "/post/" + prev.slug,
+      url: getPostPath(prev),
       title: prev.data.title,
     }
   : {
@@ -17,7 +18,7 @@ const prev1 = prev
     };
 const next1 = next
   ? {
-      url: "/post/" + next.slug,
+      url: getPostPath(next),
       title: next.data.title,
     }
   : {

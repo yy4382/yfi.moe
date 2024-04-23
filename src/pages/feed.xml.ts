@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { renderMd } from "@utils/markdown.ts";
 import { getSortedPosts } from "@utils/content.ts";
+import { getPostPath } from "@utils/path";
 
 export async function GET(context: any) {
   const entries = await getSortedPosts();
@@ -11,7 +12,7 @@ export async function GET(context: any) {
       title: entry.data.title,
       pubDate: entry.data.date,
       description: entry.data.description,
-      link: `/post/${entry.slug}/`,
+      link: getPostPath(entry),
       content: await renderMd(entry.body)
     });
   }

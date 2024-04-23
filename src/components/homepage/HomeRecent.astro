@@ -1,6 +1,7 @@
 ---
 import { getSortedPosts } from "@utils/content";
 import HighlightCard from "@comp/homepage/HighlightCard.astro";
+import { path } from "@config";
 const posts = await getSortedPosts();
 const recents = posts.slice(0, 5);
 ---
@@ -16,7 +17,7 @@ const recents = posts.slice(0, 5);
   <a
     class="btn-plain mx-5 p-2
       font-serif text-center text-xl rounded-lg col-span-2"
-    href="/post/1"
+    href={path.postList}
   >
     More <i class="i-mingcute-arrow-right-line"></i>
   </a>
