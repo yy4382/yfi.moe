@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import SideCard from "./SideCard.astro";
+import { Icon } from "astro-icon/components";
 const allPosts = await getCollection("post");
 const tagsWithCount = allPosts.reduce((acc: Record<string, number>, post) => {
   post.data.tags.forEach((tag) => {
@@ -20,17 +21,15 @@ const maxTags = showAll ? Object.keys(tagsWithCount).length : 9;
 ---
 
 <SideCard cardTitle={showAll ? "标签" : "热门标签"} cardLink="/tags">
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap gap-2 mt-1">
     {
       Object.keys(tagsWithCount)
         .slice(0, maxTags)
         .map((tag) => (
-          <a
-            href={`/tags/${tag}`}
-            class="inline-block rounded-lg text-sm leading-loose px-2 text-content"
-          >
-            #{tag}
-          </a>
+          <div class="inline-flex select-none items-center text-content hover:text-portage-300 transition text-sm">
+            <Icon name="mingcute:hashtag-line" />
+            <a href={`/tags/${tag}`}>{tag}</a>
+          </div>
         ))
     }
   </div>
