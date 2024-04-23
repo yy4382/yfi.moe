@@ -1,0 +1,56 @@
+---
+import { type CollectionEntry } from "astro:content";
+import { getSortedPosts } from "@utils/content";
+import Card from "@comp/base/Card.astro";
+import AchieveLine from "@comp/achieveCard/AchieveLine.astro";
+import AchieveHeader from "@comp/achieveCard/AchieveHeader.astro";
+
+interface Props {
+  keyword?: string;
+  tag?: string;
+}
+const { keyword, tag } = Astro.props;
+
+let posts = await getSortedPosts();
+
+if (tag) posts = posts.filter((post) => post.data.tags.includes(tag));
+
+const groups = (function () {
+  const groupedPosts = posts.reduce(
+    (grouped: any, post: CollectionEntry<"post">) => {
+      const year = post.data.date.getFullYear();
+      if (!grouped[year]) {
+        grouped[year] = [];
+      }
+      grouped[year].push(post);
+      return grouped;
+    },
+    {}
+  );
+
+  // convert the object to an array
+  const groupedPostsArray = Object.keys(groupedPosts).map((key) => ({
+    year: key,
+    posts: groupedPosts[key],
+  }));
+
+  // sort years by latest first
+  groupedPostsArray.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+  return groupedPostsArray;
+})();
+---
+
+<Card class="px-4 py-2 lg:p-8 lg:py-5">
+  {keyword ? <h1 class="card-heading mb-4">{keyword}</h1> : null}
+  {
+    groups.map((group) => (
+      <div>
+        <AchieveHeader group={group} />
+        {group.posts.map((post: CollectionEntry<"post">) => (
+          <AchieveLine post={post} />
+        ))}
+      </div>
+    ))
+  }
+</Card>
+

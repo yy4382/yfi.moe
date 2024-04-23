@@ -1,0 +1,67 @@
+---
+import { type CollectionEntry } from "astro:content";
+import { getPostPath } from "@utils/path";
+interface Props {
+  post: CollectionEntry<"post">;
+}
+const { post } = Astro.props;
+
+function formatDate(date: Date) {
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${month}-${day}`;
+}
+
+function formatTag(tag: string[]) {
+  return tag.map((t) => `#${t}`).join(" ");
+}
+---
+
+<a href={getPostPath(post)} aria-label={post.data.title} class="group">
+  <div class="btn-plain w-full h-10 rounded-lg">
+    <div class="flex flex-row justify-start items-center h-full">
+      {/* date */}
+      <div
+        class="w-[15%] md:w-[10%] transition text-sm text-right text-black/50 dark:text-white/50"
+      >
+        {formatDate(post.data.date)}
+      </div>
+      {/* dot and line */}
+      <div
+        class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center"
+      >
+        <div
+          class="transition-all mx-auto w-1 h-1 rounded
+      group-hover:h-5
+      z-50
+      bg-white dark:bg-gray-900 group-hover:bg-portage-300
+      outline outline-portage-300 group-hover:outline-transparent"
+        >
+        </div>
+      </div>
+      {/* post title */}
+      <div
+        class="w-[70%] md:max-w-[65%] md:w-[65%] font-[450] group-hover:translate-x-1 transition-all pr-8 whitespace-nowrap overflow-hidden
+      text-left text-gray-800 dark:text-gray-200 text-ellipsis group-hover:text-portage-700 dark:group-hover:text-portage-300"
+      >
+        {post.data.title}
+      </div>
+      {/* tag list */}
+      <div
+        class="hidden md:block md:w-[15%] text-left text-sm transition whitespace-nowrap text-ellipsis overflow-hidden text-black/30 dark:text-white/30"
+      >
+        {formatTag(post.data.tags)}
+      </div>
+    </div>
+  </div>
+</a>
+
+<style>
+  .dash-line {
+  }
+  .dash-line::before {
+    content: "";
+    @apply w-[10%] h-full absolute -top-1/2 left-[calc(50%_-_1px)] border-l-[2px]
+    border-dashed pointer-events-none border-black/10 dark:border-white/30 transition;
+  }
+</style>

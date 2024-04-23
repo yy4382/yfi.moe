@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import AchieveCard from "@comp/AchieveCard.astro";
+import AchieveCard from "@comp/achieveCard/AchieveCard.astro";
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("post");
@@ -10,15 +10,9 @@ export async function getStaticPaths() {
     ...new Set(allPosts.map((post) => post.data.tags).flat()),
   ];
 
-  return uniqueTags.map((tag) => {
-    const filteredPosts = allPosts.filter((post) =>
-      post.data.tags.includes(tag)
-    );
-    return {
-      params: { tag },
-      props: { post: filteredPosts },
-    };
-  });
+  return uniqueTags.map((tag) => ({
+    params: { tag },
+  }));
 }
 
 const { tag } = Astro.params;
@@ -27,5 +21,5 @@ const seoConfig = getSeo({ title: "#" + tag });
 ---
 
 <BaseLayout seoConfig={seoConfig}>
-  <AchieveCard tags={[tag]} keyword={"#" + tag} />
+  <AchieveCard tag={tag} keyword={"#" + tag} />
 </BaseLayout>
