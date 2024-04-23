@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PostCard from "@comp/PostCard.astro";
-import CategoryTitle from "@comp/CategoryTitle.vue";
+import CategoryTitle from "@comp/CategoryTitle.astro";
 export const getStaticPaths = (async () => {
   const posts = await getCollection("post");
   const categoriesWithPosts: Record<string, CollectionEntry<"post">[]> = {};
