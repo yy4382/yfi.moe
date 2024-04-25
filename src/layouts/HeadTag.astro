@@ -3,6 +3,7 @@ import { ViewTransitions } from "astro:transitions";
 import { SEO } from "astro-seo";
 import "@styles/base.css";
 import { type SEOProps } from "astro-seo";
+import Favicon from "@comp/base/Favicon.astro";
 interface Props {
   seoConfig: SEOProps;
   stopTrack?: boolean;
@@ -13,9 +14,7 @@ const { seoConfig, stopTrack } = Astro.props;
 <html lang="zh-cn">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/favicon.png" sizes="256x256" />
-    <link rel="icon" type="image/png" href="/favicon-sm.png" sizes="64x64" />
+    <Favicon />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {
       import.meta.env.PROD && !import.meta.env.LIVE_PREVIEW && !stopTrack && (
