@@ -1,7 +1,7 @@
-[![build public](https://github.com/yy4382/blog-astro/actions/workflows/build.yaml/badge.svg)](https://github.com/yy4382/blog-astro/actions/workflows/build.yaml)
+# yfi.moe
 
-文章库：[blog-posts](https://github.com/yy4382/blog-posts)
+My personal site built with Astro, Vue and UnoCSS.
 
-产物库：[blog-public](https://github.com/yy4382/blog-public)
+目前部署于 Cloudflare Pages，访问地址：[yfi.moe](https://yfi.moe)。之前也使用过 GitHub Actions 构建再拉取到 VPS 上部署，参考 [build.yaml](.github/workflows//build.yaml)。
 
-部署：[https://blog.yfi.moe](https://blog.yfi.moe)
+文章存放在另外的库中，每次构建时会自动 clone。文章库 (private)：[blog-posts](https://github.com/yy4382/blog-posts)
