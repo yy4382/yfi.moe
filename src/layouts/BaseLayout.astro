@@ -4,11 +4,13 @@ import SideBar from "@comp/sidebar/SideBar.astro";
 import Navbar from "@comp/navbar/Navbar.astro";
 import HeadTag from "@layouts/HeadTag.astro";
 import type { SEOProps } from "astro-seo";
+import { type NavMenu } from "@config";
 interface Props {
   seoConfig: SEOProps;
   stopTrack?: boolean;
+  navStats?: NavMenu | string;
 }
-const { seoConfig, stopTrack } = Astro.props;
+const { seoConfig, stopTrack, navStats } = Astro.props;
 ---
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
@@ -19,7 +21,7 @@ const { seoConfig, stopTrack } = Astro.props;
       <div class="grid w-full
       grid-cols-1 lg:grid-cols-[75%_25%]">
         <nav class="lg:col-span-2 mb-4">
-          <Navbar />
+          <Navbar navStats={navStats} />
         </nav>
 
         <div class="mb-4 lg:mr-4">

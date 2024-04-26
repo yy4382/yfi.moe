@@ -1,26 +1,31 @@
 <script setup lang="ts">
 import type { NavMenu } from "@config";
 import VTooltip from "@comp/base/VTooltip.vue";
-import { computed } from "vue";
-const props = defineProps<{ nav: NavMenu }>();
+import { Fragment, computed } from "vue";
+import { Icon } from "@iconify/vue";
+const props = defineProps<{ nav: NavMenu; highlight: boolean }>();
 const nav = computed(() => props.nav);
 </script>
 <template>
   <div class="w-20 font-medium justify-center items-center h-full flex">
     <VTooltip class="self-center h-full">
-      <div class="h-full flex justify-center items-center">
-        <a
-          v-if="nav.link"
-          :href="nav.link"
-          class="w-full hover:text-portage-300 self-center z-1 select-none self-center align-middle"
-        >
-          {{ nav.text }}
-        </a>
+      <div
+        :class="
+          highlight
+            ? 'text-portage-400 h-full flex justify-center items-center'
+            : 'h-full flex justify-center items-center'
+        "
+      >
         <span
-          v-else
-          class="w-full hover:text-portage-300  self-center z-1 select-none self-center align-middle"
+          class="w-full hover:text-portage-300 self-center z-1 select-none self-center align-middle inline-flex items-center gap-1"
         >
-          {{ nav.text }}
+          <Icon :icon="nav.icon || ''" v-if="highlight" />
+          <a v-if="nav.link" :href="nav.link">
+            {{ nav.text }}
+          </a>
+          <span v-else>
+            {{ nav.text }}
+          </span>
         </span>
       </div>
       <template #tooltip>

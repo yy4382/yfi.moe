@@ -15,7 +15,7 @@ import { getSeo } from "@utils/SEO";
 const seoConfig = getSeo({ title: "文章列表" });
 ---
 
-<BaseLayout seoConfig={seoConfig}>
+<BaseLayout seoConfig={seoConfig} navStats="文章">
   <div class="flex flex-col gap-4">
     {page.data.map((post: any) => <PostCard post={post} />)}
     <div class="self-center">
