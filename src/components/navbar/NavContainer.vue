@@ -10,11 +10,18 @@ const nav = computed(() => props.nav);
     <VTooltip class="self-center h-full">
       <div class="h-full flex justify-center items-center">
         <a
+          v-if="nav.link"
           :href="nav.link"
           class="w-full hover:text-portage-300 self-center z-1 select-none self-center align-middle"
         >
           {{ nav.text }}
         </a>
+        <span
+          v-else
+          class="w-full hover:text-portage-300  self-center z-1 select-none self-center align-middle"
+        >
+          {{ nav.text }}
+        </span>
       </div>
       <template #tooltip>
         <ul

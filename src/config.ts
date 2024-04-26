@@ -41,7 +41,6 @@ export const navMenu: NavMenu[] = [
   {
     text: "更多",
     icon: "mingcute:information-line",
-    link: "#",
     subMenu: [
       { text: "关于本站", link: "/about" },
       { text: "我的项目", link: "/projects" },
