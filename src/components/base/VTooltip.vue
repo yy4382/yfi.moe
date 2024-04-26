@@ -40,6 +40,6 @@ function mouseLeave() {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-  transform: translateY(-0.5rem);
+  transform: translateY(5%);
 }
 </style>
