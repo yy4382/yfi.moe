@@ -7,11 +7,10 @@ export function getSeo(config: {
   type?: string;
   noindex?: boolean;
 }): SEOProps {
-  
   const {
     title,
     description,
-    image = "/favicon.png",
+    image = "https://yfi.moe/icon-512.png",
     type = "website",
     noindex = false,
   } = config;
@@ -29,6 +28,10 @@ export function getSeo(config: {
     noindex,
     twitter: {
       creator: "@yunfini",
+      card: config.image ? "summary_large_image" : "summary",
+      image,
+      title,
+      description,
     },
   };
 }

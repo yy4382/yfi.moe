@@ -19,7 +19,9 @@ const desc = page.data.description || getDesc(page.body);
 const seoConfig = getSeo({
   title: page.data.title,
   description: desc,
-  image: Astro.url.origin + page.data.image,
+  image: page.data.image
+    ? new URL(page.data.image, Astro.url).toString()
+    : undefined,
   type: "article",
 });
 ---

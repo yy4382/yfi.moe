@@ -31,7 +31,9 @@ import TocMobile from "@comp/sidebar/TocMobile.astro";
 const seoConfig = getSeo({
   title: post.data.title,
   description: post.data.description || getDesc(post.body),
-  image: Astro.url.origin + post.data.image,
+  image: post.data.image
+    ? new URL(post.data.image, Astro.url).toString()
+    : undefined,
   type: "article",
 });
 ---
