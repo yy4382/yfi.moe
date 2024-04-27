@@ -1,4 +1,4 @@
-@import 'markdown-alert.css';
+@import "markdown-alert.css";
 
 .copy-code {
   @apply btn-regular absolute right-1 top-1 !rounded-lg px-2 py-1 text-xs;
@@ -9,7 +9,38 @@
   @apply mx-auto max-w-full rounded-xl;
 }
 
+.prose a,
+.prose strong {
+  @apply text-portage-500 dark:text-portage-300;
+}
+
+.prose strong {
+  @apply font-bold;
+}
+
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
   @apply font-normal scroll-smooth;
+  --link-underline-normal: rgba(125, 125, 125, 0.5);
+  --link-underline-hover: rgba(125, 125, 125, 0.8);
+  --link-underline-active: rgba(125, 125, 125, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --link-underline-normal: rgba(256, 256, 256, 0.6);
+    --link-underline-hover: rgba(256, 256, 256, 0.8);
+    --link-underline-active: rgba(256, 256, 256, 1);
+  }
 }

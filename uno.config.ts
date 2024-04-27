@@ -43,14 +43,14 @@ export default defineConfig({
       cssExtend: {
         a: {
           "text-decoration": "none",
-          "border-bottom": "2px solid rgba(125, 125, 125, .5)",
-          transition: "border-bottom .15s ease-in-out",
+          "border-bottom": "2px solid var(--link-underline-normal)",
+          transition: "border-bottom .1s ease-in-out",
         },
         "a:hover": {
-          "border-bottom": "2px solid rgba(125, 125, 125, .8)",
+          "border-bottom": "2px solid var(--link-underline-hover)",
         },
         "a:active": {
-          "border-bottom": "2px solid rgba(125, 125, 125, 1)",
+          "border-bottom": "2px solid var(--link-underline-active)",
         },
         "*:not(pre) > code": {
           "white-space": "pre-wrap",
