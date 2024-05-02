@@ -5,7 +5,7 @@ const { page } = Astro.props;
 
 <div class="flex rounded-md justify-center">
   <div
-    class="btn-regular w-8 h-8 flex items-center justify-center rounded-l-md"
+    class="btn-plain w-8 h-8 flex items-center justify-center rounded-l-md"
   >
     {/* !TODO */}
     {
@@ -21,13 +21,13 @@ const { page } = Astro.props;
     }
   </div>
   <div
-    class="btn-regular w-fit h-8 px-2 tracking-wider
+    class="btn-plain w-fit h-8 px-2 tracking-wider
           flex items-center justify-center"
   >
     {page.currentPage}/{page.lastPage}
   </div>
   <div
-    class="btn-regular w-8 h-8 flex items-center justify-center rounded-r-md"
+    class="btn-plain w-8 h-8 flex items-center justify-center rounded-r-md"
   >
     {
       page.currentPage !== page.lastPage ? (
