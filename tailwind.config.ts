@@ -23,6 +23,7 @@ export default {
       typography: ({ theme }: any) => ({
         DEFAULT: {
           css: {
+            maxWidth: "unset",
             a: {
               textDecoration: "none",
               borderBottom: "2px solid var(--link-underline-normal)",
