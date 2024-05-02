@@ -1,10 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import {getPostPath} from "@utils/path";
+import { getPostPath } from "@utils/path";
 interface Props {
   post: CollectionEntry<"post">;
 }
-import PostAttr from "@comp/PostAttr.vue";
+import PostAttr from "@comp/PostAttr.astro";
 const { post } = Astro.props;
 import { renderDesc } from "@utils/markdown";
 import Card from "@comp/base/Card.astro";
@@ -28,9 +28,6 @@ if (post.data.description === undefined) {
   >
     <h2>{post.data.title}</h2>
   </a>
-  <div
-    class="prose dark:prose-invert max-w-none leading-normal text-sm"
-    set:html={desc}
-  />
-  <PostAttr post={post} client:load />
+  <div class="prose dark:prose-invert !text-sm" set:html={desc} />
+  <PostAttr post={post}  />
 </Card>

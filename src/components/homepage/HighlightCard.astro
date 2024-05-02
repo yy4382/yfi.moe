@@ -4,7 +4,7 @@ interface Props {
   post: CollectionEntry<"post">;
 }
 import { getPostPath } from "@utils/path";
-import PostAttr from "@comp/PostAttr.vue";
+import PostAttr from "@comp/PostAttr.astro";
 const { post } = Astro.props;
 import Card from "@comp/base/Card.astro";
 ---
