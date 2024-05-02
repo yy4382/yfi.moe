@@ -2,6 +2,7 @@
 import Card from "@comp/base/Card.astro";
 import { Image } from "astro:assets";
 import avatar from "@assets/avatar.jpeg";
+import { Icon } from "astro-icon/components";
 
 interface Social {
   name: string;
@@ -13,25 +14,25 @@ interface Social {
 export const socials: Social[] = [
   {
     name: "GitHub",
-    icon: "i-mingcute-github-fill",
+    icon: "mingcute:github-fill",
     link: "https://github.com/yy4382",
     color: "text-black dark:text-white",
   },
   {
     name: "Telegram",
-    icon: "i-mingcute-telegram-fill",
+    icon: "mingcute:telegram-fill",
     link: "https://t.me/yunfichannel",
     color: "text-blue-500",
   },
   {
     name: "Twitter",
-    icon: "i-mingcute-twitter-fill",
+    icon: "mingcute:twitter-fill",
     link: "https://twitter.com/yunfini",
     color: "text-blue-400",
   },
   {
     name: "Email",
-    icon: "i-mingcute-mail-send-fill",
+    icon: "mingcute:mail-send-fill",
     link: "mailto:i@yfi.moe",
     color: "text-red-400",
   },
@@ -65,20 +66,17 @@ export const socials: Social[] = [
               class="flex items-center gap-2 w-fit my-2 group
               transition-colors duration-500 ease-[cubic-bezier(0,1,0.5,1)]"
             >
-              <i
-                class:list={[
-                  social.icon,
-                  social.color,
-                  "text-[1.125rem] -mr-1",
-                ]}
+              <Icon
+                name={social.icon}
+                class:list={["text-[1.125rem] -mr-1", social.color]}
               />
               <span
                 class="font-semibold relative
                 text-content hover:text-primary
-                before:(content-[''] absolute bottom-0 left-0 right-0 h-2
-                bg-portage-200/50 group-hover:(h-1 bg-portage-300/70)
-                transition-[height,background-color]
-                ease-[cubic-bezier(0,1,0.5,1)] duration-500)"
+                before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-2
+                before:bg-portage-200/50 before:group-hover:h-1 before:group-hover:bg-portage-300/70
+                before:transition-[height,background-color]
+                before:ease-[cubic-bezier(0,1,0.5,1)] before:duration-500)"
               >
                 {social.name}
               </span>

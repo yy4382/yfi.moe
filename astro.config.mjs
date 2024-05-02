@@ -4,15 +4,13 @@ import remarkGithubAlerts from "remark-github-alerts";
 import icon from "astro-icon";
 import remarkReadingTime from "./src/utils/remark-reading-time.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
-import UnoCSS from "unocss/astro";
+import tailwind from '@astrojs/tailwind';
 import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://yfi.moe/",
-  integrations: [UnoCSS({
-    injectReset: true // or a path to the reset file
-  }), vue(), icon(), sitemap()],
+  integrations: [tailwind(), vue(), icon(), sitemap()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [[rehypeExtendedLinks, {
