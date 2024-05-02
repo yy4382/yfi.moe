@@ -2,21 +2,32 @@
 import { getSortedPosts } from "@utils/content";
 import { path } from "@config";
 import HighlightCard from "@comp/homepage/HighlightCard.astro";
+import { Icon } from "astro-icon/components";
 const all = await getSortedPosts();
 const highlights = all.filter((post) => post.data.highlight);
 ---
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
   <h2 class="text-3xl self-center text-center font-serif text-heading">
-    <i class="i-mingcute-star-fill text-yellow -translate-y-0.5"></i>
+    <Icon
+      name="mingcute:star-fill"
+      class="inline text-yellow-500 -translate-y-[0.125rem]"
+    />
     <span>Highlight Posts</span>
   </h2>
   {highlights.map((highlight) => <HighlightCard post={highlight} />)}
   {
     highlights.length % 2 === 0 && (
       <div class="hidden md:flex items-center justify-center">
-        <a class="btn-plain p-2 font-serif text-xl rounded-lg" href={path.postList}>
-          Article list <i class="i-mingcute-arrow-right-line" />
+        <a
+          class="btn-plain p-2 font-serif text-xl rounded-lg"
+          href={path.postList}
+        >
+          Article list{" "}
+          <Icon
+            name="mingcute:arrow-right-line"
+            class="inline -translate-y-[0.125rem]"
+          />
         </a>
       </div>
     )

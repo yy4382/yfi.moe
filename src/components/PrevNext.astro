@@ -33,9 +33,9 @@ const next1 = next
   <a href={prev1.url} class="w-full font-bold overflow-hidden active:scale-95">
     {
       (
-        <div class="btn-card w-full max-w-full h-10 px-4 rounded-2xl flex items-center justify-start gap-4">
+        <div class="bg-card shape-card w-full max-w-full h-10 px-4 flex items-center justify-start gap-4">
           <Icon name="mingcute:left-fill" size={32} class="text-portage-300" />
-          <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] ">
+          <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-heading">
             {prev1.title}
           </div>
         </div>
@@ -46,8 +46,8 @@ const next1 = next
   <a href={next1.url} class="w-full font-bold overflow-hidden active:scale-95">
     {
       (
-        <div class="btn-card w-full max-w-full h-10 px-4 rounded-2xl flex items-center justify-end gap-4">
-          <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] ">
+        <div class="bg-card shape-card w-full max-w-full h-10 px-4 flex items-center justify-end gap-4">
+          <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-heading">
             {next1.title}
           </div>
           <Icon name="mingcute:right-fill" size={32} class="text-portage-300" />

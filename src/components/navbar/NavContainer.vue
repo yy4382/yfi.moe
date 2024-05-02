@@ -35,7 +35,7 @@ const nav = computed(() => props.nav);
         >
           <li
             v-for="subItem in nav.subMenu"
-            class="text-center rounded-lg py-2 transition-colors hover:(bg-gray-100 dark:bg-gray-800 text-portage-400)"
+            class="text-center rounded-lg py-2 transition-colors hover:bg-gray-100 hover:dark:bg-gray-800 hover:text-portage-400"
           >
             <a :href="subItem.link" class="text-sm"> {{ subItem.text }} </a>
           </li>
