@@ -21,19 +21,17 @@ const { post } = Astro.props;
     post.data?.tags instanceof Array && (
       <div class="flex select-none items-center">
         <Icon name="mingcute:hashtag-line" class="text-base mr-1" />
-        <span class="space-x-1">
+        <span class="space-x-0.5">
           {post.data.tags.map((tag, index) => (
-            <span class="" v-for="(tag, index) in post.data.tags">
-              <span v-if="index !== 0" class="text-comment">
-                /{" "}
-              </span>
+            <>
+              {index !== 0 && <span class="text-comment">|</span>}
               <a
                 href={"/tags/" + tag}
                 class="hover:text-portage-300 transition"
               >
                 {tag}
               </a>
-            </span>
+            </>
           ))}
         </span>
       </div>
