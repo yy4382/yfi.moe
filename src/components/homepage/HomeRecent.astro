@@ -2,6 +2,7 @@
 import { getSortedPosts } from "@utils/content";
 import HighlightCard from "@comp/homepage/HighlightCard.astro";
 import { path } from "@config";
+import { Icon } from "astro-icon/components";
 const posts = await getSortedPosts();
 const recents = posts.slice(0, 5);
 ---
@@ -9,7 +10,10 @@ const recents = posts.slice(0, 5);
 <div class="flex flex-col space-y-4">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <h2 class="text-3xl self-center text-center font-serif text-heading">
-      <i class="i-mingcute-calendar-fill text-blue -translate-y-0.5"></i>
+      <Icon
+      name="mingcute:calendar-fill"
+      class="inline text-blue-500 -translate-y-1"
+    />
       <span>Recent Posts</span>
     </h2>
     {recents.map((recent) => <HighlightCard post={recent} />)}
@@ -19,6 +23,10 @@ const recents = posts.slice(0, 5);
       font-serif text-center text-xl rounded-lg col-span-2"
     href={path.postList}
   >
-    More <i class="i-mingcute-arrow-right-line"></i>
+    More
+    <Icon
+      name="mingcute:arrow-right-line"
+      class="inline -translate-y-[0.125rem]"
+    />
   </a>
 </div>
