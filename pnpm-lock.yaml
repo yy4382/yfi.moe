@@ -60,8 +60,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       radix-vue:
-        specifier: ^1.7.2
-        version: 1.7.2(vue@3.4.27(typescript@5.4.5))
+        specifier: ^1.7.3
+        version: 1.7.3(vue@3.4.27(typescript@5.4.5))
       reading-time:
         specifier: ^1.5.0
         version: 1.5.0
@@ -2490,8 +2490,8 @@ packages:
   queue-tick@1.0.1:
     resolution: {integrity: sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag==}
 
-  radix-vue@1.7.2:
-    resolution: {integrity: sha512-KczYzzflm8todIk3flaQIWQ6P1wqtUh0cwMBRhp8Pr2JXs8FMG2qfL4lJly2mhMFXc199bG0U4bNLLsrhn5xoA==}
+  radix-vue@1.7.3:
+    resolution: {integrity: sha512-GgUagGvpO1EtNvkQ27x3Hv26VrTffZ4XRyx8eMabXRxXtbo2GbjAd2HvGjL9A/D7QVHxw1ZUMBDcYWcpw4LEiQ==}
     peerDependencies:
       vue: '>= 3.2.0'
 
@@ -5969,7 +5969,7 @@ snapshots:
   queue-tick@1.0.1:
     optional: true
 
-  radix-vue@1.7.2(vue@3.4.27(typescript@5.4.5)):
+  radix-vue@1.7.3(vue@3.4.27(typescript@5.4.5)):
     dependencies:
       '@floating-ui/dom': 1.6.3
       '@floating-ui/vue': 1.0.6(vue@3.4.27(typescript@5.4.5))
