@@ -21,8 +21,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(astro@4.6.3(@types/node@20.12.7)(typescript@5.4.5))(vite@5.2.10(@types/node@20.12.7))(vue@3.4.27(typescript@5.4.5))
       '@iconify-json/devicon-plain':
-        specifier: ^1.1.38
-        version: 1.1.38
+        specifier: ^1.1.40
+        version: 1.1.40
       '@iconify-json/mingcute':
         specifier: ^1.1.17
         version: 1.1.17
@@ -692,8 +692,8 @@ packages:
   '@floating-ui/vue@1.0.6':
     resolution: {integrity: sha512-EdrOljjkpkkqZnrpqUcPoz9NvHxuTjUtSInh6GMv3+Mcy+giY2cE2pHh9rpacRcZ2eMSCxel9jWkWXTjLmY55w==}
 
-  '@iconify-json/devicon-plain@1.1.38':
-    resolution: {integrity: sha512-ay2QsiDThYpu/H4r3RR/hOAhvP8+pvzW0HQD5mx/0/yKnBa71zupOOiyqgWwBbc61Qi3n+iBcVdKV3xp05KIBA==}
+  '@iconify-json/devicon-plain@1.1.40':
+    resolution: {integrity: sha512-BdKoxIHePE+nelFAdz030ATYIbl1VVxqY0gUm4cBljxykPJQXXxcsXDG43BK9krfWc1/IdldSBL5lG1rz0fjeQ==}
 
   '@iconify-json/mingcute@1.1.17':
     resolution: {integrity: sha512-WTKnn5OicUo18dE3rkJs00sUjOIAui8Ut9yZSXamRfjzmLxuX9FKqYQAbFXaV6lw0T4QwBQ8/y4ftaWl/1Entg==}
@@ -3736,7 +3736,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@iconify-json/devicon-plain@1.1.38':
+  '@iconify-json/devicon-plain@1.1.40':
     dependencies:
       '@iconify/types': 2.0.0
 
