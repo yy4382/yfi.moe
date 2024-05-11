@@ -2,6 +2,7 @@
 import Footer from "@comp/Footer.astro";
 import Navbar from "@comp/navbar/Navbar.astro";
 import HeadTag from "@layouts/HeadTag.astro";
+import BaseBody from "@layouts/BaseBody.astro";
 import { type SEOProps } from "astro-seo";
 import { type NavMenu } from "@config";
 interface Props {
@@ -13,22 +14,17 @@ const { seoConfig, stopTrack, navStats } = Astro.props;
 ---
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
-  <div
-    class="bg-gradient-to-br via-violet-100 from-portage-100 to-pink-100
-      dark:bg-gradient-to-br dark:from-gray-950 dark:to-slate-900"
-  >
-    <div class="w-full xl:max-w-6xl mx-auto min-h-screen p-4">
-      <div class="w-full space-y-4">
-        <nav class="mb-4" transition:name="nav-bar">
-          <Navbar navStats={navStats} />
-        </nav>
+  <BaseBody>
+    <div class="w-full space-y-4">
+      <nav class="mb-4" transition:name="nav-bar">
+        <Navbar navStats={navStats} />
+      </nav>
 
-        <slot />
+      <slot />
 
-        <footer>
-          <Footer />
-        </footer>
-      </div>
+      <footer>
+        <Footer />
+      </footer>
     </div>
-  </div>
+  </BaseBody>
 </HeadTag>
