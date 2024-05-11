@@ -17,13 +17,13 @@ const nav = computed(() => props.nav);
         "
       >
         <span
-          class="w-full hover:text-portage-300 self-center z-1 select-none self-center align-middle inline-flex items-center gap-1"
+          class="w-full hover:text-portage-300 self-center z-1 select-none align-middle inline-flex items-center gap-1"
         >
-          <Icon :icon="nav.icon || ''" v-if="highlight" />
-          <a v-if="nav.link" :href="nav.link">
+          <Icon :icon="nav.icon || ''" v-if="highlight" style="view-transition-name: nav-item-icon;"/>
+          <a v-if="nav.link" :href="nav.link" :style="`view-transition-name: nav-item-${nav.text};`">
             {{ nav.text }}
           </a>
-          <span v-else>
+          <span v-else :style="`view-transition-name: nav-item-${nav.text};`">
             {{ nav.text }}
           </span>
         </span>

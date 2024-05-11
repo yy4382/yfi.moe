@@ -19,7 +19,7 @@ const { seoConfig, stopTrack, navStats } = Astro.props;
   >
     <div class="w-[calc(100%-2rem)] xl:max-w-6xl mx-auto min-h-screen">
       <div class="w-full space-y-4">
-        <nav class="mb-4">
+        <nav class="mb-4" transition:name="nav-bar">
           <Navbar navStats={navStats} />
         </nav>
 
