@@ -6,7 +6,7 @@ import MobileMenu from "@comp/navbar/MobileMenu.vue";
 import Card from "@comp/base/Card.astro";
 import NavContainer from "@comp/navbar/NavContainer.vue";
 import { Image } from "astro:assets";
-import logo from "@assets/logo.jpeg";
+import logo from "@assets/logo.png";
 interface Props {
   navStats: NavMenu | string | undefined;
 }
@@ -24,6 +24,8 @@ const { navStats } = Astro.props;
         alt="logo"
         loading={"eager"}
         class="w-8 h-8 rounded-lg mr-3"
+        width={32}
+        height={32}
         widths={[80, 160]}
       />
       <span class="hidden md:inline">{siteConfig.title}</span>
