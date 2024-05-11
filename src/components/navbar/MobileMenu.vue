@@ -22,11 +22,11 @@ import {
     </DialogTrigger>
     <DialogPortal>
       <Transition name="fade">
-        <DialogOverlay class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-50" />
+        <DialogOverlay class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-20" />
       </Transition>
       <Transition name="move">
         <DialogContent
-          class="fixed bg-white dark:bg-gray-950 w-[calc(100%-2rem)] rounded-lg shadow-lg p-8 top-18 z-100 left-4"
+          class="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-8 fixed top-[10%] left-1/2 max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] z-50"
         >
           <VisuallyHidden>
             <DialogTitle>Menu Bar for mobile</DialogTitle>
@@ -42,7 +42,9 @@ import {
               </a>
               <ul
                 class="grid grid-cols-2 gap-2 my-2"
-                v-if="nav.subMenu && nav.subMenu.length > 0 && nav.text !== '首页'"
+                v-if="
+                  nav.subMenu && nav.subMenu.length > 0 && nav.text !== '首页'
+                "
               >
                 <li v-for="child in nav.subMenu">
                   <a :href="child.link" class="p-4 pl-6 text-sm text-content">

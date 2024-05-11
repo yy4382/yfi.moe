@@ -23,3 +23,26 @@ const seoConfig = getSeo({ title: "文章列表" });
     </div>
   </div>
 </BaseLayout>
+
+<script is:inline>
+  document.addEventListener("astro:before-preparation", (ev) => {
+    const sourceElement = ev.sourceElement;
+    if (!sourceElement) return;
+    
+    const postCard = sourceElement.parentElement;
+    if (postCard?.classList.contains("post-card")) {
+      postCard.style.viewTransitionName = "post-card";
+    } else {
+      return;
+    }
+    const postCardAttr =
+      sourceElement.parentElement.querySelector(".post-card-attr");
+
+    if (sourceElement.classList.contains("post-card-heading")) {
+      sourceElement.style.viewTransitionName = "post-heading";
+    }
+    if (postCardAttr) {
+      postCardAttr.style.viewTransitionName = "post-attr";
+    }
+  });
+</script>

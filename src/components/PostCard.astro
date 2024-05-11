@@ -18,16 +18,16 @@ if (post.data.description === undefined) {
 ---
 
 <Card
-  class="space-y-2 lg:space-y-3 p-4 lg:px-8 lg:py-5 md:hover:-translate-y-0.5 transition"
+  class="space-y-2 lg:space-y-3 p-4 lg:px-8 lg:py-5 md:hover:-translate-y-0.5 transition post-card"
 >
   <a
     href={getPostPath(post)}
     class="card-heading hover:text-portage-400 active:text-portage-500
      hover:dark:text-portage-300 active:dark:text-portage-200
-     transition-colors duration-300 ease-in-out"
+     transition-colors duration-300 ease-in-out post-card-heading"
   >
     <h2>{post.data.title}</h2>
   </a>
   <div class="prose dark:prose-invert !text-sm" set:html={desc} />
-  <PostAttr post={post}  />
+  <PostAttr post={post} />
 </Card>

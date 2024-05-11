@@ -3,20 +3,23 @@ import Card from "@comp/base/Card.astro";
 import PostAttr from "@comp/PostAttr.astro";
 import MdRender from "@comp/MdRender.astro";
 import type { CollectionEntry } from "astro:content";
+import { fade } from "astro:transitions";
 interface Props {
   entry: CollectionEntry<"post"> | CollectionEntry<"page">;
 }
 const { entry } = Astro.props;
 ---
 
-<Card class="px-4 py-2 lg:p-8 lg:py-5 space-y-4">
-  <h1 class="card-heading">
-    {entry.data.title}
-  </h1>
-  <div>
-    <PostAttr post={entry as any} />
-  </div>
-  <MdRender>
-    <slot />
-  </MdRender>
-</Card>
+<div transition:name="post-card">
+  <Card class="px-4 py-2 lg:p-8 lg:py-5 space-y-4">
+    <h1 class="card-heading" transition:name="post-heading">
+      {entry.data.title}
+    </h1>
+    <div transition:name="post-attr">
+      <PostAttr post={entry as any} />
+    </div>
+    <MdRender>
+      <slot />
+    </MdRender>
+  </Card>
+</div>
