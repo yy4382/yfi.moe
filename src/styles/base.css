@@ -26,7 +26,7 @@
     before:absolute before:hidden before:-left-4 before:top-1 before:h-5 before:w-1 before:rounded-md before:bg-portage-300 before:lg:block before:content-[""];
   }
   .btn-plain {
-    @apply bg-none transition-all duration-200 ease-in-out text-content hover:text-portage-200/80 active:text-portage-300/80 dark:hover:bg-portage-100/20;
+    @apply bg-none transition-all duration-200 ease-in-out text-content hover:text-portage-400 active:text-portage-500 dark:hover:text-portage-200/80 dark:active:text-portage-300/80 dark:hover:bg-portage-100/20;
   }
 }
 

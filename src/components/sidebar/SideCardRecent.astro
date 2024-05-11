@@ -10,8 +10,11 @@ const recentPosts = allPosts.slice(0, 5);
   <ul class="flex flex-col space-y-2">
     {
       recentPosts.map((entry, index) => (
-        <li class="btn-plain hover:translate-x-1 rounded-md px-2 py-1">
-          <a href={getPostPath(entry)} class="select-none text-sm line-clamp-2">
+        <li class="btn-plain group rounded-md px-2 py-1">
+          <a
+            href={getPostPath(entry)}
+            class="select-none text-sm line-clamp-2 group-hover:translate-x-1 transition-transform"
+          >
             {entry.data.title}
           </a>
         </li>
