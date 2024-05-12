@@ -34,15 +34,15 @@ function formatTag(tag: string[]) {
           class="transition-all mx-auto w-1 h-1 rounded
       group-hover:h-5
       z-50
-      bg-white dark:bg-gray-900 group-hover:bg-portage-300
-      outline outline-portage-300 group-hover:outline-transparent"
+      bg-white dark:bg-gray-900 group-hover:bg-[var(--text-primary)]
+      outline outline-[var(--text-primary)] group-hover:outline-transparent"
         >
         </div>
       </div>
       {/* post title */}
       <div
         class="w-[70%] md:max-w-[65%] md:w-[65%] font-[450] group-hover:translate-x-1 transition-all pr-8 whitespace-nowrap overflow-hidden
-      text-left text-gray-800 dark:text-gray-200 text-ellipsis group-hover:text-portage-700 dark:group-hover:text-portage-300"
+      text-left text-gray-800 dark:text-gray-200 text-ellipsis group-hover:text-[var(--text-primary)] dark:group-hover:text-[var(--text-primary)]"
       >
         {post.data.title}
       </div>

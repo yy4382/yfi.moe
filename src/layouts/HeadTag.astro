@@ -4,7 +4,7 @@ import { SEO } from "astro-seo";
 import "@styles/base.css";
 import { type SEOProps } from "astro-seo";
 import Favicon from "@comp/base/Favicon.astro";
-import LoadingIndicator from "astro-loading-indicator/component"
+import LoadingIndicator from "astro-loading-indicator/component";
 interface Props {
   seoConfig: SEOProps;
   stopTrack?: boolean;
@@ -37,7 +37,5 @@ const { seoConfig, stopTrack } = Astro.props;
     <ViewTransitions />
     <LoadingIndicator color="hsl(236, 100%, 81%)" />
   </head>
-  <body>
-    <slot />
-  </body>
+  <slot />
 </html>

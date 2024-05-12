@@ -26,7 +26,7 @@ const maxTags = showAll ? Object.keys(tagsWithCount).length : 9;
       Object.keys(tagsWithCount)
         .slice(0, maxTags)
         .map((tag) => (
-          <div class="inline-flex select-none items-center text-content hover:text-portage-300 transition text-sm">
+          <div class="inline-flex select-none items-center text-content hover:text-primary transition text-sm">
             <Icon name="mingcute:hashtag-line" />
             <a href={`/tags/${tag}`}>{tag}</a>
           </div>

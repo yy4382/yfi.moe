@@ -12,12 +12,12 @@ const nav = computed(() => props.nav);
       <div
         :class="
           highlight
-            ? 'text-portage-400 h-full flex justify-center items-center'
+            ? 'text-primary h-full flex justify-center items-center'
             : 'h-full flex justify-center items-center'
         "
       >
         <span
-          class="w-full hover:text-portage-300 self-center z-1 select-none align-middle inline-flex items-center gap-1"
+          class="w-full hover:text-primary self-center z-1 select-none align-middle inline-flex items-center gap-1"
         >
           <Icon :icon="nav.icon || ''" v-if="highlight" style="view-transition-name: nav-item-icon;"/>
           <a v-if="nav.link" :href="nav.link" :style="`view-transition-name: nav-item-${nav.text};`">
@@ -35,7 +35,7 @@ const nav = computed(() => props.nav);
         >
           <li
             v-for="subItem in nav.subMenu"
-            class="text-center rounded-lg py-2 transition-colors hover:bg-gray-100 hover:dark:bg-gray-800 hover:text-portage-400"
+            class="text-center rounded-lg py-2 transition-colors hover:bg-gray-100 hover:dark:bg-gray-800 hover:text-primary"
           >
             <a :href="subItem.link" class="text-sm"> {{ subItem.text }} </a>
           </li>

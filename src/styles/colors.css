@@ -1,0 +1,48 @@
+@tailwind base;
+
+@layer base {
+  :root {
+    --primary-hue: 280;
+    --primary-hue-gradient: calc(
+      var(--primary-hue) + 20
+    ); /* Oh no, Safari doesn't support calc() in oklch(from) */
+
+    --primary: theme("colors.portage.400");
+
+    --bg-page: theme("colors.portage.100");
+    --bg-card: #fff;
+
+    --text-content: theme("colors.gray.700");
+    --text-heading: theme("colors.gray.900");
+    --text-comment: theme("colors.gray.600");
+
+    --text-primary: theme("colors.portage.500");
+    --text-content-primary: theme("colors.portage.600");
+    --text-active: theme("colors.portage.700");
+
+    --link-underline-normal: theme("colors.gray.400");
+    --link-underline-hover: theme("colors.gray.600");
+    --link-underline-active: theme("colors.gray.900");
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: theme("colors.portage.300");
+
+      --bg-page: oklch(15% 0.02 var(--primary-hue));
+      --bg-card: oklch(25% 0.025 var(--primary-hue));
+
+      --text-content: theme("colors.gray.300");
+      --text-heading: theme("colors.gray.100");
+      --text-comment: theme("colors.gray.400");
+
+      --text-primary: theme("colors.portage.300");
+      --text-content-primary: theme("colors.portage.300");
+      --text-active: theme("colors.portage.200");
+
+      --link-underline-normal: theme("colors.gray.400");
+      --link-underline-hover: theme("colors.gray.200");
+      --link-underline-active: theme("colors.gray.100");
+    }
+  }
+}

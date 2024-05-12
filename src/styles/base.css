@@ -1,32 +1,18 @@
 @import "markdown-alert.css";
+@import "colors.css";
 @tailwind components;
 
 @layer components {
-  .bg-card {
-    @apply bg-white dark:bg-gray-900;
-  }
   .shape-card {
     @apply rounded-xl shadow-lg;
   }
 
-  .text-content {
-    @apply text-gray-700 dark:text-gray-300;
-  }
-  .text-heading {
-    @apply text-gray-900 dark:text-gray-100;
-  }
-  .text-comment {
-    @apply text-gray-600 dark:text-gray-400;
-  }
-  .text-primary {
-    @apply text-portage-400 dark:text-portage-400;
-  }
   .card-heading {
     @apply relative text-wrap text-xl font-medium tracking-tight transition text-heading
-    before:absolute before:hidden before:-left-4 before:top-1 before:h-5 before:w-1 before:rounded-md before:bg-portage-300 before:lg:block before:content-[""];
+    before:absolute before:hidden before:-left-4 before:top-1 before:h-5 before:w-1 before:rounded-md before:bg-[var(--primary)] before:lg:block before:content-[""];
   }
   .btn-plain {
-    @apply bg-none transition-all duration-200 ease-in-out text-content hover:text-portage-400 active:text-portage-500 dark:hover:text-portage-200/80 dark:active:text-portage-300/80 dark:hover:bg-portage-100/20;
+    @apply bg-none transition-all duration-200 ease-in-out text-content hover:text-primary active:text-active dark:hover:bg-portage-100/20;
   }
 }
 
@@ -37,15 +23,6 @@
 .prose iframe,
 .prose-invert iframe {
   @apply mx-auto max-w-full rounded-xl;
-}
-
-.prose a,
-.prose strong {
-  @apply text-portage-500 dark:text-portage-300;
-}
-
-.prose strong {
-  @apply font-bold;
 }
 
 :root {
@@ -62,17 +39,6 @@
     "Helvetica Neue",
     sans-serif;
   @apply font-normal scroll-smooth;
-  --link-underline-normal: rgba(125, 125, 125, 0.5);
-  --link-underline-hover: rgba(125, 125, 125, 0.8);
-  --link-underline-active: rgba(125, 125, 125, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --link-underline-normal: rgba(256, 256, 256, 0.6);
-    --link-underline-hover: rgba(256, 256, 256, 0.8);
-    --link-underline-active: rgba(256, 256, 256, 1);
-  }
 }
 
 .i-mingcute-github-fill {
