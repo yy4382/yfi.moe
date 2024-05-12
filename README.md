@@ -1,6 +1,6 @@
 # yfi.moe
 
-My personal site built with Astro, Vue and UnoCSS.
+My personal site built with Astro, Vue and Tailwind CSS.
 
 目前部署于 Vercel，访问地址：[yfi.moe](https://yfi.moe)。之前也使用过 GitHub Actions 构建再拉取到 VPS 上部署，参考 [build.yaml](.github/workflows//build.yaml)。
 
