@@ -3,15 +3,14 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import PostCard from "@comp/PostCard.astro";
 import PaginationBtn from "@comp/PaginationBtn.astro";
 import { getSortedPosts } from "@utils/content";
+import type { Page } from "astro";
+import { getSeo } from "@utils/SEO";
+
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getSortedPosts();
   return paginate(allPosts, { pageSize: 10 });
 }
-interface Props {
-  page: any;
-}
-const { page } = Astro.props;
-import { getSeo } from "@utils/SEO";
+const { page } = Astro.props as { page: Page };
 const seoConfig = getSeo({ title: "文章列表" });
 ---
 
@@ -28,7 +27,7 @@ const seoConfig = getSeo({ title: "文章列表" });
   document.addEventListener("astro:before-preparation", (ev) => {
     const sourceElement = ev.sourceElement;
     if (!sourceElement) return;
-    
+
     const postCard = sourceElement.parentElement;
     if (postCard?.classList.contains("post-card")) {
       postCard.style.viewTransitionName = "post-card";

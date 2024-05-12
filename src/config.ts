@@ -23,7 +23,7 @@ export const navMenu: NavMenu[] = [
   },
   {
     text: "文章",
-    link: "/post/1",
+    link: "/post",
     icon: "mingcute:edit-4-line",
     subMenu: [
       { text: "介绍 & 教程", link: "/categories/介绍 & 教程" },
@@ -56,5 +56,5 @@ export const algoliaConfig = {
 
 export const path = {
   postPrefix: "/post",
-  postList: "/post/1",
+  postList: "/post",
 }
