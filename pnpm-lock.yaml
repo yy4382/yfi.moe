@@ -72,8 +72,8 @@ importers:
         specifier: ^0.13.0
         version: 0.13.0
       radix-vue:
-        specifier: ^1.7.4
-        version: 1.7.4(vue@3.4.27(typescript@5.4.5))
+        specifier: ^1.8.0
+        version: 1.8.0(vue@3.4.27(typescript@5.4.5))
       reading-time:
         specifier: ^1.5.0
         version: 1.5.0
@@ -874,6 +874,9 @@ packages:
 
   '@internationalized/date@3.5.2':
     resolution: {integrity: sha512-vo1yOMUt2hzp63IutEaTUxROdvQg1qlMRsbCvbay2AK2Gai7wIgCyK5weEX3nHkiLgo4qCXHijFNC/ILhlRpOQ==}
+
+  '@internationalized/number@3.5.2':
+    resolution: {integrity: sha512-4FGHTi0rOEX1giSkt5MH4/te0eHBq3cvAYsfLlpguV6pzJAReXymiYpE5wPCqKqjkUO3PIsyvk+tBiIV1pZtbA==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -2536,8 +2539,8 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  radix-vue@1.7.4:
-    resolution: {integrity: sha512-Z75iJVb2rNL6347pWwqDIP02ktTowiDKVsScrLRv9y7uj8tMsEcD4pC0oTogVScRP5voZd3rov6zKE20MQTj+A==}
+  radix-vue@1.8.0:
+    resolution: {integrity: sha512-RT98WcrsHMG4P4DuN4G4EeHnSV2Lk+J2k2LWr/UF/7oF2STxUFEjg2Zg0uxFG8B/evutOmp9S5kqujJVmp3sgQ==}
     peerDependencies:
       vue: '>= 3.2.0'
 
@@ -3958,6 +3961,10 @@ snapshots:
     optional: true
 
   '@internationalized/date@3.5.2':
+    dependencies:
+      '@swc/helpers': 0.5.10
+
+  '@internationalized/number@3.5.2':
     dependencies:
       '@swc/helpers': 0.5.10
 
@@ -6006,11 +6013,12 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  radix-vue@1.7.4(vue@3.4.27(typescript@5.4.5)):
+  radix-vue@1.8.0(vue@3.4.27(typescript@5.4.5)):
     dependencies:
       '@floating-ui/dom': 1.6.3
       '@floating-ui/vue': 1.0.6(vue@3.4.27(typescript@5.4.5))
       '@internationalized/date': 3.5.2
+      '@internationalized/number': 3.5.2
       '@tanstack/vue-virtual': 3.4.0(vue@3.4.27(typescript@5.4.5))
       '@vueuse/core': 10.9.0(vue@3.4.27(typescript@5.4.5))
       '@vueuse/shared': 10.9.0(vue@3.4.27(typescript@5.4.5))
