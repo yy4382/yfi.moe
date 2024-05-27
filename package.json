@@ -28,7 +28,7 @@
     "astro-icon": "^1.1.0",
     "astro-loading-indicator": "^0.4.0",
     "astro-seo": "^0.8.3",
-    "instantsearch.css": "^8.1.0",
+    "instantsearch.css": "^8.2.0",
     "luxon": "^3.4.4",
     "mdast-util-to-string": "^4.0.0",
     "radix-vue": "^1.8.0",

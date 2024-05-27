@@ -60,8 +60,8 @@ importers:
         specifier: ^0.8.3
         version: 0.8.3(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.5)
       instantsearch.css:
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^8.2.0
+        version: 8.2.0
       luxon:
         specifier: ^3.4.4
         version: 3.4.4
@@ -1899,8 +1899,8 @@ packages:
   instantsearch-ui-components@0.5.0:
     resolution: {integrity: sha512-iDdbAbPDyKZOCdOd4aiMkMVJ1WFhc+QU0dM0EIgfZqDYHFuw8XfyLakRK+S7YcQi4bomoqWZ4FiQ/gTFFWo4rQ==}
 
-  instantsearch.css@8.1.0:
-    resolution: {integrity: sha512-rPhcAZ02bLwUn3iOXbldZW/yl+17guWoH3qWYZ8nQEwNBx5+wZ6Bv8mFqqK448+R2aU4nbFKIhmoTIPXI5Zobg==}
+  instantsearch.css@8.2.0:
+    resolution: {integrity: sha512-VLALy7sSpXwtPSHDFBZ4e/46/vOIVZjLyi24sYqJThubcKSPExLNmkSBzSiBt+VupLXKhlJPSb6qoVO486JSRw==}
 
   instantsearch.js@4.68.1:
     resolution: {integrity: sha512-h1TmKTO9K3aid6m/4JlLPDnlun/GDniGALxljrFctNHR7zIRP1SsNJtqcAevID49BVlpFSGqwtrtZ7JgpWQJJg==}
@@ -5372,7 +5372,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.24.5
 
-  instantsearch.css@8.1.0: {}
+  instantsearch.css@8.2.0: {}
 
   instantsearch.js@4.68.1(algoliasearch@4.23.3):
     dependencies:
