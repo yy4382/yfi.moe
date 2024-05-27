@@ -111,8 +111,8 @@ importers:
         specifier: ^3.4.27
         version: 3.4.27(typescript@5.4.5)
       vue-instantsearch:
-        specifier: ^4.16.2
-        version: 4.16.2(@vue/server-renderer@3.4.27(vue@3.4.27(typescript@5.4.5)))(algoliasearch@4.23.3)(vue@3.4.27(typescript@5.4.5))
+        specifier: ^4.17.0
+        version: 4.17.0(@vue/server-renderer@3.4.27(vue@3.4.27(typescript@5.4.5)))(algoliasearch@4.23.3)(vue@3.4.27(typescript@5.4.5))
 
 packages:
 
@@ -1275,8 +1275,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  algoliasearch-helper@3.19.0:
-    resolution: {integrity: sha512-AaSb5DZDMZmDQyIy6lf4aL0OZGgyIdqvLIIvSuVQOIOqfhrYSY7TvotIFI2x0Q3cP3xUpTd7lI1astUC4aXBJw==}
+  algoliasearch-helper@3.20.0:
+    resolution: {integrity: sha512-6EVhAmVug0+hdRHWbubF7hLHHhLoQ8NjLk6iS6d4k5chWawpS5EDexrF6Jx/hPZvUKIeNrzsbTpjAkcvrjNLHg==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 6'
 
@@ -1896,14 +1896,14 @@ packages:
   import-meta-resolve@4.1.0:
     resolution: {integrity: sha512-I6fiaX09Xivtk+THaMfAwnA3MVA5Big1WHF1Dfx9hFuvNIWpXnorlkzhcQf6ehrqQiiZECRt1poOAkPmer3ruw==}
 
-  instantsearch-ui-components@0.5.0:
-    resolution: {integrity: sha512-iDdbAbPDyKZOCdOd4aiMkMVJ1WFhc+QU0dM0EIgfZqDYHFuw8XfyLakRK+S7YcQi4bomoqWZ4FiQ/gTFFWo4rQ==}
+  instantsearch-ui-components@0.6.0:
+    resolution: {integrity: sha512-Jj3F9D46ef8VtzVZTgWsy79P25Q5nhI5XzK0NqfUVVI5yI3vA/3NkvKYtBHBlz50DDyBm6t9kIn/ZfpOwENm2A==}
 
   instantsearch.css@8.1.0:
     resolution: {integrity: sha512-rPhcAZ02bLwUn3iOXbldZW/yl+17guWoH3qWYZ8nQEwNBx5+wZ6Bv8mFqqK448+R2aU4nbFKIhmoTIPXI5Zobg==}
 
-  instantsearch.js@4.68.1:
-    resolution: {integrity: sha512-h1TmKTO9K3aid6m/4JlLPDnlun/GDniGALxljrFctNHR7zIRP1SsNJtqcAevID49BVlpFSGqwtrtZ7JgpWQJJg==}
+  instantsearch.js@4.69.0:
+    resolution: {integrity: sha512-P05f8efIaRvzT5JXXSQ5tG7unW6CNB3yZt2I7gZVVnglZYz0NM2/7TbzqJwp1IAWwLdS/jQwrmPxvc2njACiZw==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 6'
 
@@ -3184,8 +3184,8 @@ packages:
       '@vue/composition-api':
         optional: true
 
-  vue-instantsearch@4.16.2:
-    resolution: {integrity: sha512-lMyXjQHF7AkWLvq5xXfquGcGJfnQfxk3ZmDYKEwt0f8xefzDniRXfPKqvy7k9i6It6vYzEFC9A6Z5ZjQHVMlpA==}
+  vue-instantsearch@4.17.0:
+    resolution: {integrity: sha512-EY8Qug0AlZVISmKYhJdlH5Z2W5QRUhFPWZFr3qIGI8RSMWf62DMCAj6qvU8IKvCRDPhCbRfZoa8clSYx2mM08Q==}
     peerDependencies:
       '@vue/server-renderer': ^3.1.2
       algoliasearch: '>= 3.32.0 < 5'
@@ -4561,7 +4561,7 @@ snapshots:
 
   acorn@8.11.3: {}
 
-  algoliasearch-helper@3.19.0(algoliasearch@4.23.3):
+  algoliasearch-helper@3.20.0(algoliasearch@4.23.3):
     dependencies:
       '@algolia/events': 4.0.1
       algoliasearch: 4.23.3
@@ -5368,13 +5368,13 @@ snapshots:
 
   import-meta-resolve@4.1.0: {}
 
-  instantsearch-ui-components@0.5.0:
+  instantsearch-ui-components@0.6.0:
     dependencies:
       '@babel/runtime': 7.24.5
 
   instantsearch.css@8.1.0: {}
 
-  instantsearch.js@4.68.1(algoliasearch@4.23.3):
+  instantsearch.js@4.69.0(algoliasearch@4.23.3):
     dependencies:
       '@algolia/events': 4.0.1
       '@types/dom-speech-recognition': 0.0.1
@@ -5382,10 +5382,10 @@ snapshots:
       '@types/hogan.js': 3.0.5
       '@types/qs': 6.9.15
       algoliasearch: 4.23.3
-      algoliasearch-helper: 3.19.0(algoliasearch@4.23.3)
+      algoliasearch-helper: 3.20.0(algoliasearch@4.23.3)
       hogan.js: 3.0.2
       htm: 3.1.1
-      instantsearch-ui-components: 0.5.0
+      instantsearch-ui-components: 0.6.0
       preact: 10.21.0
       qs: 6.9.7
       search-insights: 2.13.0
@@ -6909,11 +6909,11 @@ snapshots:
     dependencies:
       vue: 3.4.27(typescript@5.4.5)
 
-  vue-instantsearch@4.16.2(@vue/server-renderer@3.4.27(vue@3.4.27(typescript@5.4.5)))(algoliasearch@4.23.3)(vue@3.4.27(typescript@5.4.5)):
+  vue-instantsearch@4.17.0(@vue/server-renderer@3.4.27(vue@3.4.27(typescript@5.4.5)))(algoliasearch@4.23.3)(vue@3.4.27(typescript@5.4.5)):
     dependencies:
       algoliasearch: 4.23.3
-      instantsearch-ui-components: 0.5.0
-      instantsearch.js: 4.68.1(algoliasearch@4.23.3)
+      instantsearch-ui-components: 0.6.0
+      instantsearch.js: 4.69.0(algoliasearch@4.23.3)
       mitt: 2.1.0
       vue: 3.4.27(typescript@5.4.5)
     optionalDependencies:

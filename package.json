@@ -41,7 +41,7 @@
     "typescript": "^5.4.5",
     "unified": "^11.0.4",
     "vue": "^3.4.27",
-    "vue-instantsearch": "^4.16.2",
+    "vue-instantsearch": "^4.17.0",
     "@types/remove-markdown": "^0.3.4",
     "algoliasearch": "^4.23.3",
     "prettier-plugin-astro": "^0.13.0",
