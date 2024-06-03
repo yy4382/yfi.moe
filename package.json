@@ -44,7 +44,7 @@
     "vue-instantsearch": "^4.16.2",
     "@types/remove-markdown": "^0.3.4",
     "algoliasearch": "^4.23.3",
-    "prettier-plugin-astro": "^0.13.0",
+    "prettier-plugin-astro": "^0.14.0",
     "remove-markdown": "^0.5.0",
     "sharp": "^0.33.3",
     "tailwindcss": "^3.4.3"
