@@ -54,8 +54,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       astro-loading-indicator:
-        specifier: ^0.4.0
-        version: 0.4.0(astro@4.9.1(@types/node@20.12.11)(typescript@5.4.5))
+        specifier: ^0.5.0
+        version: 0.5.0(astro@4.9.1(@types/node@20.12.11)(typescript@5.4.5))
       astro-seo:
         specifier: ^0.8.3
         version: 0.8.3(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.5)
@@ -1331,8 +1331,8 @@ packages:
   astro-icon@1.1.0:
     resolution: {integrity: sha512-Nksc09p7UuHeMcPNS9w1pKqRw3+wEmmh0A3FJW+FNXvqaeWI4RLvD1MCWErpY3Z5Cvad317rvLdik/Hg8GEk8Q==}
 
-  astro-loading-indicator@0.4.0:
-    resolution: {integrity: sha512-8GX6hSy1Wbnto1GCPokNtBndjrRwf94KaBOdaqe3PQSC1vrBATrUcHovcctPkfUXvOopbnow92CwmXdTrbE74Q==}
+  astro-loading-indicator@0.5.0:
+    resolution: {integrity: sha512-NU06AzJEzvlzXLac8ODFgHjzTDyaF/GV+nQQ7Rq21rCeSifhmLQu219lJukIUS0ySs4ySO4PAwcaHGClOSEufA==}
     peerDependencies:
       astro: ^4.0.0
 
@@ -4623,7 +4623,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro-loading-indicator@0.4.0(astro@4.9.1(@types/node@20.12.11)(typescript@5.4.5)):
+  astro-loading-indicator@0.5.0(astro@4.9.1(@types/node@20.12.11)(typescript@5.4.5)):
     dependencies:
       astro: 4.9.1(@types/node@20.12.11)(typescript@5.4.5)
 
