@@ -26,7 +26,7 @@ const pageCollection = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    date: z.date(),
+    date: z.date().optional(),
     updated: z.date().optional(),
     author: z.string().default("Yunfi"),
     description: z.string().optional(),

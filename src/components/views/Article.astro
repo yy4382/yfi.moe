@@ -15,9 +15,13 @@ const { entry } = Astro.props;
     <h1 class="card-heading" transition:name="post-heading">
       {entry.data.title}
     </h1>
-    <div transition:name="post-attr">
-      <PostAttr post={entry as any} />
-    </div>
+    {
+      entry.data.date && (
+        <div transition:name="post-attr">
+          <PostAttr post={entry as any} />
+        </div>
+      )
+    }
     <MdRender>
       <slot />
     </MdRender>
