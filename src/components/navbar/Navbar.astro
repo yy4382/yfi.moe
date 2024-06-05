@@ -40,24 +40,27 @@ const { navStats } = Astro.props;
         else if (typeof navStats === "object" && navStats.text === item.text)
           highlight = true;
         return (
-          <div class="w-20 font-medium justify-center items-center h-full flex">
-            <div class="h-full flex justify-center items-center">
-              <span class="w-full hover:text-primary self-center z-1 select-none align-middle inline-flex items-center gap-1">
-                {highlight && (
-                  <Icon
-                    name={item.icon}
-                    v-if="highlight"
-                    style="view-transition-name: nav-item-icon"
-                  />
-                )}
-                <a
-                  href={item.link}
-                  style={"view-transition-name: nav-item-text-" + item.text}
-                >
-                  {item.text}
-                </a>
-              </span>
-            </div>
+          <div
+            class:list={[
+              "w-20 font-medium h-full flex justify-center items-center",
+              highlight ? "text-primary" : "text-heading",
+            ]}
+          >
+            <span class="hover:text-primary self-center z-1 select-none align-middle inline-flex items-center gap-1">
+              {highlight && (
+                <Icon
+                  name={item.icon}
+                  v-if="highlight"
+                  style="view-transition-name: nav-item-icon"
+                />
+              )}
+              <a
+                href={item.link}
+                style={"view-transition-name: nav-item-text-" + item.text}
+              >
+                {item.text}
+              </a>
+            </span>
           </div>
         );
       })
