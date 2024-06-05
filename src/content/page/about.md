@@ -1,0 +1,19 @@
+---
+title: 关于
+slug: about
+---
+
+学生。
+
+[GitHub](https://github.com/yy4382) &nbsp;&nbsp;&nbsp;&nbsp;
+[Telegram Channel](https://t.me/yunfichannel) &nbsp;&nbsp;&nbsp;&nbsp;
+[X (Twitter)](https://twitter.com/yunfini) &nbsp;&nbsp;&nbsp;&nbsp;
+[Email](mailto:i@yfi.moe)
+
+## 本站的一些独立页面
+
+[Projects](/projects): 我的项目
+
+[我的听书方法汇总](/book-listening-collection)
+
+[站志：本站历史小记](/site-history)
