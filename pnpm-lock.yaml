@@ -21,8 +21,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(astro@4.9.2(@types/node@20.14.0)(typescript@5.4.5))(tailwindcss@3.4.3)
       '@astrojs/vue':
-        specifier: ^4.3.0
-        version: 4.3.0(astro@4.9.2(@types/node@20.14.0)(typescript@5.4.5))(rollup@4.18.0)(vite@5.2.12(@types/node@20.14.0))(vue@3.4.27(typescript@5.4.5))
+        specifier: ^4.4.0
+        version: 4.4.0(astro@4.9.2(@types/node@20.14.0)(typescript@5.4.5))(rollup@4.18.0)(vite@5.2.12(@types/node@20.14.0))(vue@3.4.27(typescript@5.4.5))
       '@iconify-json/devicon-plain':
         specifier: ^1.1.42
         version: 1.1.42
@@ -237,8 +237,8 @@ packages:
     resolution: {integrity: sha512-/ca/+D8MIKEC8/A9cSaPUqQNZm+Es/ZinRv0ZAzvu2ios7POQSsVD+VOj7/hypWNsNM3T7RpfgNq7H2TU1KEHA==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0}
 
-  '@astrojs/vue@4.3.0':
-    resolution: {integrity: sha512-kgemamWBGxSILInyINmK6jZlnUShWBKq9cekgBuiKK7NXUbEYWJQ4B9pE4gNlY0masybr8TYfhth6GaWBpenIw==}
+  '@astrojs/vue@4.4.0':
+    resolution: {integrity: sha512-a/wZK+YdVFfO61g0NrxMirPi1KH7kO5D8FCk7DJ+EjLnHt468YIct8OGG62RvwW47GbMNaqX+Qjqhuizs0EzRA==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0}
     peerDependencies:
       astro: ^4.0.0
@@ -330,16 +330,8 @@ packages:
     resolution: {integrity: sha512-CvLSkwXGWnYlF9+J3iZUvwgAxKiYzK3BWuo+mLzD/MDGOZDj7Gq8+hqaOkMxmJwmlv0iu86uH5fdADd9Hxkymw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-string-parser@7.24.1':
-    resolution: {integrity: sha512-2ofRCjnnA9y+wk8b9IAREroeUP02KHp431N2mhKniy2yKIDKpbrHv9eXwm8cBeWQYcJmzv5qKCu65P47eCF7CQ==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-string-parser@7.24.6':
     resolution: {integrity: sha512-WdJjwMEkmBicq5T9fm/cHND3+UlFa2Yj8ALLgmoSQAJZysYbBjw+azChSGPN4DSPLXOcooGRvDwZWMcF/mLO2Q==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-validator-identifier@7.24.5':
-    resolution: {integrity: sha512-3q93SSKX2TWCG30M2G2kwaKeTYgEUp5Snjuj8qm729SObL6nbtUldAi37qbxkD5gg3xnBio+f9nqpSepGZMvxA==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-identifier@7.24.6':
@@ -357,11 +349,6 @@ packages:
   '@babel/highlight@7.24.6':
     resolution: {integrity: sha512-2YnuOp4HAk2BsBrJJvYCbItHx0zWscI1C3zgWkz+wDyD9I7GIVrfnLyrR4Y1VR+7p+chAEcrgRQYZAGIKMV7vQ==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/parser@7.24.5':
-    resolution: {integrity: sha512-EOv5IK8arwh3LI47dz1b0tKUb/1uhHAnHJOrjgtQMIpu1uXd9mlFrJg9IUgGUgZ41Ch0K8REPTYpO7B76b4vJg==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
 
   '@babel/parser@7.24.6':
     resolution: {integrity: sha512-eNZXdfU35nJC2h24RznROuOpO94h6x8sg9ju0tT9biNtLZ2vuP8SduLqqV+/8+cebSLV9SJEAN5Z3zQbJG/M+Q==}
@@ -425,10 +412,6 @@ packages:
 
   '@babel/traverse@7.24.6':
     resolution: {integrity: sha512-OsNjaJwT9Zn8ozxcfoBc+RaHdj3gFmCmYoQLUII1o6ZrUwku0BMg80FoOTPx+Gi6XhcQxAYE4xyjPTo4SxEQqw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/types@7.24.5':
-    resolution: {integrity: sha512-6mQNsaLeXTw0nxYUYu+NSa4Hx4BlF1x1x8/PMFbiR+GBSr+2DkECc69b8hgy2frEodNcvPffeH8YfWd3LI6jhQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.24.6':
@@ -3446,7 +3429,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/vue@4.3.0(astro@4.9.2(@types/node@20.14.0)(typescript@5.4.5))(rollup@4.18.0)(vite@5.2.12(@types/node@20.14.0))(vue@3.4.27(typescript@5.4.5))':
+  '@astrojs/vue@4.4.0(astro@4.9.2(@types/node@20.14.0)(typescript@5.4.5))(rollup@4.18.0)(vite@5.2.12(@types/node@20.14.0))(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@vitejs/plugin-vue': 5.0.5(vite@5.2.12(@types/node@20.14.0))(vue@3.4.27(typescript@5.4.5))
       '@vitejs/plugin-vue-jsx': 3.1.0(vite@5.2.12(@types/node@20.14.0))(vue@3.4.27(typescript@5.4.5))
@@ -3576,11 +3559,7 @@ snapshots:
     dependencies:
       '@babel/types': 7.24.6
 
-  '@babel/helper-string-parser@7.24.1': {}
-
   '@babel/helper-string-parser@7.24.6': {}
-
-  '@babel/helper-validator-identifier@7.24.5': {}
 
   '@babel/helper-validator-identifier@7.24.6': {}
 
@@ -3597,10 +3576,6 @@ snapshots:
       chalk: 2.4.2
       js-tokens: 4.0.0
       picocolors: 1.0.1
-
-  '@babel/parser@7.24.5':
-    dependencies:
-      '@babel/types': 7.24.5
 
   '@babel/parser@7.24.6':
     dependencies:
@@ -3679,12 +3654,6 @@ snapshots:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-
-  '@babel/types@7.24.5':
-    dependencies:
-      '@babel/helper-string-parser': 7.24.1
-      '@babel/helper-validator-identifier': 7.24.5
-      to-fast-properties: 2.0.0
 
   '@babel/types@7.24.6':
     dependencies:
@@ -4339,7 +4308,7 @@ snapshots:
 
   '@vue/compiler-core@3.4.27':
     dependencies:
-      '@babel/parser': 7.24.5
+      '@babel/parser': 7.24.6
       '@vue/shared': 3.4.27
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -4352,7 +4321,7 @@ snapshots:
 
   '@vue/compiler-sfc@3.4.27':
     dependencies:
-      '@babel/parser': 7.24.5
+      '@babel/parser': 7.24.6
       '@vue/compiler-core': 3.4.27
       '@vue/compiler-dom': 3.4.27
       '@vue/compiler-ssr': 3.4.27
