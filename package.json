@@ -24,7 +24,7 @@
     "@tailwindcss/typography": "^0.5.13",
     "@types/luxon": "^3.4.2",
     "@types/remove-markdown": "^0.3.4",
-    "@waline/client": "^3.2.1",
+    "@waline/client": "^3.2.2",
     "algoliasearch": "^4.23.3",
     "astro": "^4.9.2",
     "astro-icon": "^1.1.0",

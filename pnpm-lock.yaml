@@ -42,8 +42,8 @@ importers:
         specifier: ^0.3.4
         version: 0.3.4
       '@waline/client':
-        specifier: ^3.2.1
-        version: 3.2.1(typescript@5.4.5)
+        specifier: ^3.2.2
+        version: 3.2.2(typescript@5.4.5)
       algoliasearch:
         specifier: ^4.23.3
         version: 4.23.3
@@ -1243,12 +1243,12 @@ packages:
   '@vueuse/shared@10.10.0':
     resolution: {integrity: sha512-2aW33Ac0Uk0U+9yo3Ypg9s5KcR42cuehRWl7vnUHadQyFvCktseyxxEPBi1Eiq4D2yBGACOnqLZpx1eMc7g5Og==}
 
-  '@waline/api@1.0.0-alpha.7':
-    resolution: {integrity: sha512-IcMah3Li+ueS2Wr0Odd9Ri/PPh1ePOdHLE4CAw1KZNPgNTeLw0lFak/+B4ttVZuW8eFq7DTSmxoUFHGLhi8WoQ==}
+  '@waline/api@1.0.0-alpha.8':
+    resolution: {integrity: sha512-S6pgUUfv+gcXU3hiW3PNUwiUvPy7bXmmLB/bwdU3hN5YVT5Q7CxyVSLA3oJkrNO5lcisKK1GBPv0H2W1uB0eGA==}
     engines: {node: '>=18'}
 
-  '@waline/client@3.2.1':
-    resolution: {integrity: sha512-rL1puS7njqcqPBntcJA0367vnIihKRfh7GlG7wv+jK3TGFl7GInn2WxtHsRCKqVbI/7utarCAGWJM6yi0wOz8Q==}
+  '@waline/client@3.2.2':
+    resolution: {integrity: sha512-9FBIq5dChJuo/L673KXxkmPsDvOcgsq8DZL2vFQQhFdN0SJjxK1CsRTaGOroIkdzQKlIocG6sZPyZXbY+SpPLw==}
     engines: {node: '>=18'}
 
   abbrev@1.1.1:
@@ -4434,12 +4434,12 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@waline/api@1.0.0-alpha.7': {}
+  '@waline/api@1.0.0-alpha.8': {}
 
-  '@waline/client@3.2.1(typescript@5.4.5)':
+  '@waline/client@3.2.2(typescript@5.4.5)':
     dependencies:
       '@vueuse/core': 10.10.0(vue@3.4.27(typescript@5.4.5))
-      '@waline/api': 1.0.0-alpha.7
+      '@waline/api': 1.0.0-alpha.8
       autosize: 6.0.1
       marked: 12.0.2
       marked-highlight: 2.1.1(marked@12.0.2)
