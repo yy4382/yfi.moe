@@ -1,16 +1,15 @@
 {
   "name": "blog-astro",
-  "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@9.0.2+sha256.d6fc013639b81658ff175829ebb9435bcb89eff206769e460fd3ae27c2054df6",
   "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "astro": "astro",
     "build": "astro build",
     "build:fetch": "sh get-article.sh && astro build",
+    "dev": "astro dev",
     "preview": "astro preview",
-    "astro": "astro"
+    "start": "astro dev"
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",
@@ -23,16 +22,20 @@
     "@iconify/vue": "^4.1.2",
     "@tailwindcss/typography": "^0.5.13",
     "@types/luxon": "^3.4.2",
+    "@types/postcss-js": "^4.0.4",
     "@types/remove-markdown": "^0.3.4",
     "@waline/client": "^3.2.2",
     "algoliasearch": "^4.23.3",
-    "astro": "^4.10.3",
+    "astro": "4.10.2",
     "astro-icon": "^1.1.0",
     "astro-loading-indicator": "^0.5.0",
     "astro-seo": "^0.8.4",
     "instantsearch.css": "^8.2.1",
     "luxon": "^3.4.4",
     "mdast-util-to-string": "^4.0.0",
+    "postcss": "^8.4.38",
+    "postcss-import": "^16.1.0",
+    "postcss-js": "^4.0.1",
     "prettier-plugin-astro": "^0.14.0",
     "radix-vue": "^1.8.4",
     "reading-time": "^1.5.0",
@@ -48,5 +51,6 @@
     "unified": "^11.0.4",
     "vue": "^3.4.29",
     "vue-instantsearch": "^4.17.4"
-  }
+  },
+  "packageManager": "pnpm@9.0.2+sha256.d6fc013639b81658ff175829ebb9435bcb89eff206769e460fd3ae27c2054df6"
 }
