@@ -15,8 +15,8 @@ const { seoConfig, stopTrack, navStats } = Astro.props;
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
   <BaseBody>
-    <div class="w-full space-y-4">
-      <nav class="mb-4" transition:name="nav-bar" transition:animate="initial">
+    <div class="w-full gap-4 min-h-[calc(100vh+4rem)] flex flex-col">
+      <nav transition:name="nav-bar" transition:animate="initial">
         <Navbar navStats={navStats} />
       </nav>
 

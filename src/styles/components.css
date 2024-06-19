@@ -1,4 +1,5 @@
 @layer components {
+  .underlined-link,
   .timeline a {
     color: currentColor;
     background-image: linear-gradient(var(--text-primary), var(--text-primary));
@@ -19,9 +20,6 @@
   }
   .timeline {
     position: relative;
-    & a {
-      line-height: 1.6;
-    }
 
     @apply min-w-0 flex-1 list-inside justify-between;
 

@@ -25,6 +25,7 @@ export default {
       }),
       backgroundColor: {
         card: "var(--bg-card)",
+        popover: "var(--bg-popover)",
       },
       textColor: {
         content: {
@@ -89,8 +90,9 @@ export default {
   },
   plugins: [
     typography,
+    require("tailwindcss-animated"),
     addShortcutPlugin,
-
+    
     // import css as plugin is powered by "./cssAsPlugin.cjs"
     require("./src/styles/components.css"),
   ],
