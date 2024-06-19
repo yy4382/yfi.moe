@@ -1,5 +1,7 @@
-import type { Config } from 'tailwindcss'
-import typography from '@tailwindcss/typography'
+import type { Config } from "tailwindcss";
+import type { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
+import typography from "@tailwindcss/typography";
+import "./cssAsPlugin.cjs";
 
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
@@ -22,17 +24,17 @@ export default {
         },
       }),
       backgroundColor: {
-        'card': 'var(--bg-card)',
+        card: "var(--bg-card)",
       },
       textColor: {
-        'content': {
-          DEFAULT: 'var(--text-content)',
-          'primary': 'var(--text-content-primary)',
+        content: {
+          DEFAULT: "var(--text-content)",
+          primary: "var(--text-content-primary)",
         },
-        'heading': 'var(--text-heading)',
-        'comment': 'var(--text-comment)',
-        'primary': 'var(--text-primary)',
-        'active': 'var(--text-active)',
+        heading: "var(--text-heading)",
+        comment: "var(--text-comment)",
+        primary: "var(--text-primary)",
+        active: "var(--text-active)",
       },
       typography: ({ theme }: any) => ({
         DEFAULT: {
@@ -42,22 +44,22 @@ export default {
               textDecoration: "none",
               borderBottom: "2px solid var(--link-underline-normal)",
               transition: "border-bottom .1s ease-in-out",
-              color: 'var(--text-content-primary)',
+              color: "var(--text-content-primary)",
               fontWeight: theme("fontWeight.medium"),
-              '&:hover': {
+              "&:hover": {
                 borderBottom: "2px solid var(--link-underline-hover)",
               },
-              '&:active': {
+              "&:active": {
                 borderBottom: "2px solid var(--link-underline-active)",
-                color: 'var(--text-active)',
+                color: "var(--text-active)",
               },
             },
             strong: {
-              color: 'var(--text-content-primary)',
+              color: "var(--text-content-primary)",
               fontWeight: theme("fontWeight.semiBold"),
             },
             "strong > code": {
-              color: 'var(--text-content-primary)',
+              color: "var(--text-content-primary)",
             },
             "*:not(pre) > code": {
               whiteSpace: "pre-wrap",
@@ -67,11 +69,11 @@ export default {
               fontWeight: "inherit",
               fontStyle: "normal",
             },
-            'blockquote p:first-of-type::before': {
-              content: 'none',
+            "blockquote p:first-of-type::before": {
+              content: "none",
             },
-            'blockquote p:last-of-type::after': {
-              content: 'none',
+            "blockquote p:last-of-type::after": {
+              content: "none",
             },
           },
         },
@@ -85,5 +87,25 @@ export default {
       }),
     },
   },
-  plugins: [typography],
+  plugins: [
+    typography,
+    addShortcutPlugin,
+
+    // import css as plugin is powered by "./cssAsPlugin.cjs"
+    require("./src/styles/components.css"),
+  ],
 } satisfies Config;
+
+function addShortcutPlugin({ addUtilities, theme }: PluginAPI) {
+  const styles: CSSRuleObject = {
+    ".center": {
+      "align-items": "center",
+      "justify-content": "center",
+    },
+    ".shape-card": {
+      "border-radius": theme("borderRadius.xl"),
+      "box-shadow": theme("boxShadow.lg"),
+    },
+  };
+  addUtilities(styles);
+}
