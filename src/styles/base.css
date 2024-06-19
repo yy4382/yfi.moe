@@ -12,7 +12,7 @@
     before:absolute before:hidden before:-left-4 before:top-1 before:h-5 before:w-1 before:rounded-md before:bg-[var(--primary)] before:lg:block before:content-[""];
   }
   .btn-plain {
-    @apply bg-none transition-all duration-200 ease-in-out text-content hover:text-primary active:text-active dark:hover:bg-portage-100/20;
+    @apply bg-none transition-all duration-200 ease-in-out text-content hover:text-primary hover:bg-portage-200/40 active:text-active dark:hover:bg-portage-100/20;
   }
 }
 
