@@ -28,7 +28,7 @@ export const navMenu: NavMenu[] = [
   },
 
   {
-    text: "时间轴",
+    text: "时光机",
     link: "/achieve",
     icon: "mingcute:history-anticlockwise-line",
   },
