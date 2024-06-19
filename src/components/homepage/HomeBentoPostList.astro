@@ -1,0 +1,102 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { path } from "@config";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  posts: CollectionEntry<"post">[];
+  title: string;
+  class?: string;
+  link?: string;
+  showUpdateTime?: boolean;
+}
+const { posts, title, class: className, link, showUpdateTime } = Astro.props;
+import { getPostPath } from "@utils/path";
+
+export const relativeTimeFromNow = (
+  time: Date | string,
+  current = new Date()
+) => {
+  if (!time) {
+    return "";
+  }
+  time = new Date(time);
+  const msPerMinute = 60 * 1000;
+  const msPerHour = msPerMinute * 60;
+  const msPerDay = msPerHour * 24;
+  const msPerMonth = msPerDay * 30;
+  const msPerYear = msPerDay * 365;
+
+  const elapsed = +current - +time;
+
+  if (elapsed < msPerMinute) {
+    const gap = Math.ceil(elapsed / 1000);
+    return gap <= 0 ? "刚刚" : `${gap} 秒前`;
+  } else if (elapsed < msPerHour) {
+    return `${Math.round(elapsed / msPerMinute)} 分钟前`;
+  } else if (elapsed < msPerDay) {
+    return `${Math.round(elapsed / msPerHour)} 小时前`;
+  } else if (elapsed < msPerMonth) {
+    return `${Math.round(elapsed / msPerDay)} 天前`;
+  } else if (elapsed < msPerYear) {
+    return `${Math.round(elapsed / msPerMonth)} 个月前`;
+  } else {
+    return `${Math.round(elapsed / msPerYear)} 年前`;
+  }
+};
+---
+
+<div
+  class:list={[
+    "bg-card shape-card p-6 sm:p-8 flex flex-col gap-4 relative",
+    className,
+    link && "pb-12",
+  ]}
+>
+  <h2 class="card-heading text-heading ml-3 sm:ml-4">{title}</h2>
+  <ul class="flex-grow text-content timeline ml-3 sm:ml-4">
+    {
+      posts.map((post) => {
+        return (
+          <li class="flex min-w-0 justify-between">
+            <a
+              href={getPostPath(post)}
+              class="min-w-0 shrink truncate"
+              title={post.data.title}
+            >
+              {post.data.title}
+            </a>
+            <span class="ml-2 shrink-0 self-end text-xs opacity-70">
+              {relativeTimeFromNow(
+                showUpdateTime ? post.data.updated : post.data.date
+              )}
+            </span>
+          </li>
+        );
+      })
+    }
+  </ul>
+  {
+    link && (
+      <div class="absolute bottom-2 right-2 p-1 h-8 sm:w-8 w-20 hover:w-20 rounded-full bg-popover transition-all group delay-300 hover:delay-0 duration-300">
+        <a class="flex items-center size-full" href={link}>
+          <span
+            class="min-w-0 flex-grow sm:invisible group-hover:visible
+            sm:group-hover:animate-jump-in sm:group-hover:animate-delay-300 
+            sm:group-hover:animate-duration-300 sm:group-hover:animate-normal 
+            sm:animate-fade sm:animate-duration-300 sm:animate-reverse 
+            transition-[visibility] duration-300
+            text-content text-center"
+          >
+            更多
+          </span>
+          <Icon
+            name="mingcute:more-3-line"
+            class="min-w-6 text-primary group-hover:scale-110 delay-300 group-hover:delay-0 transition-transform duration-300"
+            size={24}
+          />
+        </a>
+      </div>
+    )
+  }
+</div>

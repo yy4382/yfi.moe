@@ -47,4 +47,5 @@ export const algoliaConfig = {
 export const path = {
   postPrefix: "/post",
   postList: "/post",
+  projectList: "/projects",
 };

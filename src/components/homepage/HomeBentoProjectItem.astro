@@ -1,0 +1,76 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  icon: string;
+  title: string;
+  desc?: string;
+  links: {
+    href: string;
+    text: string;
+    icon?: string;
+    currentTab?: boolean;
+  }[];
+}
+const { icon, desc, title, links }: Props = Astro.props;
+---
+
+<div class="relative group h-full">
+  <div
+    class="flex sm:grid sm:grid-rows-[1.5fr_1fr] justify-items-center gap-4 sm:group-hover:scale-95 transition-transform h-full"
+  >
+    <Icon
+      name={icon}
+      class="text-6xl flex-shrink-0 text-content pt-1 sm:self-end"
+    />
+    <div class="flex flex-col">
+      <p class="text-heading font-medium text-lg max-w-32 sm:text-center">
+        {title}
+      </p>
+      {desc && <p class="mt-1 text-content text-sm sm:hidden">{desc}</p>}
+      <ul class="flex gap-2 mt-2 sm:hidden text-content-primary">
+        {
+          links.map((link) => (
+            <li class="underlined-link active:scale-95 transition-transform">
+              {link.icon && (
+                <Icon
+                  name={link.icon}
+                  class="inline-block translate-x-[2px] -translate-y-[1px]"
+                />
+              )}
+              <a
+                href={link.href}
+                class=""
+                target={link.currentTab ? "_self" : "_blank"}
+              >
+                {link.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <div
+    class="hidden sm:flex invisible opacity-0 sm:group-hover:visible sm:group-hover:opacity-100 flex-col gap-2 absolute top-[75%] left-[10%] bg-card border dark:border-gray-600 z-10 p-4 shape-card transition-all"
+  >
+    {desc && <p class="text-content min-w-max">{desc}</p>}
+    <ul class="flex flex-col gap-2 text-content-primary">
+      {
+        links.map((link) => (
+          <li class="whitespace-nowrap underlined-link w-fit">
+            {link.icon && (
+              <Icon
+                name={link.icon}
+                class="inline-block translate-x-[2px] -translate-y-[1px]"
+              />
+            )}
+            <a href={link.href} target={link.currentTab ? "_self" : "_blank"}>
+              {link.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

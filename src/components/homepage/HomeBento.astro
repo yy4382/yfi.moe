@@ -1,0 +1,371 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import { getSortedPosts } from "@utils/content";
+import logo from "@assets/logo.png";
+import { path } from "@config";
+import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
+import HomeBentoPostList from "./HomeBentoPostList.astro";
+const posts = await getSortedPosts();
+const recent = posts.slice(0, 12);
+const recentModified = recent
+  .slice()
+  .sort((a, b) => Number(b.data.updated) - Number(a.data.updated))
+  .slice(0, 5);
+const highlights = posts.filter((post) => post.data.highlight).slice(0, 3);
+interface Social {
+  name: string;
+  icon: string;
+  link: string;
+  color: string;
+}
+
+const articles = posts.length;
+let words = 0;
+for (const post of posts) {
+  const { remarkPluginFrontmatter } = await post.render();
+  words += remarkPluginFrontmatter.words;
+}
+const tags = [...new Set(posts.map((post) => post.data.tags).flat())].length;
+
+export const socials: Social[] = [
+  {
+    name: "GitHub",
+    icon: "mingcute:github-line",
+    link: "https://github.com/yy4382",
+    color: "bg-black",
+  },
+  {
+    name: "Telegram",
+    icon: "mingcute:telegram-line",
+    link: "https://t.me/yunfichannel",
+    color: "bg-blue-500",
+  },
+  {
+    name: "Twitter",
+    icon: "mingcute:twitter-line",
+    link: "https://twitter.com/yunfini",
+    color: "bg-blue-400",
+  },
+  {
+    name: "Email",
+    icon: "mingcute:mail-send-line",
+    link: "mailto:i@yfi.moe",
+    color: "bg-red-400",
+  },
+];
+
+const projects = [
+  {
+    icon: "s3-image-port",
+    title: "S3 Image Port",
+    desc: "将 S3 作为图床",
+    links: [
+      {
+        href: "https://github.com/yy4382/s3-image-port",
+        text: "Github",
+        icon: "mingcute:github-line",
+      },
+      {
+        href: "https://iport.yfi.moe",
+        text: "Demo Web App",
+        icon: "mingcute:compass-3-line",
+      },
+    ],
+  },
+  {
+    icon: "tts-import",
+    title: "TTS Importer",
+    desc: "轻松将 Azure TTS 导入阅读软件",
+    links: [
+      {
+        href: "https://github.com/yy4382/tts-importer",
+        text: "Github",
+        icon: "mingcute:github-line",
+      },
+      {
+        href: "https://tts-importer.yfi.moe",
+        text: "Web App",
+        icon: "mingcute:compass-3-line",
+      },
+    ],
+  },
+  {
+    icon: "ob-export",
+    title: "Obsidian Site Exporter",
+    desc: "将 Obsidian 笔记导出为可用于建站的通用 Markdown 文件",
+    links: [
+      {
+        href: "https://github.com/yy4382/obsidian-static-site-export",
+        text: "GitHub",
+        icon: "mingcute:github-line",
+      },
+    ],
+  },
+];
+const stats: [number | string, string, string][] = [
+  [articles, "篇", "文章"],
+  [(words / 10000).toFixed(1), "", "万字"],
+  [tags, "个", "标签"],
+];
+---
+
+<div
+  class="w-full sm:w-screen sm:px-4 self-center flex-grow flex center overflow-hidden"
+>
+  <div class="bento-layout">
+    <!-- MARK: Introduction -->
+    <div
+      class="sm:[grid-area:introduction] flex gap-4 shape-card bg-card items-center justify-center overflow-hidden mt-[calc(50vh-7rem-6rem)] sm:mt-0 mb-[calc(50vh-9rem-6rem)] sm:mb-0 min-h-48 sm:min-h-0"
+    >
+      <div class="flex items-center text-xl gap-2">
+        <Image
+          src={logo}
+          alt="logo"
+          loading={"eager"}
+          class="size-16 xl:size-20 rounded-xl mr-3"
+          widths={[80, 160]}
+        />
+        <h2 class="text-6xl xl:text-8xl font-bold text-heading">Yunfi</h2>
+      </div>
+    </div>
+    <!-- MARK: Socials -->
+    <div class="sm:[grid-area:socials] bg-card shape-card min-h-20 sm:min-h-0">
+      <div
+        class="flex justify-center items-center gap-4 size-full whitespace-nowrap"
+      >
+        <span class="text-content text-xl sm:text-2xl font-semibold"
+          >Find me at</span
+        >
+        {
+          socials.map((social) => (
+            <button
+              class="flex aspect-square size-8 rounded-full text-xl text-white items-center justify-center hover:animate-jump"
+              class:list={[social.color]}
+              tabindex="-1"
+            >
+              <a
+                href={social.link}
+                target="_blank"
+                class="flex items-center justify-center gap-2 w-fit my-2"
+                rel="noreferer"
+              >
+                <Icon name={social.icon} />
+              </a>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    <!-- MARK: Recent -->
+    <div class="sm:[grid-area:recent] !p-0">
+      <HomeBentoPostList
+        posts={recent}
+        title="最近发布"
+        class="flex-grow size-full"
+        link={path.postList}
+      />
+    </div>
+    <!-- MARK: Highlights -->
+    <div class="sm:[grid-area:highlights] size-full flex flex-col gap-4 !p-0">
+      <HomeBentoPostList posts={highlights} title="高亮文章" />
+      <HomeBentoPostList
+        posts={recentModified}
+        title="最近更新"
+        class="flex-grow"
+        link={path.postList}
+        showUpdateTime
+      />
+    </div>
+    <!-- MARK: Projects -->
+    <div
+      class="sm:[grid-area:projects] bg-card shape-card !overflow-visible relative"
+    >
+      <div class="flex size-full gap-5 lg:gap-4 flex-col sm:flex-row">
+        <p
+          class="flex-shrink-0 text-heading text-2xl font-semibold sm:text-center sm:[writing-mode:vertical-rl]"
+        >
+          项目
+        </p>
+        <div
+          class="flex sm:items-center flex-grow flex-col sm:flex-row gap-6 sm:gap-4 sm:justify-evenly"
+        >
+          {projects.map((project) => <HomeBentoProjectItem {...project} />)}
+        </div>
+      </div>
+      <div
+        class="absolute bottom-2 right-2 p-1 hover:p-4 size-8 hover:w-44 hover:h-32 rounded-[16px] bg-popover transition-all group delay-[450ms] hover:delay-0 duration-300"
+      >
+        <div
+          class="flex flex-col min-w-0
+            invisible group-hover:visible
+            opacity-0 group-hover:opacity-100
+            group-hover:delay-300
+            transition-[visibility,opacity] duration-300
+            text-content"
+        >
+          <p class="text-heading font-medium text-lg">更多</p>
+          <ul class="flex flex-col gap-2 mt-2 text-content-primary">
+            {
+              [
+                { href: path.projectList, text: '"项目"页', currentTab: true },
+                {
+                  text: "GitHub 主页",
+                  href: "https://github.com/yy4382",
+                  icon: "mingcute:github-line",
+                },
+              ].map((link) => (
+                <li class="underlined-link w-fit">
+                  {link.icon && (
+                    <Icon
+                      name={link.icon}
+                      class="inline-block translate-x-[2px] -translate-y-[1px]"
+                    />
+                  )}
+                  <a
+                    href={link.href}
+                    class=""
+                    target={link.currentTab ? "_self" : "_blank"}
+                  >
+                    {link.text}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <Icon
+          name="mingcute:more-3-line"
+          class="absolute right-1 bottom-1 text-primary"
+          size={24}
+        />
+      </div>
+    </div>
+    <!-- MARK: Stats -->
+    <div class="sm:[grid-area:stats] bg-card shape-card flex center">
+      <div
+        class="text-heading text-lg size-full flex sm:flex-col justify-around sm:justify-center gap-6 sm:w-fit"
+      >
+        {
+          stats.map(([num, unit, text]) => (
+            <p class="flex flex-col center sm:block whitespace-nowrap w-fit">
+              <span class="text-5xl font-semibold text-primary">{num}</span>
+              <span class="sm:hidden">{text}</span>
+              <span class="hidden sm:inline">{unit ? unit + text : text}</span>
+            </p>
+          ))
+        }
+      </div>
+    </div>
+    <!-- MARK: Timeline -->
+    <div
+      class="sm:[grid-area:timeline] bg-card shape-card center hidden sm:flex"
+    >
+      <a
+        href="/achieve"
+        class="hover:scale-95 transition-transform flex flex-col items-center justify-center gap-3 group"
+      >
+        <Icon name="mingcute:history-line" class="text-8xl text-primary" />
+        <span
+          class="text-content text-2xl font-semibold
+          whitespace-nowrap text-nowrap
+          group-hover:text-content-primary transition-colors"
+        >
+          时光机 <Icon
+            class="inline-block -translate-y-[2px] group-hover:scale-110 transition-transform"
+            name="mingcute:external-link-line"
+          />
+        </span>
+      </a>
+    </div>
+    <!-- MARK: RSS -->
+    <div
+      style="grid-area: rss;"
+      class="bg-card shape-card justify-center items-center hidden sm:flex"
+    >
+      <a
+        href="/feed.xml"
+        class="hover:scale-95 transition-transform flex lg:flex-col xl:flex-row items-center justify-center group"
+      >
+        <Icon
+          name="mingcute:rss-line"
+          class="text-heading text-7xl text-yellow-600 lg:-m-[0.375rem]"
+        />
+        <span
+          class="text-content text-2xl font-semibold ml-1 lg:ml-0 xl:ml-1
+          whitespace-nowrap text-nowrap
+          group-hover:text-content-primary transition-colors"
+        >
+          RSS <Icon
+            class="inline-block -translate-y-[2px] group-hover:scale-110 transition-transform"
+            name="mingcute:external-link-line"
+          />
+        </span>
+      </a>
+    </div>
+    <!-- MARK: Slogan -->
+    <div
+      style="grid-area: slogan;"
+      class="bg-card shape-card flex items-center justify-center"
+    >
+      <p class="text-heading text-2xl font-semibold whitespace-nowrap">
+        Coding with Passion and <Icon
+          name="mingcute:heart-fill"
+          class="inline-block -translate-y-[2px] text-red-400 text-[1.25em]"
+        />
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bento-layout {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    > div {
+      min-width: 0px;
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+  }
+  @media (min-width: 640px) {
+    .bento-layout {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1.2fr 0.5fr auto 1fr 0.5fr;
+      grid-template-areas:
+        "introduction introduction introduction stats"
+        "socials socials socials socials"
+        "recent recent highlights highlights"
+        "projects projects projects timeline"
+        "rss slogan slogan slogan";
+
+      > div {
+        padding: 1.5rem;
+      }
+    }
+  }
+  @media (min-width: 1024px) {
+    .bento-layout {
+      height: 45rem;
+      max-width: 80rem;
+      grid-template-areas:
+        "timeline projects projects projects highlights"
+        "recent recent introduction introduction highlights"
+        "recent recent stats socials socials"
+        "recent recent stats rss slogan";
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr)) minmax(0, 0.8fr)
+        minmax(0, 2fr);
+      grid-template-rows: 0.9fr 1fr 0.4fr 0.6fr;
+      margin-top: 0rem;
+      > div {
+        padding: 2rem;
+      }
+    }
+  }
+</style>
