@@ -1,6 +1,5 @@
 @layer components {
-  .underlined-link,
-  .timeline a {
+  .underlined-link {
     color: currentColor;
     background-image: linear-gradient(var(--text-primary), var(--text-primary));
     background-size: 0% 1.5px;

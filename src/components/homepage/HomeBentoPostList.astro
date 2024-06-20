@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { path } from "@config";
 import { Icon } from "astro-icon/components";
+import Card from "@comp/base/Card.astro";
 
 interface Props {
   posts: CollectionEntry<"post">[];
@@ -15,7 +16,7 @@ import { getPostPath } from "@utils/path";
 
 export const relativeTimeFromNow = (
   time: Date | string,
-  current = new Date()
+  current = new Date(),
 ) => {
   if (!time) {
     return "";
@@ -46,14 +47,12 @@ export const relativeTimeFromNow = (
 };
 ---
 
-<div
-  class:list={[
-    "bg-card shape-card p-6 sm:p-8 flex flex-col gap-4 relative",
-    className,
-    link && "pb-12",
-  ]}
+<Card
+  class:list={["flex flex-col gap-4 relative", className, link && "pb-12"]}
+  useHeading
+  leftExtraPadding
 >
-  <h2 class="card-heading text-heading ml-3 sm:ml-4">{title}</h2>
+  <h2 slot="heading">{title}</h2>
   <ul class="flex-grow text-content timeline ml-3 sm:ml-4">
     {
       posts.map((post) => {
@@ -61,14 +60,14 @@ export const relativeTimeFromNow = (
           <li class="flex min-w-0 justify-between">
             <a
               href={getPostPath(post)}
-              class="min-w-0 shrink truncate"
+              class="min-w-0 shrink truncate underlined-link"
               title={post.data.title}
             >
               {post.data.title}
             </a>
             <span class="ml-2 shrink-0 self-end text-xs opacity-70">
               {relativeTimeFromNow(
-                showUpdateTime ? post.data.updated : post.data.date
+                showUpdateTime ? post.data.updated : post.data.date,
               )}
             </span>
           </li>
@@ -99,4 +98,4 @@ export const relativeTimeFromNow = (
       </div>
     )
   }
-</div>
+</Card>

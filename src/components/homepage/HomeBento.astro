@@ -6,6 +6,7 @@ import logo from "@assets/logo.png";
 import { path } from "@config";
 import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
 import HomeBentoPostList from "./HomeBentoPostList.astro";
+import Card from "@comp/base/Card.astro";
 const posts = await getSortedPosts();
 const recent = posts.slice(0, 12);
 const recentModified = recent
@@ -115,8 +116,8 @@ const stats: [number | string, string, string][] = [
 >
   <div class="bento-layout">
     <!-- MARK: Introduction -->
-    <div
-      class="sm:[grid-area:introduction] flex gap-4 shape-card bg-card items-center justify-center overflow-hidden mt-[calc(50vh-7rem-6rem)] sm:mt-0 mb-[calc(50vh-9rem-6rem)] sm:mb-0 min-h-48 sm:min-h-0"
+    <Card
+      class="sm:[grid-area:introduction] flex gap-4 items-center justify-center overflow-hidden mt-[calc(50vh-7rem-6rem)] sm:mt-0 mb-[calc(50vh-9rem-6rem)] sm:mb-0 min-h-48 sm:min-h-0"
     >
       <div class="flex items-center text-xl gap-2">
         <Image
@@ -128,9 +129,9 @@ const stats: [number | string, string, string][] = [
         />
         <h2 class="text-6xl xl:text-8xl font-bold text-heading">Yunfi</h2>
       </div>
-    </div>
+    </Card>
     <!-- MARK: Socials -->
-    <div class="sm:[grid-area:socials] bg-card shape-card min-h-20 sm:min-h-0">
+    <Card class="sm:[grid-area:socials] min-h-20 sm:min-h-0">
       <div
         class="flex justify-center items-center gap-4 size-full whitespace-nowrap"
       >
@@ -156,7 +157,7 @@ const stats: [number | string, string, string][] = [
           ))
         }
       </div>
-    </div>
+    </Card>
     <!-- MARK: Recent -->
     <div class="sm:[grid-area:recent] !p-0">
       <HomeBentoPostList
@@ -178,9 +179,7 @@ const stats: [number | string, string, string][] = [
       />
     </div>
     <!-- MARK: Projects -->
-    <div
-      class="sm:[grid-area:projects] bg-card shape-card !overflow-visible relative"
-    >
+    <Card class="sm:[grid-area:projects] !overflow-visible relative">
       <div class="flex size-full gap-5 lg:gap-4 flex-col sm:flex-row">
         <p
           class="flex-shrink-0 text-heading text-2xl font-semibold sm:text-center sm:[writing-mode:vertical-rl]"
@@ -240,9 +239,9 @@ const stats: [number | string, string, string][] = [
           size={24}
         />
       </div>
-    </div>
+    </Card>
     <!-- MARK: Stats -->
-    <div class="sm:[grid-area:stats] bg-card shape-card flex center">
+    <Card class="sm:[grid-area:stats] flex center">
       <div
         class="text-heading text-lg size-full flex sm:flex-col justify-around sm:justify-center gap-6 sm:w-fit"
       >
@@ -256,11 +255,9 @@ const stats: [number | string, string, string][] = [
           ))
         }
       </div>
-    </div>
+    </Card>
     <!-- MARK: Timeline -->
-    <div
-      class="sm:[grid-area:timeline] bg-card shape-card center hidden sm:flex"
-    >
+    <Card class="sm:[grid-area:timeline] center hidden sm:flex">
       <a
         href="/achieve"
         class="hover:scale-95 transition-transform flex flex-col items-center justify-center gap-3 group"
@@ -277,12 +274,9 @@ const stats: [number | string, string, string][] = [
           />
         </span>
       </a>
-    </div>
+    </Card>
     <!-- MARK: RSS -->
-    <div
-      style="grid-area: rss;"
-      class="bg-card shape-card justify-center items-center hidden sm:flex"
-    >
+    <Card class="sm:[grid-area:rss] justify-center items-center hidden sm:flex">
       <a
         href="/feed.xml"
         class="hover:scale-95 transition-transform flex lg:flex-col xl:flex-row items-center justify-center group"
@@ -302,19 +296,16 @@ const stats: [number | string, string, string][] = [
           />
         </span>
       </a>
-    </div>
+    </Card>
     <!-- MARK: Slogan -->
-    <div
-      style="grid-area: slogan;"
-      class="bg-card shape-card flex items-center justify-center"
-    >
+    <Card class="[grid-area:slogan] flex items-center justify-center">
       <p class="text-heading text-2xl font-semibold whitespace-nowrap">
         Coding with Passion and <Icon
           name="mingcute:heart-fill"
           class="inline-block -translate-y-[2px] text-red-400 text-[1.25em]"
         />
       </p>
-    </div>
+    </Card>
   </div>
 </div>
 

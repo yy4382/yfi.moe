@@ -11,6 +11,8 @@ interface Props {
 }
 const { keyword, tag } = Astro.props;
 
+const hasKeyword = keyword !== undefined && keyword !== "";
+
 let posts = await getSortedPosts();
 
 if (tag) posts = posts.filter((post) => post.data.tags.includes(tag));
@@ -25,7 +27,7 @@ const groups = (function () {
       grouped[year].push(post);
       return grouped;
     },
-    {}
+    {},
   );
 
   // convert the object to an array
@@ -40,8 +42,12 @@ const groups = (function () {
 })();
 ---
 
-<Card class="px-4 py-2 lg:p-8 lg:py-5">
-  {keyword ? <h1 class="card-heading mb-4">{keyword}</h1> : null}
+<Card
+  class="px-4 py-2 lg:p-8 lg:py-5"
+  useHeading={hasKeyword}
+  ui={{ heading: "mb-4" }}
+>
+  {hasKeyword && <h1 slot="heading">{keyword}</h1>}
   {
     groups.map((group) => (
       <div>
@@ -53,4 +59,3 @@ const groups = (function () {
     ))
   }
 </Card>
-

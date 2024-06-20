@@ -1,9 +1,10 @@
 import type { Config } from "tailwindcss";
 import type { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
 import typography from "@tailwindcss/typography";
+import { withTV } from "tailwind-variants/transformer";
 import "./cssAsPlugin.cjs";
 
-export default {
+const config: Config = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
@@ -92,11 +93,11 @@ export default {
     typography,
     require("tailwindcss-animated"),
     addShortcutPlugin,
-    
+
     // import css as plugin is powered by "./cssAsPlugin.cjs"
     require("./src/styles/components.css"),
   ],
-} satisfies Config;
+};
 
 function addShortcutPlugin({ addUtilities, theme }: PluginAPI) {
   const styles: CSSRuleObject = {
@@ -111,3 +112,5 @@ function addShortcutPlugin({ addUtilities, theme }: PluginAPI) {
   };
   addUtilities(styles);
 }
+
+export default withTV(config);
