@@ -25,10 +25,7 @@ const { post } = Astro.props;
           {post.data.tags.map((tag, index) => (
             <>
               {index !== 0 && <span class="text-comment">|</span>}
-              <a
-                href={"/tags/" + tag}
-                class="hover:text-primary transition"
-              >
+              <a href={"/tags/" + tag} class="hover:text-primary transition">
                 {tag}
               </a>
             </>
