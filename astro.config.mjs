@@ -23,7 +23,7 @@ export default defineConfig({
           type: "element",
           tagName: "span",
           properties: {
-            className: ["i-mingcute-github-fill"]
+            className: ["i-mingcute-github-line"]
           },
           children: []
         };
