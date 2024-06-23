@@ -4,7 +4,6 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import PrevNext from "@comp/PrevNext.astro";
 import CommentCard from "@comp/CommentCard.vue";
 import Article from "@comp/views/Article.astro";
-import { getPostPath } from "@utils/path";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");

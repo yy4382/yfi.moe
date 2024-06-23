@@ -27,3 +27,5 @@ pnpm-debug.log*
 .idea
 
 src/content/post
+
+auto-imports.d.ts

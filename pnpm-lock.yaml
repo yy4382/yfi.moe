@@ -125,12 +125,19 @@ importers:
       unified:
         specifier: ^11.0.4
         version: 11.0.4
+      unplugin-auto-import:
+        specifier: ^0.17.6
+        version: link:../../../../projects/unplugin-auto-import
       vue:
         specifier: ^3.4.29
         version: 3.4.29(typescript@5.4.5)
       vue-instantsearch:
         specifier: ^4.17.4
         version: 4.17.4(@vue/server-renderer@3.4.29(vue@3.4.29(typescript@5.4.5)))(algoliasearch@4.23.3)(vue@3.4.29(typescript@5.4.5))
+    devDependencies:
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
 
 packages:
 
@@ -2143,10 +2150,6 @@ packages:
 
   micromark@4.0.0:
     resolution: {integrity: sha512-o/sd0nMof8kYff+TqcDx3VSrgBTcZpSvYcAHIfHhv5VAuNmisCxjhx6YmxS8PFEpb9z5WKWKPdzf0jM23ro3RQ==}
-
-  micromatch@4.0.5:
-    resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
-    engines: {node: '>=8.6'}
 
   micromatch@4.0.7:
     resolution: {integrity: sha512-LPP/3KorzCwBxfeUuZmaR6bG2kdeHSbe0P2tY3FLRU4vYrjYz5hI4QZwV0njUx3jeuKe67YukQ1LSPZBKDqO/Q==}
@@ -4903,7 +4906,7 @@ snapshots:
       '@nodelib/fs.walk': 1.2.8
       glob-parent: 5.1.2
       merge2: 1.4.1
-      micromatch: 4.0.5
+      micromatch: 4.0.7
 
   fast-xml-parser@4.4.0:
     dependencies:
@@ -5687,11 +5690,6 @@ snapshots:
       micromark-util-types: 2.0.0
     transitivePeerDependencies:
       - supports-color
-
-  micromatch@4.0.5:
-    dependencies:
-      braces: 3.0.2
-      picomatch: 2.3.1
 
   micromatch@4.0.7:
     dependencies:

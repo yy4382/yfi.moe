@@ -1,9 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import { Icon } from "astro-icon/components";
 import { getSortedPosts } from "@utils/content";
 import logo from "@assets/logo.png";
-import { path } from "@config";
+import { sitePaths } from "@config";
 import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
 import HomeBentoPostList from "./HomeBentoPostList.astro";
 import Card from "@comp/base/Card.astro";
@@ -164,7 +163,7 @@ const stats: [number | string, string, string][] = [
         posts={recent}
         title="最近发布"
         class="flex-grow size-full"
-        link={path.postList}
+        link={sitePaths.postList}
       />
     </div>
     <!-- MARK: Highlights -->
@@ -174,7 +173,7 @@ const stats: [number | string, string, string][] = [
         posts={recentModified}
         title="最近更新"
         class="flex-grow"
-        link={path.postList}
+        link={sitePaths.postList}
         showUpdateTime
       />
     </div>
@@ -207,7 +206,7 @@ const stats: [number | string, string, string][] = [
           <ul class="flex flex-col gap-2 mt-2 text-content-primary">
             {
               [
-                { href: path.projectList, text: '"项目"页', currentTab: true },
+                { href: sitePaths.projectList, text: '"项目"页', currentTab: true },
                 {
                   text: "GitHub 主页",
                   href: "https://github.com/yy4382",

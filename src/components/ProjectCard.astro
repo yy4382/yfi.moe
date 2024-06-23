@@ -1,7 +1,5 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import Card from "@comp/base/Card.astro";
-import { Icon } from "astro-icon/components";
 interface Props {
   project: CollectionEntry<"project">;
 }
@@ -17,7 +15,7 @@ const project = projectRaw.data;
     </p>
   </div>
   <div class="flex justify-between">
-    <div class="flex items-center">
+    <div class="flex items-center text-heading">
       {
         project.language.map((lang) => (
           <div class="p-2">

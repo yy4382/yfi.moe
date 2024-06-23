@@ -1,7 +1,4 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { path } from "@config";
-import { Icon } from "astro-icon/components";
 import Card from "@comp/base/Card.astro";
 
 interface Props {
@@ -12,7 +9,6 @@ interface Props {
   showUpdateTime?: boolean;
 }
 const { posts, title, class: className, link, showUpdateTime } = Astro.props;
-import { getPostPath } from "@utils/path";
 
 export const relativeTimeFromNow = (
   time: Date | string,

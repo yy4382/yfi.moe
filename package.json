@@ -51,8 +51,12 @@
     "tailwindcss-animated": "^1.1.1",
     "typescript": "^5.4.5",
     "unified": "^11.0.4",
+    "unplugin-auto-import": "^0.17.6",
     "vue": "^3.4.29",
     "vue-instantsearch": "^4.17.4"
   },
-  "packageManager": "pnpm@9.0.2+sha256.d6fc013639b81658ff175829ebb9435bcb89eff206769e460fd3ae27c2054df6"
+  "packageManager": "pnpm@9.0.2+sha256.d6fc013639b81658ff175829ebb9435bcb89eff206769e460fd3ae27c2054df6",
+  "devDependencies": {
+    "fast-glob": "^3.3.2"
+  }
 }

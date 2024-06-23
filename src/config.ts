@@ -3,18 +3,18 @@ export interface TocItem {
   slug: string;
   text: string;
 }
-export interface SiteConfig {
-  title: string;
-}
-export const siteConfig: SiteConfig = {
+export const siteConfig = {
   title: "Yunfi",
 };
+
+export type SiteConfig = typeof siteConfig;
 export interface NavMenu {
   text: string;
   link?: string;
   icon?: string;
   subMenu?: NavMenu[];
 }
+
 export const navMenu: NavMenu[] = [
   {
     text: "首页",
@@ -44,7 +44,7 @@ export const algoliaConfig = {
   readonlyKey: "c1c21db7f7677a90c797ea5f411d8940",
 };
 
-export const path = {
+export const sitePaths = {
   postPrefix: "/post",
   postList: "/post",
   projectList: "/projects",

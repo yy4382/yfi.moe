@@ -1,5 +1,5 @@
 import algoliasearch from "algoliasearch";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import removeMD from "remove-markdown";
 if (!import.meta.env.ALGOLIA_WRITE_API_KEY) {
   throw new Error("Algolia environment variables not set");
