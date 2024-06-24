@@ -1,5 +1,5 @@
 ---
-import Card from "@comp/base/Card.astro";
+// import Card from "@comp/base/Card.astro";
 
 interface Props {
   posts: CollectionEntry<"post">[];
@@ -43,7 +43,7 @@ export const relativeTimeFromNow = (
 };
 ---
 
-<Card
+<BaseCard
   class:list={["flex flex-col gap-4 relative", className, link && "pb-12"]}
   useHeading
   leftExtraPadding
@@ -94,4 +94,4 @@ export const relativeTimeFromNow = (
       </div>
     )
   }
-</Card>
+</BaseCard>
