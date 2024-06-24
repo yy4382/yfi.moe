@@ -50,7 +50,7 @@
     "tailwindcss": "^3.4.4",
     "tailwindcss-animated": "^1.1.1",
     "typescript": "^5.4.5",
-    "unified": "^11.0.4",
+    "unified": "^11.0.5",
     "vue": "^3.4.29",
     "vue-instantsearch": "^4.17.4"
   },
