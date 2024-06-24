@@ -117,8 +117,8 @@ importers:
         specifier: ^3.4.4
         version: 3.4.4
       tailwindcss-animated:
-        specifier: ^1.1.1
-        version: 1.1.1(tailwindcss@3.4.4)
+        specifier: ^1.1.2
+        version: 1.1.2(tailwindcss@3.4.4)
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
@@ -2750,8 +2750,8 @@ packages:
     peerDependencies:
       tailwindcss: '*'
 
-  tailwindcss-animated@1.1.1:
-    resolution: {integrity: sha512-62FQuaFh3L++vUzpfQs/0tN3xhBXnfp1jwWlDAl0AnOi/PaTP39dNwTk7w1tscrAPNA3zTdeCG/BZZMT6cSUsA==}
+  tailwindcss-animated@1.1.2:
+    resolution: {integrity: sha512-SI4owS5ojserhgEYIZA/uFVdNjU2GMB2P3sjtjmFA52VxoUi+Hht6oR5+RdT+CxrX9cNNYEa+vbTWHvN9zbj3w==}
     peerDependencies:
       tailwindcss: '>=3.1.0'
 
@@ -6353,7 +6353,7 @@ snapshots:
       tailwind-merge: 2.3.0
       tailwindcss: 3.4.4
 
-  tailwindcss-animated@1.1.1(tailwindcss@3.4.4):
+  tailwindcss-animated@1.1.2(tailwindcss@3.4.4):
     dependencies:
       tailwindcss: 3.4.4
 
