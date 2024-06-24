@@ -11,7 +11,7 @@ export async function getStaticPaths() {
   return blogEntries
     .sort(
       (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
     )
     .map((post, i) => ({
       params: { slug: post.slug },
@@ -44,7 +44,7 @@ const seoConfig = getSeo({
       <Content />
     </Article>
     <PrevNext prev={prev} next={next} />
-    <CommentCard client:visible path={getPostPath(post)} />
+    <CommentCard client:load path={getPostPath(post)} />
   </div>
   <TocMobile headings={headings} />
   <Fragment slot="sidebar">
