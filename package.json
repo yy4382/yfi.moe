@@ -18,7 +18,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vue": "^4.5.0",
     "@iconify-json/devicon-plain": "^1.1.42",
-    "@iconify-json/mingcute": "^1.1.17",
+    "@iconify-json/mingcute": "^1.1.18",
     "@iconify/vue": "^4.1.2",
     "@tailwindcss/typography": "^0.5.13",
     "@types/luxon": "^3.4.2",

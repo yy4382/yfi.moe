@@ -27,8 +27,8 @@ importers:
         specifier: ^1.1.42
         version: 1.1.42
       '@iconify-json/mingcute':
-        specifier: ^1.1.17
-        version: 1.1.17
+        specifier: ^1.1.18
+        version: 1.1.18
       '@iconify/vue':
         specifier: ^4.1.2
         version: 4.1.2(vue@3.4.29(typescript@5.4.5))
@@ -613,8 +613,8 @@ packages:
   '@iconify-json/devicon-plain@1.1.42':
     resolution: {integrity: sha512-NGCuw6BHn8lpjbVVa4XvYnprhWZ6IWkr6O19b69ySpDyi8QF3lh/Pe5As7C6eAG1KsblxQFqwcztgILOOmZqAA==}
 
-  '@iconify-json/mingcute@1.1.17':
-    resolution: {integrity: sha512-WTKnn5OicUo18dE3rkJs00sUjOIAui8Ut9yZSXamRfjzmLxuX9FKqYQAbFXaV6lw0T4QwBQ8/y4ftaWl/1Entg==}
+  '@iconify-json/mingcute@1.1.18':
+    resolution: {integrity: sha512-P5szgBqUMv8XVjZpbVT5eG1XtqpRPgfvZWxOR/uSqBwmVroHpxN5+nbLTHj9HJxL16msMsNbA294b69MNEQzaw==}
 
   '@iconify/tools@3.0.7':
     resolution: {integrity: sha512-DxfhFLMnooS34dHelpGUnnYrxLZHs0czC1CgrBhAbuL8ddVzBb2VEQm8kh9qGh7A34qeXAB5iSHH3A72rAaFrg==}
@@ -3757,7 +3757,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/mingcute@1.1.17':
+  '@iconify-json/mingcute@1.1.18':
     dependencies:
       '@iconify/types': 2.0.0
 
