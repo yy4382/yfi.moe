@@ -84,8 +84,8 @@ importers:
         specifier: ^0.14.0
         version: 0.14.0
       radix-vue:
-        specifier: ^1.8.4
-        version: 1.8.4(vue@3.4.29(typescript@5.4.5))
+        specifier: ^1.8.5
+        version: 1.8.5(vue@3.4.29(typescript@5.4.5))
       reading-time:
         specifier: ^1.5.0
         version: 1.5.0
@@ -2481,8 +2481,8 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  radix-vue@1.8.4:
-    resolution: {integrity: sha512-Pc8BKFQouARED1Lb7/s18Fxny3ZodET5fyXLorW5zf/BiUDQv9gk7NZEYv9sU3uldSvpO3JLLChd0q2repBdGw==}
+  radix-vue@1.8.5:
+    resolution: {integrity: sha512-aWRa/tc5EHS2U4h8YTovRtwSMt+Sbk4QRekNTpkshCWlq353mpGBsp0ME/4seOxWn7JKze8NA3pDx/AQuH2tMw==}
     peerDependencies:
       vue: '>= 3.2.0'
 
@@ -2801,9 +2801,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  tslib@2.6.2:
-    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
@@ -3661,7 +3658,7 @@ snapshots:
 
   '@emnapi/runtime@1.2.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
     optional: true
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -5991,7 +5988,7 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  radix-vue@1.8.4(vue@3.4.29(typescript@5.4.5)):
+  radix-vue@1.8.5(vue@3.4.29(typescript@5.4.5)):
     dependencies:
       '@floating-ui/dom': 1.6.5
       '@floating-ui/vue': 1.0.6(vue@3.4.29(typescript@5.4.5))
@@ -6418,9 +6415,6 @@ snapshots:
   tsconfck@3.1.0(typescript@5.4.5):
     optionalDependencies:
       typescript: 5.4.5
-
-  tslib@2.6.2:
-    optional: true
 
   tslib@2.6.3: {}
 
