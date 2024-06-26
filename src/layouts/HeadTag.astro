@@ -5,6 +5,8 @@ import "@styles/base.css";
 import { type SEOProps } from "astro-seo";
 import Favicon from "@comp/base/Favicon.astro";
 import LoadingIndicator from "astro-loading-indicator/component";
+import TagManagers from "@comp/TagManagers.astro";
+import runtimeEnv from "@utils/runtimeEnv";
 interface Props {
   seoConfig: SEOProps;
   stopTrack?: boolean;
@@ -17,26 +19,7 @@ const { seoConfig, stopTrack } = Astro.props;
     <meta charset="utf-8" />
     <Favicon />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    {
-      import.meta.env.PROD && !import.meta.env.LIVE_PREVIEW && !stopTrack && (
-        <>
-          <script
-            is:inline
-            async
-            src="https://analy.yfi.moe/script.js"
-            data-website-id="3c89f8f6-9432-4ceb-a404-f22f2b0cf94d"
-          />
-          <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-1MPEY5XJ9V"></script>
-          <script is:inline>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-1MPEY5XJ9V');
-          </script>
-        </>
-      ) 
-    }
+    {runtimeEnv() === "production" && !stopTrack && <TagManagers />}
     <SEO
       {...seoConfig}
       titleTemplate="%s - Yunfi's blog"
