@@ -1,10 +1,11 @@
 import rss from "@astrojs/rss";
 import { renderMd } from "@utils/markdown.ts";
 import { getSortedPosts } from "@utils/content.ts";
+import type { APIContext } from "astro";
 
-export async function GET(context: any) {
+export async function GET(context: APIContext) {
   const entries = await getSortedPosts();
-  let items = [];
+  const items = [];
   for (let i = 0; i < 8; i++) {
     const entry = entries[i];
     items.push({
@@ -12,14 +13,15 @@ export async function GET(context: any) {
       pubDate: entry.data.date,
       description: entry.data.description,
       link: getPostPath(entry),
-      content: await renderMd(entry.body)
+      content: await renderMd(entry.body),
     });
   }
   return rss({
     title: "Yunfi Blog",
     description: "记录折腾，分享经验",
-    site: context.site,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    site: context.site!,
     items: items,
-    stylesheet: "/rss-style.xsl"
+    stylesheet: "/rss-style.xsl",
   });
 }

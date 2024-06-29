@@ -6,15 +6,17 @@ interface Props {
 }
 const { id } = Astro.props;
 
-const entries = await getCollection(
+const entries = (await getCollection(
   "post",
   (entry: CollectionEntry<"post">) => entry.data.series?.id === id,
-);
+)) as (CollectionEntry<"post"> & {
+  data: { series: NonNullable<CollectionEntry<"post">["data"]["series"]> };
+})[];
 
-if (entries[0].data.series?.order) {
+if (entries[0].data.series.order) {
   entries.sort((a, b) => {
-    const orderA: number = a.data.series!.order ?? 0;
-    const orderB: number = b.data.series!.order ?? 0;
+    const orderA: number = a.data.series.order ?? 0;
+    const orderB: number = b.data.series.order ?? 0;
     return orderA - orderB;
   });
 } else {
@@ -22,7 +24,7 @@ if (entries[0].data.series?.order) {
 }
 const titleSet = new Set(
   entries
-    .map((entry) => entry.data.series?.title)
+    .map((entry) => entry.data.series.title)
     .filter((e) => e !== undefined),
 );
 if (titleSet.size !== 1) {

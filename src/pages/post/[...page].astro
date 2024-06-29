@@ -6,6 +6,7 @@ import { getSortedPosts } from "@utils/content";
 import type { Page } from "astro";
 import { getSeo } from "@utils/SEO";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getSortedPosts();
   return paginate(allPosts, { pageSize: 10 });
@@ -16,7 +17,7 @@ const seoConfig = getSeo({ title: "文章列表" });
 
 <BaseLayout seoConfig={seoConfig} navStats="文章">
   <div class="flex flex-col gap-4">
-    {page.data.map((post: any) => <PostCard post={post} />)}
+    {page.data.map((post: CollectionEntry<"post">) => <PostCard post={post} />)}
     <div class="self-center">
       <PaginationBtn page={page} />
     </div>
@@ -29,10 +30,10 @@ const seoConfig = getSeo({ title: "文章列表" });
 
     if (!sourceElement.classList.contains("post-card-heading")) return;
     sourceElement.style.viewTransitionName = "post-heading";
-    
+
     const postCard = sourceElement.closest(".post-card");
-    console.log("postCard", postCard)
-    console.log(postCard)
+    console.log("postCard", postCard);
+    console.log(postCard);
     if (!postCard) return;
     postCard.style.viewTransitionName = "post-card";
 

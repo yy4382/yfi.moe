@@ -31,4 +31,7 @@
   "exclude": [
     "dist",
   ],
+  "include": [
+    "src"
+  ]
 }

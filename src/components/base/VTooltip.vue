@@ -22,7 +22,7 @@ apply("initial");
 
 const open = ref<boolean | undefined>(undefined);
 const mount = ref(false);
-watch(open, async (value, oldValue) => {
+watch(open, async (value) => {
   if (value) {
     mount.value = true;
     apply("enter");
@@ -46,8 +46,8 @@ watch(open, async (value, oldValue) => {
           <slot />
         </TooltipTrigger>
         <TooltipPortal v-if="mount">
-          <TooltipContent :side-offset="5" force-mount ref="tip">
-            <slot name="content"></slot>
+          <TooltipContent ref="tip" :side-offset="5" force-mount>
+            <slot name="content" />
           </TooltipContent>
         </TooltipPortal>
       </TooltipRoot>

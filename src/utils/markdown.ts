@@ -4,7 +4,7 @@ import remarkRehype from "remark-rehype";
 import remarkGithubAlerts from "remark-github-alerts";
 import { unified } from "unified";
 
-function truncateAtClosestNewline(str: string, targetPosition: number = 150) {
+function truncateAtClosestNewline(str: string, targetPosition = 150) {
   while (str.startsWith("\n")) {
     str = str.slice(1);
   }
@@ -21,11 +21,7 @@ function truncateAtClosestNewline(str: string, targetPosition: number = 150) {
   return str.substring(0, newPosition);
 }
 
-export function getDesc(
-  content: string,
-  length?: number,
-  tryMore: boolean = true,
-) {
+export function getDesc(content: string, length?: number, tryMore = true) {
   content = content.trim();
   if (tryMore) {
     const moreIndex = content.indexOf("<!--more-->");

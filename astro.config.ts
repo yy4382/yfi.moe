@@ -40,6 +40,11 @@ export default defineConfig({
       ],
       defaultExportByFilename: true,
       dirs: ["./src/configs"],
+      eslintrc: {
+        enabled: true,
+        filepath: "auto-imports-eslint.mjs",
+        globalsPropValue: "readonly",
+      },
     }),
   ],
   markdown: {
@@ -48,6 +53,7 @@ export default defineConfig({
       [
         rehypeExtendedLinks,
         {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           preContent(node: any) {
             const url = node.properties.href;
             if (!url) return undefined;

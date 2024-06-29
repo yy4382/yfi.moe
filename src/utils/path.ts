@@ -1,9 +1,4 @@
-export function getPostPath(slug: string | undefined): string;
-export function getPostPath(entry: CollectionEntry<"post">): string;
-
-export function getPostPath(
-  entryOrSlug: CollectionEntry<"post"> | string | undefined,
-) {
+export function getPostPath(entryOrSlug: CollectionEntry<"post"> | string | undefined): string {
   if (entryOrSlug === undefined) return "";
   if (typeof entryOrSlug === "string")
     return `${sitePaths.postPrefix}/${entryOrSlug}`;

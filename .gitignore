@@ -29,3 +29,4 @@ pnpm-debug.log*
 src/content/post
 
 auto-imports.d.ts
+auto-imports-eslint.mjs

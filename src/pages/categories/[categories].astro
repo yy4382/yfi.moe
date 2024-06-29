@@ -31,6 +31,6 @@ const seoConfig = getSeo({ title: "分类：" + categories }); // !TODO
 <BaseLayout seoConfig={seoConfig} navStats="文章">
   <CategoryTitle title={categories} count={posts.length} />
   <div class="flex flex-col gap-4">
-    {posts.map((post: any) => <PostCard post={post} />)}
+    {posts.map((post: CollectionEntry<"post">) => <PostCard post={post} />)}
   </div>
 </BaseLayout>

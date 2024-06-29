@@ -15,7 +15,7 @@ const { entry } = Astro.props;
     {
       entry.data.date && (
         <div transition:name="post-attr">
-          <PostAttr post={entry as any} />
+          <PostAttr post={entry as CollectionEntry<"post">} />
         </div>
       )
     }
