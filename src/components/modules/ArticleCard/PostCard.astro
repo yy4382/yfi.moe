@@ -2,7 +2,7 @@
 interface Props {
   post: CollectionEntry<"post">;
 }
-import PostAttr from "@comp/PostAttr.astro";
+import PostAttr from "./PostAttr.astro";
 const { post } = Astro.props;
 import { renderDesc } from "@utils/markdown";
 

@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import Article from "@comp/views/Article.astro";
 import { getDesc } from "@utils/markdown";
 import { getSeo } from "@utils/SEO";
 export async function getStaticPaths() {
@@ -26,9 +25,9 @@ const seoConfig = getSeo({
 ---
 
 <BaseLayout seoConfig={seoConfig}>
-  <Article entry={page}>
+  <ArticleCard entry={page}>
     <Content />
-  </Article>
+  </ArticleCard>
   <Fragment slot="sidebar">
     <SideBar tocList={headings} />
   </Fragment>

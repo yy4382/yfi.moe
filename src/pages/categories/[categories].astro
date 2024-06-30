@@ -2,7 +2,6 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import PostCard from "@comp/PostCard.astro";
 import CategoryTitle from "@comp/CategoryTitle.astro";
 export const getStaticPaths = (async () => {
   const posts = await getCollection("post");
@@ -31,6 +30,6 @@ const seoConfig = getSeo({ title: "分类：" + categories }); // !TODO
 <BaseLayout seoConfig={seoConfig} navStats="文章">
   <CategoryTitle title={categories} count={posts.length} />
   <div class="flex flex-col gap-4">
-    {posts.map((post: CollectionEntry<"post">) => <PostCard post={post} />)}
+    {posts.map((post: CollectionEntry<"post">) => <ArticleInfoCard post={post} />)}
   </div>
 </BaseLayout>

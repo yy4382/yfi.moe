@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PrevNext from "@comp/PrevNext.astro";
 import CommentCard from "@comp/CommentCard.vue";
-import Article from "@comp/views/Article.astro";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");
@@ -37,9 +36,9 @@ const seoConfig = getSeo({
 
 <BaseLayout seoConfig={seoConfig} navStats="文章">
   <div class="flex flex-col gap-4">
-    <Article entry={post}>
+    <ArticleCard entry={post}>
       <Content />
-    </Article>
+    </ArticleCard>
     <PrevNext prev={prev} next={next} />
     <CommentCard client:load path={getPostPath(post)} />
   </div>
