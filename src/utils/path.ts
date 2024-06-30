@@ -1,5 +1,3 @@
-import { sitePaths } from "@config";
-
 export function getPostPath(slug: string | undefined): string;
 export function getPostPath(entry: CollectionEntry<"post">): string;
 

@@ -5,7 +5,6 @@ interface Props {
 import PostAttr from "@comp/PostAttr.astro";
 const { post } = Astro.props;
 import { renderDesc } from "@utils/markdown";
-import Card from "@comp/base/Card.astro";
 
 let desc = "";
 if (post.data.description === undefined) {

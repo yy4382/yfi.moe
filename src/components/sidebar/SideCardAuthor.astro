@@ -1,20 +1,9 @@
 ---
-// Calculate the number of articles, words, and tags
-import { getCollection } from "astro:content";
-const posts = await getCollection("post");
-let articles = posts.length;
-let words = 0;
-for (const post of posts) {
-  const { remarkPluginFrontmatter } = await post.render();
-  words += remarkPluginFrontmatter.words;
-}
-const tags = [...new Set(posts.map((post) => post.data.tags).flat())].length;
-
-import Card from "../base/Card.astro";
-const name = "Yunfi";
-const description = "Undergraduate";
 import { Image } from "astro:assets";
+import getStatistics from "@utils/statistics";
 import avatar from "@assets/avatar.jpeg";
+
+const { articles, words, tags } = await getStatistics();
 ---
 
 <Card class="w-full lg:p-0 lg:pb-4 p-4">
@@ -24,15 +13,15 @@ import avatar from "@assets/avatar.jpeg";
         class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg"
         src={avatar}
         loading={"eager"}
-        alt="Yunfi avatar"
-        widths={[240, 540, 720, avatar.width]} 
+        alt={authorName + " avatar"}
+        widths={[240, 540, 720, avatar.width]}
       />
     </div>
     <div class="flex flex-col gap-2 items-center">
       <h5 class="text-2xl font-medium text-heading relative">
-        {name}
+        {authorName}
       </h5>
-      <span class="text-sm text-comment">{description}</span>
+      <span class="text-sm text-comment">{authorDescription}</span>
       <div class="flex">
         <div class="flex flex-col items-center mx-4">
           <span class="text-lg font-semibold text-content">

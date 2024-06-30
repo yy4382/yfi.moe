@@ -1,13 +1,9 @@
----
-import Card from "@comp/base/Card.astro";
----
-
 <Card padding="xs">
   <div class="w-full">
     <div class="flex flex-col">
       <span class="text-sm text-comment inline-flex gap-0.5 items-center">
         © 2023-2024
-        <a href="https://yfi.moe"> Yunfi</a>.
+        <a href={Astro.site}> {siteConfig.title}</a>.
         <span class="opacity-50">|</span>
         <a href="/feed.xml">RSS</a>
         <span class="opacity-50">|</span>

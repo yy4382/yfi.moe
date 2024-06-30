@@ -22,8 +22,8 @@ const { seoConfig, stopTrack } = Astro.props;
     {runtimeEnv() === "production" && !stopTrack && <TagManagers />}
     <SEO
       {...seoConfig}
-      titleTemplate="%s - Yunfi's blog"
-      titleDefault="Yunfi's Blog"
+      titleTemplate={"%s - " + siteConfig.title}
+      titleDefault={siteConfig.title}
     />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
