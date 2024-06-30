@@ -1,0 +1,119 @@
+---
+import { tv } from "tailwind-variants";
+import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
+import { popover } from "@styles/tv";
+const projectPopover = tv({
+  extend: popover,
+  slots: {
+    base: "hover:w-44 hover:h-32 bottom-2 right-2",
+    contentWrapper: "group-hover:w-44 group-hover:h-32",
+    content: "flex flex-col p-4 text-content",
+  },
+});
+const { base, contentWrapper, content, icon } = projectPopover();
+
+const projects = [
+  {
+    icon: "s3-image-port",
+    title: "S3 Image Port",
+    desc: "将 S3 作为图床",
+    links: [
+      {
+        href: "https://github.com/yy4382/s3-image-port",
+        text: "Github",
+        icon: "mingcute:github-line",
+      },
+      {
+        href: "https://iport.yfi.moe",
+        text: "Demo Web App",
+        icon: "mingcute:compass-3-line",
+      },
+    ],
+  },
+  {
+    icon: "tts-import",
+    title: "TTS Importer",
+    desc: "轻松将 Azure TTS 导入阅读软件",
+    links: [
+      {
+        href: "https://github.com/yy4382/tts-importer",
+        text: "Github",
+        icon: "mingcute:github-line",
+      },
+      {
+        href: "https://tts-importer.yfi.moe",
+        text: "Web App",
+        icon: "mingcute:compass-3-line",
+      },
+    ],
+  },
+  {
+    icon: "ob-export",
+    title: "Obsidian Site Exporter",
+    desc: "将 Obsidian 笔记导出为可用于建站的通用 Markdown 文件",
+    links: [
+      {
+        href: "https://github.com/yy4382/obsidian-static-site-export",
+        text: "GitHub",
+        icon: "mingcute:github-line",
+      },
+    ],
+  },
+];
+---
+
+<Card class="sm:[grid-area:projects] !overflow-visible relative">
+  <div class="flex size-full gap-5 lg:gap-4 flex-col sm:flex-row">
+    <p
+      class="flex-shrink-0 text-heading text-2xl font-semibold sm:text-center sm:[writing-mode:vertical-rl]"
+    >
+      项目
+    </p>
+    <div
+      class="flex sm:items-center flex-grow flex-col sm:flex-row gap-6 sm:gap-4 sm:justify-evenly"
+    >
+      {projects.map((project) => <HomeBentoProjectItem {...project} />)}
+    </div>
+  </div>
+
+  <div class:list={base()}>
+    <div class:list={contentWrapper()}>
+      <div class:list={content()}>
+        <p class="text-heading font-medium text-lg">更多</p>
+        <ul class="flex flex-col gap-2 mt-2 text-content-primary">
+          {
+            [
+              {
+                href: sitePaths.projectList,
+                text: '"项目"页',
+                currentTab: true,
+              },
+              {
+                text: "GitHub 主页",
+                href: "https://github.com/yy4382",
+                icon: "mingcute:github-line",
+              },
+            ].map((link) => (
+              <li class="underlined-link w-fit">
+                {link.icon && (
+                  <Icon
+                    name={link.icon}
+                    class="inline-block translate-x-[2px] -translate-y-[1px]"
+                  />
+                )}
+                <a
+                  href={link.href}
+                  class=""
+                  target={link.currentTab ? "_self" : "_blank"}
+                >
+                  {link.text}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+    <Icon name="mingcute:more-3-line" class={icon()} size={24} />
+  </div>
+</Card>

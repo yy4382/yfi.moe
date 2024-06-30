@@ -1,108 +1,25 @@
 ---
 import { Image } from "astro:assets";
-import { getSortedPosts } from "@utils/content";
+import getStatistics from "@utils/statistics";
 import logo from "@assets/logo.png";
-import { sitePaths } from "@config";
-import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
+import HomeBentoProject from "./HomeBentoProject.astro";
 import HomeBentoPostList from "./HomeBentoPostList.astro";
-import Card from "@comp/base/Card.astro";
+
+const MAX_RECENT = 12;
+const MAX_HIGHLIGHT = 3;
+const MAX_RECENT_MODIFIED = 5;
+
 const posts = await getSortedPosts();
-const recent = posts.slice(0, 12);
+const recent = posts.slice(0, MAX_RECENT);
 const recentModified = recent
   .slice()
   .sort((a, b) => Number(b.data.updated) - Number(a.data.updated))
-  .slice(0, 5);
-const highlights = posts.filter((post) => post.data.highlight).slice(0, 3);
-interface Social {
-  name: string;
-  icon: string;
-  link: string;
-  color: string;
-}
+  .slice(0, MAX_RECENT_MODIFIED);
+const highlights = posts
+  .filter((post) => post.data.highlight)
+  .slice(0, MAX_HIGHLIGHT);
 
-const articles = posts.length;
-let words = 0;
-for (const post of posts) {
-  const { remarkPluginFrontmatter } = await post.render();
-  words += remarkPluginFrontmatter.words;
-}
-const tags = [...new Set(posts.map((post) => post.data.tags).flat())].length;
-
-export const socials: Social[] = [
-  {
-    name: "GitHub",
-    icon: "mingcute:github-line",
-    link: "https://github.com/yy4382",
-    color: "bg-black",
-  },
-  {
-    name: "Telegram",
-    icon: "mingcute:telegram-line",
-    link: "https://t.me/yunfichannel",
-    color: "bg-blue-500",
-  },
-  {
-    name: "Twitter",
-    icon: "mingcute:twitter-line",
-    link: "https://twitter.com/yunfini",
-    color: "bg-blue-400",
-  },
-  {
-    name: "Email",
-    icon: "mingcute:mail-send-line",
-    link: "mailto:i@yfi.moe",
-    color: "bg-red-400",
-  },
-];
-
-const projects = [
-  {
-    icon: "s3-image-port",
-    title: "S3 Image Port",
-    desc: "将 S3 作为图床",
-    links: [
-      {
-        href: "https://github.com/yy4382/s3-image-port",
-        text: "Github",
-        icon: "mingcute:github-line",
-      },
-      {
-        href: "https://iport.yfi.moe",
-        text: "Demo Web App",
-        icon: "mingcute:compass-3-line",
-      },
-    ],
-  },
-  {
-    icon: "tts-import",
-    title: "TTS Importer",
-    desc: "轻松将 Azure TTS 导入阅读软件",
-    links: [
-      {
-        href: "https://github.com/yy4382/tts-importer",
-        text: "Github",
-        icon: "mingcute:github-line",
-      },
-      {
-        href: "https://tts-importer.yfi.moe",
-        text: "Web App",
-        icon: "mingcute:compass-3-line",
-      },
-    ],
-  },
-  {
-    icon: "ob-export",
-    title: "Obsidian Site Exporter",
-    desc: "将 Obsidian 笔记导出为可用于建站的通用 Markdown 文件",
-    links: [
-      {
-        href: "https://github.com/yy4382/obsidian-static-site-export",
-        text: "GitHub",
-        icon: "mingcute:github-line",
-      },
-    ],
-  },
-];
+const { articles, words, tags } = await getStatistics();
 const stats: [number | string, string, string][] = [
   [articles, "篇", "文章"],
   [(words / 10000).toFixed(1), "", "万字"],
@@ -126,7 +43,9 @@ const stats: [number | string, string, string][] = [
           class="size-16 xl:size-20 rounded-xl mr-3"
           widths={[80, 160]}
         />
-        <h2 class="text-6xl xl:text-8xl font-bold text-heading">Yunfi</h2>
+        <h2 class="text-6xl xl:text-8xl font-bold text-heading">
+          {authorName}
+        </h2>
       </div>
     </Card>
     <!-- MARK: Socials -->
@@ -138,7 +57,7 @@ const stats: [number | string, string, string][] = [
           >Find me at</span
         >
         {
-          socials.map((social) => (
+          contactInfo.map((social) => (
             <button
               class="flex aspect-square size-8 rounded-full text-xl text-white items-center justify-center hover:animate-jump"
               class:list={[social.color]}
@@ -178,67 +97,7 @@ const stats: [number | string, string, string][] = [
       />
     </div>
     <!-- MARK: Projects -->
-    <Card class="sm:[grid-area:projects] !overflow-visible relative">
-      <div class="flex size-full gap-5 lg:gap-4 flex-col sm:flex-row">
-        <p
-          class="flex-shrink-0 text-heading text-2xl font-semibold sm:text-center sm:[writing-mode:vertical-rl]"
-        >
-          项目
-        </p>
-        <div
-          class="flex sm:items-center flex-grow flex-col sm:flex-row gap-6 sm:gap-4 sm:justify-evenly"
-        >
-          {projects.map((project) => <HomeBentoProjectItem {...project} />)}
-        </div>
-      </div>
-      <div
-        class="absolute bottom-2 right-2 p-1 hover:p-4 size-8 hover:w-44 hover:h-32 rounded-[16px] bg-popover transition-all group delay-[450ms] hover:delay-0 duration-300"
-      >
-        <div
-          class="flex flex-col min-w-0
-            invisible group-hover:visible
-            opacity-0 group-hover:opacity-100
-            group-hover:delay-300
-            transition-[visibility,opacity] duration-300
-            text-content"
-        >
-          <p class="text-heading font-medium text-lg">更多</p>
-          <ul class="flex flex-col gap-2 mt-2 text-content-primary">
-            {
-              [
-                { href: sitePaths.projectList, text: '"项目"页', currentTab: true },
-                {
-                  text: "GitHub 主页",
-                  href: "https://github.com/yy4382",
-                  icon: "mingcute:github-line",
-                },
-              ].map((link) => (
-                <li class="underlined-link w-fit">
-                  {link.icon && (
-                    <Icon
-                      name={link.icon}
-                      class="inline-block translate-x-[2px] -translate-y-[1px]"
-                    />
-                  )}
-                  <a
-                    href={link.href}
-                    class=""
-                    target={link.currentTab ? "_self" : "_blank"}
-                  >
-                    {link.text}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-        <Icon
-          name="mingcute:more-3-line"
-          class="absolute right-1 bottom-1 text-primary"
-          size={24}
-        />
-      </div>
-    </Card>
+    <HomeBentoProject />
     <!-- MARK: Stats -->
     <Card class="sm:[grid-area:stats] flex center">
       <div
