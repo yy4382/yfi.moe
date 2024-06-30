@@ -38,8 +38,7 @@ export default defineConfig({
           type: true,
         },
       ],
-      defaultExportByFilename: true,
-      dirs: ["./src/configs"],
+      dirs: ["./src/configs", "./src/components/modules/*/"],
       eslintrc: {
         enabled: true,
         filepath: "auto-imports-eslint.mjs",

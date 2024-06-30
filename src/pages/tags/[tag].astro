@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import AchieveCard from "@comp/achieveCard/AchieveCard.astro";
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("post");
