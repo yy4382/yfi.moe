@@ -46,7 +46,7 @@ export default defineConfig({
       [
         rehypeExtendedLinks,
         {
-          preContent(node) {
+          preContent(node: any) {
             const url = node.properties.href;
             if (!url) return undefined;
             const regex = /^(https?:\/\/)?(www\.)?github\.com\/.*/i;
