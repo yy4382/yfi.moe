@@ -1,4 +1,6 @@
 ---
+import TimeTooltip from "@comp/base/TimeTooltip.vue";
+import { DateTime } from "luxon";
 interface Props {
   posts: CollectionEntry<"post">[];
   title: string;
@@ -72,9 +74,19 @@ const { base, contentWrapper, content, icon } = postListPopover();
               {post.data.title}
             </a>
             <span class="ml-2 shrink-0 self-end text-xs opacity-70">
-              {relativeTimeFromNow(
-                showUpdateTime ? post.data.updated : post.data.date,
-              )}
+              <TimeTooltip
+                postTime={DateTime.fromJSDate(post.data.date).toFormat(
+                  "yyyy-MM-dd",
+                )}
+                updatedTime={DateTime.fromJSDate(post.data.updated).toFormat(
+                  "yyyy-MM-dd",
+                )}
+                client:load
+              >
+                {relativeTimeFromNow(
+                  showUpdateTime ? post.data.updated : post.data.date,
+                )}
+              </TimeTooltip>
             </span>
           </li>
         );

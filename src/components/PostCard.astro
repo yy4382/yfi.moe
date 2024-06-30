@@ -14,10 +14,7 @@ if (post.data.description === undefined) {
 }
 ---
 
-<Card
-  class=`space-y-2 lg:space-y-3 md:hover:-translate-y-0.5 transition post-card`
-  useHeading
->
+<Card class=`space-y-2 lg:space-y-3 transition post-card` useHeading>
   <a
     slot="heading"
     href={getPostPath(post)}
