@@ -1,45 +1,56 @@
 <script setup lang="ts">
-import { ref } from "vue";
-const showTooltip = ref(false);
-const beingHovered = ref(false);
-function mouseEnter() {
-  beingHovered.value = true;
-  showTooltip.value = true;
-}
-function mouseLeave() {
-  beingHovered.value = false;
-  setTimeout(() => {
-    if (!beingHovered.value) showTooltip.value = false;
-  }, 150);
-}
+import {
+  TooltipContent,
+  TooltipPortal,
+  TooltipProvider,
+  TooltipRoot,
+  TooltipTrigger,
+} from "radix-vue";
+import { useMotion } from "@vueuse/motion";
+import { nextTick, ref, watch } from "vue";
+
+const tip = ref(null);
+const stages = ref({
+  initial: { opacity: 0, y: 10 },
+  enter: { opacity: 1, y: 0 },
+  leave: { opacity: 0, y: 0, transition: { duration: 300 } },
+});
+
+const { apply, set } = useMotion(tip, stages);
+
+apply("initial");
+
+const open = ref<boolean | undefined>(undefined);
+const mount = ref(false);
+watch(open, async (value, oldValue) => {
+  if (value) {
+    mount.value = true;
+    apply("enter");
+  } else {
+    await apply("leave");
+    await nextTick();
+    mount.value = false;
+    set("initial");
+  }
+});
 </script>
 
 <template>
-  <div
-    class="relative"
-    @mouseenter="mouseEnter"
-    @mouseleave="mouseLeave"
-  >
-    <slot></slot>
-    <div
-      class="z-10 absolute top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2"
-    >
-      <Transition>
-        <div v-show="showTooltip">
-          <slot name="tooltip"></slot>
-        </div>
-      </Transition>
-    </div>
+  <div>
+    <TooltipProvider>
+      <TooltipRoot
+        :delay-duration="50"
+        @update:open="(state) => (open = state)"
+      >
+        <TooltipTrigger>
+          <slot />
+        </TooltipTrigger>
+        <TooltipPortal v-if="mount">
+          <TooltipContent :side-offset="5" force-mount ref="tip">
+            <slot name="content"></slot>
+          </TooltipContent>
+        </TooltipPortal>
+      </TooltipRoot>
+    </TooltipProvider>
   </div>
 </template>
-<style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: all 0.15s;
-}
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-  transform: translateY(5%);
-}
-</style>

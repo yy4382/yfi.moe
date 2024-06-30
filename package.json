@@ -24,6 +24,7 @@
     "@types/luxon": "^3.4.2",
     "@types/postcss-js": "^4.0.4",
     "@types/remove-markdown": "^0.3.4",
+    "@vueuse/motion": "^2.2.3",
     "@waline/client": "^3.2.6",
     "algoliasearch": "^4.24.0",
     "astro": "4.11.3",
