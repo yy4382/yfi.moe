@@ -2,9 +2,9 @@
 import { ViewTransitions } from "astro:transitions";
 import "@styles/base.css";
 import { type SEOProps, SEO } from "astro-seo";
-import Favicon from "@comp/base/Favicon.astro";
+import Favicon from "@comp/head/Favicon.astro";
 import LoadingIndicator from "astro-loading-indicator/component";
-import TagManagers from "@comp/TagManagers.astro";
+import TagManagers from "@comp/head/TagManagers.astro";
 import runtimeEnv from "@utils/runtimeEnv";
 interface Props {
   seoConfig: SEOProps;

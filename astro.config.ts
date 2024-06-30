@@ -30,7 +30,7 @@ export default defineConfig({
           "astro-icon/components": ["Icon"],
           "@utils/path": ["getPostPath"],
           "@utils/content": ["getSortedPosts"],
-          "@comp/base/Card.astro": [["default", "Card"]],
+          "@comp/elements/Card.astro": [["default", "Card"]],
         },
         {
           from: "astro:content",
