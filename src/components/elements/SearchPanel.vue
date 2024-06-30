@@ -8,7 +8,6 @@ import {
   AisSnippet,
   // @ts-expect-error missing types
 } from "vue-instantsearch/vue3/es";
-import { algoliaConfig } from "@config";
 import algoliasearch from "algoliasearch/lite";
 import { getPostPath } from "@utils/path";
 

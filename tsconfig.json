@@ -14,8 +14,8 @@
       "@utils/*": [
         "src/utils/*"
       ],
-      "@config": [
-        "src/config"
+      "@configs/*": [
+        "src/configs/*"
       ],
       "@layouts/*": [
         "src/layouts/*"

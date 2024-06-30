@@ -44,6 +44,7 @@ export default defineConfig({
         filepath: "auto-imports-eslint.mjs",
         globalsPropValue: "readonly",
       },
+      vueTemplate: true,
     }),
   ],
   markdown: {

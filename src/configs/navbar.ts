@@ -1,9 +1,3 @@
-export interface TocItem {
-  depth: number;
-  slug: string;
-  text: string;
-}
-
 export interface NavMenu {
   text: string;
   link?: string;
@@ -34,8 +28,3 @@ export const navMenu: NavMenu[] = [
     icon: "mingcute:information-line",
   },
 ];
-
-export const algoliaConfig = {
-  appId: "1348UVS1GQ",
-  readonlyKey: "c1c21db7f7677a90c797ea5f411d8940",
-};
