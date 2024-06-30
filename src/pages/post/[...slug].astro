@@ -24,8 +24,6 @@ const { Content, headings } = await post.render();
 
 import { getSeo } from "@utils/SEO";
 import { getDesc } from "@utils/markdown";
-import SideBar from "@comp/sidebar/SideBar.astro";
-import TocMobile from "@comp/sidebar/TocMobile.astro";
 
 const seoConfig = getSeo({
   title: post.data.title,
@@ -45,7 +43,6 @@ const seoConfig = getSeo({
     <PrevNext prev={prev} next={next} />
     <CommentCard client:load path={getPostPath(post)} />
   </div>
-  <TocMobile headings={headings} />
   <Fragment slot="sidebar">
     <SideBar tocList={headings} seriesID={post.data.series?.id} />
   </Fragment>

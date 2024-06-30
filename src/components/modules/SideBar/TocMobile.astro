@@ -1,5 +1,9 @@
 ---
-import SideCardToc from "@comp/sidebar/SideCardToc.astro";
+import SideCardToc from "./SideCardToc.astro";
+import type { MarkdownHeading } from "astro";
+interface Props {
+  headings: MarkdownHeading[];
+}
 const { headings } = Astro.props;
 ---
 
@@ -58,7 +62,7 @@ const { headings } = Astro.props;
     () => {
       setup();
     },
-    { once: false }
+    { once: false },
   );
 </script>
 

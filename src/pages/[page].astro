@@ -4,7 +4,6 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import Article from "@comp/views/Article.astro";
 import { getDesc } from "@utils/markdown";
 import { getSeo } from "@utils/SEO";
-import SideBar from "@comp/sidebar/SideBar.astro";
 export async function getStaticPaths() {
   const pages = await getCollection("page");
   return pages.map((page) => ({
