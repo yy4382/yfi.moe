@@ -1,8 +1,16 @@
-<body
-  class="bg-fixed bg-gradient-to-br to-[var(--bg-page)]
-    from-[oklch(from_var(--bg-page)_l_c_var(--primary-hue-gradient))]"
->
+<body class="bg-fixed">
   <div class="w-full xl:max-w-6xl mx-auto min-h-screen p-4">
     <slot />
   </div>
 </body>
+
+<style is:global>
+  body {
+    background-color: var(--bg-page);
+    background-image: linear-gradient(
+      to bottom right,
+      oklch(from var(--bg-page) l c var(--primary-hue-gradient)),
+      var(--bg-page)
+    );
+  }
+</style>
