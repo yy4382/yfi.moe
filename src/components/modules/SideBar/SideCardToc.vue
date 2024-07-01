@@ -4,7 +4,7 @@ import TocEntry from "./TocEntry.vue";
 import { ref } from "vue";
 import type { MarkdownHeading } from "astro";
 import useHeading from "@utils/useHeading";
-import MingcuteMenuLine from "@comp/icons/MingcuteMenuLine.vue";
+import MingcuteListCheckLine from "@icons/MingcuteListCheckLine.vue";
 import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
 import { card } from "@styles/tv";
 const props = defineProps<{
@@ -47,9 +47,9 @@ const { base, heading } = card({ padding: "sm" });
       <div>
         <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
         <button
-          class="fixed z-20 bottom-4 right-4 rounded-full bg-card border dark:border-gray-600 p-2"
+          class="fixed z-20 bottom-4 right-4 shape-card bg-card border dark:border-gray-600 p-2"
         >
-          <MingcuteMenuLine class="size-4 text-heading" />
+          <MingcuteListCheckLine class="size-6 text-heading" />
         </button>
       </div>
     </template>
