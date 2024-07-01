@@ -113,9 +113,9 @@ const { lengthY } = useSwipe(dialogContent, {
         </VisuallyHidden>
         <slot />
         <DialogClose
-          class="absolute top-4 w-16 left-1/2 translate-x-[-50%] h-1"
+          class="absolute top-4 w-16 left-1/2 translate-x-[-50%] h-1 outline-none"
         >
-          <div class="bg-gray-300 rounded-full h-full w-full" />
+          <div class="bg-gray-300 rounded-full h-full w-full outline-none" />
         </DialogClose>
       </DialogContent>
     </DialogPortal>
