@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import MobileDialog from "@comp/elements/MobileDialog.vue";
 import MingCuteMenuLine from "@icons/MingcuteMenuLine.vue";
-import { Icon } from "@iconify/vue";
 </script>
 
 <template>
@@ -15,7 +14,7 @@ import { Icon } from "@iconify/vue";
           :href="nav.link"
           class="inline-flex items-center gap-2 modal-link font-medium text-heading"
         >
-          <Icon :icon="nav.icon || ''" />
+          <component :is="nav.vueIcon" class="text-heading size-5" />
           {{ nav.text }}
         </a>
         <ul
