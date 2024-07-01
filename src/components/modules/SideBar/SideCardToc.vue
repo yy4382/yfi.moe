@@ -6,6 +6,7 @@ import type { MarkdownHeading } from "astro";
 import useHeading from "@utils/useHeading";
 import MingcuteMenuLine from "@comp/icons/MingcuteMenuLine.vue";
 import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
+import { card } from "@styles/tv";
 const props = defineProps<{
   headings: MarkdownHeading[];
 }>();
@@ -21,9 +22,17 @@ const onClickLink = () => {
     open.value = false;
   }, 50);
 };
+
+const { base, heading } = card({ padding: "sm" });
 </script>
 
 <template>
+  <div v-if="!shouldMount" :class="base()">
+    <div :class="heading()" class="transition pb-2 block hover:text-primary">
+      <h5>目录</h5>
+    </div>
+    <TocEntry :headings="headings" :active-index @click-link="onClickLink" />
+  </div>
   <MobileDialog
     v-if="shouldMount"
     v-model="open"
