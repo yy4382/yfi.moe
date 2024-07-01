@@ -1,5 +1,6 @@
 ---
 import SideCard from "./SideCard.astro";
+import TocEntry from "./TocEntry.vue";
 import type { MarkdownHeading } from "astro";
 
 interface Props {
@@ -21,19 +22,5 @@ const { tocList } = Astro.props;
 ---
 
 <SideCard cardTitle="目录" cardLink="#">
-  <div class="first:pt-0 last:pb-0 flex flex-col text-sm">
-    {
-      tocList.map((tocItem) => (
-        <a
-          href={"#" + tocItem.slug}
-          class:list={[
-            `btn-plain hover:translate-x-1 text-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none`,
-          ]}
-          style={`margin-left: calc(0.75rem * ${tocItem.depth - 2});`}
-        >
-          {tocItem.text}
-        </a>
-      ))
-    }
-  </div>
+  <TocEntry headings={tocList} client:visible />
 </SideCard>

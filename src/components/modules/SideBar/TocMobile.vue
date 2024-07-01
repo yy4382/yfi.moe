@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import MobileDialog from "@comp/elements/MobileDialog.vue";
+import TocEntry from "./TocEntry.vue";
 import { ref } from "vue";
 import type { MarkdownHeading } from "astro";
-defineProps<{
+import useHeading from "@utils/useHeading";
+import MingcuteMenuLine from "@comp/icons/MingcuteMenuLine.vue";
+import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
+const props = defineProps<{
   headings: MarkdownHeading[];
 }>();
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
+
+const shouldMount = breakpoints.smaller("lg");
+
+const activeIndex = useHeading(props.headings);
 const open = ref(false);
 const onClickLink = () => {
   setTimeout(() => {
@@ -15,29 +25,23 @@ const onClickLink = () => {
 
 <template>
   <MobileDialog
+    v-if="shouldMount"
     v-model="open"
     title="Table of Contents"
     description="Table of Contents"
   >
     <template #default>
-      <ul>
-        <li v-for="heading in headings" :key="heading.slug" class="py-1">
-          <a
-            :href="`#${heading.slug}`"
-            class="btn-plain hover:translate-x-1 text-ellipsis whitespace-nowrap overflow-hidden p-2 rounded-md select-none"
-            :style="`margin-left: calc(0.75rem * ${heading.depth - 2});`"
-            @click="onClickLink"
-          >
-            {{ heading.text }}
-          </a>
-        </li>
-      </ul>
+      <TocEntry :headings="headings" :active-index @click-link="onClickLink" />
     </template>
 
     <template #trigger>
       <div>
         <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
-        <button class="fixed z-20 bottom-4 right-4">A</button>
+        <button
+          class="fixed z-20 bottom-4 right-4 rounded-full bg-card border dark:border-gray-600 p-2"
+        >
+          <MingcuteMenuLine class="size-4 text-heading" />
+        </button>
       </div>
     </template>
   </MobileDialog>
