@@ -25,10 +25,10 @@ defineEmits(["clickLink"]);
     >
       <a
         :href="`#${heading.slug}`"
-        class="truncate select-none text-comment transition-all min-w-0 w-full inline-block align-middle"
+        class="truncate select-none text-comment hover:text-content transition-all min-w-0 w-full inline-block align-middle"
         :style="`margin-left: calc(0.75rem * ${heading.depth - 2 + Number(activeIndex === index) * 0.7});`"
         :class="{
-          'text-heading': activeIndex === index,
+          '!text-heading': activeIndex === index,
         }"
         @click="$emit('clickLink')"
       >

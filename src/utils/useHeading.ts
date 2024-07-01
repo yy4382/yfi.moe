@@ -30,18 +30,8 @@ export default function useHeading(
     });
   });
   const activeIndex = computed<number>((oldVal) => {
-    for (let i = 0; i < isVisible.value.length; i++) {
-      if (!isVisible.value[i]) {
-        continue;
-      }
-      if (
-        i === isVisible.value.length - 1 ||
-        !isVisible.value[i + 1] ||
-        headings.value[i].depth >= headings.value[i + 1].depth
-      ) {
-        return i;
-      }
-    }
+    const index = isVisible.value.findIndex((visible) => visible);
+    if (index !== -1) return index;
     return oldVal === undefined ? 0 : oldVal;
   });
   return activeIndex;
