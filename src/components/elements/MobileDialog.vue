@@ -2,7 +2,7 @@
 import { computed, nextTick, ref, watch } from "vue";
 /* prettier-ignore */
 import { DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTrigger, DialogTitle, VisuallyHidden, DialogDescription } from "radix-vue";
-import { useWindowSize, useSwipe } from "@vueuse/core";
+import { useSwipe, useElementBounding, until } from "@vueuse/core";
 import { useMotion } from "@vueuse/motion";
 
 defineProps<{
@@ -10,27 +10,20 @@ defineProps<{
   description?: string;
 }>();
 
-const MARGIN_TOP = 96;
-const { height: windowHeight } = useWindowSize();
-
 const dialogContent = ref<HTMLElement | null>(null);
 const dialogOverlay = ref<HTMLElement | null>(null);
 
-const {
-  apply: contentApply,
-  set: contentSet,
-  // state: contentState,
-} = useMotion(
+const contentMotion = useMotion(
   dialogContent,
   computed(() => ({
     initial: {
-      y: windowHeight.value - MARGIN_TOP,
-      transition: { type: "keyframes", ease: "easeOut" },
+      y: 5000,
+      transition: { type: "keyframes", ease: "easeOut", duration: 500 },
     },
     enter: { y: 0, transition: { type: "keyframes", ease: "easeOut" } },
   })),
 );
-contentSet("initial");
+contentMotion.set("initial");
 
 const {
   apply: overlayApply,
@@ -45,36 +38,51 @@ const {
 );
 overlaySet("initial");
 
-const open = ref(false);
+const open = defineModel<boolean>();
 const show = ref<boolean | undefined>(undefined);
+const contentHeight = useElementBounding(dialogContent).height;
+let contentHeightThisTime = 0;
+
 watch(open, async () => {
   if (open.value) {
     if (show.value === undefined) {
-      contentSet("initial");
+      contentMotion.set("initial");
       overlaySet("initial");
       await nextTick();
     }
     show.value = true;
-    await Promise.all([contentApply("enter"), overlayApply("enter")]);
+
+    await until(contentHeight).not.toBe(0);
+    contentHeightThisTime = contentHeight.value;
+    contentMotion.set({ y: contentHeightThisTime });
+
+    await Promise.all([contentMotion.apply("enter"), overlayApply("enter")]);
   } else {
-    await Promise.all([contentApply("initial"), overlayApply("initial")]);
+    await Promise.all([
+      contentMotion.apply({
+        y: contentHeightThisTime,
+        transition: {
+          type: "keyframes",
+          ease: "easeOut",
+          duration: contentHeightThisTime,
+        },
+      }),
+      overlayApply("initial"),
+    ]);
     show.value = false;
+    contentMotion.set("initial");
   }
 });
 
 const { lengthY } = useSwipe(dialogContent, {
   onSwipe: (_e: TouchEvent) => {
-    if (lengthY.value < -10) {
-      contentSet({
-        y: -lengthY.value,
-      });
-    }
+    if (lengthY.value < 0) contentMotion.set({ y: -lengthY.value });
   },
   onSwipeEnd: (_e: TouchEvent) => {
-    if (lengthY.value < -200) {
+    if (lengthY.value < contentHeightThisTime / 5) {
       open.value = false;
     } else {
-      contentApply("enter");
+      contentMotion.apply("enter");
     }
   },
 });
@@ -93,7 +101,7 @@ const { lengthY } = useSwipe(dialogContent, {
       />
       <DialogContent
         ref="dialogContent"
-        class="bg-card shape-card !rounded-b-none focus-visible:outline-none p-8 pt-9 fixed inset-0 mt-24 z-50"
+        class="bg-card shape-card !rounded-b-none focus-visible:outline-none p-8 pt-9 fixed inset-0 top-[unset] h-fit mt-24 max-h-[90vh] z-50"
         force-mount
       >
         <VisuallyHidden as-child>
