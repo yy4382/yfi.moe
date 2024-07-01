@@ -12,70 +12,110 @@ import {
   DialogTitle,
   VisuallyHidden,
 } from "radix-vue";
+
+import { computed, nextTick, ref, watch } from "vue";
+import { useMotion } from "@vueuse/motion";
+import { useWindowSize } from "@vueuse/core";
+
+const MARGIN_TOP = 96;
+const { height: windowHeight } = useWindowSize();
+
+const dialogContent = ref<HTMLElement | null>(null);
+const dialogOverlay = ref<HTMLElement | null>(null);
+
+const {
+  apply: contentApply,
+  set: contentSet,
+  // state: contentState,
+} = useMotion(
+  dialogContent,
+  computed(() => ({
+    initial: {
+      y: windowHeight.value - MARGIN_TOP,
+      transition: { type: "keyframes", ease: "easeOut" },
+    },
+    enter: { y: 0, transition: { type: "keyframes", ease: "easeOut" } },
+  })),
+);
+contentSet("initial");
+
+const {
+  apply: overlayApply,
+  set: overlaySet,
+  // state: overlayState,
+} = useMotion(
+  dialogOverlay,
+  computed(() => ({
+    initial: { opacity: 0, transition: { type: "keyframes", ease: "linear" } },
+    enter: { opacity: 1, transition: { type: "keyframes", ease: "linear" } },
+  })),
+);
+overlaySet("initial");
+
+const open = ref(false);
+const show = ref<boolean | undefined>(undefined);
+watch(open, async () => {
+  if (open.value) {
+    if (show.value === undefined) {
+      contentSet("initial");
+      overlaySet("initial");
+      await nextTick();
+    }
+    show.value = true;
+    await Promise.all([contentApply("enter"), overlayApply("enter")]);
+  } else {
+    await Promise.all([contentApply("initial"), overlayApply("initial")]);
+    show.value = false;
+  }
+});
 </script>
 
 <template>
-  <DialogRoot>
+  <DialogRoot v-model:open="open">
     <DialogTrigger>
       <MingCuteMenuLine class="w-8 h-8 text-heading" />
     </DialogTrigger>
-    <DialogPortal>
-      <Transition name="fade">
-        <DialogOverlay class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-20" />
-      </Transition>
-      <Transition name="move">
-        <DialogContent
-          class="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-8 fixed top-[10%] left-1/2 max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] z-50"
-        >
-          <VisuallyHidden>
-            <DialogTitle>Menu Bar for mobile</DialogTitle>
-          </VisuallyHidden>
-          <div class="flex flex-col gap-4">
-            <section v-for="nav in navMenu" :key="nav.text">
-              <a
-                :href="nav.link"
-                class="inline-flex items-center gap-2 modal-link font-medium text-heading"
-              >
-                <Icon :icon="nav.icon || ''" />
-                {{ nav.text }}
-              </a>
-              <ul
-                v-if="
-                  nav.subMenu && nav.subMenu.length > 0 && nav.text !== '首页'
-                "
-                class="grid grid-cols-2 gap-2 my-2"
-              >
-                <li v-for="child in nav.subMenu" :key="child.text">
-                  <a :href="child.link" class="p-4 pl-6 text-sm text-content">
-                    {{ child.text }}
-                  </a>
-                </li>
-              </ul>
-            </section>
-          </div>
-          <DialogClose class="absolute top-4 right-4">
-            <MingcuteCloseFill class="text-heading" />
-          </DialogClose>
-        </DialogContent>
-      </Transition>
+    <DialogPortal v-if="show">
+      <DialogOverlay
+        ref="dialogOverlay"
+        class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-20"
+        force-mount
+      />
+      <DialogContent
+        ref="dialogContent"
+        class="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-8 fixed inset-0 mt-24 z-50"
+        force-mount
+      >
+        <VisuallyHidden>
+          <DialogTitle>Menu Bar for mobile</DialogTitle>
+        </VisuallyHidden>
+        <div class="flex flex-col gap-4">
+          <section v-for="nav in navMenu" :key="nav.text">
+            <a
+              :href="nav.link"
+              class="inline-flex items-center gap-2 modal-link font-medium text-heading"
+            >
+              <Icon :icon="nav.icon || ''" />
+              {{ nav.text }}
+            </a>
+            <ul
+              v-if="
+                nav.subMenu && nav.subMenu.length > 0 && nav.text !== '首页'
+              "
+              class="grid grid-cols-2 gap-2 my-2"
+            >
+              <li v-for="child in nav.subMenu" :key="child.text">
+                <a :href="child.link" class="p-4 pl-6 text-sm text-content">
+                  {{ child.text }}
+                </a>
+              </li>
+            </ul>
+          </section>
+        </div>
+        <DialogClose class="absolute top-4 right-4">
+          <MingcuteCloseFill class="text-heading" />
+        </DialogClose>
+      </DialogContent>
     </DialogPortal>
   </DialogRoot>
 </template>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active,
-.move-enter-active,
-.move-leave-active {
-  transition: all 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-.move-enter-from,
-.move-leave-to {
-  opacity: 0;
-  transform: translateY(-20%), scale(0.5);
-}
-</style>

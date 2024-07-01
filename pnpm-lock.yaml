@@ -53,6 +53,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.14.1
         version: 7.14.1(eslint@9.6.0)(typescript@5.5.2)
+      '@vueuse/core':
+        specifier: ^10.11.0
+        version: 10.11.0(vue@3.4.30(typescript@5.5.2))
       '@vueuse/motion':
         specifier: ^2.2.3
         version: 2.2.3(rollup@4.18.0)(vue@3.4.30(typescript@5.5.2))
