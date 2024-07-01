@@ -11,11 +11,12 @@ import {
   DialogTrigger,
   DialogTitle,
   VisuallyHidden,
+  DialogDescription,
 } from "radix-vue";
 
 import { computed, nextTick, ref, watch } from "vue";
 import { useMotion } from "@vueuse/motion";
-import { useWindowSize } from "@vueuse/core";
+import { useWindowSize, useSwipe } from "@vueuse/core";
 
 const MARGIN_TOP = 96;
 const { height: windowHeight } = useWindowSize();
@@ -68,12 +69,29 @@ watch(open, async () => {
     show.value = false;
   }
 });
+
+const { lengthY } = useSwipe(dialogContent, {
+  onSwipe: (_e: TouchEvent) => {
+    if (lengthY.value < -10) {
+      contentSet({
+        y: -lengthY.value,
+      });
+    }
+  },
+  onSwipeEnd: (_e: TouchEvent) => {
+    if (lengthY.value < -200) {
+      open.value = false;
+    } else {
+      contentApply("enter");
+    }
+  },
+});
 </script>
 
 <template>
   <DialogRoot v-model:open="open">
-    <DialogTrigger>
-      <MingCuteMenuLine class="w-8 h-8 text-heading" />
+    <DialogTrigger as-child>
+      <MingCuteMenuLine class="w-8 h-8 text-heading outline-0" />
     </DialogTrigger>
     <DialogPortal v-if="show">
       <DialogOverlay
@@ -83,11 +101,14 @@ watch(open, async () => {
       />
       <DialogContent
         ref="dialogContent"
-        class="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-8 fixed inset-0 mt-24 z-50"
+        class="bg-white dark:bg-gray-950 focus-visible:outline-none rounded-lg shadow-lg p-8 fixed inset-0 mt-24 z-50"
         force-mount
       >
-        <VisuallyHidden>
+        <VisuallyHidden as-child>
           <DialogTitle>Menu Bar for mobile</DialogTitle>
+        </VisuallyHidden>
+        <VisuallyHidden as-child>
+          <DialogDescription>Menu Bar for mobile</DialogDescription>
         </VisuallyHidden>
         <div class="flex flex-col gap-4">
           <section v-for="nav in navMenu" :key="nav.text">
