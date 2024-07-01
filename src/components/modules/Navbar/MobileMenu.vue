@@ -19,7 +19,7 @@ import { Icon } from "@iconify/vue";
           {{ nav.text }}
         </a>
         <ul
-          v-if="nav.subMenu && nav.subMenu.length > 0 && nav.text !== '首页'"
+          v-if="nav.subMenu && nav.subMenu.length > 0"
           class="grid grid-cols-2 gap-2 my-2"
         >
           <li v-for="child in nav.subMenu" :key="child.text">
