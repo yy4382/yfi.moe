@@ -24,21 +24,24 @@ type PostType = CollectionEntry<"post">;
   </div>
 </BaseLayout>
 
-<script is:inline>
+<script>
   document.addEventListener("astro:before-preparation", (ev) => {
     const sourceElement = ev.sourceElement;
 
-    if (!sourceElement.classList.contains("post-card-heading")) return;
+    if (!sourceElement?.classList.contains("post-card-heading")) return;
+    // @ts-expect-error ignore ignore
     sourceElement.style.viewTransitionName = "post-heading";
 
     const postCard = sourceElement.closest(".post-card");
     console.log("postCard", postCard);
     console.log(postCard);
     if (!postCard) return;
+    // @ts-expect-error ignore ignore
     postCard.style.viewTransitionName = "post-card";
 
     const postCardAttr = postCard.querySelector(".post-card-attr");
     if (!postCardAttr) return;
+    // @ts-expect-error ignore ignore
     postCardAttr.style.viewTransitionName = "post-attr";
   });
 </script>
