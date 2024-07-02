@@ -16,7 +16,10 @@ export const navMenu: NavMenu[] = [
     link: "/",
     icon: "mingcute:dot-grid-fill",
     vueIcon: MingcuteDotGridLine,
-    subMenu: [{ text: "站志", link: "/site-history" }],
+    subMenu: [
+      { text: "站志", link: "/site-history" },
+      { text: "致谢", link: "/credits" },
+    ],
   },
   {
     text: "文章",
