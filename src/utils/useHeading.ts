@@ -23,18 +23,24 @@ export default function useHeading(
     headers = headersWithUn.filter(
       (header): header is HTMLElement => header !== undefined,
     );
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const index = headings.value.findIndex(
-          (heading) => entry.target.id === heading.slug,
-        );
-        if (index === -1) return;
-        isVisible.value[index] = entry.isIntersecting;
-      });
-    });
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = headings.value.findIndex(
+            (heading) => entry.target.id === heading.slug,
+          );
+          if (index === -1) return;
+          isVisible.value[index] = entry.isIntersecting;
+        });
+      },
+      {
+        rootMargin: "-80px 0px 0px 0px",
+      },
+    );
     headers.forEach((header) => {
       if (header) {
         observer?.observe(header);
+        header.style.scrollMarginTop = "5rem";
       }
     });
   });
