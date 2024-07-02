@@ -90,34 +90,36 @@ const { lengthY } = useSwipe(dialogContent, {
 </script>
 
 <template>
-  <DialogRoot v-model:open="open">
-    <DialogTrigger as-child class="outline-none">
-      <slot name="trigger" />
-    </DialogTrigger>
-    <DialogPortal v-if="show">
-      <DialogOverlay
-        ref="dialogOverlay"
-        class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-20"
-        force-mount
-      />
-      <DialogContent
-        ref="dialogContent"
-        class="bg-card shape-card !rounded-b-none focus-visible:outline-none p-8 pt-9 fixed inset-0 top-[unset] h-fit mt-24 max-h-[90vh] z-50"
-        force-mount
-      >
-        <VisuallyHidden as-child>
-          <DialogTitle>{{ title ?? "Dialog" }}</DialogTitle>
-        </VisuallyHidden>
-        <VisuallyHidden as-child>
-          <DialogDescription>{{ description ?? "Dialog" }}</DialogDescription>
-        </VisuallyHidden>
-        <slot />
-        <DialogClose
-          class="absolute top-4 w-16 left-1/2 translate-x-[-50%] h-1 outline-none"
+  <div>
+    <DialogRoot v-model:open="open">
+      <DialogTrigger as-child class="outline-none">
+        <slot name="trigger" />
+      </DialogTrigger>
+      <DialogPortal v-if="show">
+        <DialogOverlay
+          ref="dialogOverlay"
+          class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-20"
+          force-mount
+        />
+        <DialogContent
+          ref="dialogContent"
+          class="bg-card shape-card !rounded-b-none focus-visible:outline-none p-8 pt-9 fixed inset-0 top-[unset] h-fit mt-24 max-h-[90vh] z-50"
+          force-mount
         >
-          <div class="bg-gray-300 rounded-full h-full w-full outline-none" />
-        </DialogClose>
-      </DialogContent>
-    </DialogPortal>
-  </DialogRoot>
+          <VisuallyHidden as-child>
+            <DialogTitle>{{ title ?? "Dialog" }}</DialogTitle>
+          </VisuallyHidden>
+          <VisuallyHidden as-child>
+            <DialogDescription>{{ description ?? "Dialog" }}</DialogDescription>
+          </VisuallyHidden>
+          <slot />
+          <DialogClose
+            class="absolute top-4 w-16 left-1/2 translate-x-[-50%] h-1 outline-none"
+          >
+            <div class="bg-gray-300 rounded-full h-full w-full outline-none" />
+          </DialogClose>
+        </DialogContent>
+      </DialogPortal>
+    </DialogRoot>
+  </div>
 </template>

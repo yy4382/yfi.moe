@@ -1,20 +1,29 @@
-import { computed, onMounted, ref, toRef, type Ref } from "vue";
+import {
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  ref,
+  toRef,
+  type Ref,
+} from "vue";
 import type { MarkdownHeading } from "astro";
 export default function useHeading(
   headingsInput: Ref<MarkdownHeading[]> | MarkdownHeading[],
 ) {
   const headings: Ref<MarkdownHeading[]> = toRef(headingsInput);
   const isVisible = ref<boolean[]>(Array(headings.value.length).fill(false));
+  let headers: HTMLElement[] = [];
+  let observer: IntersectionObserver | null = null;
 
   onMounted(() => {
     const headersWithUn: (HTMLElement | undefined)[] = [];
     headings.value.forEach((heading) => {
       headersWithUn.push(document.getElementById(heading.slug) ?? undefined);
     });
-    const headers: HTMLElement[] = headersWithUn.filter(
+    headers = headersWithUn.filter(
       (header): header is HTMLElement => header !== undefined,
     );
-    const observer = new IntersectionObserver((entries) => {
+    observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const index = headings.value.findIndex(
           (heading) => entry.target.id === heading.slug,
@@ -25,10 +34,18 @@ export default function useHeading(
     });
     headers.forEach((header) => {
       if (header) {
-        observer.observe(header);
+        observer?.observe(header);
       }
     });
   });
+  onBeforeUnmount(() => {
+    headers.forEach((header) => {
+      if (header) {
+        observer?.unobserve(header);
+      }
+    });
+  });
+
   const activeIndex = computed<number>((oldVal) => {
     const index = isVisible.value.findIndex((visible) => visible);
     if (index !== -1) return index;

@@ -27,14 +27,14 @@ const { base, heading } = card({ padding: "sm" });
 </script>
 
 <template>
-  <div v-if="!shouldMount" :class="base()">
+  <div v-show="!shouldMount" :class="base()">
     <div :class="heading()" class="transition pb-2 block hover:text-primary">
       <h5>目录</h5>
     </div>
     <TocEntry :headings="headings" :active-index @click-link="onClickLink" />
   </div>
   <MobileDialog
-    v-if="shouldMount"
+    v-show="shouldMount"
     v-model="open"
     title="Table of Contents"
     description="Table of Contents"
