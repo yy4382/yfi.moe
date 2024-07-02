@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import {
-  useBreakpoints,
-  breakpointsTailwind,
-  useElementBounding,
-} from "@vueuse/core";
+import { useElementBounding } from "@vueuse/core";
 import { card } from "@styles/tv";
 import MobileMenu from "./MobileMenu.vue";
 import MingcuteSearch3Line from "@comp/icons/MingcuteSearch3Line.vue";
@@ -13,9 +9,6 @@ import type { NavMenu } from "@configs/navbar";
 const props = defineProps<{
   navStats?: NavMenu | string;
 }>();
-
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const isMobile = breakpoints.isSmaller("md");
 
 const navEl = ref<HTMLElement | null>(null);
 const { top, height } = useElementBounding(navEl);
@@ -42,20 +35,20 @@ const highlight = computed<number>(() => {
     <div
       :class="[
         base(),
-        'text-heading transition-all duration-500',
+        'text-heading transition-all duration-500 !shadow-md',
         isFixed && '!rounded-none',
       ]"
     >
       <div class="w-full flex items-center justify-between">
         <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
-        <div v-if="isMobile" class="h-8"><MobileMenu /></div>
+        <div class="md:hidden h-8"><MobileMenu /></div>
         <div class="self-center">
           <a class="flex items-center text-xl" href="/">
             <slot />
             <span class="hidden md:inline">{{ siteConfig.title }}</span>
           </a>
         </div>
-        <div v-if="!isMobile" class="h-full flex items-center space-x-1">
+        <div class="hidden md:flex h-full items-center space-x-1">
           <div
             v-for="(item, index) of navMenu"
             :key="item.text"

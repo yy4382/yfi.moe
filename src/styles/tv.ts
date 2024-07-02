@@ -36,7 +36,7 @@ export const card = tv({
   variants: {
     padding: {
       xs: {
-        base: "p-2 sm:p-4",
+        base: "p-3 sm:p-4",
       },
       sm: {
         base: "p-4 sm:p-6",
