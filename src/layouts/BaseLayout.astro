@@ -2,7 +2,7 @@
 import Footer from "@comp/elements/Footer.astro";
 import HeadTag from "@layouts/HeadTag.astro";
 import type { SEOProps } from "astro-seo";
-import { type NavMenu } from "@config";
+import type { NavMenu } from "@configs/navbar";
 import BaseBody from "./BaseBody.astro";
 interface Props {
   seoConfig: SEOProps;
@@ -14,12 +14,10 @@ const { seoConfig, stopTrack, navStats } = Astro.props;
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
   <BaseBody>
-    <div class="grid w-full
-      grid-cols-1 lg:grid-cols-[70%_30%]">
-      <nav class="lg:col-span-2 mb-4" transition:name="nav-bar" transition:animate="initial">
-        <Navbar navStats={navStats} />
-      </nav>
-
+    <Navbar navStats={navStats} />
+    <div
+      class="grid w-full max-w-screen-xl p-4 xl:mx-auto grid-cols-1 lg:grid-cols-[70%_30%]"
+    >
       <div class="mb-4 lg:mr-4">
         <slot />
       </div>

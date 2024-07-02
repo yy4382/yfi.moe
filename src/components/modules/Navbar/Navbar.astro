@@ -1,6 +1,6 @@
 ---
 import type { NavMenu } from "@configs/navbar";
-import MobileMenu from "./MobileMenu.vue";
+import NavBar from "./NavBar.vue";
 import { Image } from "astro:assets";
 import logo from "@assets/logo.png";
 interface Props {
@@ -9,62 +9,14 @@ interface Props {
 const { navStats } = Astro.props;
 ---
 
-<Card
-  class="h-16 min-h-16 flex justify-between items-center text-heading"
-  padding="xs"
->
-  <div class="md:hidden h-8"><MobileMenu client:load /></div>
-  <div class="self-center">
-    <a class="flex items-center text-xl" href="/">
-      <Image
-        src={logo}
-        alt="logo"
-        loading={"eager"}
-        class="w-8 h-8 rounded-lg mr-3"
-        width={32}
-        height={32}
-        widths={[80, 160]}
-      />
-      <span class="hidden md:inline">{siteConfig.title}</span>
-    </a>
-  </div>
-  <div class="hidden md:flex h-full items-center space-x-1">
-    {
-      navMenu.map((item) => {
-        let highlight = false;
-        if (navStats === undefined && item.text === "关于") highlight = true;
-        else if (typeof navStats === "string" && navStats === item.text)
-          highlight = true;
-        else if (typeof navStats === "object" && navStats.text === item.text)
-          highlight = true;
-        return (
-          <div
-            class:list={[
-              "w-20 font-medium h-full flex justify-center items-center",
-              highlight ? "text-primary" : "text-heading",
-            ]}
-          >
-            <span class="hover:text-primary self-center z-1 select-none align-middle inline-flex items-center gap-1">
-              {highlight && (
-                <Icon
-                  name={item.icon}
-                  v-if="highlight"
-                  style="view-transition-name: nav-item-icon"
-                />
-              )}
-              <a
-                href={item.link}
-                style={"view-transition-name: nav-item-text-" + item.text}
-              >
-                {item.text}
-              </a>
-            </span>
-          </div>
-        );
-      })
-    }
-  </div>
-  <a href="/search" aria-label="Search Button">
-    <Icon name={"mingcute:search-2-line"} size={32} />
-  </a>
-</Card>
+<NavBar navStats={navStats} client:load>
+  <Image
+    src={logo}
+    alt="logo"
+    loading={"eager"}
+    class="w-8 h-8 rounded-lg mr-3"
+    width={32}
+    height={32}
+    widths={[80, 160]}
+  />
+</NavBar>

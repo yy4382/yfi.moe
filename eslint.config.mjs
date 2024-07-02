@@ -56,6 +56,7 @@ export default [
     },
     rules: {
       "vue/max-attributes-per-line": "off",
+      "vue/html-self-closing": "off",
     },
   },
 

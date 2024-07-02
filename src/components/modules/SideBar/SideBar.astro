@@ -2,7 +2,6 @@
 import AuthorCard from "./SideCardAuthor.astro";
 import SideCardRecent from "./SideCardRecent.astro";
 import Tags from "./SideCardTags.astro";
-// import SideCardToc from "./SideCardToc.astro";
 import SideCardSeries from "./SideCardSeries.astro";
 import TocMobile from "./SideCardToc.vue";
 import type { MarkdownHeading } from "astro";
@@ -17,9 +16,8 @@ const { tocList, seriesID } = Astro.props;
   <AuthorCard />
   <Tags />
 </div>
-<div class="flex flex-col gap-4 sticky top-4">
+<div class="flex flex-col gap-4 sticky top-20">
   {seriesID && <SideCardSeries id={seriesID} />}
-  <!-- {tocList && <SideCardToc tocList={tocList} />} -->
   {tocList && <TocMobile client:load headings={tocList} />}
   <SideCardRecent />
 </div>
