@@ -1,24 +1,38 @@
+---
+import { Image } from "astro:assets";
+import logo from "@assets/logo.png";
+---
+
 <Card padding="xs">
-  <div class="w-full">
-    <div class="flex flex-col">
-      <span class="text-sm text-comment inline-flex gap-1 items-center">
-        <span
-          >© 2023-2024
-          <a href={Astro.site} class="text-content-primary"
-            >{siteConfig.title}</a
-          >.</span
+  <div class="w-full flex">
+    <div
+      class="flex flex-col items-center md:items-start flex-grow flex-shrink"
+    >
+      <span class="text-sm text-comment inline-flex gap-x-1 items-center">
+        <span class="inline-flex center gap-0.5"
+          ><Icon name="mingcute:copyright-line" /> 2023-2024
+          <span
+            ><a href={Astro.site} class="text-content-primary"
+              >{siteConfig.title}</a
+            >.</span
+          ></span
         >
         <span class="opacity-70">|</span>
+        <a
+          href="https://github.com/yy4382/yfi.moe"
+          class="inline-flex center gap-0.5"
+        >
+          <Icon name="mingcute:github-line" />Source Code</a
+        >
+      </span>
+      <span class="text-sm text-comment inline-flex gap-1 items-center">
+        <span class="hidden md:inline">For Robots: </span>
         <a href="/feed.xml" class="inline-flex center gap-0.5">
           <Icon name="mingcute:rss-2-line" />RSS</a
         >
         <span class="opacity-70">|</span>
         <a href="/sitemap-index.xml" class="inline-flex center gap-0.5">
-          <Icon name="mingcute:map-line"/>Site Map</a
-        >
-        <span class="opacity-70">|</span>
-        <a href="https://github.com/yy4382/yfi.moe" class="inline-flex center gap-0.5">
-          <Icon name="mingcute:github-line" />Source Code</a
+          <Icon name="mingcute:map-line" />Site Map</a
         >
       </span>
       <span class="text-sm text-comment">
@@ -27,6 +41,17 @@
         See all
         <a href="/credits" class="text-content-primary">Credits</a>.
       </span>
+    </div>
+    <div class="center hidden md:flex">
+      <Image
+        src={logo}
+        alt="logo"
+        loading={"lazy"}
+        class="rounded-lg"
+        width={48}
+        height={48}
+        widths={[80, 160]}
+      />
     </div>
   </div>
 </Card>
