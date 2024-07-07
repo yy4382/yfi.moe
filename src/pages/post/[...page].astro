@@ -13,11 +13,20 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
 const { page } = Astro.props as { page: Page };
 const seoConfig = getSeo({ title: "文章列表" });
 type PostType = CollectionEntry<"post">;
+const interval = 100;
 ---
 
 <BaseLayout seoConfig={seoConfig} navStats="文章">
   <div class="flex flex-col gap-4">
-    {page.data.map((post: PostType) => <ArticleInfoCard post={post} />)}
+    {
+      page.data.map((post: PostType, i) => (
+        <ArticleInfoCard
+          post={post}
+          class="animate-onload opacity-0"
+          style={`animation-delay: calc(${i * interval}ms);`}
+        />
+      ))
+    }
     <div class="self-center">
       <PaginationBtn page={page} />
     </div>
@@ -33,15 +42,8 @@ type PostType = CollectionEntry<"post">;
     sourceElement.style.viewTransitionName = "post-heading";
 
     const postCard = sourceElement.closest(".post-card");
-    console.log("postCard", postCard);
-    console.log(postCard);
     if (!postCard) return;
     // @ts-expect-error ignore ignore
     postCard.style.viewTransitionName = "post-card";
-
-    const postCardAttr = postCard.querySelector(".post-card-attr");
-    if (!postCardAttr) return;
-    // @ts-expect-error ignore ignore
-    postCardAttr.style.viewTransitionName = "post-attr";
   });
 </script>

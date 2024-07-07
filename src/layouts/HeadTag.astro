@@ -26,7 +26,7 @@ const { seoConfig, stopTrack } = Astro.props;
     />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <ViewTransitions />
+    <ViewTransitions fallback="swap" />
     <LoadingIndicator color="hsl(236, 100%, 81%)" />
   </head>
   <slot />

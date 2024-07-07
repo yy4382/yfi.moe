@@ -8,7 +8,7 @@ const { post } = Astro.props;
 ---
 
 <div
-  class="flex flex-wrap items-center gap-2 lg:gap-3 text-[0.8rem] text-comment post-card-attr"
+  class="flex flex-wrap items-center gap-2 lg:gap-3 text-[0.8rem] text-comment"
 >
   <TimeTooltip
     postTime={DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd")}

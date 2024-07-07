@@ -32,6 +32,22 @@ const config: Config = {
           })
           .join(", ")})`,
       },
+      animation: {
+        onload: "fadeInUpSpring 1s linear forwards",
+      },
+      keyframes: {
+        fadeInUpSpring: Object.fromEntries(
+          getCssSpring().map(([i, v]) => {
+            return [
+              `${i}%`,
+              {
+                transform: `translateY(${(2 - 2 * v).toFixed(6)}rem)`,
+                opacity: v.toFixed(2),
+              },
+            ];
+          }),
+        ),
+      },
       typography: ({ theme }: { theme: PluginAPI["theme"] }) => ({
         DEFAULT: {
           css: {

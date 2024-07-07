@@ -31,6 +31,7 @@ const highlight = computed<number>(() => {
     ref="navEl"
     class="mt-4 sticky top-0 z-20 h-16 min-h-16 transition-all duration-500 xl:mx-auto"
     :class="[isFixed ? 'max-w-full' : 'px-4 max-w-screen-xl']"
+    style="view-transition-name: navbar;"
   >
     <div
       :class="[

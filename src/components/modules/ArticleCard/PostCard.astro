@@ -1,9 +1,11 @@
 ---
 interface Props {
   post: CollectionEntry<"post">;
+  style?: string;
+  class?: string;
 }
 import PostAttr from "./PostAttr.astro";
-const { post } = Astro.props;
+const { post, style, class: className } = Astro.props;
 import { renderDesc } from "@utils/markdown";
 
 let desc = "";
@@ -14,7 +16,11 @@ if (post.data.description === undefined) {
 }
 ---
 
-<Card class=`space-y-2 lg:space-y-3 transition post-card` useHeading>
+<Card
+  class:list={[`space-y-2 lg:space-y-3 transition post-card`, className]}
+  useHeading
+  style={style}
+>
   <a
     slot="heading"
     href={getPostPath(post)}

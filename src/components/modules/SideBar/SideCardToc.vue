@@ -47,7 +47,7 @@ const { base, heading } = card({ padding: "sm" });
       <div>
         <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
         <button
-          class="fixed z-20 bottom-4 right-4 shape-card bg-card border dark:border-gray-600 p-2"
+          class="fixed z-20 bottom-4 right-4 shape-card bg-card border dark:border-gray-600 p-2 opacity-0 animate-onload animate-delay-300"
         >
           <MingcuteListCheckLine class="size-6 text-heading" />
         </button>

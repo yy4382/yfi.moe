@@ -3,6 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 import { card } from "@styles/tv";
 interface Props {
   class?: string;
+  style?: string;
   ui?: Partial<typeof card.slots>;
   padding?: VariantProps<typeof card>["padding"];
   useHeading?: boolean;
@@ -28,7 +29,7 @@ const ui = tv({ extend: card, slots: props.ui })({
 });
 ---
 
-<div class={ui.base({ class: props.class })}>
+<div class={ui.base({ class: props.class })} style={props.style}>
   {
     useHeading && (
       <div class={ui.heading()}>

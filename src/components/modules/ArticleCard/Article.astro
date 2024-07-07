@@ -7,20 +7,39 @@ interface Props {
 const { entry } = Astro.props;
 ---
 
-<div transition:name="post-card">
+<div transition:name="post-card" class="article-card">
   <Card class="space-y-4" useHeading>
-    <h1 slot="heading" transition:name="post-heading">
+    <h1
+      slot="heading"
+      transition:name="post-heading"
+      class="animate-onload animate-delay-[calc(var(--inner-card-delay))] opacity-0"
+    >
       {entry.data.title}
     </h1>
     {
       entry.data.date && (
-        <div transition:name="post-attr">
+        <div class="animate-onload animate-delay-[calc(var(--inner-card-delay)+75ms)] opacity-0">
           <PostAttr post={entry as CollectionEntry<"post">} />
         </div>
       )
     }
-    <MdRender>
-      <slot />
-    </MdRender>
+    <div
+      class="animate-onload animate-delay-[calc(var(--inner-card-delay)+150ms)] opacity-0"
+    >
+      <MdRender>
+        <slot />
+      </MdRender>
+    </div>
   </Card>
 </div>
+
+<style>
+  .article-card {
+    @apply animate-onload opacity-0;
+    --inner-card-delay: 100ms;
+    @supports (view-transition-name: none) {
+      @apply !opacity-100;
+      --inner-card-delay: 0ms;
+    }
+  }
+</style>
