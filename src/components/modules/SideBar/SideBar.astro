@@ -3,7 +3,7 @@ import AuthorCard from "./SideCardAuthor.astro";
 import SideCardRecent from "./SideCardRecent.astro";
 import Tags from "./SideCardTags.astro";
 import SideCardSeries from "./SideCardSeries.astro";
-import TocMobile from "./SideCardToc.vue";
+import SideCardToc from "./SideCardToc.vue";
 import type { MarkdownHeading } from "astro";
 interface Props {
   tocList?: MarkdownHeading[];
@@ -18,6 +18,6 @@ const { tocList, seriesID } = Astro.props;
 </div>
 <div class="flex flex-col gap-4 sticky top-20">
   {seriesID && <SideCardSeries id={seriesID} />}
-  {tocList && <TocMobile client:load headings={tocList} />}
+  {tocList && <SideCardToc client:load headings={tocList} />}
   <SideCardRecent />
 </div>
