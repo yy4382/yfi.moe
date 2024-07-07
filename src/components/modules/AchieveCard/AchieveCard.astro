@@ -1,7 +1,6 @@
 ---
 import { getSortedPosts } from "@utils/content";
-import AchieveLine from "./AchieveLine.astro";
-import AchieveHeader from "./AchieveHeader.astro";
+import AchieveAttr from "./AchieveAttr.astro";
 
 interface Props {
   keyword?: string;
@@ -43,20 +42,54 @@ const groups = (function () {
 })();
 ---
 
-<Card
-  class="px-4 py-2 lg:p-8 lg:py-5"
-  useHeading={hasKeyword}
-  ui={{ heading: "mb-4" }}
->
+<Card useHeading={hasKeyword}>
   {hasKeyword && <h1 slot="heading">{keyword}</h1>}
+
   {
     groups.map((group) => (
-      <div>
-        <AchieveHeader group={group} />
-        {group.posts.map((post: CollectionEntry<"post">) => (
-          <AchieveLine post={post} />
-        ))}
-      </div>
+      <>
+        <div class="relative select-none pointer-events-none h-12 sm:h-20">
+          {/* https://stackoverflow.com/a/73146972 */}
+          <span class="absolute text-8xl sm:text-[9rem] leading-none font-bold text-transparent top-4 -left-4 [-webkit-text-stroke:4px_var(--text-heading)] opacity-10">
+            {group.year}
+            <span class="absolute left-0 text-[var(--bg-card)] [-webkit-text-stroke:0] pointer-events-none">
+              {group.year}
+            </span>
+          </span>
+        </div>
+        <ul class="timeline-dot -ml-3">
+          {group.posts.map((post: CollectionEntry<"post">) => (
+            <li class="py-2 group">
+              <a class="flex flex-col gap-1" href={getPostPath(post)}>
+                <span class="truncate text-heading text-left text-sm md:text-base group-hover:text-content-primary transition-colors">
+                  {post.data.title}
+                </span>
+                <AchieveAttr post={post} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
     ))
   }
 </Card>
+
+<style is:global>
+  .timeline-dot > li {
+    @apply relative pl-6;
+    &::after {
+      content: "";
+      @apply absolute size-2 z-10 rounded-full bg-[var(--text-comment)]
+        left-2 top-1/2 -translate-y-1/2
+        outline outline-2 outline-[var(--bg-card)]
+        hover:h-5 hover:w-1 hover:left-2.5 hover:bg-[var(--text-primary)] transition-all;
+    }
+    &::before {
+      content: "";
+      @apply h-full absolute -top-1/2 left-[calc(1.5rem/2-1px)] border-l-[2px] border-dashed pointer-events-none border-[var(--text-comment)] transition;
+    }
+  }
+  .timeline-dot > li:first-child::before {
+    display: none;
+  }
+</style>

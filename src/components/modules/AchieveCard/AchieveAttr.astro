@@ -1,0 +1,41 @@
+---
+import { DateTime } from "luxon";
+import TimeTooltip from "@comp/elements/TimeTooltip.vue";
+interface Props {
+  post: CollectionEntry<"post">;
+}
+const { post } = Astro.props;
+---
+
+<div
+  class="flex items-center gap-2 lg:gap-3 text-xs text-comment h-4 max-w-full"
+>
+  <div class="flex-shrink-0 h-full">
+    <TimeTooltip
+      postTime={DateTime.fromJSDate(post.data.date).toFormat("MM-dd")}
+      updatedTime={DateTime.fromJSDate(post.data.updated).toFormat("MM-dd")}
+      client:load
+    >
+      <div class="flex select-none items-center h-full">
+        <Icon name="mingcute:calendar-line" class="text-base mr-1" />
+        {DateTime.fromJSDate(post.data.date).toFormat("MM-dd")}
+      </div>
+    </TimeTooltip>
+  </div>
+
+  <!-- Tags -->
+  {
+    post.data?.tags instanceof Array && (
+      <div class="flex select-none items-center justify-start flex-shrink overflow-hidden">
+        <Icon name="mingcute:hashtag-line" class="text-base mr-1" />
+        <span class="truncate">{post.data.tags.join(" | ")}</span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .meta-icon {
+    @apply mr-2 flex h-8 items-center justify-center rounded-md px-3 transition;
+  }
+</style>

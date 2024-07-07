@@ -76,7 +76,7 @@ export const card = tv({
     {
       padding: "sm",
       useIndicator: true,
-      class: { heading: "before:-left-3" },
+      class: { heading: "before:-left-2.5" },
     },
 
     // leftExtraPadding changes
