@@ -1,24 +1,31 @@
 <Card padding="xs">
   <div class="w-full">
     <div class="flex flex-col">
-      <span class="text-sm text-comment inline-flex gap-0.5 items-center">
-        © 2023-2024
-        <a href={Astro.site}> {siteConfig.title}</a>.
-        <span class="opacity-50">|</span>
-        <a href="/feed.xml">RSS</a>
-        <span class="opacity-50">|</span>
-        <a href="/sitemap-index.xml">SITEMAP</a>
-        <span class="opacity-50">|</span>
-        <a href="https://github.com/yy4382/yfi.moe"
-          ><Icon name="mingcute:github-line" /></a
+      <span class="text-sm text-comment inline-flex gap-1 items-center">
+        <span
+          >© 2023-2024
+          <a href={Astro.site} class="text-content-primary"
+            >{siteConfig.title}</a
+          >.</span
+        >
+        <span class="opacity-70">|</span>
+        <a href="/feed.xml" class="inline-flex center gap-0.5">
+          <Icon name="mingcute:rss-2-line" />RSS</a
+        >
+        <span class="opacity-70">|</span>
+        <a href="/sitemap-index.xml" class="inline-flex center gap-0.5">
+          <Icon name="mingcute:map-line"/>Site Map</a
+        >
+        <span class="opacity-70">|</span>
+        <a href="https://github.com/yy4382/yfi.moe" class="inline-flex center gap-0.5">
+          <Icon name="mingcute:github-line" />Source Code</a
         >
       </span>
       <span class="text-sm text-comment">
         Powered by
-        <a href="https://astro.build"> Astro</a>. Inspired by
-        <a href="https://github.com/saicaca/hexo-theme-vivia"> vivia </a>
-        &
-        <a href="https://github.com/saicaca/fuwari"> Fuwari</a>.
+        <a href="https://astro.build" class="text-content-primary">Astro</a>.
+        See all
+        <a href="/credits" class="text-content-primary">Credits</a>.
       </span>
     </div>
   </div>
