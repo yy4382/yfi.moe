@@ -6,10 +6,10 @@ export const popover = tv({
       flex items-end justify-end
       p-1 rounded-2xl bg-popover outline outline-gray-200 dark:outline-gray-600
       group
-      transition-[width,height] hover:ease-elastic ease-in-out
+      transition-[width,height] hover:ease-spring ease-in-out
       hover:delay-0 hover:duration-[var(--extend-bg-duration)] ${/** extent time */ ""}
       delay-[var(--fade-content-duration)] duration-[var(--shrink-bg-duration)] ${/** shrink time */ ""}
-      [--extend-bg-duration:1000ms] [--show-content-delay:300ms] [--show-content-duration:500ms] ${/** time variables */ ""}
+      [--extend-bg-duration:500ms] [--show-content-delay:200ms] [--show-content-duration:200ms] ${/** time variables */ ""}
       [--fade-content-duration:100ms] [--shrink-bg-duration:300ms]`,
     contentWrapper: `
       absolute bottom-0 right-0 size-0
