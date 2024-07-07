@@ -9,20 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: () => ({
-        portage: {
-          50: "oklch(97% 0.05 var(--primary-hue) / <alpha-value>)",
-          100: "oklch(94% 0.02 var(--primary-hue) / <alpha-value>)",
-          200: "oklch(90% 0.05 var(--primary-hue) / <alpha-value>)",
-          250: "oklch(88% 0.08 var(--primary-hue) / <alpha-value>)",
-          300: "oklch(83% 0.11 var(--primary-hue) / <alpha-value>)",
-          400: "oklch(75% 0.14 var(--primary-hue) / <alpha-value>)",
-          500: "oklch(65% 0.14 var(--primary-hue) / <alpha-value>)",
-          600: "oklch(58% 0.12 var(--primary-hue) / <alpha-value>)",
-          700: "oklch(54% 0.1 var(--primary-hue) / <alpha-value>)",
-          800: "oklch(45% 0.06 var(--primary-hue) / <alpha-value>)",
-          900: "oklch(40% 0.04 var(--primary-hue) / <alpha-value>)",
-          950: "oklch(28% 0.025 var(--primary-hue) / <alpha-value>)",
-        },
+        portage: getOklchColors("var(--primary-hue)"),
       }),
       backgroundColor: {
         card: "var(--bg-card)",
@@ -119,5 +106,25 @@ function addShortcutPlugin({ addUtilities, theme }: PluginAPI) {
   };
   addUtilities(styles);
 }
+
+// https://evilmartians.com/chronicles/better-dynamic-themes-in-tailwind-with-oklch-color-magic
+function getOklchColors(hueInput: string | number) {
+  const names = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  const lightness = [
+    97.78, 93.56, 88.11, 82.67, 74.22, 64.78, 57.33, 46.89, 39.44, 32, 23.78,
+  ];
+  const chroma = [
+    0.0108, 0.0321, 0.0609, 0.0908, 0.1398, 0.1472, 0.1299, 0.1067, 0.0898,
+    0.0726, 0.054,
+  ];
+  const hue = typeof hueInput === "string" ? hueInput : hueInput.toFixed(2);
+
+  const colors = lightness.map((l, i) => {
+    return `oklch(${l}% ${chroma[i]} ${hue} / <alpha-value>)`;
+  });
+
+  return Object.fromEntries(names.map((name, i) => [name, colors[i]]));
+}
+
 
 export default withTV(config);
