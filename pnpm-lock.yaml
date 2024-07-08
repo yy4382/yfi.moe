@@ -165,6 +165,9 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
+      prettier:
+        specifier: ^3.3.2
+        version: 3.3.2
 
 packages:
 
@@ -2903,11 +2906,6 @@ packages:
   prettier-plugin-astro@0.14.0:
     resolution: {integrity: sha512-7jRGJsexaRIyUzTk8uzXlP45cw6DQ5Ci4bTe0xCBCcuO1Fff8jJy9oI+kRCQKSdDFTSAArMSg8GpvzlKBtSaZA==}
     engines: {node: ^14.15.0 || >=16.0.0}
-
-  prettier@3.3.0:
-    resolution: {integrity: sha512-J9odKxERhCQ10OC2yb93583f6UnYutOeiV5i0zEDS7UGTdUt0u+y8erxl3lBKvwo/JHyyoEdXjwp4dke9oyZ/g==}
-    engines: {node: '>=14'}
-    hasBin: true
 
   prettier@3.3.2:
     resolution: {integrity: sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==}
@@ -7125,13 +7123,10 @@ snapshots:
   prettier-plugin-astro@0.14.0:
     dependencies:
       '@astrojs/compiler': 1.8.2
-      prettier: 3.3.0
+      prettier: 3.3.2
       sass-formatter: 0.7.9
 
-  prettier@3.3.0: {}
-
-  prettier@3.3.2:
-    optional: true
+  prettier@3.3.2: {}
 
   prismjs@1.29.0: {}
 

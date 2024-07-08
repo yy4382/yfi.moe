@@ -5,30 +5,14 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@comp/*": [
-        "src/components/*"
-      ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@configs/*": [
-        "src/configs/*"
-      ],
-      "@layouts/*": [
-        "src/layouts/*"
-      ],
-      "@icons/*": [
-        "src/components/icons/*"
-      ],
-      "@styles/*": [
-        "src/styles/*"
-      ],
+      "@comp/*": ["src/components/*"],
+      "@assets/*": ["src/assets/*"],
+      "@utils/*": ["src/utils/*"],
+      "@configs/*": ["src/configs/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@icons/*": ["src/components/icons/*"],
+      "@styles/*": ["src/styles/*"]
     }
   },
-  "exclude": [
-    "dist",
-  ],
+  "exclude": ["dist"]
 }

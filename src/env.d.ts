@@ -3,7 +3,7 @@
 interface ImportMetaEnv {
   readonly ALGOLIA_WRITE_API_KEY: string;
   readonly ARTICLE_PAT: string;
-  // more env variables... 
+  // more env variables...
 }
 
 interface ImportMeta {

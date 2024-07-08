@@ -46,7 +46,12 @@ watch(open, async (value) => {
           <slot />
         </TooltipTrigger>
         <TooltipPortal v-if="mount">
-          <TooltipContent ref="tip" :side-offset="5" force-mount class="z-[9999]">
+          <TooltipContent
+            ref="tip"
+            :side-offset="5"
+            force-mount
+            class="z-[9999]"
+          >
             <slot name="content" />
           </TooltipContent>
         </TooltipPortal>
