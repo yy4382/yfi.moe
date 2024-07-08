@@ -40,15 +40,30 @@ const groups = (function () {
   groupedPostsArray.sort((a, b) => parseInt(b.year) - parseInt(a.year));
   return groupedPostsArray;
 })();
+let delay = 2;
+const interval = 100;
 ---
 
-<Card useHeading={hasKeyword}>
-  {hasKeyword && <h1 slot="heading">{keyword}</h1>}
+<Card useHeading={hasKeyword} class="main-card-onload">
+  {
+    hasKeyword && (
+      <h1
+        slot="heading"
+        class="animate-onload opacity-0"
+        style={`animation-delay: ${interval};`}
+      >
+        {keyword}
+      </h1>
+    )
+  }
 
   {
     groups.map((group) => (
       <>
-        <div class="relative select-none pointer-events-none h-12 sm:h-20">
+        <div
+          class="relative select-none pointer-events-none h-12 sm:h-20 animate-onload opacity-0"
+          style={`animation-delay: ${delay++ * interval}ms;`}
+        >
           {/* https://stackoverflow.com/a/73146972 */}
           <span class="absolute text-8xl sm:text-[9rem] leading-none font-bold text-transparent top-4 -left-4 [-webkit-text-stroke:4px_theme('colors.content.200')] opacity-10">
             {group.year}
@@ -57,7 +72,10 @@ const groups = (function () {
             </span>
           </span>
         </div>
-        <ul class="timeline-dot -ml-3 md:ml-0">
+        <ul
+          class="timeline-dot -ml-3 md:ml-0 animate-onload opacity-0"
+          style={`animation-delay: ${delay++ * interval}ms;`}
+        >
           {group.posts.map((post: CollectionEntry<"post">) => (
             <li class:list={["py-2 group", tvButton()]}>
               <a class="flex flex-col gap-1" href={getPostPath(post)}>

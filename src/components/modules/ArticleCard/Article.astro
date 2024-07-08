@@ -7,7 +7,7 @@ interface Props {
 const { entry } = Astro.props;
 ---
 
-<div transition:name="post-card" class="article-card">
+<div transition:name="post-card" class="main-card-onload">
   <Card class="space-y-4" useHeading>
     <h1
       slot="heading"
@@ -32,14 +32,3 @@ const { entry } = Astro.props;
     </div>
   </Card>
 </div>
-
-<style>
-  .article-card {
-    @apply animate-onload opacity-0;
-    --inner-card-delay: 100ms;
-    @supports (view-transition-name: none) {
-      @apply !opacity-100;
-      --inner-card-delay: 0ms;
-    }
-  }
-</style>

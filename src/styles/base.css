@@ -7,6 +7,15 @@
   @apply /* btn-regular !TODO */ absolute right-1 top-1 !rounded-lg px-2 py-1 text-xs;
 }
 
+.main-card-onload {
+  @apply animate-onload opacity-0;
+  --inner-card-delay: 100ms;
+  @supports (view-transition-name: none) {
+    @apply !opacity-100;
+    --inner-card-delay: 0ms;
+  }
+}
+
 :root {
   font-family:
     system-ui,
