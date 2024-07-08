@@ -20,7 +20,7 @@ defineEmits(["clickLink"]);
     <li
       v-for="(heading, index) of headings"
       :key="heading.slug"
-      class="py-1 min-w-0 relative before:absolute before:-left-1 before:w-[2px] before:top-1/2 before:h-4 before:-translate-y-1/2 before:rounded-md before:bg-[var(--primary)] before:content-[''] before:opacity-0 before:transition-opacity transition-all"
+      class="py-1 min-w-0 relative before:absolute before:-left-1 before:w-[2px] before:top-1/2 before:h-4 before:-translate-y-1/2 before:rounded-md before:bg-primary before:content-[''] before:opacity-0 before:transition-opacity transition-all"
       :class="{ 'before:opacity-100': activeIndex === index }"
     >
       <a

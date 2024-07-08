@@ -26,7 +26,10 @@ const project = projectRaw.data;
     <div class="flex items-center">
       {
         project.links.map((link) => (
-          <a href={link.url} class="btn-plain rounded-full p-2">
+          <a
+            href={link.url}
+            class={tvButton({ class: "rounded-full p-2 text-heading" })}
+          >
             <Icon name={link.icon} size={24} />
           </a>
         ))

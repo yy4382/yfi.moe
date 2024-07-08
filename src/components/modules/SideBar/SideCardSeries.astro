@@ -39,8 +39,9 @@ const title = titleSet.values().next().value;
       entries.map((entry) => (
         <a
           href={getPostPath(entry)}
-          class="btn-plain hover:translate-x-1 p-2 rounded-md select-none
-            text-ellipsis whitespace-nowrap overflow-hidden"
+          class={tvButton({
+            class: "hover:translate-x-1 p-2 transition-transform truncate",
+          })}
         >
           {entry.data.title}
         </a>

@@ -31,6 +31,7 @@ export default defineConfig({
           "@utils/path": ["getPostPath"],
           "@utils/content": ["getSortedPosts"],
           "@comp/elements/Card.astro": [["default", "Card"]],
+          "@styles/tv": ["tvButton"],
         },
         {
           from: "astro:content",

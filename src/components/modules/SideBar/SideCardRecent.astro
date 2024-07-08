@@ -9,7 +9,7 @@ const recentPosts = allPosts.slice(0, 5);
   <ul class="flex flex-col">
     {
       recentPosts.map((entry) => (
-        <li class="btn-plain group rounded-md !py-[6px]">
+        <li class={tvButton({ class: "group py-1.5 px-1" })}>
           <a
             href={getPostPath(entry)}
             class="select-none text-sm line-clamp-2 group-hover:translate-x-1 transition-transform"

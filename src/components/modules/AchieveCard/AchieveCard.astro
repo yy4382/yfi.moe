@@ -50,18 +50,18 @@ const groups = (function () {
       <>
         <div class="relative select-none pointer-events-none h-12 sm:h-20">
           {/* https://stackoverflow.com/a/73146972 */}
-          <span class="absolute text-8xl sm:text-[9rem] leading-none font-bold text-transparent top-4 -left-4 [-webkit-text-stroke:4px_var(--text-heading)] opacity-10">
+          <span class="absolute text-8xl sm:text-[9rem] leading-none font-bold text-transparent top-4 -left-4 [-webkit-text-stroke:4px_theme('colors.content.200')] opacity-10">
             {group.year}
-            <span class="absolute left-0 text-[var(--bg-card)] [-webkit-text-stroke:0] pointer-events-none">
+            <span class="absolute left-0 text-card [-webkit-text-stroke:0] pointer-events-none">
               {group.year}
             </span>
           </span>
         </div>
-        <ul class="timeline-dot -ml-3">
+        <ul class="timeline-dot -ml-3 md:ml-0">
           {group.posts.map((post: CollectionEntry<"post">) => (
-            <li class="py-2 group">
+            <li class:list={["py-2 group", tvButton()]}>
               <a class="flex flex-col gap-1" href={getPostPath(post)}>
-                <span class="truncate text-heading text-left text-sm md:text-base group-hover:text-content-primary transition-colors">
+                <span class="truncate text-heading text-left text-sm md:text-base transition group-hover:translate-x-1">
                   {post.data.title}
                 </span>
                 <AchieveAttr post={post} />
@@ -79,14 +79,14 @@ const groups = (function () {
     @apply relative pl-6;
     &::after {
       content: "";
-      @apply absolute size-2 z-10 rounded-full bg-[var(--text-comment)]
+      @apply absolute size-2 z-10 rounded-full bg-content-50
         left-2 top-1/2 -translate-y-1/2
-        outline outline-2 outline-[var(--bg-card)]
-        hover:h-5 hover:w-1 hover:left-2.5 hover:bg-[var(--text-primary)] transition-all;
+        outline outline-2 outline-card hover:outline-none
+        hover:h-5 hover:w-1 hover:left-2.5 hover:bg-primary transition-all;
     }
     &::before {
       content: "";
-      @apply h-full absolute -top-1/2 left-[calc(1.5rem/2-1px)] border-l-[2px] border-dashed pointer-events-none border-[var(--text-comment)] transition;
+      @apply h-full absolute -top-1/2 left-[calc(1.5rem/2-1px)] border-l-[2px] border-dashed pointer-events-none border-content-50 transition;
     }
   }
   .timeline-dot > li:first-child::before {

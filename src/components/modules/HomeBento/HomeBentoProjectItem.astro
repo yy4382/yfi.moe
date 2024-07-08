@@ -26,7 +26,7 @@ const { icon, desc, title, links }: Props = Astro.props;
         {title}
       </p>
       {desc && <p class="mt-1 text-content text-sm sm:hidden">{desc}</p>}
-      <ul class="flex gap-2 mt-2 sm:hidden text-content-primary">
+      <ul class="flex gap-2 mt-2 sm:hidden text-primary">
         {
           links.map((link) => (
             <li class="underlined-link active:scale-95 transition-transform">
@@ -54,7 +54,7 @@ const { icon, desc, title, links }: Props = Astro.props;
     padding="xs"
   >
     {desc && <p class="text-content min-w-max">{desc}</p>}
-    <ul class="flex flex-col gap-2 text-content-primary">
+    <ul class="flex flex-col gap-2 text-primary">
       {
         links.map((link) => (
           <li class="whitespace-nowrap underlined-link w-fit">

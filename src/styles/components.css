@@ -1,7 +1,10 @@
 @layer components {
   .underlined-link {
     color: currentColor;
-    background-image: linear-gradient(var(--text-primary), var(--text-primary));
+    background-image: linear-gradient(
+      theme("colors.primary.DEFAULT"),
+      theme("colors.primary.DEFAULT")
+    );
     background-size: 0% 1.5px;
     background-repeat: no-repeat;
 
@@ -27,7 +30,7 @@
       position: absolute;
       left: -13px;
       bottom: 0;
-      border-left: 2px solid var(--text-primary);
+      border-left: 2px solid theme("colors.primary.DEFAULT");
     }
 
     & > li:first-child:last-child::before {
@@ -66,7 +69,7 @@
       width: 8px;
       border-radius: 50%;
       position: absolute;
-      background-color: var(--text-primary);
+      background-color: theme("colors.primary.DEFAULT");
     }
   }
 }

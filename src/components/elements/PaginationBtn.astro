@@ -3,12 +3,12 @@
 import type { Page } from "astro";
 
 interface Props {
-    page: Page;
-    class?: string;
-    style?: string;
+  page: Page;
+  class?: string;
+  style?: string;
 }
 
-const {page, style} = Astro.props;
+const { page, style } = Astro.props;
 
 const HIDDEN = -1;
 
@@ -19,72 +19,92 @@ const VISIBLE = ADJ_DIST * 2 + 1;
 
 // for test
 let count = 1;
-let l = page.currentPage, r = page.currentPage;
+let l = page.currentPage,
+  r = page.currentPage;
 while (0 < l - 1 && r + 1 <= page.lastPage && count + 2 <= VISIBLE) {
-    count += 2;
-    l--;
-    r++;
+  count += 2;
+  l--;
+  r++;
 }
 while (0 < l - 1 && count < VISIBLE) {
-    count++;
-    l--;
+  count++;
+  l--;
 }
 while (r + 1 <= page.lastPage && count < VISIBLE) {
-    count++;
-    r++;
+  count++;
+  r++;
 }
 
 let pages: number[] = [];
-if (l > 1)
-    pages.push(1);
-if (l == 3)
-    pages.push(2);
-if (l > 3)
-    pages.push(HIDDEN);
-for (let i = l; i <= r; i++)
-    pages.push(i);
-if (r < page.lastPage - 2)
-    pages.push(HIDDEN);
-if (r == page.lastPage - 2)
-    pages.push(page.lastPage - 1);
-if (r < page.lastPage)
-    pages.push(page.lastPage);
+if (l > 1) pages.push(1);
+if (l == 3) pages.push(2);
+if (l > 3) pages.push(HIDDEN);
+for (let i = l; i <= r; i++) pages.push(i);
+if (r < page.lastPage - 2) pages.push(HIDDEN);
+if (r == page.lastPage - 2) pages.push(page.lastPage - 1);
+if (r < page.lastPage) pages.push(page.lastPage);
 
 const getPageUrl = (p: number) => {
-    if (p == 1)
-        return getPostPath("");
-    return getPostPath(p+"");
-}
-
+  if (p == 1) return getPostPath("");
+  return getPostPath(p + "");
+};
 ---
 
-<div class:list={[className, "flex flex-row gap-3 justify-center"]} style={style}>
-    <a href={page.url.prev} aria-label={page.url.prev ? "Previous Page" : null}
-       class:list={["bg-card shape-card overflow-hidden rounded-lg text-primary w-11 h-11 flex items-center justify-center",
-       ]}
-    >
-        <Icon name="mingcute:arrows-left-line" class:list={["text-[1.75rem]", page.url.prev === undefined && "text-comment"]}></Icon>
-    </a>
-    <div class="bg-none flex flex-row rounded-lg items-center gap-2 text-neutral-700 dark:text-neutral-300 font-bold">
-        {pages.map((p) => {
-            if (p == HIDDEN)
-                return <Icon name="mingcute:more-1-line" class="mx-1"/>;
-            if (p == page.currentPage)
-                return <div class="h-11 w-11 rounded-lg bg-card shape-card flex items-center justify-center
+<div
+  class:list={[className, "flex flex-row gap-3 justify-center"]}
+  style={style}
+>
+  <a
+    href={page.url.prev}
+    aria-label={page.url.prev ? "Previous Page" : null}
+    class:list={[
+      "bg-card shape-card overflow-hidden rounded-lg text-primary w-11 h-11 flex items-center justify-center",
+    ]}
+  >
+    <Icon
+      name="mingcute:arrows-left-line"
+      class:list={[
+        "text-[1.75rem]",
+        page.url.prev === undefined && "text-comment",
+      ]}
+    />
+  </a>
+  <div
+    class="bg-none flex flex-row rounded-lg items-center gap-2 text-neutral-700 dark:text-neutral-300 font-bold"
+  >
+    {
+      pages.map((p) => {
+        if (p == HIDDEN)
+          return <Icon name="mingcute:more-1-line" class="mx-1" />;
+        if (p == page.currentPage)
+          return (
+            <div
+              class="h-11 w-11 rounded-lg bg-card shape-card flex items-center justify-center
                     font-bold text-primary"
-                >
-                    {p}
-                </div>
-            return <a href={getPageUrl(p)} aria-label=`Page ${p}`
-                class="bg-card shape-card  w-11 h-11 rounded-lg overflow-hidden active:scale-[0.85] flex items-center justify-center"
-            >{p}</a>
-        })}
-    </div>
-    <a href={page.url.next} aria-label={page.url.next ? "Next Page" : null}
-       class:list={["bg-card shape-card overflow-hidden rounded-lg text-primary w-11 h-11 flex items-center justify-center",
-           {"disabled": page.url.next == undefined}
-       ]}
-    >
-        <Icon name="mingcute:arrows-right-line" class="text-[1.75rem]"></Icon>
-    </a>
+            >
+              {p}
+            </div>
+          );
+        return (
+          <a
+            href={getPageUrl(p)}
+            aria-label={`Page ${p}`}
+            class="bg-card shape-card  w-11 h-11 rounded-lg overflow-hidden active:scale-[0.85] flex items-center justify-center"
+          >
+            {p}
+          </a>
+        );
+      })
+    }
+  </div>
+  <a
+    href={page.url.next}
+    aria-label={page.url.next ? "Next Page" : null}
+    class:list={[
+      "bg-card shape-card overflow-hidden rounded-lg text-primary w-11 h-11 flex items-center justify-center",
+      { disabled: page.url.next == undefined },
+    ]}
+  >
+    <Icon name="mingcute:arrows-right-line" class="text-[1.75rem]" />
+  </a>
 </div>

@@ -3,23 +3,8 @@
 @import "icons.css";
 @tailwind components;
 
-@layer components {
-  .card-heading {
-    @apply relative text-wrap text-xl font-medium tracking-tight transition text-heading
-    before:absolute before:hidden before:-left-4 before:top-1 before:h-5 before:w-1 before:rounded-md before:bg-[var(--primary)] before:lg:block before:content-[""];
-  }
-  .btn-plain {
-    @apply bg-none transition-all duration-200 ease-in-out text-content hover:text-primary hover:bg-portage-200/40 active:text-active dark:hover:bg-portage-100/20;
-  }
-}
-
 .copy-code {
   @apply /* btn-regular !TODO */ absolute right-1 top-1 !rounded-lg px-2 py-1 text-xs;
-}
-
-.prose iframe,
-.prose-invert iframe {
-  @apply mx-auto max-w-full rounded-xl;
 }
 
 :root {
@@ -37,5 +22,3 @@
     sans-serif;
   @apply font-normal scroll-smooth;
 }
-
-

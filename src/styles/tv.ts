@@ -53,7 +53,7 @@ export const card = tv({
     useIndicator: {
       true: {
         heading:
-          "relative before:absolute before:-left-4 before:w-1 before:rounded-md before:bg-[var(--primary)] before:content-['']",
+          "relative before:absolute before:-left-4 before:w-1 before:rounded-md before:bg-primary before:content-['']",
       },
     },
     leftExtraPadding: {
@@ -104,5 +104,17 @@ export const card = tv({
     headSize: "xl",
     useIndicator: true,
     leftExtraPadding: false,
+  },
+});
+
+export const tvButton = tv({
+  base: "transition-colors rounded-lg text-content select-none",
+  variants: {
+    color: {
+      primary: "bg-transparent hover:bg-primary/20 active:bg-primary/30",
+    },
+  },
+  defaultVariants: {
+    color: "primary",
   },
 });
