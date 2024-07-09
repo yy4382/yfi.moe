@@ -7,7 +7,16 @@ updated: 2024-03-11T00:38:52+08:00
 slug: book-listening-collection
 ---
 
-自从去年 4 月，我发了数篇关于听书的介绍&教程。但是，由于这些方法散落在各篇文章中，而且有些已经失效，可能会迷惑的某些人。因此，我决定新开一个页面专门用来汇总我介绍过的听书方法，并且持续更新。
+自从 23 年 4 月，我发了数篇关于听书的介绍&教程。但是，由于这些方法散落在各篇文章中，而且有些已经失效，可能会迷惑的某些人。因此，我决定新开一个页面专门用来汇总我介绍过的听书方法，并且持续更新。
+
+## 一表流
+
+| 名称 | 状态 | 链接 🔗 |
+|:----:|:----:|:------ |
+| Azure 文本转语音 | ✅ 可用 | [创建资源教程](/post/azure-tts-trial#使用官方-api创建资源导入软件) \| [导入器](https://tts-importer.yfi.moe) |
+| Edge 大声朗读 | ✅ 可用 | 教程 [Vercel版](/post/ifreetime-mstts-vercel) \| [Docker 版](/post/ifreetime-mstts-selfhost) |
+| 星铁语音导入 | ❌ 失效 | [油猴脚本](https://github.com/yy4382/genshinvoice-import) \| [语音网站](https://bv2.firefly.matce.cn/) |
+| Azure 试用接口 | ❌ 失效 | [教程](/post/azure-tts-trial) |
 
 ## 有哪些语音？
 
@@ -17,7 +26,7 @@ slug: book-listening-collection
 
 ## 有哪些方法能用？
 
-星铁语音导入依旧可用。
+星铁语音导入已经失效。
 
 对于微软语音，现在来看，还可以正常使用的方法有两种：
 
