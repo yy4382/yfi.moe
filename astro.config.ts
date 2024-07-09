@@ -1,3 +1,4 @@
+import type { Element } from "hast";
 import { defineConfig } from "astro/config";
 import vue from "@astrojs/vue";
 import remarkGithubAlerts from "remark-github-alerts";
@@ -54,9 +55,15 @@ export default defineConfig({
       [
         rehypeExtendedLinks,
         {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          preContent(node: any) {
-            const url = node.properties.href;
+          preContent(node: Element): Element | undefined {
+            if (
+              node.children.some(
+                (child) => child.type === "element" && child.tagName === "img",
+              )
+            ) {
+              return undefined;
+            }
+            const url = node.properties.href?.toString();
             if (!url) return undefined;
             const regex = /^(https?:\/\/)?(www\.)?github\.com\/.*/i;
             if (!regex.test(url)) return undefined;
@@ -69,13 +76,22 @@ export default defineConfig({
               children: [],
             };
           },
-          content: {
-            type: "element",
-            tagName: "span",
-            properties: {
-              className: ["i-mingcute-external-link-line"],
-            },
-            children: [],
+          content(node: Element): Element | undefined {
+            if (
+              node.children.some(
+                (child) => child.type === "element" && child.tagName === "img",
+              )
+            ) {
+              return undefined;
+            }
+            return {
+              type: "element",
+              tagName: "span",
+              properties: {
+                className: ["i-mingcute-external-link-line"],
+              },
+              children: [],
+            };
           },
         },
       ],

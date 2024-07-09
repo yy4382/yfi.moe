@@ -41,6 +41,9 @@ importers:
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
+      '@types/hast':
+        specifier: ^3.0.4
+        version: 3.0.4
       '@types/luxon':
         specifier: ^3.4.2
         version: 3.4.2
