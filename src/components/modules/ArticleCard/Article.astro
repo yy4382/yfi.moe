@@ -1,5 +1,6 @@
 ---
 import PostAttr from "./PostAttr.astro";
+import CopyrightCard from "./CopyrightCard.astro";
 import MdRender from "@comp/elements/MdRender.astro";
 interface Props {
   entry: CollectionEntry<"post"> | CollectionEntry<"page">;
@@ -32,3 +33,4 @@ const { entry } = Astro.props;
     </div>
   </Card>
 </div>
+<CopyrightCard entry={entry} />

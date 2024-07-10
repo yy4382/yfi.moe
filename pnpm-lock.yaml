@@ -29,6 +29,9 @@ importers:
       '@iconify-json/devicon-plain':
         specifier: ^1.1.42
         version: 1.1.42
+      '@iconify-json/fa6-brands':
+        specifier: ^1.1.20
+        version: 1.1.20
       '@iconify-json/mingcute':
         specifier: ^1.1.18
         version: 1.1.18
@@ -693,6 +696,9 @@ packages:
 
   '@iconify-json/devicon-plain@1.1.42':
     resolution: {integrity: sha512-NGCuw6BHn8lpjbVVa4XvYnprhWZ6IWkr6O19b69ySpDyi8QF3lh/Pe5As7C6eAG1KsblxQFqwcztgILOOmZqAA==}
+
+  '@iconify-json/fa6-brands@1.1.20':
+    resolution: {integrity: sha512-YwEyaLDkOVLcZO/gI8uf3IIqy2s7abHHgljjCMpdWDyfZr98tQ6GbdHxeBk7Pq9OoWJ3KJU0wDHmgrEGYt3Z1Q==}
 
   '@iconify-json/mingcute@1.1.18':
     resolution: {integrity: sha512-P5szgBqUMv8XVjZpbVT5eG1XtqpRPgfvZWxOR/uSqBwmVroHpxN5+nbLTHj9HJxL16msMsNbA294b69MNEQzaw==}
@@ -4358,6 +4364,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.0': {}
 
   '@iconify-json/devicon-plain@1.1.42':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/fa6-brands@1.1.20':
     dependencies:
       '@iconify/types': 2.0.0
 
