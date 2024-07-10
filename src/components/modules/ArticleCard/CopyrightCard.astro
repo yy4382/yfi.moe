@@ -1,6 +1,6 @@
 ---
 import { card } from "@styles/tv";
-import Sign from "@assets/sign.svg?raw";
+import Sign from "@assets/signature-yunfi.svg?raw";
 const { base } = card();
 const cardClass = base({
   padding: "sm",
@@ -41,16 +41,17 @@ const cardClass = base({
 
 <style is:global>
   .signature-wrapper {
-    --signature-length: 2200px;
+    --signature-length: 2550px;
     & > svg {
-      @apply w-12 sm:-mr-3 sm:-mt-1 ml-4 h-auto border-black dark:border-white opacity-100;
+      @apply w-20 sm:-mr-3 sm:-mt-1 ml-4 h-auto opacity-100;
     }
   }
   /* https://antfu.me/posts/animated-svg-logo */
-  .signature-wrapper .main-stroke {
+  .signature-wrapper #main-stroke {
+    @apply stroke-black dark:stroke-white opacity-100;
     stroke-dashoffset: 1px;
     stroke-dasharray: var(--signature-length) 0;
-    animation: grow 5s ease-out forwards infinite;
+    animation: grow 7s ease-out forwards infinite;
     transform-origin: center;
     animation-delay: 0s;
   }
@@ -66,14 +67,14 @@ const cardClass = base({
       stroke-dasharray: 0 var(--signature-length);
       opacity: 0;
     }
-    5% {
+    10% {
       opacity: 1;
     }
-    30% {
+    45% {
       stroke-dasharray: var(--signature-length) 0;
     }
     /* Moving back */
-    75% {
+    65% {
       stroke-dasharray: var(--signature-length) 0;
     }
     95%,

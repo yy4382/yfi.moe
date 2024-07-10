@@ -25,9 +25,11 @@ const seoConfig = getSeo({
 ---
 
 <BaseLayout seoConfig={seoConfig}>
-  <ArticleCard entry={page}>
-    <Content />
-  </ArticleCard>
+  <div class="flex flex-col gap-4">
+    <ArticleCard entry={page}>
+      <Content />
+    </ArticleCard>
+  </div>
   <Fragment slot="sidebar">
     <SideBar tocList={headings} />
   </Fragment>
