@@ -20,6 +20,7 @@ const postsCollection = defineCollection({
       })
       .optional(),
     highlight: z.boolean().optional(),
+    copyright: z.boolean().default(true),
   }),
 });
 const pageCollection = defineCollection({
@@ -31,6 +32,7 @@ const pageCollection = defineCollection({
     author: z.string().default("Yunfi"),
     description: z.string().optional(),
     image: z.string().optional(),
+    copyright: z.boolean().default(true),
   }),
 });
 const projectCollection = defineCollection({

@@ -33,4 +33,4 @@ const { entry } = Astro.props;
     </div>
   </Card>
 </div>
-<CopyrightCard entry={entry} />
+{entry.data.copyright && <CopyrightCard entry={entry} />}

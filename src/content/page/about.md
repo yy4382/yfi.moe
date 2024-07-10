@@ -1,6 +1,7 @@
 ---
 title: 关于
 slug: about
+copyright: false
 ---
 
 学生。

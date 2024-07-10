@@ -3,6 +3,7 @@ title: 致谢
 slug: credits
 date: 2024-07-02
 updated: 2024-07-02
+copyright: false
 ---
 首先是框架 [Astro](https://astro.build/) 和 [Vue](https://vuejs.org/)，还有 [Tailwind CSS](https://tailwindcss.com/)。
 
