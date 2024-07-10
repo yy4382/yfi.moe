@@ -20,6 +20,16 @@
   @apply !mt-2 !mb-2;
 }
 
+.heading-link {
+  @apply ml-2 inline-flex center cursor-pointer select-none
+    text-primary-ui text-base font-mono font-normal
+    opacity-0 transition-opacity duration-200;
+}
+
+.heading-linked:hover .heading-link {
+  @apply opacity-100;
+}
+
 :root {
   font-family:
     system-ui,
