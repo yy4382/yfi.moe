@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useElementBounding } from "@vueuse/core";
-import { card } from "@styles/tv";
+import { card, tvButton } from "@styles/tv";
 import MobileMenu from "./MobileMenu.vue";
 import MingcuteSearch3Line from "@comp/icons/MingcuteSearch3Line.vue";
 import type { NavMenu } from "@configs/navbar";
@@ -35,12 +35,12 @@ const highlight = computed<number>(() => {
   >
     <div
       :class="[
-        base(),
-        'text-heading transition-all duration-500 !shadow-md',
+        base({ class: '!py-2' }),
+        'text-heading transition-all duration-500 !shadow-md h-full',
         isFixed && '!rounded-none',
       ]"
     >
-      <div class="w-full flex items-center justify-between">
+      <div class="size-full flex items-center justify-between">
         <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
         <div class="md:hidden h-8"><MobileMenu /></div>
         <div class="self-center">
@@ -50,14 +50,18 @@ const highlight = computed<number>(() => {
           </a>
         </div>
         <div class="hidden md:flex h-full items-center space-x-1">
-          <div
+          <a
             v-for="(item, index) of navMenu"
             :key="item.text"
+            :href="item.link"
             class="w-20 font-medium h-full flex center"
-            :class="[highlight === index ? 'text-primary' : 'text-heading']"
+            :class="[
+              highlight === index ? 'text-primary' : 'text-heading',
+              tvButton(),
+            ]"
           >
             <span
-              class="hover:text-primary self-center z-1 select-none align-middle inline-flex items-center gap-1"
+              class="self-center z-1 select-none align-middle inline-flex items-center gap-1"
             >
               <component
                 :is="item.vueIcon"
@@ -65,14 +69,11 @@ const highlight = computed<number>(() => {
                 class="w-5 h-5"
                 style="view-transition-name: nav-item-icon"
               />
-              <a
-                :href="item.link"
-                :style="`view-transition-name: nav-item-text-` + item.text"
-              >
+              <span :style="`view-transition-name: nav-item-text-` + item.text">
                 {{ item.text }}
-              </a>
+              </span>
             </span>
-          </div>
+          </a>
         </div>
         <a href="/search" aria-label="Search Button">
           <MingcuteSearch3Line class="size-6" />
