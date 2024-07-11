@@ -14,7 +14,15 @@ const path = props.path;
 </script>
 <template>
   <div class="bg-card rounded-xl shadow-lg p-2">
-    <Waline :server-u-r-l="serverURL" :path dark="auto" lang="zh-CN" />
+    <Waline
+      :server-u-r-l="serverURL"
+      :path
+      dark="auto"
+      lang="zh-CN"
+      :search="false"
+      :emoji="false"
+      :required-meta="['nick', 'mail']"
+    />
   </div>
 </template>
 
