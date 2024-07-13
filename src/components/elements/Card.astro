@@ -10,6 +10,7 @@ interface Props {
   useIndicator?: VariantProps<typeof card>["useIndicator"];
   headSize?: VariantProps<typeof card>["headSize"];
   leftExtraPadding?: VariantProps<typeof card>["leftExtraPadding"];
+  lessBottomPadding?: VariantProps<typeof card>["lessBottomPadding"];
 }
 
 const {
@@ -18,6 +19,7 @@ const {
   headSize,
   useHeading,
   leftExtraPadding,
+  lessBottomPadding,
   ...props
 } = Astro.props;
 
@@ -26,6 +28,7 @@ const ui = tv({ extend: card, slots: props.ui })({
   headSize,
   useIndicator,
   leftExtraPadding,
+  lessBottomPadding,
 });
 ---
 

@@ -16,15 +16,21 @@ export const card = tv({
         base: "p-6 sm:p-8",
       },
     },
+    lessBottomPadding: {
+      true: {},
+    },
     headSize: {
       xl: {
         heading: "text-xl font-medium tracking-tight",
+      },
+      "3xl": {
+        heading: "text-3xl font-medium tracking-tight",
       },
     },
     useIndicator: {
       true: {
         heading:
-          "relative before:absolute before:-left-4 before:w-1 before:rounded-md before:bg-primary before:content-[''] before:top-1/2 before:-translate-y-1/2",
+          "relative before:absolute before:w-[0.18em] before:h-[0.85em] before:rounded-full before:bg-primary before:content-['']",
       },
     },
     leftExtraPadding: {
@@ -32,12 +38,29 @@ export const card = tv({
     },
   },
   compoundVariants: [
+    // lessBottomPadding
     {
-      headSize: "xl",
-      useIndicator: true,
-      class: { heading: "before:h-5" },
+      lessBottomPadding: true,
+      padding: "xs",
+      class: { base: "pb-2 sm:pb-3" },
+    },
+    {
+      lessBottomPadding: true,
+      padding: "sm",
+      class: { base: "pb-3 sm:pb-5" },
+    },
+    {
+      lessBottomPadding: true,
+      padding: "md",
+      class: { base: "pb-4 sm:pb-6" },
     },
 
+    // indicator placement change due to headSize changes
+    {
+      useIndicator: true,
+      headSize: ["xl", "3xl"],
+      class: { heading: "before:top-[6px]" }, // (line-height - text-size*0.8)/2
+    },
     // indicator placement change due to padding
     {
       padding: "xs",
@@ -49,25 +72,30 @@ export const card = tv({
       useIndicator: true,
       class: { heading: "before:-left-2.5" },
     },
+    {
+      padding: "md",
+      useIndicator: true,
+      class: { heading: "before:-left-4" },
+    },
 
     // leftExtraPadding changes
     {
       padding: "xs",
       useIndicator: true,
       leftExtraPadding: true,
-      class: { heading: "ml-1 sm:ml-2" },
+      class: { heading: "ml-2" },
     },
     {
       padding: "sm",
       useIndicator: true,
       leftExtraPadding: true,
-      class: { heading: "ml-2 sm:ml-3" },
+      class: { heading: "ml-2.5" },
     },
     {
       padding: "md",
       useIndicator: true,
       leftExtraPadding: true,
-      class: { heading: "ml-3 sm:ml-4" },
+      class: { heading: "ml-4" },
     },
   ],
   defaultVariants: {
@@ -75,5 +103,6 @@ export const card = tv({
     headSize: "xl",
     useIndicator: true,
     leftExtraPadding: false,
+    lessBottomPadding: false,
   },
 });

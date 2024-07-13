@@ -58,6 +58,8 @@ const { base, contentWrapper, content, icon } = postListPopover();
 <Card
   class:list={["flex flex-col gap-4 relative", className, link && "pb-12"]}
   useHeading
+  lessBottomPadding
+  padding="sm"
   leftExtraPadding
 >
   <h2 slot="heading">{title}</h2>

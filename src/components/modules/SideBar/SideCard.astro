@@ -6,11 +6,11 @@ interface Props {
 const { cardTitle, cardLink } = Astro.props;
 ---
 
-<Card class="w-full" useHeading padding="sm">
+<Card class="w-full" useHeading leftExtraPadding padding="xs">
   <a
     href={cardLink}
     slot="heading"
-    class="transition pb-2 block hover:text-primary"
+    class="transition mb-2 block hover:text-primary"
   >
     <h5>
       {cardTitle}
