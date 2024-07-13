@@ -40,6 +40,7 @@
     "eslint": "^9.7.0",
     "eslint-plugin-astro": "^1.2.3",
     "eslint-plugin-vue": "^9.27.0",
+    "hastscript": "^9.0.0",
     "instantsearch.css": "^8.3.0",
     "luxon": "^3.4.4",
     "mdast-util-to-string": "^4.0.0",

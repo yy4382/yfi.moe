@@ -8,6 +8,7 @@ import rehypeExtendedLinks from "rehype-extended-links";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import autoImport from "unplugin-auto-import/astro";
+import { h } from "hastscript";
 
 // https://astro.build/config
 export default defineConfig({
@@ -56,42 +57,18 @@ export default defineConfig({
         rehypeExtendedLinks,
         {
           preContent(node: Element): Element | undefined {
-            if (
-              node.children.some(
-                (child) => child.type === "element" && child.tagName === "img",
-              )
-            ) {
-              return undefined;
-            }
+            if (nodeHas(node, "img")) return undefined;
             const url = node.properties.href?.toString();
             if (!url) return undefined;
-            const regex = /^(https?:\/\/)?(www\.)?github\.com\/.*/i;
-            if (!regex.test(url)) return undefined;
-            return {
-              type: "element",
-              tagName: "span",
-              properties: {
-                className: ["i-mingcute-github-line"],
-              },
-              children: [],
-            };
+            return linkIcons()
+              .map(([icon, regex]) => {
+                if (regex.test(url)) return h("span", { className: [icon] });
+              })
+              .find((i) => i !== undefined);
           },
           content(node: Element): Element | undefined {
-            if (
-              node.children.some(
-                (child) => child.type === "element" && child.tagName === "img",
-              )
-            ) {
-              return undefined;
-            }
-            return {
-              type: "element",
-              tagName: "span",
-              properties: {
-                className: ["i-mingcute-external-link-line"],
-              },
-              children: [],
-            };
+            if (nodeHas(node, "img")) return undefined;
+            return h("span", { className: ["i-mingcute-external-link-line"] });
           },
         },
       ],
@@ -104,3 +81,22 @@ export default defineConfig({
     },
   },
 });
+
+const linkIcons = (): [string, RegExp][] => [
+  ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
+  [
+    "i-mingcute-twitter-line",
+    /^(https?:\/\/)?(www\.)?(twitter|x|fxtwitter|fixupx)\.com\/.*/i,
+  ],
+  ["i-mingcute-sword-line", /^(https?:\/\/)?([\w-]+\.)*yfi\.moe(\/.*)?$/],
+];
+
+const nodeHas = (node: Element, tagName: string | string[]): boolean => {
+  return node.children.some(
+    (child) =>
+      child.type === "element" &&
+      (typeof tagName === "string"
+        ? child.tagName === tagName
+        : tagName.includes(child.tagName)),
+  );
+};
