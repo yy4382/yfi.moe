@@ -48,6 +48,7 @@ export default defineConfig({
         globalsPropValue: "readonly",
       },
       vueTemplate: true,
+      viteOptimizeDeps: false,
     }),
   ],
   markdown: {
