@@ -15,7 +15,7 @@ slug: book-listening-collection
 |:----:|:----:|:------ |
 | Azure 文本转语音 | ✅ 可用 | [创建资源教程](/post/azure-tts-trial#使用官方-api创建资源导入软件) \| [导入器](https://tts-importer.yfi.moe) |
 | Edge 大声朗读 | ✅ 可用 | 教程 [Vercel版](/post/ifreetime-mstts-vercel) \| [Docker 版](/post/ifreetime-mstts-selfhost) |
-| 星铁语音导入 | ❌ 失效 | [油猴脚本](https://github.com/yy4382/genshinvoice-import) \| [语音网站](https://bv2.firefly.matce.cn/) |
+| 星铁语音导入 | ✅ 可用 | [油猴脚本](https://github.com/yy4382/genshinvoice-import) \| [语音网站](https://bv2.firefly.matce.cn/) |
 | Azure 试用接口 | ❌ 失效 | [教程](/post/azure-tts-trial) |
 
 ## 有哪些语音？
@@ -26,7 +26,7 @@ slug: book-listening-collection
 
 ## 有哪些方法能用？
 
-星铁语音导入已经失效。
+星铁语音导入~~已经失效~~又复活了，现在可用。
 
 对于微软语音，现在来看，还可以正常使用的方法有两种：
 
