@@ -9,7 +9,8 @@
     "build:fetch": "sh get-article.sh && astro build",
     "dev": "astro dev",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "astro dev",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "^0.8.2",
@@ -67,7 +68,12 @@
     "vue-instantsearch": "^4.19.0"
   },
   "devDependencies": {
+    "husky": "^9.1.1",
+    "lint-staged": "^15.2.7",
     "prettier": "^3.3.3"
+  },
+  "lint-staged": {
+    "*": "prettier --ignore-unknown --write"
   },
   "packageManager": "pnpm@9.6.0+sha256.dae0f7e822c56b20979bb5965e3b73b8bdabb6b8b8ef121da6d857508599ca35"
 }
