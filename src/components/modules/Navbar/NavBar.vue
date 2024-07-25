@@ -4,7 +4,8 @@ import { useElementBounding } from "@vueuse/core";
 import { card, tvButton } from "@styles/tv";
 import MobileMenu from "./MobileMenu.vue";
 import MingcuteSearch3Line from "@comp/icons/MingcuteSearch3Line.vue";
-import type { NavMenu } from "@configs/navbar";
+import { type NavMenu, navMenu } from "@configs/navbar";
+import { siteConfig } from "@configs/site";
 
 const props = defineProps<{
   navStats?: NavMenu | string;

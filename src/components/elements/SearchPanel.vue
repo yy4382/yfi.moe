@@ -10,6 +10,7 @@ import {
 } from "vue-instantsearch/vue3/es";
 import algoliasearch from "algoliasearch/lite";
 import { getPostPath } from "@utils/path";
+import { algoliaConfig } from "@configs/algolia";
 
 const searchClient = algoliasearch(
   algoliaConfig.appId,

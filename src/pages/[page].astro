@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import ArticleCard from "@comp/modules/ArticleCard";
+import SideBar from "@comp/modules/SideBar";
 import { getDesc } from "@utils/markdown";
 import { getSeo } from "@utils/SEO";
 export async function getStaticPaths() {

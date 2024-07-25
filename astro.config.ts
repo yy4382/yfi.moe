@@ -7,7 +7,7 @@ import remarkReadingTime from "./src/utils/remarkReadingTime.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
-import autoImport from "unplugin-auto-import/astro";
+// import autoImport from "unplugin-auto-import/astro";
 import { h } from "hastscript";
 
 // https://astro.build/config
@@ -18,38 +18,38 @@ export default defineConfig({
     vue(),
     icon(),
     sitemap(),
-    autoImport({
-      include: [
-        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
-        /\.vue$/,
-        /\.vue\?vue/, // .vue
-        /\.md$/, // .md
-        /\.astro$/, // .astro
-      ],
+    //   autoImport({
+    //     include: [
+    //       /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+    //       /\.vue$/,
+    //       /\.vue\?vue/, // .vue
+    //       /\.md$/, // .md
+    //       /\.astro$/, // .astro
+    //     ],
 
-      imports: [
-        {
-          "astro-icon/components": ["Icon"],
-          "@utils/path": ["getPostPath"],
-          "@utils/content": ["getSortedPosts"],
-          "@comp/elements/Card.astro": [["default", "Card"]],
-          "@styles/tv": ["tvButton"],
-        },
-        {
-          from: "astro:content",
-          imports: ["CollectionEntry"],
-          type: true,
-        },
-      ],
-      dirs: ["./src/configs", "./src/components/modules/*/"],
-      eslintrc: {
-        enabled: true,
-        filepath: "auto-imports-eslint.mjs",
-        globalsPropValue: "readonly",
-      },
-      vueTemplate: true,
-      viteOptimizeDeps: false,
-    }),
+    //     imports: [
+    //       {
+    //         "astro-icon/components": ["Icon"],
+    //         "@utils/path": ["getPostPath"],
+    //         "@utils/content": ["getSortedPosts"],
+    //         "@comp/elements/Card.astro": [["default", "Card"]],
+    //         "@styles/tv": ["tvButton"],
+    //       },
+    //       {
+    //         from: "astro:content",
+    //         imports: ["CollectionEntry"],
+    //         type: true,
+    //       },
+    //     ],
+    //     dirs: ["./src/configs", "./src/components/modules/*/"],
+    //     eslintrc: {
+    //       enabled: true,
+    //       filepath: "auto-imports-eslint.mjs",
+    //       globalsPropValue: "readonly",
+    //     },
+    //     vueTemplate: true,
+    //     viteOptimizeDeps: false,
+    //   }),
   ],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],

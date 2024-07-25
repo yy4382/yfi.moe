@@ -1,6 +1,8 @@
 ---
 import SideCard from "./SideCard.astro";
 import { getSortedPosts } from "@utils/content";
+import { getPostPath } from "@utils/path";
+import { tvButton } from "@styles/tv";
 const allPosts = await getSortedPosts();
 const recentPosts = allPosts.slice(0, 5);
 ---

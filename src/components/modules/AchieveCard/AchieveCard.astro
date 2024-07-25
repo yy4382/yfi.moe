@@ -1,6 +1,10 @@
 ---
 import { getSortedPosts } from "@utils/content";
 import AchieveAttr from "./AchieveAttr.astro";
+import Card from "@comp/elements/Card.astro";
+import { type CollectionEntry } from "astro:content";
+import { getPostPath } from "@utils/path";
+import { tvButton } from "@styles/tv";
 
 interface Props {
   keyword?: string;

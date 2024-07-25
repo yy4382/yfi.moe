@@ -2,6 +2,9 @@
 import { tv } from "tailwind-variants";
 import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
 import { popover } from "@styles/tv";
+import { Icon } from "astro-icon/components";
+import Card from "@comp/elements/Card.astro";
+import { sitePaths } from "@configs/site";
 const projectPopover = tv({
   extend: popover,
   slots: {

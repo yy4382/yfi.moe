@@ -1,3 +1,5 @@
+import { getSortedPosts } from "./content";
+
 export default async function getStatistics() {
   const posts = await getSortedPosts();
   const articles = posts.length;

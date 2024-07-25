@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import getStatistics from "@utils/statistics";
 import avatar from "@assets/avatar.jpeg";
+import { authorName, authorDescription } from "@configs/author";
+import Card from "@comp/elements/Card.astro";
 
 const { articles, words, tags } = await getStatistics();
 ---

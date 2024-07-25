@@ -1,6 +1,8 @@
 ---
 import { DateTime } from "luxon";
 import TimeTooltip from "@comp/elements/TimeTooltip.vue";
+import { Icon } from "astro-icon/components";
+import { type CollectionEntry } from "astro:content";
 interface Props {
   post: CollectionEntry<"post">;
 }
@@ -40,9 +42,3 @@ const { post } = Astro.props;
     )
   }
 </div>
-
-<style>
-  .meta-icon {
-    @apply mr-2 flex h-8 items-center justify-center rounded-md px-3 transition;
-  }
-</style>

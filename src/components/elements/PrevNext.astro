@@ -1,4 +1,7 @@
 ---
+import type { CollectionEntry } from "astro:content";
+import { getPostPath } from "@utils/path";
+import { Icon } from "astro-icon/components";
 interface Props {
   prev: CollectionEntry<"post">;
   next: CollectionEntry<"post">;

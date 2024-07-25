@@ -1,6 +1,8 @@
 ---
 import SideCard from "./SideCard.astro";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { getPostPath } from "@utils/path";
+import { tvButton } from "@styles/tv";
 interface Props {
   id: string;
 }

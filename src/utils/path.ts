@@ -1,3 +1,5 @@
+import type { CollectionEntry } from "astro:content";
+import { sitePaths } from "@configs/site";
 export function getPostPath(
   entryOrSlug: CollectionEntry<"post"> | string | undefined,
 ): string {

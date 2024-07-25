@@ -1,8 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import SideBar from "@comp/modules/SideBar";
+import ArticleCard from "@comp/modules/ArticleCard";
 import PrevNext from "@comp/elements/PrevNext.astro";
 import CommentCard from "@comp/elements/CommentCard.vue";
+import { getPostPath } from "@utils/path";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");

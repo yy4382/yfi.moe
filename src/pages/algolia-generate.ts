@@ -1,7 +1,8 @@
 import algoliasearch from "algoliasearch";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import removeMD from "remove-markdown";
 import runtimeEnv from "@utils/runtimeEnv";
+import { algoliaConfig } from "@configs/algolia";
 
 export async function GET() {
   if (runtimeEnv() !== "production") {
