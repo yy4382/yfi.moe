@@ -2,15 +2,32 @@
 import { getSeo } from "@utils/SEO";
 import NoGridLayout from "src/layouts/NoGridLayout.astro";
 import SearchPanel from "@comp/elements/SearchPanel.vue";
+import { Icon } from "astro-icon/components";
 const seo = getSeo({ title: "Search", noindex: true });
 ---
 
 <NoGridLayout seoConfig={seo} stopTrack>
-  <div class="container">
-    <div class="text-content">
-      <p>the style on this page is still in progress 🚧</p>
-      <p>这个页面的样式仍在施工中 🚧 但是功能是可以用了</p>
-    </div>
-    <SearchPanel client:load class="md:max-w-[70%] mx-auto" />
+  <div class="container w-full px-4 mx-auto relative">
+    <SearchPanel client:load class="md:max-w-[70%] mx-auto max-w-screen-lg" />
+    <span
+      id="search-loading"
+      class="inline-flex center gap-2 text-content w-fit absolute top-56 left-1/2 -translate-x-1/2"
+    >
+      <Icon
+        name="mingcute:loading-line"
+        class="animate-spin animate-infinite"
+      />
+      正在加载，稍安毋躁
+    </span>
   </div>
 </NoGridLayout>
+
+<script>
+  window.addEventListener("search-panel-mounted", () => {
+    const searchLoading = document.getElementById("search-loading");
+    if (searchLoading) {
+      // debugger;
+      searchLoading.style.display = "none";
+    }
+  });
+</script>
