@@ -1,3 +1,4 @@
+import { siteDomain } from "@configs/site";
 import type { SEOProps } from "astro-seo";
 
 export function getSeo(config: {
@@ -10,7 +11,7 @@ export function getSeo(config: {
   const {
     title,
     description,
-    image = "https://yfi.moe/icon-512.png",
+    image = new URL("/icon-512.png", siteDomain).href,
     type = "website",
     noindex = false,
   } = config;

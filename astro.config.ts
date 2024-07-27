@@ -9,10 +9,11 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 // import autoImport from "unplugin-auto-import/astro";
 import { h } from "hastscript";
+import { siteDomain } from "./src/configs/site";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://yfi.moe/",
+  site: siteDomain,
   integrations: [
     tailwind(),
     vue(),
