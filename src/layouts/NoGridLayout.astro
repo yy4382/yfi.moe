@@ -20,7 +20,7 @@ const { seoConfig, stopTrack, navStats, notPushFooter } = Astro.props;
     <div
       class="w-full max-w-screen-xl xl:mx-auto p-4 gap-4 flex flex-col"
       class:list={notPushFooter
-        ? "min-h-[calc(100vh-5rem)]"
+        ? "min-h-[calc(100vh-var(--navbar-height)-var(--navbar-top-margin))]"
         : "min-h-[calc(100vh+4rem)]"}
     >
       <slot />

@@ -16,7 +16,9 @@ const { tocList, seriesID } = Astro.props;
   <AuthorCard />
   <Tags />
 </div>
-<div class="flex flex-col gap-4 sticky top-20">
+<div
+  class="flex flex-col gap-4 sticky top-[calc(var(--navbar-height)+var(--navbar-top-margin)+1rem)]"
+>
   {tocList && <SideCardToc client:load headings={tocList} />}
   {seriesID && <SideCardSeries id={seriesID} />}
   <SideCardRecent />
