@@ -10,6 +10,7 @@ import sitemap from "@astrojs/sitemap";
 // import autoImport from "unplugin-auto-import/astro";
 import { h } from "hastscript";
 import { siteDomain } from "./src/configs/site";
+import { linkIcons } from "./src/configs/markdown";
 
 // https://astro.build/config
 export default defineConfig({
@@ -83,15 +84,6 @@ export default defineConfig({
     },
   },
 });
-
-const linkIcons = (): [string, RegExp][] => [
-  ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
-  [
-    "i-mingcute-twitter-line",
-    /^(https?:\/\/)?(www\.)?(twitter|x|fxtwitter|fixupx)\.com\/.*/i,
-  ],
-  ["i-mingcute-sword-line", /^(https?:\/\/)?([\w-]+\.)*yfi\.moe(\/.*)?$/],
-];
 
 const nodeHas = (node: Element, tagName: string | string[]): boolean => {
   return node.children.some(
