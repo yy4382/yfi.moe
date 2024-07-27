@@ -6,7 +6,7 @@ import { Icon } from "astro-icon/components";
 const seo = getSeo({ title: "Search", noindex: true });
 ---
 
-<NoGridLayout seoConfig={seo} stopTrack>
+<NoGridLayout seoConfig={seo} stopTrack notPushFooter>
   <div class="container w-full px-4 mx-auto relative">
     <SearchPanel client:load class="md:max-w-[70%] mx-auto max-w-screen-lg" />
     <span
