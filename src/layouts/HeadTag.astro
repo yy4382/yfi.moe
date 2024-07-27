@@ -27,6 +27,7 @@ const { seoConfig, stopTrack } = Astro.props;
       {...seoConfig}
       titleTemplate={"%s - " + siteConfig.title}
       titleDefault={siteConfig.title}
+      canonical={Astro.url.href.replace(/\/$/, "")}
     />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
