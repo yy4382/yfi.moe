@@ -1,13 +1,22 @@
+---
+import { umamiConfig, googleMeasurementId } from "@configs/track";
+const { src: umamiSrc, id: umamiId, domains: umamiDomains } = umamiConfig;
+---
+
 <script
   is:inline
+  define:vars={{ umamiSrc, umamiId, umamiDomains }}
   async
-  src="https://analy.yfi.moe/script.js"
-  data-website-id="3c89f8f6-9432-4ceb-a404-f22f2b0cf94d"></script>
+  src={umamiSrc}
+  data-website-id={umamiId}
+  data-domains={umamiDomains.join(",")}></script>
 <script
   is:inline
+  define:vars={{ googleMeasurementId }}
   async
-  src="https://www.googletagmanager.com/gtag/js?id=G-1MPEY5XJ9V"></script>
-<script is:inline>
+  src={`https://www.googletagmanager.com/gtag/js?id=${googleMeasurementId}`}
+></script>
+<script is:inline define:vars={{ googleMeasurementId }}>
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     // eslint-disable-next-line prefer-rest-params
@@ -16,5 +25,5 @@
   gtag("js", new Date());
 
   /* cSpell:disable */
-  gtag("config", "G-1MPEY5XJ9V");
+  gtag("config", googleMeasurementId);
 </script>
