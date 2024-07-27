@@ -1,21 +1,31 @@
-<script setup>
+<script setup lang="ts">
+// @ts-expect-error don't get types...
 import { Waline } from "@waline/client/component";
-const props = defineProps({
-  path: {
-    type: String,
-    required: true,
-  },
-});
+import { ref, onMounted, onUnmounted } from "vue";
+defineProps<{
+  serverUrl: string;
+}>();
 
 import "@waline/client/style";
 
-const serverURL = "https://waline.yfi.moe";
-const path = props.path;
+const path = ref("");
+
+const updatePath = () => {
+  path.value = window.location.pathname;
+};
+
+onMounted(() => {
+  updatePath();
+  window.addEventListener("popstate", updatePath);
+});
+onUnmounted(() => {
+  window.removeEventListener("popstate", updatePath);
+});
 </script>
 <template>
   <div class="bg-card rounded-xl shadow-lg p-2">
     <Waline
-      :server-u-r-l="serverURL"
+      :server-u-r-l="serverUrl"
       :path
       dark="auto"
       lang="zh-CN"

@@ -7,3 +7,8 @@ export const sitePaths = {
 export const siteConfig = {
   title: "Yunfi",
 };
+
+export const commentConfig = {
+  enable: true,
+  walineUrl: "https://waline.yfi.moe",
+};

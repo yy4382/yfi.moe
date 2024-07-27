@@ -5,7 +5,7 @@ import SideBar from "@comp/modules/SideBar";
 import ArticleCard from "@comp/modules/ArticleCard";
 import PrevNext from "@comp/elements/PrevNext.astro";
 import CommentCard from "@comp/elements/CommentCard.vue";
-import { getPostPath } from "@utils/path";
+import { commentConfig } from "@configs/site";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");
@@ -43,7 +43,11 @@ const seoConfig = getSeo({
       <Content />
     </ArticleCard>
     <PrevNext prev={prev} next={next} />
-    <CommentCard client:load path={getPostPath(post)} />
+    {
+      commentConfig.enable && (
+        <CommentCard client:load serverUrl={commentConfig.walineUrl} />
+      )
+    }
   </div>
   <Fragment slot="sidebar">
     <SideBar tocList={headings} seriesID={post.data.series?.id} />
