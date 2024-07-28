@@ -61,24 +61,21 @@ const stats: [number | string, string, string][] = [
         <span class="text-content text-xl sm:text-2xl font-semibold"
           >Find me at</span
         >
-        {
-          contactInfo.map((social) => (
-            <button
-              class="flex aspect-square size-8 rounded-full text-xl text-white items-center justify-center hover:animate-jump"
-              class:list={[social.color]}
-              tabindex="-1"
-            >
+        <span class="flex gap-2">
+          {
+            contactInfo.map((social) => (
               <a
                 href={social.link}
                 target="_blank"
-                class="flex items-center justify-center gap-2 w-fit my-2"
+                class="flex center p-2 size-9 rounded-full hover:scale-105 transition-all"
+                style={`background-color: ${social.color}`}
                 rel="noreferer"
               >
-                <Icon name={social.icon} />
+                <Icon name={social.icon} class="size-full text-white" />
               </a>
-            </button>
-          ))
-        }
+            ))
+          }
+        </span>
       </div>
     </Card>
     <!-- MARK: Recent -->

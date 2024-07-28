@@ -1,48 +1,68 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import getStatistics from "@utils/statistics";
 import avatar from "@assets/avatar.jpeg";
-import { authorName, authorDescription } from "@configs/author";
+import { authorName, contactInfo } from "@configs/author";
 import Card from "@comp/elements/Card.astro";
 
 const { articles, words, tags } = await getStatistics();
 ---
 
-<Card class="w-full lg:p-0 lg:pb-4 p-4">
-  <div class="flex lg:flex-col items-center gap-4 justify-center">
-    <div class="w-32 lg:w-[unset] m-4 mb-0">
+<Card class="w-full" padding="xs">
+  <div
+    class="flex lg:flex-col items-center gap-4 sm:gap-8 lg:gap-4 justify-center"
+  >
+    <div class="w-32 lg:w-[unset] mb-0">
       <Image
-        class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg"
+        class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg hover:shadow-none transition-shadow"
         src={avatar}
         loading={"eager"}
         alt={authorName + " avatar"}
         widths={[240, 540, 720, avatar.width]}
       />
     </div>
-    <div class="flex flex-col gap-2 items-center">
-      <h5 class="text-2xl font-medium text-heading relative">
+    <div class="flex flex-col lg:items-center gap-2 shrink-0">
+      <h5 class="text-4xl font-semibold text-heading relative">
         {authorName}
       </h5>
-      <span class="text-sm text-comment">{authorDescription}</span>
-      <div class="flex">
-        <div class="flex flex-col items-center mx-4">
-          <span class="text-lg font-semibold text-content">
+      <div class="flex gap-4">
+        <div class="flex flex-col items-center">
+          <span class="text-xl text-content">
             {articles}
           </span>
-          <span class="text-sm text-comment">文章</span>
+          <span class="text-sm text-comment opacity-80">文章</span>
         </div>
-        <div class="flex flex-col items-center mx-4">
-          <span class="text-lg font-semibold text-content">
+        <div class="flex flex-col items-center">
+          <span class="text-xl text-content">
             {(words / 10000).toFixed(1)}
           </span>
-          <span class="text-sm text-comment">万字</span>
+          <span class="text-sm text-comment opacity-80">万字</span>
         </div>
-        <div class="flex flex-col items-center mx-4">
-          <span class="text-lg font-semibold text-content">
+        <div class="flex flex-col items-center">
+          <span class="text-xl text-content">
             {tags}
           </span>
-          <span class="text-sm text-comment">标签</span>
+          <span class="text-sm text-comment opacity-80">标签</span>
         </div>
+      </div>
+      <div class="flex gap-2">
+        {
+          contactInfo.map((social) => (
+            <a
+              href={social.link}
+              target="_blank"
+              class="flex center p-1.5 size-9 rounded-lg bg-primary/20 hover:scale-105 hover:bg-primary/25 transition-all border border-primary/30"
+              rel="noreferer"
+            >
+              <Icon
+                name={social.icon}
+                class="size-full"
+                style={`color: ${social.color}`}
+              />
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>

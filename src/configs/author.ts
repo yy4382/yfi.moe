@@ -11,25 +11,25 @@ export const contactInfo: {
     name: "GitHub",
     icon: "mingcute:github-line",
     link: "https://github.com/yy4382",
-    color: "bg-black",
+    color: "#000000",
   },
   {
     name: "Telegram",
     icon: "mingcute:telegram-line",
     link: "https://t.me/yunfichannel",
-    color: "bg-blue-500",
+    color: "#24A1DE",
   },
   {
     name: "Twitter",
     icon: "mingcute:twitter-line",
     link: "https://twitter.com/yunfini",
-    color: "bg-blue-400",
+    color: "#1DA1F2",
   },
   {
     name: "Email",
     icon: "mingcute:mail-send-line",
     link: "mailto:i@yfi.moe",
-    color: "bg-red-400",
+    color: "#f87171",
   },
 ];
 
