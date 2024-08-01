@@ -13,8 +13,6 @@ const { seoConfig, stopTrack, navStats } = Astro.props;
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
   <BaseBody navStats={navStats}>
-    <div>
-      <slot />
-    </div>
+    <slot />
   </BaseBody>
 </HeadTag>
