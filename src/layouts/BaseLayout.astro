@@ -1,7 +1,5 @@
 ---
-import Footer from "@comp/elements/Footer.astro";
 import HeadTag from "@layouts/HeadTag.astro";
-import Navbar from "@comp/modules/Navbar";
 import SideBar from "@comp/modules/SideBar";
 import type { SEOProps } from "astro-seo";
 import type { NavMenu } from "@configs/navbar";
@@ -15,23 +13,16 @@ const { seoConfig, stopTrack, navStats } = Astro.props;
 ---
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
-  <BaseBody>
-    <Navbar navStats={navStats} />
-    <div
-      class="grid w-full max-w-screen-xl p-4 xl:mx-auto grid-cols-1 lg:grid-cols-[70%_30%]"
-    >
-      <div class="mb-4 lg:mr-4">
+  <BaseBody navStats={navStats}>
+    <div class="grid grid-cols-1 lg:grid-cols-[70%_30%]">
+      <div class="lg:mr-4">
         <slot />
       </div>
-      <aside class="mb-4">
+      <aside>
         <slot name="sidebar">
           <SideBar />
         </slot>
       </aside>
-
-      <footer class="lg:col-span-2">
-        <Footer />
-      </footer>
     </div>
   </BaseBody>
 </HeadTag>

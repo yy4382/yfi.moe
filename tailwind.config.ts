@@ -40,6 +40,9 @@ const config: Config = {
         heading: theme("colors.content.200"),
         comment: theme("colors.content.50"),
       }),
+      borderRadius: {
+        card: "0.75rem", // rounded-xl
+      },
       transitionTimingFunction: {
         spring: `linear(${getCssSpring()
           .map(([i, v]) => {
@@ -131,7 +134,7 @@ function addShortcutPlugin({ addUtilities, theme }: PluginAPI) {
       "justify-content": "center",
     },
     ".shape-card": {
-      "border-radius": theme("borderRadius.xl"),
+      "border-radius": theme("borderRadius.card"),
       "box-shadow": theme("boxShadow.lg"),
     },
   };

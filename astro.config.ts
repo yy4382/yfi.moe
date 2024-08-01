@@ -15,6 +15,9 @@ import { linkIcons } from "./src/configs/markdown";
 // https://astro.build/config
 export default defineConfig({
   site: siteDomain,
+  devToolbar: {
+    enabled: false,
+  },
   integrations: [
     tailwind(),
     vue(),

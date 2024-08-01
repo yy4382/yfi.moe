@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watchEffect } from "vue";
 import { useElementBounding } from "@vueuse/core";
-import { card, tvButton } from "@styles/tv";
+import { tvButton } from "@styles/tv";
 import MobileMenu from "./MobileMenu.vue";
 import MingcuteSearch3Line from "@comp/icons/MingcuteSearch3Line.vue";
 import { type NavMenu, navMenu } from "@configs/navbar";
 import { siteConfig } from "@configs/site";
+// import { tv } from "tailwind-variants";
 
 const props = defineProps<{
   navStats?: NavMenu | string;
@@ -14,8 +15,6 @@ const props = defineProps<{
 const navEl = ref<HTMLElement | null>(null);
 const { top, height } = useElementBounding(navEl);
 const isFixed = computed(() => top.value <= 0 && height.value !== 0);
-
-const { base } = card({ padding: "xs" });
 
 const highlight = computed<number>(() => {
   if (props.navStats === undefined) return navMenu.length - 1;
@@ -43,21 +42,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav
-    ref="navEl"
-    class="mt-4 sticky top-0 z-20 h-16 min-h-16 transition-all duration-500 xl:mx-auto box-border"
-    :class="[isFixed ? 'max-w-full' : 'px-4 max-w-screen-xl']"
-    style="view-transition-name: navbar"
-  >
+  <nav ref="navEl" :class="['sticky top-0 z-20 h-16 min-h-16 w-full']">
     <div
       :class="[
-        base({ class: '!py-2' }),
-        'text-heading transition-all duration-500 !shadow-md h-full',
-        isFixed && '!rounded-none',
+        'absolute h-full backdrop-blur-lg text-heading shadow inset-y-0 left-1/2 -translate-x-1/2 transform-gpu',
+        isFixed ? 'w-screen' : 'w-full',
+        isFixed ? 'bg-card/80' : 'bg-card',
+        isFixed ? 'rounded-none' : 'rounded-card',
+        isFixed ? 'transition-expand' : 'transition-shrink',
       ]"
+      style="view-transition-name: navbar"
     >
-      <div class="size-full flex items-center justify-between">
-        <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
+      <div
+        class="size-full mx-auto flex items-center justify-between px-3 sm:px-4 py-2"
+      >
         <div class="md:hidden h-8"><MobileMenu /></div>
         <div class="self-center">
           <a class="flex items-center text-xl" href="/">
@@ -98,3 +96,23 @@ onMounted(() => {
     </div>
   </nav>
 </template>
+
+<style scoped>
+.transition-expand,
+.transition-shrink {
+  --tm: cubic-bezier(0.4, 0, 0.2, 1);
+  --full: 500ms var(--tm);
+}
+.transition-expand {
+  transition:
+    width var(--full),
+    background-color var(--full),
+    border-radius 300ms var(--tm) 200ms;
+}
+.transition-shrink {
+  transition:
+    width var(--full),
+    background-color var(--full),
+    border-radius 300ms var(--tm);
+}
+</style>

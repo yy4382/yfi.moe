@@ -1,10 +1,31 @@
+---
+import Navbar from "@comp/modules/Navbar";
+import Footer from "@comp/elements/Footer.astro";
+import type { NavMenu } from "@configs/navbar";
+interface Props {
+  navStats?: NavMenu | string;
+}
+const { navStats } = Astro.props;
+---
+
 <body class="bg-fixed">
-  <div class="mx-auto min-h-[calc(100vh-var(--navbar-top-margin))]">
-    <slot />
+  <div
+    class:list={[
+      "min-h-screen h-full p-[var(--edge-padding)] mx-auto container-max-lg",
+      "grid grid-cols-1 grid-rows-[auto_1fr_auto] place-items-center gap-4",
+    ]}
+  >
+    <Navbar navStats={navStats} />
+    <div class="w-full place-self-stretch">
+      <slot />
+    </div>
+    <div class="w-full">
+      <Footer />
+    </div>
   </div>
 </body>
 
-<style is:global>
+<style>
   body {
     background-color: var(--bg-page);
     background-image: linear-gradient(

@@ -1,33 +1,20 @@
 ---
-import Footer from "@comp/elements/Footer.astro";
 import HeadTag from "@layouts/HeadTag.astro";
 import BaseBody from "@layouts/BaseBody.astro";
-import Navbar from "@comp/modules/Navbar";
 import { type SEOProps } from "astro-seo";
 import type { NavMenu } from "@configs/navbar";
 interface Props {
   seoConfig: SEOProps;
   stopTrack?: boolean;
   navStats?: NavMenu | string;
-  notPushFooter?: boolean;
 }
-const { seoConfig, stopTrack, navStats, notPushFooter } = Astro.props;
+const { seoConfig, stopTrack, navStats } = Astro.props;
 ---
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
-  <BaseBody>
-    <Navbar navStats={navStats} />
-    <div
-      class="w-full max-w-screen-xl xl:mx-auto p-4 gap-4 flex flex-col"
-      class:list={notPushFooter
-        ? "min-h-[calc(100vh-var(--navbar-height)-var(--navbar-top-margin))]"
-        : "min-h-[calc(100vh+4rem)]"}
-    >
+  <BaseBody navStats={navStats}>
+    <div>
       <slot />
-
-      <footer class="mt-auto">
-        <Footer />
-      </footer>
     </div>
   </BaseBody>
 </HeadTag>

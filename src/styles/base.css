@@ -35,12 +35,12 @@
     sans-serif;
   @apply font-normal scroll-smooth;
 
+  --edge-padding: 1rem;
+
   /* dynamically changed in src/components/modules/Navbar/NavBar.vue
   *  to match the height of the navbar
   *  Giving default values here to avoid FOUC
   */
   --navbar-height: 4rem;
   --navbar-top-margin: 1rem;
-
-  /* --content-height:  */
 }
