@@ -32,141 +32,137 @@ const stats: [number | string, string, string][] = [
 ];
 ---
 
-<div
-  class="w-full my-8 flex-grow flex center overflow-hidden opacity-0 animate-onload lg:w-screen lg:px-4 lg:max-w-screen-xl lg:ml-[calc(50%-50vw)] xl:ml-[calc(50%-640px)]"
->
-  <div class="bento-layout">
-    <!-- MARK: Introduction -->
-    <Card
-      class="sm:[grid-area:introduction] flex gap-4 items-center justify-center overflow-hidden mt-[calc(50vh-7rem-6rem)] sm:mt-0 mb-[calc(50vh-9rem-6rem)] sm:mb-0 min-h-48 sm:min-h-0"
+<div class="bento-layout">
+  <!-- MARK: Introduction -->
+  <Card
+    class="sm:[grid-area:introduction] flex gap-4 items-center justify-center overflow-hidden mt-[calc(50vh-7rem-6rem)] sm:mt-0 mb-[calc(50vh-9rem-6rem)] sm:mb-0 min-h-48 sm:min-h-0"
+  >
+    <div class="flex items-center text-xl gap-2">
+      <Image
+        src={logo}
+        alt="logo"
+        loading={"eager"}
+        class="size-16 xl:size-20 rounded-xl mr-3"
+        widths={[80, 160]}
+      />
+      <h2 class="text-6xl xl:text-8xl font-bold text-heading">
+        {authorName}
+      </h2>
+    </div>
+  </Card>
+  <!-- MARK: Socials -->
+  <Card class="sm:[grid-area:socials] min-h-20 sm:min-h-0">
+    <div
+      class="flex justify-center items-center gap-4 size-full whitespace-nowrap"
     >
-      <div class="flex items-center text-xl gap-2">
-        <Image
-          src={logo}
-          alt="logo"
-          loading={"eager"}
-          class="size-16 xl:size-20 rounded-xl mr-3"
-          widths={[80, 160]}
-        />
-        <h2 class="text-6xl xl:text-8xl font-bold text-heading">
-          {authorName}
-        </h2>
-      </div>
-    </Card>
-    <!-- MARK: Socials -->
-    <Card class="sm:[grid-area:socials] min-h-20 sm:min-h-0">
-      <div
-        class="flex justify-center items-center gap-4 size-full whitespace-nowrap"
+      <span class="text-content text-xl sm:text-2xl font-semibold"
+        >Find me at</span
       >
-        <span class="text-content text-xl sm:text-2xl font-semibold"
-          >Find me at</span
-        >
-        <span class="flex gap-2">
-          {
-            contactInfo.map((social) => (
-              <a
-                href={social.link}
-                target="_blank"
-                class="flex center p-2 size-9 rounded-full hover:scale-105 transition-all"
-                style={`background-color: ${social.color}`}
-                rel="noreferer"
-              >
-                <Icon name={social.icon} class="size-full text-white" />
-              </a>
-            ))
-          }
-        </span>
-      </div>
-    </Card>
-    <!-- MARK: Recent -->
-    <div class="sm:[grid-area:recent] !p-0">
-      <HomeBentoPostList
-        posts={recent}
-        title="最近发布"
-        class="flex-grow size-full"
-        link={sitePaths.postList}
-      />
-    </div>
-    <!-- MARK: Highlights -->
-    <div class="sm:[grid-area:highlights] size-full flex flex-col gap-4 !p-0">
-      <HomeBentoPostList posts={highlights} title="高亮文章" />
-      <HomeBentoPostList
-        posts={recentModified}
-        title="最近更新"
-        class="flex-grow"
-        link={sitePaths.postList}
-        showUpdateTime
-      />
-    </div>
-    <!-- MARK: Projects -->
-    <HomeBentoProject />
-    <!-- MARK: Stats -->
-    <Card class="sm:[grid-area:stats] flex center">
-      <div
-        class="text-heading text-lg size-full flex sm:flex-col justify-around sm:justify-center gap-6 sm:w-fit"
-      >
+      <span class="flex gap-2">
         {
-          stats.map(([num, unit, text]) => (
-            <p class="flex flex-col center sm:block whitespace-nowrap w-fit">
-              <span class="text-5xl font-semibold text-primary">{num}</span>
-              <span class="sm:hidden">{text}</span>
-              <span class="hidden sm:inline">{unit ? unit + text : text}</span>
-            </p>
+          contactInfo.map((social) => (
+            <a
+              href={social.link}
+              target="_blank"
+              class="flex center p-2 size-9 rounded-full hover:scale-105 transition-all"
+              style={`background-color: ${social.color}`}
+              rel="noreferer"
+            >
+              <Icon name={social.icon} class="size-full text-white" />
+            </a>
           ))
         }
-      </div>
-    </Card>
-    <!-- MARK: Timeline -->
-    <Card class="sm:[grid-area:timeline] center hidden sm:flex">
-      <a
-        href="/achieve"
-        class="hover:scale-95 transition-transform flex flex-col items-center justify-center gap-3 group"
-      >
-        <Icon name="mingcute:history-line" class="text-8xl text-primary" />
-        <span
-          class="text-content text-2xl font-semibold
-          whitespace-nowrap text-nowrap
-          group-hover:text-primary transition-colors"
-        >
-          时光机 <Icon
-            class="inline-block -translate-y-[2px] group-hover:scale-110 transition-transform"
-            name="mingcute:external-link-line"
-          />
-        </span>
-      </a>
-    </Card>
-    <!-- MARK: RSS -->
-    <Card class="sm:[grid-area:rss] justify-center items-center hidden sm:flex">
-      <a
-        href="/feed.xml"
-        class="hover:scale-95 transition-transform flex lg:flex-col xl:flex-row items-center justify-center group"
-      >
-        <Icon
-          name="mingcute:rss-line"
-          class="text-heading text-7xl text-yellow-600 lg:-m-[0.375rem]"
-        />
-        <span
-          class="text-content text-2xl font-semibold ml-1 lg:ml-0 xl:ml-1
-          whitespace-nowrap text-nowrap
-          group-hover:text-primary transition-colors"
-        >
-          RSS <Icon
-            class="inline-block -translate-y-[2px] group-hover:scale-110 transition-transform"
-            name="mingcute:external-link-line"
-          />
-        </span>
-      </a>
-    </Card>
-    <!-- MARK: Slogan -->
-    <Card class="[grid-area:slogan] flex items-center justify-center">
-      <p class="text-heading text-2xl font-semibold whitespace-nowrap">
-        Coding with Passion and <Icon
-          name="mingcute:heart-fill"
-          class="inline-block -translate-y-[2px] text-red-400 text-[1.25em]"
-        />
-      </p>
-    </Card>
+      </span>
+    </div>
+  </Card>
+  <!-- MARK: Recent -->
+  <div class="sm:[grid-area:recent] !p-0">
+    <HomeBentoPostList
+      posts={recent}
+      title="最近发布"
+      class="flex-grow size-full"
+      link={sitePaths.postList}
+    />
   </div>
+  <!-- MARK: Highlights -->
+  <div class="sm:[grid-area:highlights] size-full flex flex-col gap-4 !p-0">
+    <HomeBentoPostList posts={highlights} title="高亮文章" />
+    <HomeBentoPostList
+      posts={recentModified}
+      title="最近更新"
+      class="flex-grow"
+      link={sitePaths.postList}
+      showUpdateTime
+    />
+  </div>
+  <!-- MARK: Projects -->
+  <HomeBentoProject />
+  <!-- MARK: Stats -->
+  <Card class="sm:[grid-area:stats] flex center">
+    <div
+      class="text-heading text-lg size-full flex sm:flex-col justify-around sm:justify-center gap-6 sm:w-fit"
+    >
+      {
+        stats.map(([num, unit, text]) => (
+          <p class="flex flex-col center sm:block whitespace-nowrap w-fit">
+            <span class="text-5xl font-semibold text-primary">{num}</span>
+            <span class="sm:hidden">{text}</span>
+            <span class="hidden sm:inline">{unit ? unit + text : text}</span>
+          </p>
+        ))
+      }
+    </div>
+  </Card>
+  <!-- MARK: Timeline -->
+  <Card class="sm:[grid-area:timeline] center hidden sm:flex">
+    <a
+      href="/achieve"
+      class="hover:scale-95 transition-transform flex flex-col items-center justify-center gap-3 group"
+    >
+      <Icon name="mingcute:history-line" class="text-8xl text-primary" />
+      <span
+        class="text-content text-2xl font-semibold
+          whitespace-nowrap text-nowrap
+          group-hover:text-primary transition-colors"
+      >
+        时光机 <Icon
+          class="inline-block -translate-y-[2px] group-hover:scale-110 transition-transform"
+          name="mingcute:external-link-line"
+        />
+      </span>
+    </a>
+  </Card>
+  <!-- MARK: RSS -->
+  <Card class="sm:[grid-area:rss] justify-center items-center hidden sm:flex">
+    <a
+      href="/feed.xml"
+      class="hover:scale-95 transition-transform flex lg:flex-col xl:flex-row items-center justify-center group"
+    >
+      <Icon
+        name="mingcute:rss-line"
+        class="text-heading text-7xl text-yellow-600 lg:-m-[0.375rem]"
+      />
+      <span
+        class="text-content text-2xl font-semibold ml-1 lg:ml-0 xl:ml-1
+          whitespace-nowrap text-nowrap
+          group-hover:text-primary transition-colors"
+      >
+        RSS <Icon
+          class="inline-block -translate-y-[2px] group-hover:scale-110 transition-transform"
+          name="mingcute:external-link-line"
+        />
+      </span>
+    </a>
+  </Card>
+  <!-- MARK: Slogan -->
+  <Card class="[grid-area:slogan] flex items-center justify-center">
+    <p class="text-heading text-2xl font-semibold whitespace-nowrap">
+      Coding with Passion and <Icon
+        name="mingcute:heart-fill"
+        class="inline-block -translate-y-[2px] text-red-400 text-[1.25em]"
+      />
+    </p>
+  </Card>
 </div>
 
 <style>
