@@ -100,19 +100,19 @@ onMounted(() => {
 <style scoped>
 .transition-expand,
 .transition-shrink {
-  --tm: cubic-bezier(0.4, 0, 0.2, 1);
-  --full: 500ms var(--tm);
+  --tm: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  --full: 300ms var(--tm);
 }
 .transition-expand {
   transition:
     width var(--full),
-    background-color var(--full),
-    border-radius 300ms var(--tm) 200ms;
+    background-color ease-in-out,
+    border-radius 100ms ease-in-out 200ms;
 }
 .transition-shrink {
   transition:
     width var(--full),
-    background-color var(--full),
-    border-radius 300ms var(--tm);
+    background-color ease-in-out,
+    border-radius 200ms ease-in-out;
 }
 </style>
