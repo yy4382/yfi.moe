@@ -25,23 +25,21 @@
     --link-underline-active: theme("colors.gray.900 / 80%");
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --primary: var(--pri-300);
+  html.dark {
+    --primary: var(--pri-300);
 
-      --bg-page: oklch(15% 0.02 var(--primary-hue));
-      --bg-card: 25% 0.025 var(--primary-hue);
+    --bg-page: oklch(15% 0.02 var(--primary-hue));
+    --bg-card: 25% 0.025 var(--primary-hue);
 
-      --bg-popover: oklch(30% 0.025 var(--primary-hue));
+    --bg-popover: oklch(30% 0.025 var(--primary-hue));
 
-      --content-50: theme("colors.gray.400");
-      --content-100: theme("colors.gray.300");
-      --content-200: theme("colors.gray.100");
-      --content-primary: var(--pri-300);
+    --content-50: theme("colors.gray.400");
+    --content-100: theme("colors.gray.300");
+    --content-200: theme("colors.gray.100");
+    --content-primary: var(--pri-300);
 
-      --link-underline-normal: theme("colors.gray.100 / 50%");
-      --link-underline-hover: theme("colors.gray.100 / 60%");
-      --link-underline-active: theme("colors.gray.100 / 80%");
-    }
+    --link-underline-normal: theme("colors.gray.100 / 50%");
+    --link-underline-hover: theme("colors.gray.100 / 60%");
+    --link-underline-active: theme("colors.gray.100 / 80%");
   }
 }
