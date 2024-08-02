@@ -28,8 +28,17 @@ import { primaryHue } from "@configs/site";
   function loadHue() {
     setHue(getHue());
   }
+
+  function loadDarkMode() {
+    const darkMode = localStorage.getItem("style:color-mode");
+    if (darkMode === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }
+
   function init() {
     loadHue();
+    loadDarkMode();
   }
   init();
   document.addEventListener("astro:after-swap", init);

@@ -4,7 +4,7 @@ import MingcuteSunLine from "~icons/mingcute/sun-line";
 import MingcuteMoonLine from "~icons/mingcute/moon-line";
 import MingcuteComputerLine from "~icons/mingcute/computer-line";
 import { ToggleGroupItem, ToggleGroupRoot } from "radix-vue";
-const { store: mode } = useColorMode({ emitAuto: true });
+const { store: mode } = useColorMode({ storageKey: "style:color-mode" });
 const nameMap = {
   light: "明亮",
   dark: "暗黑",
