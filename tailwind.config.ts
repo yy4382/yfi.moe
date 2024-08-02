@@ -52,6 +52,7 @@ const config: Config = {
       },
       animation: {
         onload: "fadeInUpSpring 1s linear forwards",
+        onload_small: "fadeInUpSpringSmall 0.5s linear forwards",
       },
       keyframes: {
         fadeInUpSpring: Object.fromEntries(
@@ -60,6 +61,17 @@ const config: Config = {
               `${i}%`,
               {
                 transform: `translateY(${(2 - 2 * v).toFixed(6)}rem)`,
+                opacity: v.toFixed(2),
+              },
+            ];
+          }),
+        ),
+        fadeInUpSpringSmall: Object.fromEntries(
+          getCssSpring().map(([i, v]) => {
+            return [
+              `${i}%`,
+              {
+                transform: `translateY(${(1 - 1 * v).toFixed(6)}rem)`,
                 opacity: v.toFixed(2),
               },
             ];

@@ -6,6 +6,7 @@ import MobileMenu from "./MobileMenu.vue";
 import MingcuteSearch3Line from "~icons/mingcute/search-3-line";
 import { type NavMenu, navMenu } from "@configs/navbar";
 import { siteConfig } from "@configs/site";
+import ColorSelectPopover from "./ColorSelect/ColorSelectPopover.vue";
 
 const props = defineProps<{
   navStats?: NavMenu | string;
@@ -61,8 +62,9 @@ const highlight = computed<number>(() => {
           </span>
         </a>
       </div>
-      <div class="justify-self-end">
-        <a href="/search" aria-label="Search Button">
+      <div class="justify-self-end flex gap-4 h-fit">
+        <ColorSelectPopover />
+        <a href="/search" aria-label="Search Button" class="size-6">
           <MingcuteSearch3Line class="size-6" />
         </a>
       </div>
