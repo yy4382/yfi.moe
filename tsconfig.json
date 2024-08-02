@@ -12,7 +12,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@icons/*": ["src/components/icons/*"],
       "@styles/*": ["src/styles/*"]
-    }
+    },
+    "types": ["unplugin-icons/types/vue"]
   },
   "exclude": ["dist"]
 }

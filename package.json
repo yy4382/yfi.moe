@@ -64,6 +64,7 @@
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.17.0",
     "unified": "^11.0.5",
+    "unplugin-icons": "^0.19.1",
     "vue": "^3.4.34",
     "vue-instantsearch": "^4.19.0"
   },

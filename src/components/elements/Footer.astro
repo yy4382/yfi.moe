@@ -5,6 +5,7 @@ import { siteConfig } from "@configs/site";
 
 import { Image } from "astro:assets";
 import logo from "@assets/logo.png";
+import ColorModeSwitch from "./ColorModeSwitch.vue";
 ---
 
 <Card padding="xs">
@@ -56,4 +57,5 @@ import logo from "@assets/logo.png";
       />
     </div>
   </div>
+  <ColorModeSwitch client:load />
 </Card>

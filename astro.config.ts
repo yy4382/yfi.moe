@@ -7,7 +7,7 @@ import remarkReadingTime from "./src/utils/remarkReadingTime.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
-// import autoImport from "unplugin-auto-import/astro";
+import Icons from "unplugin-icons/vite";
 import { h } from "hastscript";
 import { siteDomain } from "./src/configs/site";
 import { linkIcons } from "./src/configs/markdown";
@@ -18,44 +18,7 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
-  integrations: [
-    tailwind(),
-    vue(),
-    icon(),
-    sitemap(),
-    //   autoImport({
-    //     include: [
-    //       /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
-    //       /\.vue$/,
-    //       /\.vue\?vue/, // .vue
-    //       /\.md$/, // .md
-    //       /\.astro$/, // .astro
-    //     ],
-
-    //     imports: [
-    //       {
-    //         "astro-icon/components": ["Icon"],
-    //         "@utils/path": ["getPostPath"],
-    //         "@utils/content": ["getSortedPosts"],
-    //         "@comp/elements/Card.astro": [["default", "Card"]],
-    //         "@styles/tv": ["tvButton"],
-    //       },
-    //       {
-    //         from: "astro:content",
-    //         imports: ["CollectionEntry"],
-    //         type: true,
-    //       },
-    //     ],
-    //     dirs: ["./src/configs", "./src/components/modules/*/"],
-    //     eslintrc: {
-    //       enabled: true,
-    //       filepath: "auto-imports-eslint.mjs",
-    //       globalsPropValue: "readonly",
-    //     },
-    //     vueTemplate: true,
-    //     viteOptimizeDeps: false,
-    //   }),
-  ],
+  integrations: [tailwind(), vue(), icon(), sitemap()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [
@@ -85,6 +48,13 @@ export default defineConfig({
     shikiConfig: {
       theme: "catppuccin-macchiato",
     },
+  },
+  vite: {
+    plugins: [
+      Icons({
+        compiler: "vue3",
+      }),
+    ],
   },
 });
 
