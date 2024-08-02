@@ -18,7 +18,7 @@ import ColorModeSwitch from "./ColorModeSwitch.vue";
       <PopoverContent
         class="z-50 color-select-dropdown"
         side="bottom"
-        :side-offset="28"
+        :side-offset="24"
       >
         <div
           class="bg-card border border-gray-300 dark:border-gray-800 rounded-card shadow-xl p-4 animate-onload_small animate-duration-500"
