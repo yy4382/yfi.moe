@@ -27,7 +27,7 @@ const { store: mode } = useColorMode({ emitAuto: true });
 .color-mode-btn {
   @apply p-1 relative text-heading;
   &::before {
-    @apply content-[""] absolute inset-0 opacity-0 scale-50 bg-primary/25 transition-all rounded-md;
+    @apply content-[""] absolute inset-0 opacity-0 scale-50 bg-primary/25 transition-[transform,opacity] rounded-md;
   }
   &:hover::before,
   &[data-state="on"]::before {

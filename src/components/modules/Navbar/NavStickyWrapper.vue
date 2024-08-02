@@ -43,13 +43,11 @@ onMounted(() => {
 .transition-expand {
   transition:
     width 300ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    background-color 300ms ease-in-out,
     border-radius 200ms ease-in-out 100ms;
 }
 .transition-shrink {
   transition:
     width 300ms cubic-bezier(0.18, 0.89, 0.32, 1.28),
-    background-color 300ms ease-in-out,
     border-radius 200ms ease-in-out;
 }
 </style>

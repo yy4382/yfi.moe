@@ -2,7 +2,9 @@
 
 @layer base {
   :root {
-    --primary-hue: 280;
+    /* set via js */
+    /* --primary-hue: 280; */
+
     --primary-hue-gradient: calc(
       var(--primary-hue) + 20
     ); /* Oh no, Safari doesn't support calc() in oklch(from) */

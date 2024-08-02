@@ -28,7 +28,10 @@ const { base, heading } = card({ padding: "sm" });
 
 <template>
   <div v-show="!shouldMount" :class="base()">
-    <div :class="heading()" class="transition pb-2 block hover:text-primary">
+    <div
+      :class="heading()"
+      class="transition-[color] pb-2 block hover:text-primary"
+    >
       <h5>目录</h5>
     </div>
     <TocEntry :headings="headings" :active-index @click-link="onClickLink" />

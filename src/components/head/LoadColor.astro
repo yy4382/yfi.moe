@@ -1,0 +1,36 @@
+---
+import { primaryHue } from "@configs/site";
+---
+
+<!--
+  need to be an inline one, because astro-bundled script is executed after first render, 
+    but we need to set the primary hue before the first render, or the page will flash with the default hue
+
+  And, importing functions from other files is not supported in inline scripts,
+    so we have to define the functions here
+  -->
+<script is:inline define:vars={{ primaryHue }}>
+  function getDefaultHue() {
+    return primaryHue;
+  }
+  function getHue() {
+    if (typeof window === "undefined") {
+      return getDefaultHue();
+    }
+    const stored = localStorage.getItem("style:primary-hue");
+    return stored ? parseInt(stored) : getDefaultHue();
+  }
+
+  function setHue(hue) {
+    localStorage.setItem("style:primary-hue", String(hue));
+    document.documentElement.style.setProperty("--primary-hue", String(hue));
+  }
+  function loadHue() {
+    setHue(getHue());
+  }
+  function init() {
+    loadHue();
+  }
+  init();
+  document.addEventListener("astro:after-swap", init);
+</script>

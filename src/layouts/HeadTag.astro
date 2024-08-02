@@ -6,6 +6,7 @@ import Favicon from "@comp/head/Favicon.astro";
 import LoadingIndicator from "astro-loading-indicator/component";
 import TagManagers from "@comp/head/TagManagers.astro";
 import runtimeEnv from "@utils/runtimeEnv";
+import LoadColor from "@comp/head/LoadColor.astro";
 import { siteConfig } from "@configs/site";
 import "remark-github-alerts/styles/github-base.css";
 import "remark-github-alerts/styles/github-colors-light.css";
@@ -29,6 +30,7 @@ const { seoConfig, stopTrack } = Astro.props;
       titleDefault={siteConfig.title}
       canonical={Astro.url.href.replace(/\/$/, "")}
     />
+    <LoadColor />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions fallback="swap" />

@@ -13,3 +13,5 @@ export const commentConfig = {
   enable: true,
   walineUrl: "https://waline.yfi.moe",
 };
+
+export const primaryHue = 280;
