@@ -23,10 +23,12 @@ import ColorHueSlider from "./ColorHueSlider.vue";
         :collision-padding="4"
       >
         <div
-          class="bg-card border border-gray-300 dark:border-gray-800 rounded-card shadow-xl p-4 animate-onload_small animate-duration-500"
+          class="bg-card border-2 border-gray-300 dark:border-gray-800 rounded-card shadow-xl p-4 animate-onload_small animate-duration-500"
         >
-          <ColorHueSlider />
-          <ColorModeSwitch />
+          <div class="flex flex-col gap-6">
+            <ColorHueSlider />
+            <ColorModeSwitch />
+          </div>
         </div>
       </PopoverContent>
     </PopoverPortal>
