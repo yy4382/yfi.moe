@@ -24,16 +24,18 @@ const highlight = computed<number>(() => {
 <template>
   <NavStickyWrapper>
     <div
-      class="size-full mx-auto flex items-center justify-between px-3 sm:px-4 py-2"
+      class="size-full mx-auto grid content-center items-center grid-rows-1 grid-cols-[1fr_auto_1fr] px-3 sm:px-4 py-2"
     >
-      <div class="md:hidden h-8"><MobileMenu /></div>
-      <div class="self-center">
+      <div class="justify-self-start md:hidden h-8"><MobileMenu /></div>
+      <div class="justify-self-center md:justify-self-start">
         <a class="flex items-center text-xl" href="/">
           <slot />
-          <span class="hidden md:inline">{{ siteConfig.title }}</span>
+          <span class="hidden md:inline ml-3">{{ siteConfig.title }}</span>
         </a>
       </div>
-      <div class="hidden md:flex h-full items-center space-x-1">
+      <div
+        class="hidden md:flex justify-self-center h-full items-center space-x-1"
+      >
         <a
           v-for="(item, index) of navMenu"
           :key="item.text"
@@ -59,9 +61,11 @@ const highlight = computed<number>(() => {
           </span>
         </a>
       </div>
-      <a href="/search" aria-label="Search Button">
-        <MingcuteSearch3Line class="size-6" />
-      </a>
+      <div class="justify-self-end">
+        <a href="/search" aria-label="Search Button">
+          <MingcuteSearch3Line class="size-6" />
+        </a>
+      </div>
     </div>
   </NavStickyWrapper>
 </template>
