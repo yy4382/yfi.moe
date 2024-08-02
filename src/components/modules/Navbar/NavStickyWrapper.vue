@@ -40,21 +40,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.transition-expand,
-.transition-shrink {
-  --tm: cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  --full: 300ms var(--tm);
-}
 .transition-expand {
   transition:
-    width var(--full),
-    background-color ease-in-out,
-    border-radius 100ms ease-in-out 200ms;
+    width 300ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 300ms ease-in-out,
+    border-radius 200ms ease-in-out 100ms;
 }
 .transition-shrink {
   transition:
-    width var(--full),
-    background-color ease-in-out,
+    width 300ms cubic-bezier(0.18, 0.89, 0.32, 1.28),
+    background-color 300ms ease-in-out,
     border-radius 200ms ease-in-out;
 }
 </style>
