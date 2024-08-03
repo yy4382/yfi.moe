@@ -21,7 +21,9 @@ const searchClient = algoliasearch(
 );
 // import "instantsearch.css/themes/satellite.css";
 const inputValue = ref("");
+const inputting = ref(false);
 const inputEvent = (event: Event, refine: (arg0: string) => void) => {
+  if (inputting.value) return;
   inputValue.value = (event.currentTarget as HTMLInputElement).value;
   refine(inputValue.value);
 };
@@ -47,8 +49,8 @@ onMounted(() => {
     >
       <template #default="{ currentRefinement, refine }">
         <form
-          class="size-full flex center px-4 gap-4 transition-[margin-top] relative will-change-transform"
-          :class="[inputValue === '' ? 'mt-52' : 'mt-4']"
+          class="size-full flex center px-4 gap-4 transition-[margin-top] relative will-change-transform mt-52 focus-within:mt-4"
+          @submit.prevent=""
         >
           <MingcuteSearch3Line class="text-content size-5" />
           <input
@@ -56,6 +58,13 @@ onMounted(() => {
             class="ais-SearchBox-input size-full outline-none bg-transparent text-content"
             placeholder="Search for something..."
             :value="currentRefinement"
+            @compositionstart="inputting = true"
+            @compositionend="
+              (event) => {
+                inputting = false;
+                inputEvent(event, refine);
+              }
+            "
             @input="(event) => inputEvent(event, refine)"
           />
         </form>
