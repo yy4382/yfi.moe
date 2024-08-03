@@ -34,6 +34,12 @@ import { primaryHue } from "@configs/site";
     if (darkMode === "dark") {
       document.documentElement.classList.add("dark");
     }
+    if (
+      darkMode === "auto" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      document.documentElement.classList.add("dark");
+    }
   }
 
   function init() {
