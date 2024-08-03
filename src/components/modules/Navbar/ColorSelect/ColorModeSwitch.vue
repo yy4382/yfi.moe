@@ -22,8 +22,8 @@ const nameMap = {
         {{ nameMap[mode] }}
       </span>
     </div>
-    <div class="rounded-md outline outline-2 outline-primary/40 w-fit">
-      <ToggleGroupRoot v-model="mode" class="flex gap-0.5">
+    <div class="rounded-md outline outline-2 outline-primary/40 w-full">
+      <ToggleGroupRoot v-model="mode" class="flex gap-0.5 justify-between">
         <ToggleGroupItem
           value="light"
           class="color-mode-btn inline-flex gap-1 items-center"
