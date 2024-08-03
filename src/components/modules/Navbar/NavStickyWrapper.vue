@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watchEffect } from "vue";
-import { useElementBounding } from "@vueuse/core";
+import { useElementBounding, useWindowScroll } from "@vueuse/core";
+import remToPixel from "@utils/remToPixel";
+
+const DEFAULT_NAV_TOP_MARGIN = 1; // in rem
 
 const navEl = ref<HTMLElement | null>(null);
-const { top, height } = useElementBounding(navEl);
-const isFixed = computed(() => top.value <= 0 && height.value !== 0);
+const { height } = useElementBounding(navEl);
+const navTopPixel = ref(remToPixel(DEFAULT_NAV_TOP_MARGIN));
+const { y } = useWindowScroll();
+const isFixed = computed(() => y.value >= remToPixel(DEFAULT_NAV_TOP_MARGIN));
+
+onMounted(() => {
+  navTopPixel.value = remToPixel(DEFAULT_NAV_TOP_MARGIN);
+});
 
 onMounted(() => {
   watchEffect(() => {
@@ -17,7 +26,10 @@ onMounted(() => {
     if (isFixed.value) {
       document.documentElement.style.setProperty("--navbar-top-margin", "0rem");
     } else {
-      document.documentElement.style.setProperty("--navbar-top-margin", "1rem");
+      document.documentElement.style.setProperty(
+        "--navbar-top-margin",
+        `${DEFAULT_NAV_TOP_MARGIN}rem`,
+      );
     }
   });
 });
