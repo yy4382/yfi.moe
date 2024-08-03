@@ -30,7 +30,12 @@ import { primaryHue } from "@configs/site";
   }
 
   function loadDarkMode() {
-    const darkMode = localStorage.getItem("style:color-mode");
+    let darkMode = localStorage.getItem("style:color-mode");
+    if (darkMode === null) {
+      localStorage.setItem("style:color-mode", "auto");
+      darkMode = "auto";
+    }
+
     if (darkMode === "dark") {
       document.documentElement.classList.add("dark");
     }
