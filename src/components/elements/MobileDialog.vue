@@ -18,9 +18,9 @@ const contentMotion = useMotion(
   computed(() => ({
     initial: {
       y: 5000,
-      transition: { type: "keyframes", ease: "easeOut", duration: 500 },
+      transition: { type: "keyframes", ease: "easeOut", duration: 150 },
     },
-    enter: { y: 0, transition: { type: "keyframes", ease: "easeOut" } },
+    enter: { y: 0 /*, transition: { type: "keyframes", ease: "easeOut" }*/ },
   })),
 );
 contentMotion.set("initial");
@@ -41,7 +41,13 @@ overlaySet("initial");
 const open = defineModel<boolean>();
 const show = ref<boolean | undefined>(undefined);
 const contentHeight = useElementBounding(dialogContent).height;
-let contentHeightThisTime = 0;
+/**
+ * The height of the content when the dialog is opened.
+ * Adjusted when the dialog is about to open.
+ *
+ * @type {number}
+ */
+let contentHeightThisTime: number = 0;
 
 watch(open, async () => {
   if (open.value) {
@@ -55,6 +61,7 @@ watch(open, async () => {
     await until(contentHeight).not.toBe(0);
     contentHeightThisTime = contentHeight.value;
     contentMotion.set({ y: contentHeightThisTime });
+    contentMotion.stop();
 
     await Promise.all([contentMotion.apply("enter"), overlayApply("enter")]);
   } else {
@@ -64,7 +71,7 @@ watch(open, async () => {
         transition: {
           type: "keyframes",
           ease: "easeOut",
-          duration: contentHeightThisTime,
+          duration: contentHeightThisTime / 2,
         },
       }),
       overlayApply("initial"),
@@ -118,6 +125,11 @@ const { lengthY } = useSwipe(dialogContent, {
           >
             <div class="bg-gray-300 rounded-full h-full w-full outline-none" />
           </DialogClose>
+
+          <!-- Dialog bottom padding, avoid showing base layer content when open with spring animation -->
+          <div
+            class="absolute z-[-10] inset-x-0 top-8 -bottom-48 bg-card will-change-transform"
+          ></div>
         </DialogContent>
       </DialogPortal>
     </DialogRoot>
