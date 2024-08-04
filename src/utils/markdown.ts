@@ -2,7 +2,10 @@ import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import remarkGithubAlerts from "remark-github-alerts";
+import rehypeRaw from "rehype-raw";
+import rehypeRemoveComments from "rehype-remove-comments";
 import { unified } from "unified";
+import RemoveMarkdown from "remove-markdown";
 
 function truncateAtClosestNewline(str: string, targetPosition = 150) {
   while (str.startsWith("\n")) {
@@ -21,7 +24,11 @@ function truncateAtClosestNewline(str: string, targetPosition = 150) {
   return str.substring(0, newPosition);
 }
 
-export function getDesc(content: string, length?: number, tryMore = true) {
+export function getDesc(
+  content: string,
+  config?: { length?: number; tryMore?: boolean; removeMd?: boolean },
+) {
+  const { length = 150, tryMore = true, removeMd = false } = config || {};
   content = content.trim();
   if (tryMore) {
     const moreIndex = content.indexOf("<!--more-->");
@@ -33,7 +40,9 @@ export function getDesc(content: string, length?: number, tryMore = true) {
   } else {
     content = truncateAtClosestNewline(content, length);
   }
-  return content;
+  return removeMd
+    ? RemoveMarkdown(content, { stripListLeaders: false })
+    : content;
 }
 
 /**
@@ -52,7 +61,7 @@ export async function renderDesc(
   length?: number,
   tryMore?: boolean,
 ) {
-  return await renderMd(getDesc(content, length, tryMore));
+  return await renderMd(getDesc(content, { length, tryMore }));
 }
 
 export async function renderMd(content: string) {
@@ -60,6 +69,8 @@ export async function renderMd(content: string) {
     .use(remarkParse)
     .use(remarkGithubAlerts)
     .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeRemoveComments)
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(content);
   return HTML.value.toString();

@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 const { page } = Astro.props;
 const { Content, headings } = await page.render();
-const desc = page.data.description || getDesc(page.body);
+const desc = page.data.description || getDesc(page.body, { removeMd: true });
 
 const seoConfig = getSeo({
   title: page.data.title,

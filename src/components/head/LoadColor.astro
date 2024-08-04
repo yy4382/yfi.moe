@@ -1,14 +1,14 @@
 ---
 import { primaryHue } from "@configs/site";
+/*
+need to be an inline one, because astro-bundled script is executed after first render, 
+  but we need to set the primary hue before the first render, or the page will flash with the default hue
+
+And, importing functions from other files is not supported in inline scripts,
+  so we have to define the functions here 
+*/
 ---
 
-<!--
-  need to be an inline one, because astro-bundled script is executed after first render, 
-    but we need to set the primary hue before the first render, or the page will flash with the default hue
-
-  And, importing functions from other files is not supported in inline scripts,
-    so we have to define the functions here
-  -->
 <script is:inline define:vars={{ primaryHue }}>
   function getDefaultHue() {
     return primaryHue;

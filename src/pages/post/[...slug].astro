@@ -29,7 +29,7 @@ import { getDesc } from "@utils/markdown";
 
 const seoConfig = getSeo({
   title: post.data.title,
-  description: post.data.description || getDesc(post.body),
+  description: post.data.description || getDesc(post.body, { removeMd: true }),
   image: post.data.image
     ? new URL(post.data.image, Astro.url).toString()
     : undefined,
