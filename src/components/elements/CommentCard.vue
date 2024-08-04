@@ -27,7 +27,7 @@ onUnmounted(() => {
     <Waline
       :server-u-r-l="serverUrl"
       :path
-      dark="auto"
+      dark="html.dark"
       lang="zh-CN"
       :search="false"
       :emoji="false"

@@ -8,6 +8,10 @@ import {
 import MingcuteColorFilterLine from "~icons/mingcute/color-filter-line";
 import ColorModeSwitch from "./ColorModeSwitch.vue";
 import ColorHueSlider from "./ColorHueSlider.vue";
+import { useColorMode } from "@vueuse/core";
+
+// required because the real one controlling the color mode is in the popover, which won't be mounted until the popover is opened
+useColorMode({ storageKey: "style:color-mode" });
 </script>
 
 <template>
