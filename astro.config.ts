@@ -5,6 +5,8 @@ import remarkGithubAlerts from "remark-github-alerts";
 import icon from "astro-icon";
 import remarkReadingTime from "./src/utils/remarkReadingTime.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
+import rehypeRemoveComments from "rehype-remove-comments";
+import rehypeRaw from "rehype-raw";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import Icons from "unplugin-icons/vite";
@@ -22,6 +24,8 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [
+      rehypeRaw,
+      rehypeRemoveComments,
       [
         rehypeExtendedLinks,
         {
