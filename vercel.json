@@ -2,16 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
-      "source": "/_server-islands/NoteCardContent",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=120, s-maxage=3600, stale-while-revalidate=604800"
-        }
-      ]
-    },
-    {
-      "source": "/_server-islands/NoteList",
+      "source": "/_server-islands/Note(.*)",
       "headers": [
         {
           "key": "Cache-Control",
