@@ -3,7 +3,8 @@ interface Props {
   pageId: string;
 }
 const { pageId } = Astro.props;
-const response = await fetch(`/api/note/${pageId}`);
+const baseUrl = new URL(Astro.request.url);
+const response = await fetch(`${baseUrl.origin}/api/note/${pageId}`);
 const pageContent = await response.json();
 ---
 
