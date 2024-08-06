@@ -1,11 +1,11 @@
 ---
-import { getPublishedPages } from "@libs/notion-client";
+import { getEntries } from "@libs/notion-client";
 import NoteCard from "./NoteCard.astro";
 
 const apiKey = import.meta.env.NOTION_API_KEY;
 const databaseId = import.meta.env.NOTION_NOTE_DATABASE_ID;
 
-const pages = await getPublishedPages(databaseId, {
+const pages = await getEntries(databaseId, {
   apiKey,
   filter: {
     property: "Is Published",

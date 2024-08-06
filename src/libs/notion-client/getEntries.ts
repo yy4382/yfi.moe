@@ -7,7 +7,7 @@ import { renderRichText } from "../notion-to-html";
 
 type QueryDatabaseFilter = QueryDatabaseParameters["filter"];
 
-export async function getPublishedPages(
+export async function getEntries(
   databaseId: string,
   options: { apiKey: string; filter: QueryDatabaseFilter },
 ) {
