@@ -1,24 +1,14 @@
 ---
-import { getPageContent } from "@libs/notion-client";
+import { GET } from "src/pages/api/note/[id]";
 interface Props {
   pageId: string;
 }
 const { pageId } = Astro.props;
-const apiKey = import.meta.env.NOTION_API_KEY;
-const pageContent = await getPageContent(pageId, {
-  apiKey,
-  accessControl: (resp) => {
-    const isValid =
-      "created_time" in resp &&
-      resp.parent.type === "database_id" &&
-      resp.parent.database_id.replace(/-/g, "") ===
-        import.meta.env.NOTION_NOTE_DATABASE_ID &&
-      resp.properties["Is Published"].type === "checkbox" &&
-      resp.properties["Is Published"].checkbox === true;
-
-    return isValid;
-  },
+const response = await GET({
+  ...Astro,
+  params: { ...Astro.params, id: pageId },
 });
+const pageContent = await response.json();
 ---
 
 <Fragment set:html={pageContent} />

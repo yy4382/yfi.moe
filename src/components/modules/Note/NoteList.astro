@@ -1,19 +1,10 @@
 ---
-import { getEntries } from "@libs/notion-client";
+import { GET, type Page } from "../../../pages/api/note";
 import NoteCard from "./NoteCard.astro";
 
-const apiKey = import.meta.env.NOTION_API_KEY;
-const databaseId = import.meta.env.NOTION_NOTE_DATABASE_ID;
+let response = await GET(Astro);
 
-const pages = await getEntries(databaseId, {
-  apiKey,
-  filter: {
-    property: "Is Published",
-    checkbox: {
-      equals: true,
-    },
-  },
-});
+const pages = (await response.json()) as Page[];
 ---
 
 <div class="flex flex-col gap-4">
