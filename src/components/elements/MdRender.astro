@@ -1,4 +1,16 @@
-<div class="prose prose-gray dark:prose-invert max-w-full break-words">
+---
+interface Props {
+  class?: string;
+}
+const props = Astro.props;
+---
+
+<div
+  class:list={[
+    "prose prose-gray dark:prose-invert max-w-full break-words",
+    props.class,
+  ]}
+>
   <slot />
 </div>
 <script>
