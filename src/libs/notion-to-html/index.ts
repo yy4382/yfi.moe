@@ -2,60 +2,98 @@ import type {
   RichTextItemResponse,
   ListBlockChildrenResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import { h } from "hastscript";
+import type { Element, Properties, Root } from "hast";
+import { toHtml } from "hast-util-to-html";
 
 type Block = ListBlockChildrenResponse["results"][number];
 
 type BlockConverted =
-  | string
-  | [string, { sameTypeWrapper: { type: string; content: [string, string] } }];
+  | Element
+  | [
+      Element,
+      {
+        sameTypeWrapper?: {
+          type: string;
+          content: { selector: string; properties?: Properties };
+        };
+      },
+    ];
 
 export default function blocks2Html(
   blocks: Block[],
   options: { errorLevel: "prod" | "debug" } = { errorLevel: "prod" },
 ): string {
-  return concatBlockHtml(blocks.map((block) => convertBlock(block, options)));
+  const blockConverted = blocks
+    .map((block) => convertBlock(block, options))
+    .filter((block) => block !== undefined);
+  return toHtml(concatBlockHtml(blockConverted));
 }
 
-export function concatBlockHtml(blocks: BlockConverted[]) {
-  let result = "";
-  let currentSameTypeWrapper:
-    | { type: string; content: [string, string] }
-    | undefined = undefined;
-  for (const block of blocks) {
-    if (typeof block === "string") {
-      if (currentSameTypeWrapper !== undefined) {
-        result += currentSameTypeWrapper.content[1];
-        currentSameTypeWrapper = undefined;
-      }
+export function concatBlockHtml(blocks: BlockConverted[]): Root {
+  const mergedTypeWrapper = mergeSameTypeWrapperItems(blocks);
+  if (mergedTypeWrapper === null) return h(null);
+  else return h(null, mergedTypeWrapper);
+}
 
-      if (block === "<p></p>") continue;
-      result += block;
+function mergeSameTypeWrapperItems(arr: BlockConverted[]): Element[] | null {
+  if (arr.length === 0) return null;
+
+  const result: Element[] = [];
+  let currentGroup: BlockConverted[] = [arr[0]];
+
+  for (let i = 1; i < arr.length; i++) {
+    const currentBlock = arr[i];
+    const prevBlock = arr[i - 1];
+    if (
+      Array.isArray(currentBlock) &&
+      Array.isArray(prevBlock) &&
+      currentBlock[1].sameTypeWrapper !== undefined &&
+      prevBlock[1].sameTypeWrapper !== undefined &&
+      currentBlock[1].sameTypeWrapper.type === prevBlock[1].sameTypeWrapper.type
+    ) {
+      currentGroup.push(arr[i]);
     } else {
-      if (currentSameTypeWrapper === undefined) {
-        currentSameTypeWrapper = block[1].sameTypeWrapper;
-        result += currentSameTypeWrapper.content[0];
-      }
-      if (currentSameTypeWrapper.type !== block[1].sameTypeWrapper.type) {
-        result += currentSameTypeWrapper.content[1];
-        currentSameTypeWrapper = block[1].sameTypeWrapper;
-        result += currentSameTypeWrapper.content[0];
-      }
-      result += block[0];
+      result.push(pushCurrentGroup(currentGroup));
+      currentGroup = [arr[i]];
     }
   }
-  if (currentSameTypeWrapper !== undefined) {
-    result += currentSameTypeWrapper.content[1];
-  }
+
+  result.push(pushCurrentGroup(currentGroup));
+
   return result;
+}
+
+function pushCurrentGroup(currentGroup: BlockConverted[]): Element {
+  // There will be only 2 situations:
+  // 1. currentGroup contains one element, which is Element type
+  // 2. currentGroup contains one or more elements, which are Tuple with same `sameTypeWrapper.type`
+
+  const firstBlockToBePushed = currentGroup[0];
+  if (
+    Array.isArray(firstBlockToBePushed) &&
+    firstBlockToBePushed[1].sameTypeWrapper !== undefined
+  ) {
+    const { selector, properties } =
+      firstBlockToBePushed[1].sameTypeWrapper.content;
+    const element = h(
+      selector,
+      properties !== undefined ? properties : {},
+      currentGroup.map((block) => (block as [Element, unknown])[0]),
+    );
+    return element;
+  } else {
+    return firstBlockToBePushed as Element;
+  }
 }
 
 export function convertBlock(
   node: Block,
   options: { errorLevel: "prod" | "debug" } = { errorLevel: "prod" },
-): BlockConverted {
+): BlockConverted | undefined {
   if (!("type" in node)) {
     console.warn("unexpected node:", JSON.stringify(node));
-    return "";
+    return undefined;
   }
   if (node.has_children) {
     console.warn(
@@ -65,7 +103,7 @@ export function convertBlock(
   }
   switch (node.type) {
     case "paragraph": {
-      return `<p>${renderRichText(node.paragraph.rich_text)}</p>`;
+      return h("p", renderRichText(node.paragraph.rich_text));
     }
 
     case "image": {
@@ -78,50 +116,55 @@ export function convertBlock(
           url = node.image.file.url;
           break;
       }
-      return `<img src="${url}" alt="${renderRichText(node.image.caption)}" />`;
+      return h("img", { src: url, alt: renderRichText(node.image.caption) });
     }
 
     case "to_do": {
-      return `<input type="checkbox" ${
-        node.to_do.checked ? "checked" : ""
-      } disabled /> ${renderRichText(node.to_do.rich_text)}<br />`;
+      return h(
+        "p",
+        h(
+          "input",
+          { type: "checkbox", checked: node.to_do.checked, disabled: true },
+          renderRichText(node.to_do.rich_text),
+        ),
+      );
     }
 
     case "heading_1": {
-      return `<h1>${renderRichText(node.heading_1.rich_text)}</h1>`;
+      return h("h1", renderRichText(node.heading_1.rich_text));
     }
 
     case "heading_2": {
-      return `<h2>${renderRichText(node.heading_2.rich_text)}</h2>`;
+      return h("h2", renderRichText(node.heading_2.rich_text));
     }
 
     case "heading_3": {
-      return `<h3>${renderRichText(node.heading_3.rich_text)}</h3>`;
+      return h("h3", renderRichText(node.heading_3.rich_text));
     }
 
     case "bulleted_list_item": {
       return [
-        `<li>${renderRichText(node.bulleted_list_item.rich_text)}</li>`,
-        { sameTypeWrapper: { type: "ul", content: ["<ul>", "</ul>"] } },
+        h("li", renderRichText(node.bulleted_list_item.rich_text)),
+        { sameTypeWrapper: { type: "ul", content: { selector: "ul" } } },
       ];
     }
 
     case "numbered_list_item": {
       return [
-        `<li>${renderRichText(node.numbered_list_item.rich_text)}</li>`,
-        { sameTypeWrapper: { type: "ol", content: ["<ol>", "</ol>"] } },
+        h("li", renderRichText(node.numbered_list_item.rich_text)),
+        { sameTypeWrapper: { type: "ol", content: { selector: "ol" } } },
       ];
     }
 
     case "quote": {
-      return `<blockquote>${renderRichText(node.quote.rich_text)}</blockquote>`;
+      return h("blockquote", renderRichText(node.quote.rich_text));
     }
 
     default: {
       console.warn("unsupported node type:", node.type);
       return options.errorLevel === "debug"
-        ? `{{unsupported node type: ${node.type}}}`
-        : "";
+        ? h("p", `{{unsupported node type: ${node.type}}}`)
+        : undefined;
     }
   }
 }

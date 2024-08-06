@@ -98,6 +98,9 @@ importers:
       eslint-plugin-vue:
         specifier: ^9.27.0
         version: 9.27.0(eslint@9.7.0)
+      hast-util-to-html:
+        specifier: ^9.0.1
+        version: 9.0.1
       hastscript:
         specifier: ^9.0.0
         version: 9.0.0
