@@ -19,7 +19,7 @@ const searchClient = algoliasearch(
   algoliaConfig.appId,
   algoliaConfig.readonlyKey,
 );
-// import "instantsearch.css/themes/satellite.css";
+
 const inputValue = ref("");
 const inputting = ref(false);
 const inputEvent = (event: Event, refine: (arg0: string) => void) => {

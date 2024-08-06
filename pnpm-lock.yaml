@@ -26,9 +26,6 @@ importers:
       '@astrojs/vue':
         specifier: ^4.5.0
         version: 4.5.0(astro@4.12.2(@types/node@20.14.12)(typescript@5.5.4))(rollup@4.19.0)(vite@5.3.4(@types/node@20.14.12))(vue@3.4.34(typescript@5.5.4))
-      '@eslint/js':
-        specifier: ^9.7.0
-        version: 9.7.0
       '@iconify-json/devicon-plain':
         specifier: ^1.1.45
         version: 1.1.45
@@ -47,24 +44,6 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.13
         version: 0.5.13(tailwindcss@3.4.6)
-      '@types/eslint__js':
-        specifier: ^8.42.3
-        version: 8.42.3
-      '@types/hast':
-        specifier: ^3.0.4
-        version: 3.0.4
-      '@types/luxon':
-        specifier: ^3.4.2
-        version: 3.4.2
-      '@types/postcss-js':
-        specifier: ^4.0.4
-        version: 4.0.4
-      '@types/remove-markdown':
-        specifier: ^0.3.4
-        version: 0.3.4
-      '@typescript-eslint/parser':
-        specifier: ^7.17.0
-        version: 7.17.0(eslint@9.7.0)(typescript@5.5.4)
       '@vueuse/core':
         specifier: ^10.11.0
         version: 10.11.0(vue@3.4.34(typescript@5.5.4))
@@ -89,24 +68,12 @@ importers:
       astro-seo:
         specifier: ^0.8.4
         version: 0.8.4(prettier-plugin-astro@0.14.1)(prettier@3.3.3)(typescript@5.5.4)
-      eslint:
-        specifier: ^9.7.0
-        version: 9.7.0
-      eslint-plugin-astro:
-        specifier: ^1.2.3
-        version: 1.2.3(eslint@9.7.0)(typescript@5.5.4)
-      eslint-plugin-vue:
-        specifier: ^9.27.0
-        version: 9.27.0(eslint@9.7.0)
       hast-util-to-html:
         specifier: ^9.0.1
         version: 9.0.1
       hastscript:
         specifier: ^9.0.0
         version: 9.0.0
-      instantsearch.css:
-        specifier: ^8.3.0
-        version: 8.3.0
       luxon:
         specifier: ^3.4.4
         version: 3.4.4
@@ -158,9 +125,6 @@ importers:
       remove-markdown:
         specifier: ^0.5.0
         version: 0.5.0
-      sharp:
-        specifier: ^0.33.4
-        version: 0.33.4
       tailwind-variants:
         specifier: ^0.2.1
         version: 0.2.1(tailwindcss@3.4.6)
@@ -170,12 +134,6 @@ importers:
       tailwindcss-animated:
         specifier: ^1.1.2
         version: 1.1.2(tailwindcss@3.4.6)
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
-      typescript-eslint:
-        specifier: ^7.17.0
-        version: 7.17.0(eslint@9.7.0)(typescript@5.5.4)
       unified:
         specifier: ^11.0.5
         version: 11.0.5
@@ -189,6 +147,36 @@ importers:
         specifier: ^4.19.0
         version: 4.19.0(@vue/server-renderer@3.4.34(vue@3.4.34(typescript@5.5.4)))(algoliasearch@4.24.0)(vue@3.4.34(typescript@5.5.4))
     devDependencies:
+      '@eslint/js':
+        specifier: ^9.7.0
+        version: 9.7.0
+      '@types/eslint__js':
+        specifier: ^8.42.3
+        version: 8.42.3
+      '@types/hast':
+        specifier: ^3.0.4
+        version: 3.0.4
+      '@types/luxon':
+        specifier: ^3.4.2
+        version: 3.4.2
+      '@types/postcss-js':
+        specifier: ^4.0.4
+        version: 4.0.4
+      '@types/remove-markdown':
+        specifier: ^0.3.4
+        version: 0.3.4
+      '@typescript-eslint/parser':
+        specifier: ^7.17.0
+        version: 7.17.0(eslint@9.7.0)(typescript@5.5.4)
+      eslint:
+        specifier: ^9.7.0
+        version: 9.7.0
+      eslint-plugin-astro:
+        specifier: ^1.2.3
+        version: 1.2.3(eslint@9.7.0)(typescript@5.5.4)
+      eslint-plugin-vue:
+        specifier: ^9.27.0
+        version: 9.27.0(eslint@9.7.0)
       husky:
         specifier: ^9.1.1
         version: 9.1.1
@@ -198,6 +186,15 @@ importers:
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
+      sharp:
+        specifier: ^0.33.4
+        version: 0.33.4
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+      typescript-eslint:
+        specifier: ^7.17.0
+        version: 7.17.0(eslint@9.7.0)(typescript@5.5.4)
 
 packages:
 
@@ -2337,9 +2334,6 @@ packages:
 
   instantsearch-ui-components@0.7.0:
     resolution: {integrity: sha512-4dHmCFbKWap5iSR2VmF5pSBECGQbAa8sPMoazMihYY2/0ahVzdHrOOtT8/hferG1A/xTT8nzfU7PIg+8lomNsA==}
-
-  instantsearch.css@8.3.0:
-    resolution: {integrity: sha512-mdrfA4pw+6YNvoimibCMJWDgrxOreCzKSUjyQgyvZljFzqpCxcKF5ZApIt/L//3804C55NvXncX2zsZezAS8kA==}
 
   instantsearch.js@4.73.2:
     resolution: {integrity: sha512-96S6wKh7TVXbmnliESPphPHrcpQ6BiJvVqgnS6lZmHI72sLKgadIwuBXCo1cIFIU5LaCH77ydCUCo2BO5HmX9w==}
@@ -6743,8 +6737,6 @@ snapshots:
   instantsearch-ui-components@0.7.0:
     dependencies:
       '@babel/runtime': 7.24.8
-
-  instantsearch.css@8.3.0: {}
 
   instantsearch.js@4.73.2(algoliasearch@4.24.0):
     dependencies:
