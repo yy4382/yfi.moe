@@ -13,7 +13,7 @@ const { pageId, title, createdAt } = Astro.props;
 
 <Card useHeading>
   <h1 slot="heading">{title}</h1>
-  <p class="my-4">{createdAt}</p>
+  <p class="my-4 text-comment">{createdAt}</p>
   <MdRender class="notion-prose">
     <NoteCardContent pageId={pageId} server:defer>
       <span slot="fallback" class="flex items-center">
