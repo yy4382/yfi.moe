@@ -1,0 +1,29 @@
+---
+import { getPublishedPages } from "@libs/notion-client";
+import NoteCard from "./NoteCard.astro";
+
+const apiKey = import.meta.env.NOTION_API_KEY;
+const databaseId = import.meta.env.NOTION_NOTE_DATABASE_ID;
+
+const pages = await getPublishedPages(databaseId, {
+  apiKey,
+  filter: {
+    property: "Is Published",
+    checkbox: {
+      equals: true,
+    },
+  },
+});
+---
+
+<div class="flex flex-col gap-4">
+  {
+    pages.map((page) => (
+      <NoteCard
+        pageId={page.id}
+        title={page.title ?? "Untitled"}
+        createdAt={page.createdAt}
+      />
+    ))
+  }
+</div>

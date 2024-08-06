@@ -1,0 +1,11 @@
+---
+import { getPageContent } from "@libs/notion-client";
+interface Props {
+  pageId: string;
+}
+const { pageId } = Astro.props;
+const apiKey = import.meta.env.NOTION_API_KEY;
+const pageContent = await getPageContent(pageId, { apiKey });
+---
+
+<Fragment set:html={pageContent} />

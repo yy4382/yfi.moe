@@ -13,13 +13,13 @@ import Icons from "unplugin-icons/vite";
 import { h } from "hastscript";
 import { siteDomain } from "./src/configs/site";
 import { linkIcons } from "./src/configs/markdown";
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
   site: siteDomain,
-  devToolbar: {
-    enabled: false,
-  },
+  output: "hybrid",
+  adapter: vercel({ imageService: true }),
   integrations: [tailwind(), vue(), icon(), sitemap()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
@@ -35,13 +35,18 @@ export default defineConfig({
             if (!url) return undefined;
             return linkIcons()
               .map(([icon, regex]) => {
-                if (regex.test(url)) return h("span", { className: [icon] });
+                if (regex.test(url))
+                  return h("span", {
+                    className: [icon],
+                  });
               })
               .find((i) => i !== undefined);
           },
           content(node: Element): Element | undefined {
             if (nodeHas(node, "img")) return undefined;
-            return h("span", { className: ["i-mingcute-external-link-line"] });
+            return h("span", {
+              className: ["i-mingcute-external-link-line"],
+            });
           },
         },
       ],
@@ -60,8 +65,13 @@ export default defineConfig({
       }),
     ],
   },
+  experimental: {
+    serverIslands: true,
+  },
+  devToolbar: {
+    enabled: false,
+  },
 });
-
 const nodeHas = (node: Element, tagName: string | string[]): boolean => {
   return node.children.some(
     (child) =>
