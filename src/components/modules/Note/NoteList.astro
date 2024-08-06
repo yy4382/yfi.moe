@@ -1,8 +1,8 @@
 ---
-import { GET, type Page } from "../../../pages/api/note";
+import { type Page } from "../../../pages/api/note";
 import NoteCard from "./NoteCard.astro";
 
-let response = await GET(Astro);
+let response = await fetch("/api/note");
 
 const pages = (await response.json()) as Page[];
 ---

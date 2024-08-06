@@ -1,13 +1,9 @@
 ---
-import { GET } from "src/pages/api/note/[id]";
 interface Props {
   pageId: string;
 }
 const { pageId } = Astro.props;
-const response = await GET({
-  ...Astro,
-  params: { ...Astro.params, id: pageId },
-});
+const response = await fetch(`/api/note/${pageId}`);
 const pageContent = await response.json();
 ---
 
