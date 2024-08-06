@@ -1,27 +1,12 @@
 ---
-import Card from "@comp/elements/Card.astro";
+import NoteCard from "@comp/modules/Note/NoteCard.astro";
+import NoteCardDefer from "@comp/modules/Note/NoteCardDefer.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getPageContent } from "@libs/notion-client";
-export const prerender = false;
 import { getSeo } from "@utils/SEO";
 
+export const prerender = false;
+
 const pageId = Astro.params.id;
-const apiKey = import.meta.env.NOTION_API_KEY;
-
-const pageContent = await getPageContent(pageId ?? "", {
-  apiKey,
-  accessControl: (resp) => {
-    const isValid =
-      "created_time" in resp &&
-      resp.parent.type === "database_id" &&
-      resp.parent.database_id.replace(/-/g, "") ===
-        import.meta.env.NOTION_NOTE_DATABASE_ID &&
-      resp.properties["Is Published"].type === "checkbox" &&
-      resp.properties["Is Published"].checkbox === true;
-
-    return isValid;
-  },
-});
 
 const seo = getSeo({
   title: "Notes",
@@ -32,7 +17,9 @@ const seo = getSeo({
 ---
 
 <BaseLayout seoConfig={seo}>
-  <Card>
-    <Fragment set:html={pageContent} />
-  </Card>
+  <NoteCardDefer server:defer pageId={pageId ?? ""}>
+    <Fragment slot="fallback">
+      <NoteCard />
+    </Fragment>
+  </NoteCardDefer>
 </BaseLayout>

@@ -1,32 +1,18 @@
 ---
-import { Icon } from "astro-icon/components";
 import Card from "@comp/elements/Card.astro";
-import NoteCardContent from "./NoteCardContent.astro";
 import MdRender from "@comp/elements/MdRender.astro";
-import { DateTime } from "luxon";
-interface Props {
-  pageId: string;
-  title: string;
-  createdAt: string;
-}
-const { pageId, title, createdAt } = Astro.props;
+import NoteLoading from "./NoteLoading.astro";
 ---
 
 <Card useHeading>
-  <h1 slot="heading">{title}</h1>
-  <p class="my-4 text-comment">
-    {DateTime.fromISO(createdAt).toFormat("yyyy-MM-dd")}
-  </p>
+  <h1 slot="heading"><slot name="title">Loading</slot></h1>
+  <div class="my-4 text-comment">
+    <slot name="meta" />
+  </div>
   <MdRender class="notion-prose">
-    <NoteCardContent pageId={pageId} server:defer>
-      <span slot="fallback" class="flex items-center">
-        <Icon
-          name="mingcute:loading-line"
-          class="animate-spin animate-infinite"
-        />
-        <p>Loading from Notion API, may be super slow...</p>
-      </span>
-    </NoteCardContent>
+    <slot>
+      <NoteLoading />
+    </slot>
   </MdRender>
 </Card>
 

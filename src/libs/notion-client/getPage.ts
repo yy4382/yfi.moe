@@ -4,6 +4,7 @@ import { toHtml } from "hast-util-to-html";
 import { blockToHast, Client as Notion2HastClient } from "notion2hast";
 import { h } from "hastscript";
 import type { GetPageResponse } from "@notionhq/client/build/src/api-endpoints";
+import extractMetaFromPage, { type PageMeta } from "./extractMetaFromPage";
 
 class FromNotion extends Notion2HastClient {
   private client: NotionClient;
@@ -24,7 +25,7 @@ export async function getPageContent(
     apiKey: string;
     accessControl: (response: GetPageResponse) => boolean;
   },
-) {
+): Promise<{ meta: PageMeta; html: string }> {
   // Check if the user has access to the page
   const client = new NotionClient({ auth: options.apiKey });
   console.time(`Fetching page(block) ${pageId} content from Notion API`);
@@ -32,8 +33,15 @@ export async function getPageContent(
   if (!options.accessControl(response)) {
     console.error(`Trying to visit ${pageId} but access is denied`);
     console.timeEnd(`Fetching page(block) ${pageId} content from Notion API`);
-    return toHtml(h("div", "Access Denied, please contact the owner"));
+    throw new Error("Access denied", { cause: { code: "ACCESS_DENIED" } });
   }
+  if (!("created_time" in response)) {
+    console.error(`Trying to visit ${pageId} but it is not a page`);
+    console.timeEnd(`Fetching page(block) ${pageId} content from Notion API`);
+    throw new Error("Not a page", { cause: { code: "NOT_A_PAGE" } });
+  }
+
+  const pageMeta = extractMetaFromPage(response);
 
   const FromNotionClient = new FromNotion({ auth: options.apiKey });
   const tree = await blockToHast(FromNotionClient, {
@@ -43,5 +51,5 @@ export async function getPageContent(
   });
   console.timeEnd(`Fetching page(block) ${pageId} content from Notion API`);
 
-  return toHtml(h(null, tree));
+  return { meta: pageMeta, html: toHtml(h(null, tree)) };
 }

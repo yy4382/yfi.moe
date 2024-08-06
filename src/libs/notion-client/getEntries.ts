@@ -1,16 +1,13 @@
 import { Client } from "@notionhq/client";
-import type {
-  QueryDatabaseParameters,
-  PageObjectResponse,
-} from "@notionhq/client/build/src/api-endpoints";
-import { renderRichText } from "../notion-to-html";
+import type { QueryDatabaseParameters } from "@notionhq/client/build/src/api-endpoints";
+import extractMetaFromPage, { type PageMeta } from "./extractMetaFromPage";
 
 type QueryDatabaseFilter = QueryDatabaseParameters["filter"];
 
 export async function getEntries(
   databaseId: string,
   options: { apiKey: string; filter: QueryDatabaseFilter },
-) {
+): Promise<PageMeta[]> {
   const notion = new Client({ auth: options.apiKey });
 
   const response = await queryDatabase(databaseId, notion, options.filter);
@@ -22,27 +19,11 @@ export async function getEntries(
           return undefined;
         if (page.in_trash || page.archived) return undefined;
 
-        const title = findTitle(page.properties);
-        return {
-          title,
-          id: page.id,
-          createdAt: page.created_time,
-          updatedAt: page.last_edited_time,
-        };
+        return extractMetaFromPage(page);
       }),
     )
   ).filter((page) => page !== undefined);
 }
-
-const findTitle = (titleProp: PageObjectResponse["properties"]) => {
-  return Object.entries(titleProp)
-    .map(([_, value]) => {
-      if (value.type === "title") {
-        return renderRichText(value.title);
-      }
-    })
-    .find((value) => value !== undefined);
-};
 
 async function queryDatabase(
   databaseId: string,
