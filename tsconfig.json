@@ -11,7 +11,8 @@
       "@configs/*": ["src/configs/*"],
       "@layouts/*": ["src/layouts/*"],
       "@icons/*": ["src/components/icons/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@libs/*": ["src/libs/*"]
     },
     "types": ["unplugin-icons/types/vue"]
   },
