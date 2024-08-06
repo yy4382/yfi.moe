@@ -1,7 +1,5 @@
 ---
-import { Image } from "astro:assets";
 import getStatistics from "@utils/statistics";
-import logo from "@assets/logo.png";
 import { authorName, contactInfo } from "@configs/author";
 import { sitePaths } from "@configs/site";
 import { getSortedPosts } from "@utils/content";
@@ -38,12 +36,10 @@ const stats: [number | string, string, string][] = [
     class="sm:[grid-area:introduction] flex gap-4 items-center justify-center overflow-hidden mt-[calc(50vh-9rem-6rem)] sm:mt-0 mb-[calc(50vh-10rem-6rem)] sm:mb-0 min-h-48 sm:min-h-0"
   >
     <div class="flex items-center text-xl gap-2">
-      <Image
-        src={logo}
+      <img
+        src="/icon-96.png"
         alt="logo"
-        loading={"eager"}
         class="size-16 xl:size-20 rounded-xl mr-3"
-        widths={[80, 160]}
       />
       <h2 class="text-6xl xl:text-8xl font-bold text-heading">
         {authorName}
