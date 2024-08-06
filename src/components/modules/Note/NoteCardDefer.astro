@@ -5,17 +5,28 @@ interface Props {
   pageId: string;
 }
 const { pageId } = Astro.props;
-const baseUrl = new URL(Astro.request.url);
-const response = await fetch(`${baseUrl.origin}/api/note/${pageId}`);
-const { meta, html } = (await response.json()) as Awaited<
-  ReturnType<typeof getPageContent>
->;
+
+import $selfFetch from "@utils/selfFetch";
+const { data, error } = await $selfFetch<
+  Awaited<ReturnType<typeof getPageContent>>
+>(`/api/note/${pageId}`, {
+  origin: new URL(Astro.request.url).origin,
+});
 ---
 
-<NoteCard>
-  <Fragment slot="title">{meta.title}</Fragment>
-  <div slot="meta">
-    <span>{meta.createdAt}</span>
-  </div>
-  <Fragment set:html={html} />
-</NoteCard>
+{
+  data !== null ? (
+    <NoteCard>
+      <Fragment slot="title">{data.meta.title}</Fragment>
+      <div slot="meta">
+        <span>{data.meta.createdAt}</span>
+      </div>
+      <Fragment set:html={data.html} />
+    </NoteCard>
+  ) : (
+    <NoteCard>
+      <Fragment slot="title">Error</Fragment>
+      <span class="text-heading">{error}</span>
+    </NoteCard>
+  )
+}

@@ -4,11 +4,17 @@ interface Props {
   pageId: string;
 }
 const { pageId } = Astro.props;
-const baseUrl = new URL(Astro.request.url);
-const response = await fetch(`${baseUrl.origin}/api/note/${pageId}`);
-const pageContent = (await response.json()) as Awaited<
-  ReturnType<typeof getPageContent>
->;
+
+import $selfFetch from "@utils/selfFetch";
+const { data: pageContent, error } = await $selfFetch<
+  Awaited<ReturnType<typeof getPageContent>>
+>(`/api/note/${pageId}`, { origin: new URL(Astro.request.url).origin });
 ---
 
-<Fragment set:html={pageContent.html} />
+{
+  pageContent !== null ? (
+    <Fragment set:html={pageContent.html} />
+  ) : (
+    <span class="text-heading">{error}</span>
+  )
+}
