@@ -6,7 +6,7 @@ export type Page = {
   createdAt: string;
   updatedAt: string;
 };
-
+export const prerender = false;
 export const GET: APIRoute = async () => {
   const apiKey = import.meta.env.NOTION_API_KEY;
   const databaseId = import.meta.env.NOTION_NOTE_DATABASE_ID;

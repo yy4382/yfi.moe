@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import { getPageContent } from "@libs/notion-client";
 
+export const prerender = false;
+
 export const GET: APIRoute = async ({ params, request: _ }) => {
   const pageId = params.id ?? "";
   const apiKey = import.meta.env.NOTION_API_KEY;
