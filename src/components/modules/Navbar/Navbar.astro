@@ -1,8 +1,7 @@
 ---
 import type { NavMenu } from "@configs/navbar";
 import NavBar from "./NavBar.vue";
-import { Image } from "astro:assets";
-import logo from "@assets/logo.png";
+
 interface Props {
   navStats: NavMenu | string | undefined;
 }
@@ -10,13 +9,11 @@ const { navStats } = Astro.props;
 ---
 
 <NavBar navStats={navStats} client:load>
-  <Image
-    src={logo}
+  <img
+    src="/icon-96.png"
     alt="logo"
-    loading={"eager"}
     class="w-8 h-8 rounded-lg"
     width={32}
     height={32}
-    widths={[80, 160]}
   />
 </NavBar>

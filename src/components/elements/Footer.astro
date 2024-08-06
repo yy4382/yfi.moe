@@ -2,9 +2,6 @@
 import Card from "@comp/elements/Card.astro";
 import { Icon } from "astro-icon/components";
 import { siteConfig } from "@configs/site";
-
-import { Image } from "astro:assets";
-import logo from "@assets/logo.png";
 ---
 
 <Card padding="xs">
@@ -45,14 +42,12 @@ import logo from "@assets/logo.png";
       </span>
     </div>
     <div class="center hidden md:flex">
-      <Image
-        src={logo}
+      <img
+        src="/icon-96.png"
         alt="logo"
-        loading={"lazy"}
         class="rounded-lg"
-        width={48}
-        height={48}
-        widths={[80, 160]}
+        width="48"
+        height="48"
       />
     </div>
   </div>

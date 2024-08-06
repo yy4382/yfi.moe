@@ -1,8 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import getStatistics from "@utils/statistics";
-import avatar from "@assets/avatar.jpeg";
 import { authorName, contactInfo } from "@configs/author";
 import Card from "@comp/elements/Card.astro";
 
@@ -14,12 +12,10 @@ const { articles, words, tags } = await getStatistics();
     class="flex lg:flex-col items-center gap-4 sm:gap-8 lg:gap-4 justify-center"
   >
     <div class="w-32 lg:w-[unset] mb-0">
-      <Image
-        class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg hover:shadow-none transition-shadow"
-        src={avatar}
-        loading={"eager"}
+      <img
+        src="/ava.webp"
         alt={authorName + " avatar"}
-        widths={[240, 540, 720, avatar.width]}
+        class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg hover:shadow-none transition-shadow"
       />
     </div>
     <div class="flex flex-col lg:items-center gap-2 shrink-0">
