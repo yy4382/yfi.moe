@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import Card from "@comp/elements/Card.astro";
 import NoteCardContent from "./NoteCardContent.astro";
 import MdRender from "@comp/elements/MdRender.astro";
+import { DateTime } from "luxon";
 interface Props {
   pageId: string;
   title: string;
@@ -13,7 +14,9 @@ const { pageId, title, createdAt } = Astro.props;
 
 <Card useHeading>
   <h1 slot="heading">{title}</h1>
-  <p class="my-4 text-comment">{createdAt}</p>
+  <p class="my-4 text-comment">
+    {DateTime.fromISO(createdAt).toFormat("yyyy-MM-dd")}
+  </p>
   <MdRender class="notion-prose">
     <NoteCardContent pageId={pageId} server:defer>
       <span slot="fallback" class="flex items-center">
