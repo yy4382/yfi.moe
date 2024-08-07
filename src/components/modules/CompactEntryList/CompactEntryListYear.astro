@@ -37,3 +37,26 @@ console.log(year, order);
 >
   <slot />
 </ul>
+
+<style is:global>
+  .timeline-dot > li.timeline-dot-item {
+    @apply relative pl-6;
+    &::after {
+      content: "";
+      @apply absolute size-2 z-10 rounded-full bg-content-50
+        left-2 top-1/2 -translate-y-1/2
+        outline outline-2 outline-card hover:outline-none
+        hover:h-5 hover:w-1 hover:left-2.5 hover:bg-primary transition-all;
+    }
+    &::before {
+      content: "";
+      @apply h-[calc(100%+1rem)] absolute top-1/2 -translate-y-1/2 left-[calc(1.5rem/2-1px)] border-l-[2px] pointer-events-none border-content-50 opacity-30 transition;
+    }
+    &:first-child::before {
+      @apply h-[calc(50%+0.5rem)] top-1/2 translate-y-0;
+    }
+    &:last-child::before {
+      @apply h-[calc(50%+0.5rem)] top-[unset] bottom-1/2 translate-y-0;
+    }
+  }
+</style>
