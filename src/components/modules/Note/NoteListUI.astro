@@ -1,29 +1,97 @@
 ---
 import {
-  CompactEntryListItem,
   CompactEntryListYear,
   groupingEntries,
 } from "@comp/modules/CompactEntryList";
 import type { PageMeta } from "@libs/notion-client";
+import NoteCardContent from "./NoteCardContent.astro";
+import { DateTime } from "luxon";
+import { Icon } from "astro-icon/components";
+import NoteLoading from "./NoteLoading.astro";
 
 interface Props {
   pages: PageMeta[];
+  mock?: boolean;
 }
-const { pages } = Astro.props;
+const { pages, mock } = Astro.props;
 
-const groups = groupingEntries(pages, (page) =>
-  new Date(page.createdAt).getFullYear(),
-);
+const groups = mock
+  ? [
+      {
+        year: "2024",
+        posts: [1, 2, 3] as unknown as PageMeta[],
+      },
+      {
+        year: "2023",
+        posts: [1, 2, 3] as unknown as PageMeta[],
+      },
+    ]
+  : groupingEntries(pages, (page) => new Date(page.createdAt).getFullYear());
 ---
 
 {
   groups.map((group) => (
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
-        <CompactEntryListItem href={`/note/${page.id}`} title={page.title}>
-          <span>{page.createdAt}</span>
-        </CompactEntryListItem>
+        <li class="timeline-dot-item-note-list py-6">
+          <div class="h-12 py-2 flex items-center">
+            <div class="flex select-none items-center gap-2">
+              <div class="p-1 rounded-md bg-primary/30 size-8 flex center">
+                <Icon
+                  name="mingcute:calendar-line"
+                  class="size-full text-primary"
+                />
+              </div>
+              <slot name="header">
+                <span class="font-semibold text-comment opacity-75 text-base">
+                  {DateTime.fromISO(page.createdAt).toFormat("MM-dd")}
+                </span>
+              </slot>
+            </div>
+          </div>
+          <slot>
+            <NoteCardContent server:defer pageId={page.id}>
+              <div
+                slot="fallback"
+                class="w-full h-24 p-4 animate-pulse text-gray-500 bg-gray-300/40 rounded-md flex center"
+              >
+                <NoteLoading />
+              </div>
+            </NoteCardContent>
+          </slot>
+        </li>
       ))}
     </CompactEntryListYear>
   ))
 }
+<style is:global>
+  .timeline-dot > li.timeline-dot-item-note-list {
+    --top-offset: 3rem;
+    --left-offset: 1.5rem;
+    @apply relative ml-[var(--left-offset)];
+    &:first-child {
+      @apply pt-0;
+      --top-offset: 1.5rem;
+    }
+    &:last-child {
+      @apply pb-0;
+    }
+
+    &::after {
+      content: "";
+      @apply absolute size-2 z-10 rounded-full bg-content-50
+        -left-[calc(var(--left-offset)+0.25rem)] top-[calc(var(--top-offset)-0.25rem)]
+        outline outline-2 outline-card;
+    }
+    &::before {
+      content: "";
+      @apply h-[calc(100%+1rem)] absolute top-1/2 -translate-y-1/2 -left-[calc(var(--left-offset)+1px)] border-l-[2px] pointer-events-none border-content-50 opacity-30 transition;
+    }
+    &:first-child::before {
+      @apply h-[calc(100%+0.5rem-var(--top-offset))] absolute top-[unset] bottom-[calc(-0.5rem)] translate-y-0;
+    }
+    &:last-child::before {
+      @apply h-[calc(0.5rem+var(--top-offset))] top-[calc(-0.5rem)] translate-y-0;
+    }
+  }
+</style>

@@ -1,8 +1,13 @@
 ---
 import { Icon } from "astro-icon/components";
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
 ---
 
-<span class="flex items-center">
+<span class="flex items-center gap-2" class:list={className}>
   <Icon
     name="mingcute:loading-line"
     class="animate-spin animate-infinite"

@@ -3,7 +3,7 @@ import type { getEntries } from "@libs/notion-client";
 import $selfFetch from "@utils/selfFetch";
 import NoteListUI from "./NoteListUI.astro";
 
-// await new Promise((resolve) => setTimeout(resolve, 20000000));
+// await new Promise((resolve) => setTimeout(resolve, 2000));
 const { data: pages, error } = await $selfFetch<
   Awaited<ReturnType<typeof getEntries>>
 >("/api/note", { origin: new URL(Astro.request.url).origin });
