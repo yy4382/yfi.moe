@@ -37,6 +37,12 @@ async function queryDatabase(
     return await client.databases.query({
       database_id: databaseId,
       filter,
+      sorts: [
+        {
+          timestamp: "created_time",
+          direction: "descending",
+        },
+      ],
     });
   } catch (error) {
     if (error instanceof Error)
