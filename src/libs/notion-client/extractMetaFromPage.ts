@@ -25,7 +25,11 @@ const findTitle = (titleProp: PageObjectResponse["properties"]) => {
     Object.entries(titleProp)
       .map(([_, value]) => {
         if (value.type === "title") {
-          return value.title[0].plain_text;
+          try {
+            return value.title[0].plain_text;
+          } catch {
+            return "";
+          }
         }
       })
       .find((value) => value !== undefined) ?? ""
