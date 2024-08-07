@@ -43,6 +43,7 @@ async function queryDatabase(
           direction: "descending",
         },
       ],
+      page_size: 8,
     });
   } catch (error) {
     if (error instanceof Error)
