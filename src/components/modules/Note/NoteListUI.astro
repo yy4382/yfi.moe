@@ -1,0 +1,29 @@
+---
+import {
+  CompactEntryListItem,
+  CompactEntryListYear,
+  groupingEntries,
+} from "@comp/modules/CompactEntryList";
+import type { PageMeta } from "@libs/notion-client";
+
+interface Props {
+  pages: PageMeta[];
+}
+const { pages } = Astro.props;
+
+const groups = groupingEntries(pages, (page) =>
+  new Date(page.createdAt).getFullYear(),
+);
+---
+
+{
+  groups.map((group) => (
+    <CompactEntryListYear year={group.year} order={1} animated={false}>
+      {group.posts.map((page) => (
+        <CompactEntryListItem href={`/note/${page.id}`} title={page.title}>
+          <span>{page.createdAt}</span>
+        </CompactEntryListItem>
+      ))}
+    </CompactEntryListYear>
+  ))
+}

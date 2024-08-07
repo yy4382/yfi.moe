@@ -1,0 +1,73 @@
+---
+import Card from "@comp/elements/Card.astro";
+
+type Props = {
+  keyword?: string;
+  animated?: boolean;
+};
+const { keyword, animated = true } = Astro.props;
+
+const hasKeyword = keyword !== undefined && keyword !== "";
+
+export function groupingEntries<T>(posts: T[], getYear: (arg0: T) => number) {
+  const groupedPosts = posts.reduce((grouped: Record<string, T[]>, post: T) => {
+    const year = getYear(post);
+    if (!grouped[year]) {
+      grouped[year] = [];
+    }
+    grouped[year].push(post);
+    return grouped;
+  }, {});
+
+  // convert the object to an array
+  const groupedPostsArray = Object.keys(groupedPosts).map((key) => ({
+    year: key,
+    posts: groupedPosts[key],
+  }));
+
+  // sort years by latest first
+  groupedPostsArray.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+  return groupedPostsArray;
+}
+
+export const interval = 100;
+---
+
+<Card useHeading={hasKeyword} class:list={[animated && "main-card-onload"]}>
+  {
+    hasKeyword && (
+      <h1
+        slot="heading"
+        class="animate-onload opacity-0"
+        style={animated ? `animation-delay: ${interval};` : ""}
+      >
+        {keyword}
+      </h1>
+    )
+  }
+
+  <slot />
+</Card>
+
+<style is:global>
+  .timeline-dot > li {
+    @apply relative pl-6;
+    &::after {
+      content: "";
+      @apply absolute size-2 z-10 rounded-full bg-content-50
+        left-2 top-1/2 -translate-y-1/2
+        outline outline-2 outline-card hover:outline-none
+        hover:h-5 hover:w-1 hover:left-2.5 hover:bg-primary transition-all;
+    }
+    &::before {
+      content: "";
+      @apply h-[calc(100%+1rem)] absolute top-1/2 -translate-y-1/2 left-[calc(1.5rem/2-1px)] border-l-[2px] pointer-events-none border-content-50 opacity-30 transition;
+    }
+  }
+  .timeline-dot > li:first-child::before {
+    @apply h-[calc(50%+0.5rem)] top-1/2 translate-y-0;
+  }
+  .timeline-dot > li:last-child::before {
+    @apply h-[calc(50%+0.5rem)] top-[unset] bottom-1/2 translate-y-0;
+  }
+</style>

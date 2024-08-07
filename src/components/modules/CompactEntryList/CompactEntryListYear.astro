@@ -1,0 +1,39 @@
+---
+import { interval } from "./CompactEntryList.astro";
+interface Props {
+  year: string;
+  order: number;
+  animated?: boolean;
+}
+const { year, order, animated = true } = Astro.props;
+console.log(year, order);
+---
+
+<div
+  class:list={[
+    "relative select-none pointer-events-none h-12 sm:h-20",
+    animated && "animate-onload opacity-0",
+  ]}
+  style={`animation-delay: ${order * 2 * interval}ms;`}
+>
+  {/* https://stackoverflow.com/a/73146972 */}
+  <span
+    class="absolute text-8xl sm:text-[9rem] leading-none font-bold text-transparent top-4 -left-4 [-webkit-text-stroke:4px_theme('colors.content.200')] opacity-10"
+  >
+    {year}
+    <span
+      class="absolute left-0 text-card [-webkit-text-stroke:0] pointer-events-none"
+    >
+      {year}
+    </span>
+  </span>
+</div>
+<ul
+  class:list={[
+    "timeline-dot -ml-3 md:ml-0 flex flex-col gap-4",
+    animated && "animate-onload opacity-0",
+  ]}
+  style={`animation-delay: ${(order * 2 + 1) * interval}ms;`}
+>
+  <slot />
+</ul>

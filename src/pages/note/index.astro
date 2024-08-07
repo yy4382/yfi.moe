@@ -1,9 +1,12 @@
 ---
-import { Icon } from "astro-icon/components";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import NoteList from "@comp/modules/Note/NoteList.astro";
 
 import { getSeo } from "@utils/SEO";
+import {
+  CompactEntryList,
+  CompactEntryListSkeleton,
+} from "@comp/modules/CompactEntryList";
 
 export const prerender = false;
 
@@ -16,12 +19,9 @@ const seo = getSeo({
 ---
 
 <BaseLayout seoConfig={seo}>
-  <NoteList server:defer>
-    <span slot="fallback" class="flex items-center">
-      <Icon
-        name="mingcute:loading-line"
-        class="animate-spin animate-infinite"
-      />Loading from Notion API, may be super slow...
-    </span>
-  </NoteList>
+  <CompactEntryList keyword="碎碎念">
+    <NoteList server:defer>
+      <CompactEntryListSkeleton slot="fallback" />
+    </NoteList>
+  </CompactEntryList>
 </BaseLayout>

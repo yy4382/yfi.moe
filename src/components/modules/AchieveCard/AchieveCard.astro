@@ -1,10 +1,13 @@
 ---
 import { getSortedPosts } from "@utils/content";
 import AchieveAttr from "./AchieveAttr.astro";
-import Card from "@comp/elements/Card.astro";
-import { type CollectionEntry } from "astro:content";
 import { getPostPath } from "@utils/path";
-import { tvButton } from "@styles/tv";
+import {
+  CompactEntryList,
+  CompactEntryListItem,
+  CompactEntryListYear,
+  groupingEntries,
+} from "@comp/modules/CompactEntryList";
 
 interface Props {
   keyword?: string;
@@ -12,106 +15,27 @@ interface Props {
 }
 const { keyword, tag } = Astro.props;
 
-const hasKeyword = keyword !== undefined && keyword !== "";
-
 let posts = await getSortedPosts();
 
 if (tag) posts = posts.filter((post) => post.data.tags.includes(tag));
-
-const groups = (function () {
-  const groupedPosts = posts.reduce(
-    (
-      grouped: Record<string, CollectionEntry<"post">[]>,
-      post: CollectionEntry<"post">,
-    ) => {
-      const year = post.data.date.getFullYear();
-      if (!grouped[year]) {
-        grouped[year] = [];
-      }
-      grouped[year].push(post);
-      return grouped;
-    },
-    {},
-  );
-
-  // convert the object to an array
-  const groupedPostsArray = Object.keys(groupedPosts).map((key) => ({
-    year: key,
-    posts: groupedPosts[key],
-  }));
-
-  // sort years by latest first
-  groupedPostsArray.sort((a, b) => parseInt(b.year) - parseInt(a.year));
-  return groupedPostsArray;
-})();
-let delay = 2;
-const interval = 100;
+const groups = groupingEntries(posts, (post) => post.data.date.getFullYear());
+console.log(groups.length);
+let order = 1;
 ---
 
-<Card useHeading={hasKeyword} class="main-card-onload">
-  {
-    hasKeyword && (
-      <h1
-        slot="heading"
-        class="animate-onload opacity-0"
-        style={`animation-delay: ${interval};`}
-      >
-        {keyword}
-      </h1>
-    )
-  }
-
+<CompactEntryList keyword={keyword}>
   {
     groups.map((group) => (
-      <>
-        <div
-          class="relative select-none pointer-events-none h-12 sm:h-20 animate-onload opacity-0"
-          style={`animation-delay: ${delay++ * interval}ms;`}
-        >
-          {/* https://stackoverflow.com/a/73146972 */}
-          <span class="absolute text-8xl sm:text-[9rem] leading-none font-bold text-transparent top-4 -left-4 [-webkit-text-stroke:4px_theme('colors.content.200')] opacity-10">
-            {group.year}
-            <span class="absolute left-0 text-card [-webkit-text-stroke:0] pointer-events-none">
-              {group.year}
-            </span>
-          </span>
-        </div>
-        <ul
-          class="timeline-dot -ml-3 md:ml-0 animate-onload opacity-0"
-          style={`animation-delay: ${delay++ * interval}ms;`}
-        >
-          {group.posts.map((post: CollectionEntry<"post">) => (
-            <li class:list={["py-2 group", tvButton()]}>
-              <a class="flex flex-col gap-1" href={getPostPath(post)}>
-                <span class="truncate text-heading text-left text-sm md:text-base transition group-hover:translate-x-1">
-                  {post.data.title}
-                </span>
-                <AchieveAttr post={post} />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </>
+      <CompactEntryListYear year={group.year} order={order++}>
+        {group.posts.map((post) => (
+          <CompactEntryListItem
+            href={getPostPath(post)}
+            title={post.data.title}
+          >
+            <AchieveAttr post={post} />
+          </CompactEntryListItem>
+        ))}
+      </CompactEntryListYear>
     ))
   }
-</Card>
-
-<style is:global>
-  .timeline-dot > li {
-    @apply relative pl-6;
-    &::after {
-      content: "";
-      @apply absolute size-2 z-10 rounded-full bg-content-50
-        left-2 top-1/2 -translate-y-1/2
-        outline outline-2 outline-card hover:outline-none
-        hover:h-5 hover:w-1 hover:left-2.5 hover:bg-primary transition-all;
-    }
-    &::before {
-      content: "";
-      @apply h-full absolute -top-1/2 left-[calc(1.5rem/2-1px)] border-l-[2px] border-dashed pointer-events-none border-content-50 transition;
-    }
-  }
-  .timeline-dot > li:first-child::before {
-    display: none;
-  }
-</style>
+</CompactEntryList>

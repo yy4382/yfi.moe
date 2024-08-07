@@ -1,31 +1,13 @@
 ---
 import type { getEntries } from "@libs/notion-client";
-import NoteCard from "./NoteCard.astro";
-import NoteCardContent from "./NoteCardContent.astro";
-import NoteLoading from "./NoteLoading.astro";
 import $selfFetch from "@utils/selfFetch";
+import NoteListUI from "./NoteListUI.astro";
+
+// await new Promise((resolve) => setTimeout(resolve, 20000000));
 const { data: pages, error } = await $selfFetch<
   Awaited<ReturnType<typeof getEntries>>
 >("/api/note", { origin: new URL(Astro.request.url).origin });
 ---
 
-{
-  pages !== null && (
-    <div class="flex flex-col gap-4">
-      {pages.map((page) => (
-        <NoteCard>
-          <Fragment slot="title">{page.title}</Fragment>
-          <div slot="meta">
-            <span>{page.createdAt}</span>
-          </div>
-          <NoteCardContent server:defer pageId={page.id}>
-            <div slot="fallback">
-              <NoteLoading />
-            </div>
-          </NoteCardContent>
-        </NoteCard>
-      ))}
-    </div>
-  )
-}
+{pages !== null && <NoteListUI pages={pages} />}
 {error !== null && <span class="text-heading">{error}</span>}

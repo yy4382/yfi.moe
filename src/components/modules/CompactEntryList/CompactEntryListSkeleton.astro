@@ -1,0 +1,25 @@
+---
+import CompactEntryListItem from "./CompactEntryListItem.astro";
+import CompactEntryListYear from "./CompactEntryListYear.astro";
+const currentYear = new Date().getFullYear();
+---
+
+{
+  [1, 2].map((order) => (
+    <CompactEntryListYear
+      year={String(currentYear + 1 - order)}
+      order={0}
+      animated={false}
+    >
+      {[1, 2, 3].map(() => (
+        <CompactEntryListItem title="" href="javascript:void(0)">
+          <span
+            slot="title"
+            class="h-5 md:h-6 w-1/2 animate-pulse bg-gray-300 rounded-md"
+          />
+          <span class="h-3 md:h-4 w-3/4 animate-pulse bg-gray-300 rounded-md" />
+        </CompactEntryListItem>
+      ))}
+    </CompactEntryListYear>
+  ))
+}

@@ -1,0 +1,21 @@
+---
+import { tvButton } from "@styles/tv";
+interface Props {
+  href: string;
+  title: string;
+}
+const { href, title } = Astro.props;
+---
+
+<li class:list={["group", tvButton()]}>
+  <a class="flex flex-col gap-1" href={href}>
+    <slot name="title">
+      <span
+        class="truncate text-heading text-left text-sm md:text-base transition group-hover:translate-x-1"
+      >
+        {title}
+      </span>
+    </slot>
+    <slot />
+  </a>
+</li>
