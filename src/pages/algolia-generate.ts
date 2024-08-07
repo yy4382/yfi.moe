@@ -3,19 +3,17 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import removeMD from "remove-markdown";
 import runtimeEnv from "@utils/runtimeEnv";
 import { algoliaConfig } from "@configs/algolia";
+import { ALGOLIA_WRITE_API_KEY } from "astro:env/server";
 
 export async function GET() {
   if (runtimeEnv() !== "production") {
     return new Response("Not found", { status: 404 });
   }
 
-  if (!import.meta.env.ALGOLIA_WRITE_API_KEY) {
+  if (!ALGOLIA_WRITE_API_KEY) {
     throw new Error("Algolia environment variables not set");
   }
-  const client = algoliasearch(
-    algoliaConfig.appId,
-    import.meta.env.ALGOLIA_WRITE_API_KEY,
-  );
+  const client = algoliasearch(algoliaConfig.appId, ALGOLIA_WRITE_API_KEY);
 
   const posts = await getCollection("post");
   console.log(posts.length, "posts found");

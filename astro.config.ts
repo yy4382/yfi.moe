@@ -1,5 +1,5 @@
 import type { Element } from "hast";
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 import vue from "@astrojs/vue";
 import remarkGithubAlerts from "remark-github-alerts";
 import icon from "astro-icon";
@@ -67,6 +67,43 @@ export default defineConfig({
   },
   experimental: {
     serverIslands: true,
+    env: {
+      schema: {
+        // Algolia
+        ALGOLIA_WRITE_API_KEY: envField.string({
+          context: "server",
+          access: "secret",
+        }),
+
+        // Notion
+        NOTION_API_KEY: envField.string({
+          context: "server",
+          access: "secret",
+        }),
+        NOTION_NOTE_DATABASE_ID: envField.string({
+          context: "server",
+          access: "secret",
+        }),
+
+        // Preview
+        LOCAL_PREVIEW: envField.boolean({
+          context: "server",
+          access: "public",
+          default: false,
+        }),
+        VERCEL_ENV: envField.enum({
+          values: ["production", "preview", "development"],
+          context: "server",
+          access: "public",
+          optional: true,
+        }),
+        VERCEL_AUTOMATION_BYPASS_SECRET: envField.string({
+          context: "server",
+          access: "secret",
+          optional: true,
+        }),
+      },
+    },
   },
   devToolbar: {
     enabled: false,

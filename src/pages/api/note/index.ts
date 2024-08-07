@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { getEntries } from "@libs/notion-client";
+import { NOTION_NOTE_DATABASE_ID, NOTION_API_KEY } from "astro:env/server";
 export type Page = {
   title: string | undefined;
   id: string;
@@ -8,8 +9,8 @@ export type Page = {
 };
 export const prerender = false;
 export const GET: APIRoute = async () => {
-  const apiKey = import.meta.env.NOTION_API_KEY;
-  const databaseId = import.meta.env.NOTION_NOTE_DATABASE_ID;
+  const apiKey = NOTION_API_KEY;
+  const databaseId = NOTION_NOTE_DATABASE_ID;
 
   const pages = await getEntries(databaseId, {
     apiKey,

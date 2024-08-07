@@ -1,15 +1,25 @@
 import { ofetch } from "ofetch";
+import { VERCEL_AUTOMATION_BYPASS_SECRET, VERCEL_ENV } from "astro:env/server";
 
 export function useSelfFetch(config: { origin: string }) {
+  let headers: HeadersInit | undefined = undefined;
+
+  if (VERCEL_ENV === "preview") {
+    if (!VERCEL_AUTOMATION_BYPASS_SECRET) {
+      console.error(
+        "VERCEL_AUTOMATION_BYPASS_SECRET is not set, go to Vercel dashboard and enable it",
+      );
+      throw new Error("VERCEL_AUTOMATION_BYPASS_SECRET is not set");
+    } else {
+      headers = {
+        "x-vercel-protection-bypass": VERCEL_AUTOMATION_BYPASS_SECRET,
+      };
+    }
+  }
+
   return ofetch.create({
     baseURL: config.origin,
-    headers:
-      import.meta.env.VERCEL_ENV === "preview"
-        ? {
-            "x-vercel-protection-bypass": import.meta.env
-              .VERCEL_AUTOMATION_BYPASS_SECRET,
-          }
-        : undefined,
+    headers,
     parseResponse: JSON.parse,
   });
 }
