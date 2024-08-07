@@ -86,7 +86,6 @@ const { lengthY } = useSwipe(dialogContent, {
     if (lengthY.value < 0) contentMotion.set({ y: -lengthY.value });
   },
   onSwipeEnd: (_e: TouchEvent, direction) => {
-    console.log(direction);
     if (lengthY.value < contentHeightThisTime / 5 && direction === "down") {
       open.value = false;
     } else {

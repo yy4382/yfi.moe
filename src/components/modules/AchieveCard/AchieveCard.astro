@@ -19,7 +19,6 @@ let posts = await getSortedPosts();
 
 if (tag) posts = posts.filter((post) => post.data.tags.includes(tag));
 const groups = groupingEntries(posts, (post) => post.data.date.getFullYear());
-console.log(groups.length);
 let order = 1;
 ---
 

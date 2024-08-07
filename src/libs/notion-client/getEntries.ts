@@ -31,7 +31,7 @@ async function queryDatabase(
   filter?: QueryDatabaseFilter,
 ) {
   try {
-    console.log(
+    console.info(
       `Querying Database ${databaseId} with filter: ${JSON.stringify(filter)}`,
     );
     return await client.databases.query({

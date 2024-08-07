@@ -29,7 +29,6 @@ const inputEvent = (event: Event, refine: (arg0: string) => void) => {
 };
 onMounted(() => {
   const event = new CustomEvent("search-panel-mounted");
-  console.log("search-panel-mounted");
   window.dispatchEvent(event);
 });
 </script>
