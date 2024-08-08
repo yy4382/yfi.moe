@@ -14,33 +14,33 @@ const nameMap = {
 
 <template>
   <div class="flex flex-col gap-2">
-    <div class="flex justify-between items-center text-heading">
-      <span class="text-lg font-medium inline-flex gap-2 items-center">
+    <div class="flex items-center justify-between text-heading">
+      <span class="inline-flex items-center gap-2 text-lg font-medium">
         配色方案
       </span>
       <span class="text-sm text-gray-500 dark:text-gray-400">
         {{ nameMap[mode] }}
       </span>
     </div>
-    <div class="rounded-md outline outline-2 outline-primary/40 w-full">
-      <ToggleGroupRoot v-model="mode" class="flex gap-0.5 justify-between">
+    <div class="w-full rounded-md outline outline-2 outline-primary/40">
+      <ToggleGroupRoot v-model="mode" class="flex justify-between gap-0.5">
         <ToggleGroupItem
           value="light"
-          class="color-mode-btn inline-flex gap-1 items-center"
+          class="color-mode-btn inline-flex items-center gap-1"
         >
           <MingcuteSunLine class="size-6" />
           <span class="text-content">{{ nameMap.light }}</span>
         </ToggleGroupItem>
         <ToggleGroupItem
           value="dark"
-          class="color-mode-btn inline-flex gap-1 items-center"
+          class="color-mode-btn inline-flex items-center gap-1"
         >
           <MingcuteMoonLine class="size-6" />
           <span class="text-content">{{ nameMap.dark }}</span>
         </ToggleGroupItem>
         <ToggleGroupItem
           value="auto"
-          class="color-mode-btn inline-flex gap-1 items-center"
+          class="color-mode-btn inline-flex items-center gap-1"
         >
           <MingcuteComputerLine class="size-6" />
           <span class="text-content">{{ nameMap.auto }}</span>
@@ -52,9 +52,9 @@ const nameMap = {
 
 <style>
 .color-mode-btn {
-  @apply py-1 px-2 relative text-heading active:scale-[95%] transition-transform;
+  @apply relative px-2 py-1 text-heading transition-transform active:scale-[95%];
   &::before {
-    @apply content-[""] absolute inset-0 opacity-0 scale-50 bg-primary/25 transition-[transform,opacity] rounded-md;
+    @apply absolute inset-0 scale-50 rounded-md bg-primary/25 opacity-0 transition-[transform,opacity] content-[""];
   }
   &:hover::before,
   &[data-state="on"]::before {

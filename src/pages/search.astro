@@ -7,11 +7,11 @@ const seo = getSeo({ title: "Search", noindex: true });
 ---
 
 <NoGridLayout seoConfig={seo} stopTrack>
-  <div class="container w-full px-4 mx-auto relative">
-    <SearchPanel client:load class="md:max-w-[70%] mx-auto max-w-screen-lg" />
+  <div class="container relative mx-auto w-full px-4">
+    <SearchPanel client:load class="mx-auto max-w-screen-lg md:max-w-[70%]" />
     <span
       id="search-loading"
-      class="inline-flex center gap-2 text-content w-fit absolute top-56 left-1/2 -translate-x-1/2"
+      class="absolute left-1/2 top-56 inline-flex w-fit -translate-x-1/2 gap-2 text-content center"
     >
       <Icon
         name="mingcute:loading-line"

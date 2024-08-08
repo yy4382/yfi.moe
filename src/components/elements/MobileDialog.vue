@@ -104,12 +104,12 @@ const { lengthY } = useSwipe(dialogContent, {
       <DialogPortal v-if="show">
         <DialogOverlay
           ref="dialogOverlay"
-          class="fixed inset-0 bg-[rgba(0,0,0,0.3)] z-20"
+          class="fixed inset-0 z-20 bg-[rgba(0,0,0,0.3)]"
           force-mount
         />
         <DialogContent
           ref="dialogContent"
-          class="bg-card shape-card !rounded-b-none focus-visible:outline-none p-8 pt-9 fixed inset-0 top-[unset] h-fit mt-24 max-h-[90vh] z-50"
+          class="fixed inset-0 top-[unset] z-50 mt-24 h-fit max-h-[90vh] !rounded-b-none bg-card p-8 pt-9 shape-card focus-visible:outline-none"
           force-mount
         >
           <VisuallyHidden as-child>
@@ -120,14 +120,14 @@ const { lengthY } = useSwipe(dialogContent, {
           </VisuallyHidden>
           <slot />
           <DialogClose
-            class="absolute top-4 w-16 left-1/2 translate-x-[-50%] h-1 outline-none"
+            class="absolute left-1/2 top-4 h-1 w-16 translate-x-[-50%] outline-none"
           >
-            <div class="bg-gray-300 rounded-full h-full w-full outline-none" />
+            <div class="h-full w-full rounded-full bg-gray-300 outline-none" />
           </DialogClose>
 
           <!-- Dialog bottom padding, avoid showing base layer content when open with spring animation -->
           <div
-            class="absolute z-[-10] inset-x-0 top-8 -bottom-48 bg-card will-change-transform"
+            class="absolute inset-x-0 -bottom-48 top-8 z-[-10] bg-card will-change-transform"
           ></div>
         </DialogContent>
       </DialogPortal>

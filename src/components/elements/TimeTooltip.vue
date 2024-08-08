@@ -12,7 +12,7 @@ defineProps<{
     <slot />
     <template #content>
       <div
-        class="bg-card shape-card text-content p-2 text-sm border-2 dark:border-gray-700"
+        class="border-2 bg-card p-2 text-sm text-content shape-card dark:border-gray-700"
       >
         <div class="flex select-none items-center">
           Posted on {{ postTime }}

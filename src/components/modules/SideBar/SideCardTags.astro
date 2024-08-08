@@ -21,12 +21,12 @@ const maxTags = showAll ? Object.keys(tagsWithCount).length : 9;
 ---
 
 <SideCard cardTitle={showAll ? "标签" : "热门标签"} cardLink="/tags">
-  <div class="flex flex-wrap gap-2 mt-1">
+  <div class="mt-1 flex flex-wrap gap-2">
     {
       Object.keys(tagsWithCount)
         .slice(0, maxTags)
         .map((tag) => (
-          <div class="inline-flex select-none items-center text-content hover:text-primary transition text-sm">
+          <div class="inline-flex select-none items-center text-sm text-content transition hover:text-primary">
             <Icon name="mingcute:hashtag-line" />
             <a href={`/tags/${tag}`}>{tag}</a>
           </div>

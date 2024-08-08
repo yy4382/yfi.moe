@@ -30,7 +30,7 @@ const { base, heading } = card({ padding: "sm" });
   <div v-show="!shouldMount" :class="base()">
     <div
       :class="heading()"
-      class="transition-[color] pb-2 block hover:text-primary"
+      class="block pb-2 transition-[color] hover:text-primary"
     >
       <h5>目录</h5>
     </div>
@@ -50,7 +50,7 @@ const { base, heading } = card({ padding: "sm" });
       <div>
         <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
         <button
-          class="fixed z-20 bottom-4 right-4 shape-card bg-card border dark:border-gray-600 p-2 opacity-0 animate-onload animate-delay-300"
+          class="fixed bottom-4 right-4 z-20 animate-onload border bg-card p-2 opacity-0 animate-delay-300 shape-card dark:border-gray-600"
         >
           <MingcuteListCheckLine class="size-6 text-heading" />
         </button>

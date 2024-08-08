@@ -25,35 +25,35 @@ const highlight = computed<number>(() => {
 <template>
   <NavStickyWrapper>
     <div
-      class="size-full mx-auto grid content-center items-center grid-rows-1 grid-cols-[1fr_auto_1fr] px-3 sm:px-4 py-2"
+      class="mx-auto grid size-full grid-cols-[1fr_auto_1fr] grid-rows-1 content-center items-center px-3 py-2 sm:px-4"
     >
-      <div class="justify-self-start md:hidden h-8"><MobileMenu /></div>
+      <div class="h-8 justify-self-start md:hidden"><MobileMenu /></div>
       <div class="justify-self-center md:justify-self-start">
         <a class="flex items-center text-xl" href="/">
           <slot />
-          <span class="hidden md:inline ml-3">{{ siteConfig.title }}</span>
+          <span class="ml-3 hidden md:inline">{{ siteConfig.title }}</span>
         </a>
       </div>
       <div
-        class="hidden md:flex justify-self-center h-full items-center space-x-1"
+        class="hidden h-full items-center space-x-1 justify-self-center md:flex"
       >
         <a
           v-for="(item, index) of navMenu"
           :key="item.text"
           :href="item.link"
-          class="w-20 font-medium h-full flex center"
+          class="flex h-full w-20 font-medium center"
           :class="[
             highlight === index ? 'text-primary' : 'text-heading',
             tvButton(),
           ]"
         >
           <span
-            class="self-center z-1 select-none align-middle inline-flex items-center gap-1"
+            class="z-1 inline-flex select-none items-center gap-1 self-center align-middle"
           >
             <component
               :is="item.vueIcon"
               v-if="highlight === index"
-              class="w-5 h-5"
+              class="h-5 w-5"
               style="view-transition-name: nav-item-icon"
             />
             <span :style="`view-transition-name: nav-item-text-` + item.text">
@@ -62,7 +62,7 @@ const highlight = computed<number>(() => {
           </span>
         </a>
       </div>
-      <div class="justify-self-end flex gap-4 h-fit">
+      <div class="flex h-fit gap-4 justify-self-end">
         <ColorSelectPopover />
         <a href="/search" aria-label="Search Button" class="size-6">
           <MingcuteSearch3Line class="size-6" />

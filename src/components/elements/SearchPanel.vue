@@ -43,18 +43,18 @@ onMounted(() => {
       :hits-per-page.camel="3"
     />
     <AisSearchBox
-      class="mb-4 focus-within:shadow-md transition-shadow duration-300 animate-fade animate-duration-150"
-      :class="card({ padding: 'xs' }).base({ class: '!p-0 h-12' })"
+      class="mb-4 animate-fade transition-shadow duration-300 animate-duration-150 focus-within:shadow-md"
+      :class="card({ padding: 'xs' }).base({ class: 'h-12 !p-0' })"
     >
       <template #default="{ currentRefinement, refine }">
         <form
-          class="size-full flex center px-4 gap-4 transition-[margin-top] relative will-change-transform mt-52 focus-within:mt-4"
+          class="relative mt-52 flex size-full gap-4 px-4 transition-[margin-top] will-change-transform center focus-within:mt-4"
           @submit.prevent=""
         >
-          <MingcuteSearch3Line class="text-content size-5" />
+          <MingcuteSearch3Line class="size-5 text-content" />
           <input
             type="search"
-            class="ais-SearchBox-input size-full outline-none bg-transparent text-content"
+            class="ais-SearchBox-input size-full bg-transparent text-content outline-none"
             placeholder="Search for something..."
             :value="currentRefinement"
             @compositionstart="inputting = true"
@@ -81,7 +81,7 @@ onMounted(() => {
       <template #loadMore="{ isLastPage, refineNext }">
         <button
           :hidden="isLastPage"
-          class="bg-card shape-card py-2 px-4 w-fit text-content hover:translate-y-0.5 transition-transform"
+          class="w-fit bg-card px-4 py-2 text-content transition-transform shape-card hover:translate-y-0.5"
           @click="refineNext"
         >
           Show more
@@ -105,19 +105,19 @@ onMounted(() => {
   display: none;
 }
 .ais-InfiniteHits {
-  @apply grid grid-cols-1 gap-4 justify-items-center animate-onload;
+  @apply grid animate-onload grid-cols-1 justify-items-center gap-4;
 }
 .ais-InfiniteHits-list {
   @apply grid grid-cols-1 gap-4;
 }
 .ais-Snippet {
-  @apply text-comment text-sm;
+  @apply text-sm text-comment;
 }
 
 .ais-InfiniteHits-loadMore {
-  @apply bg-card shape-card py-2 px-4 w-fit text-content hover:translate-y-0.5 transition-transform;
+  @apply w-fit bg-card px-4 py-2 text-content transition-transform shape-card hover:translate-y-0.5;
 }
 .ais-InfiniteHits-loadMore--disabled {
-  @apply text-comment hover:transform-none cursor-not-allowed;
+  @apply cursor-not-allowed text-comment hover:transform-none;
 }
 </style>

@@ -9,23 +9,23 @@ import { projects } from "@configs/author";
 const projectPopover = tv({
   extend: popover,
   slots: {
-    base: "hover:w-44 hover:h-32 bottom-2 right-2",
-    contentWrapper: "group-hover:w-44 group-hover:h-32",
+    base: "bottom-2 right-2 hover:h-32 hover:w-44",
+    contentWrapper: "group-hover:h-32 group-hover:w-44",
     content: "flex flex-col p-4 text-content",
   },
 });
 const { base, contentWrapper, content, icon } = projectPopover();
 ---
 
-<Card class="sm:[grid-area:projects] !overflow-visible relative">
-  <div class="flex size-full gap-5 lg:gap-4 flex-col sm:flex-row">
+<Card class="relative !overflow-visible sm:[grid-area:projects]">
+  <div class="flex size-full flex-col gap-5 sm:flex-row lg:gap-4">
     <p
-      class="flex-shrink-0 text-heading text-2xl font-semibold sm:text-center sm:[writing-mode:vertical-rl]"
+      class="flex-shrink-0 text-2xl font-semibold text-heading sm:text-center sm:[writing-mode:vertical-rl]"
     >
       项目
     </p>
     <div
-      class="flex sm:items-center flex-grow flex-col sm:flex-row gap-6 sm:gap-4 sm:justify-evenly"
+      class="flex flex-grow flex-col gap-6 sm:flex-row sm:items-center sm:justify-evenly sm:gap-4"
     >
       {projects.map((project) => <HomeBentoProjectItem {...project} />)}
     </div>
@@ -34,8 +34,8 @@ const { base, contentWrapper, content, icon } = projectPopover();
   <div class:list={base()}>
     <div class:list={contentWrapper()}>
       <div class:list={content()}>
-        <p class="text-heading font-medium text-lg">更多</p>
-        <ul class="flex flex-col gap-2 mt-2 text-primary">
+        <p class="text-lg font-medium text-heading">更多</p>
+        <ul class="mt-2 flex flex-col gap-2 text-primary">
           {
             [
               {
@@ -53,7 +53,7 @@ const { base, contentWrapper, content, icon } = projectPopover();
                 {link.icon && (
                   <Icon
                     name={link.icon}
-                    class="inline-block translate-x-[2px] -translate-y-[1px]"
+                    class="inline-block -translate-y-[1px] translate-x-[2px]"
                   />
                 )}
                 <a

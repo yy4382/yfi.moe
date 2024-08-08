@@ -30,7 +30,7 @@ export const card = tv({
     useIndicator: {
       true: {
         heading:
-          "relative before:absolute before:w-[0.18em] before:h-[0.85em] before:rounded-full before:bg-primary before:content-['']",
+          "relative before:absolute before:h-[0.85em] before:w-[0.18em] before:rounded-full before:bg-primary before:content-['']",
       },
     },
     leftExtraPadding: {

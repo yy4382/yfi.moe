@@ -59,11 +59,11 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col gap-2">
-    <div class="flex justify-between items-center text-heading">
-      <span class="text-lg font-medium inline-flex gap-2 items-center">
+    <div class="flex items-center justify-between text-heading">
+      <span class="inline-flex items-center gap-2 text-lg font-medium">
         主题色
         <button
-          class="bg-primary/25 hover:bg-primary/35 transition-colors rounded-md flex center p-1 size-7"
+          class="flex size-7 rounded-md bg-primary/25 p-1 transition-colors center hover:bg-primary/35"
           @click="
             () => {
               setHue(getDefaultHue());
@@ -77,7 +77,7 @@ onMounted(() => {
       <input
         :value="hue"
         type="number"
-        class="w-10 h-7 bg-primary/25 rounded-md p-1 text-center"
+        class="h-7 w-10 rounded-md bg-primary/25 p-1 text-center"
         @change="
           ($event) => {
             const inputElement = $event.target as HTMLInputElement;
@@ -98,7 +98,7 @@ input[type="range"] {
   appearance: none; /* Add the standard appearance property */
   width: 15rem;
   height: 1.5rem;
-  @apply px-1 rounded-md;
+  @apply rounded-md px-1;
   background: linear-gradient(
     to right in oklch,
     oklch(64.78% 0.1472 0),

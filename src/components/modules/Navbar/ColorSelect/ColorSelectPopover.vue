@@ -21,13 +21,13 @@ useColorMode({ storageKey: "style:color-mode" });
     </PopoverTrigger>
     <PopoverPortal>
       <PopoverContent
-        class="z-50 color-select-dropdown"
+        class="color-select-dropdown z-50"
         side="bottom"
         :side-offset="24"
         :collision-padding="4"
       >
         <div
-          class="bg-card border-2 border-gray-300 dark:border-gray-800 rounded-card shadow-xl p-4 animate-onload_small animate-duration-500"
+          class="animate-onload_small rounded-card border-2 border-gray-300 bg-card p-4 shadow-xl animate-duration-500 dark:border-gray-800"
         >
           <div class="flex flex-col gap-6">
             <ColorHueSlider />

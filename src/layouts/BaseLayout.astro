@@ -14,7 +14,7 @@ const { seoConfig, stopTrack, navStats } = Astro.props;
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
   <BaseBody navStats={navStats}>
-    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_30%] gap-4">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_30%]">
       <div class="">
         <slot />
       </div>

@@ -43,30 +43,30 @@ const groups = loading
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
         <li class="timeline-dot-item-note-list py-6">
-          <div class="h-12 py-2 flex items-center">
+          <div class="flex h-12 items-center py-2">
             <div class="flex select-none items-center gap-2">
-              <div class="p-1 rounded-md bg-primary/30 size-8 flex center">
+              <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
                 <Icon
                   name="mingcute:calendar-line"
                   class="size-full text-primary"
                 />
               </div>
               {loading ? (
-                <div class="h-6 w-16 skeleton" />
+                <div class="skeleton h-6 w-16" />
               ) : (
-                <span class="font-semibold text-comment opacity-75 text-base">
+                <span class="text-base font-semibold text-comment opacity-75">
                   {DateTime.fromISO(page.createdAt).toFormat("MM-dd")}
                 </span>
               )}
             </div>
           </div>
           {loading ? (
-            <div class="w-full h-24 skeleton flex center p-4">
+            <div class="skeleton flex h-24 w-full p-4 center">
               <NoteLoading />
             </div>
           ) : (
             <NoteCardContent server:defer pageId={page.id}>
-              <div slot="fallback" class="w-full h-24 skeleton flex center p-4">
+              <div slot="fallback" class="skeleton flex h-24 w-full p-4 center">
                 <NoteLoading />
               </div>
             </NoteCardContent>
@@ -91,19 +91,17 @@ const groups = loading
 
     &::after {
       content: "";
-      @apply absolute size-2 z-10 rounded-full bg-content-50
-        -left-[calc(var(--left-offset)+0.25rem)] top-[calc(var(--top-offset)-0.25rem)]
-        outline outline-2 outline-card;
+      @apply absolute -left-[calc(var(--left-offset)+0.25rem)] top-[calc(var(--top-offset)-0.25rem)] z-10 size-2 rounded-full bg-content-50 outline outline-2 outline-card;
     }
     &::before {
       content: "";
-      @apply h-[calc(100%+1rem)] absolute top-1/2 -translate-y-1/2 -left-[calc(var(--left-offset)+1px)] border-l-[2px] pointer-events-none border-content-50 opacity-30 transition;
+      @apply pointer-events-none absolute -left-[calc(var(--left-offset)+1px)] top-1/2 h-[calc(100%+1rem)] -translate-y-1/2 border-l-[2px] border-content-50 opacity-30 transition;
     }
     &:first-child::before {
-      @apply h-[calc(100%+0.5rem-var(--top-offset))] absolute top-[unset] bottom-[calc(-0.5rem)] translate-y-0;
+      @apply absolute bottom-[calc(-0.5rem)] top-[unset] h-[calc(100%+0.5rem-var(--top-offset))] translate-y-0;
     }
     &:last-child::before {
-      @apply h-[calc(0.5rem+var(--top-offset))] top-[calc(-0.5rem)] translate-y-0;
+      @apply top-[calc(-0.5rem)] h-[calc(0.5rem+var(--top-offset))] translate-y-0;
     }
     &:first-child:last-child::before {
       @apply hidden;

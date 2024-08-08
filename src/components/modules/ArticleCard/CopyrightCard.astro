@@ -12,10 +12,10 @@ const cardClass = base({
 <div class={cardClass}>
   <div
     class:list={[
-      "prose dark:prose-invert prose-p:text-comment prose-a:!text-content !text-sm opacity-80",
+      "prose !text-sm opacity-80 dark:prose-invert prose-p:text-comment prose-a:!text-content",
     ]}
   >
-    <div class="float-right signature-wrapper">
+    <div class="signature-wrapper float-right">
       <Fragment set:html={Sign} />
     </div>
     <p class="!mb-2 !mt-0">
@@ -34,7 +34,7 @@ const cardClass = base({
   </div>
 
   <div
-    class="absolute text-8xl md:text-[8rem] opacity-5 -right-4 -bottom-4 flex gap-2 text-black dark:text-white"
+    class="absolute -bottom-4 -right-4 flex gap-2 text-8xl text-black opacity-5 md:text-[8rem] dark:text-white"
   >
     <Icon name="fa6-brands:creative-commons" />
   </div>
@@ -44,12 +44,12 @@ const cardClass = base({
   .signature-wrapper {
     --signature-length: 2550px;
     & > svg {
-      @apply w-20 sm:-mr-3 sm:-mt-1 ml-4 h-auto opacity-100;
+      @apply ml-4 h-auto w-20 opacity-100 sm:-mr-3 sm:-mt-1;
     }
   }
   /* https://antfu.me/posts/animated-svg-logo */
   .signature-wrapper #main-stroke {
-    @apply stroke-black dark:stroke-white opacity-100;
+    @apply stroke-black opacity-100 dark:stroke-white;
     stroke-dashoffset: 1px;
     stroke-dasharray: var(--signature-length) 0;
     animation: grow 7s ease-out forwards infinite;

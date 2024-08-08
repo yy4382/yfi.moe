@@ -17,7 +17,7 @@
 
 .prose a > img,
 .prose-invert a > img {
-  @apply !mt-2 !mb-2;
+  @apply !mb-2 !mt-2;
 }
 
 :root {
@@ -33,7 +33,7 @@
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
-  @apply font-normal scroll-smooth;
+  @apply scroll-smooth font-normal;
 
   --edge-padding: 1rem;
 

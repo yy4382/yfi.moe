@@ -9,17 +9,17 @@ const { articles, words, tags } = await getStatistics();
 
 <Card class="w-full" padding="xs">
   <div
-    class="flex lg:flex-col items-center gap-4 sm:gap-8 lg:gap-4 justify-center"
+    class="flex items-center justify-center gap-4 sm:gap-8 lg:flex-col lg:gap-4"
   >
-    <div class="w-32 lg:w-[unset] mb-0">
+    <div class="mb-0 w-32 lg:w-[unset]">
       <img
         src="/ava.webp"
         alt={authorName + " avatar"}
-        class="rounded-full lg:w-full lg:rounded-xl lg:shadow-lg hover:shadow-none transition-shadow"
+        class="rounded-full transition-shadow hover:shadow-none lg:w-full lg:rounded-xl lg:shadow-lg"
       />
     </div>
-    <div class="flex flex-col lg:items-center gap-2 shrink-0">
-      <h5 class="text-4xl font-semibold text-heading relative">
+    <div class="flex shrink-0 flex-col gap-2 lg:items-center">
+      <h5 class="relative text-4xl font-semibold text-heading">
         {authorName}
       </h5>
       <div class="flex gap-4">
@@ -48,7 +48,7 @@ const { articles, words, tags } = await getStatistics();
             <a
               href={social.link}
               target="_blank"
-              class="flex center p-1.5 size-9 rounded-lg bg-primary/20 hover:scale-105 hover:bg-primary/25 transition-all border border-primary/30"
+              class="flex size-9 rounded-lg border border-primary/30 bg-primary/20 p-1.5 transition-all center hover:scale-105 hover:bg-primary/25"
               rel="noreferer"
             >
               <Icon

@@ -36,13 +36,13 @@ const title = titleSet.values().next().value;
 ---
 
 <SideCard cardTitle={"系列：" + title} cardLink="#">
-  <ul class="flex flex-col -m-2 mt-1">
+  <ul class="-m-2 mt-1 flex flex-col">
     {
       entries.map((entry) => (
         <a
           href={getPostPath(entry)}
           class={tvButton({
-            class: "hover:translate-x-1 p-2 transition-transform truncate",
+            class: "truncate p-2 transition-transform hover:translate-x-1",
           })}
         >
           {entry.data.title}

@@ -15,19 +15,19 @@ const { entry } = Astro.props;
     <h1
       slot="heading"
       transition:name="post-heading"
-      class="animate-onload animate-delay-[calc(var(--inner-card-delay))] opacity-0"
+      class="animate-onload opacity-0 animate-delay-[calc(var(--inner-card-delay))]"
     >
       {entry.data.title}
     </h1>
     {
       entry.data.date && (
-        <div class="animate-onload animate-delay-[calc(var(--inner-card-delay)+75ms)] opacity-0">
+        <div class="animate-onload opacity-0 animate-delay-[calc(var(--inner-card-delay)+75ms)]">
           <PostAttr post={entry as CollectionEntry<"post">} />
         </div>
       )
     }
     <div
-      class="animate-onload animate-delay-[calc(var(--inner-card-delay)+150ms)] opacity-0"
+      class="animate-onload opacity-0 animate-delay-[calc(var(--inner-card-delay)+150ms)]"
     >
       <MdRender>
         <slot />

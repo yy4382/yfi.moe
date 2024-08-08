@@ -38,7 +38,7 @@ onMounted(() => {
   <nav ref="navEl" :class="['sticky top-0 z-20 h-16 min-h-16 w-full']">
     <div
       :class="[
-        'absolute h-full backdrop-blur-lg text-heading shadow inset-y-0 left-1/2 -translate-x-1/2 transform-gpu',
+        'absolute inset-y-0 left-1/2 h-full -translate-x-1/2 transform-gpu text-heading shadow backdrop-blur-lg',
         isFixed ? 'w-screen' : 'w-full',
         isFixed ? 'bg-card/80' : 'bg-card',
         isFixed ? 'rounded-none' : 'rounded-card',

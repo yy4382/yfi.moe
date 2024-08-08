@@ -28,14 +28,14 @@ const next1 = next
 ---
 
 <div
-  class="flex flex-col md:flex-row justify-between gap-4 overflow-hidden w-full"
+  class="flex w-full flex-col justify-between gap-4 overflow-hidden md:flex-row"
 >
-  <a href={prev1.url} class="w-full font-bold overflow-hidden active:scale-95">
+  <a href={prev1.url} class="w-full overflow-hidden font-bold active:scale-95">
     {
       (
-        <div class="bg-card shape-card w-full max-w-full h-10 px-4 flex items-center justify-start gap-4">
+        <div class="flex h-10 w-full max-w-full items-center justify-start gap-4 bg-card px-4 shape-card">
           <Icon name="mingcute:left-fill" size={32} class="text-primary-ui" />
-          <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-heading">
+          <div class="max-w-[calc(100%_-_3rem)] overflow-hidden text-ellipsis whitespace-nowrap text-heading transition">
             {prev1.title}
           </div>
         </div>
@@ -43,11 +43,11 @@ const next1 = next
     }
   </a>
 
-  <a href={next1.url} class="w-full font-bold overflow-hidden active:scale-95">
+  <a href={next1.url} class="w-full overflow-hidden font-bold active:scale-95">
     {
       (
-        <div class="bg-card shape-card w-full max-w-full h-10 px-4 flex items-center justify-end gap-4">
-          <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-heading">
+        <div class="flex h-10 w-full max-w-full items-center justify-end gap-4 bg-card px-4 shape-card">
+          <div class="max-w-[calc(100%_-_3rem)] overflow-hidden text-ellipsis whitespace-nowrap text-heading transition">
             {next1.title}
           </div>
           <Icon name="mingcute:right-fill" size={32} class="text-primary-ui" />

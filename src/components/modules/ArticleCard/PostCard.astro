@@ -20,7 +20,7 @@ if (post.data.description === undefined) {
 ---
 
 <Card
-  class:list={[`space-y-2 lg:space-y-3 transition post-card`, className]}
+  class:list={[`post-card space-y-2 transition lg:space-y-3`, className]}
   useHeading
   lessBottomPadding
   padding="sm"
@@ -29,10 +29,10 @@ if (post.data.description === undefined) {
   <a
     slot="heading"
     href={getPostPath(post)}
-    class="hover:text-primary transition-colors post-card-heading"
+    class="post-card-heading transition-colors hover:text-primary"
   >
     <h2>{post.data.title}</h2>
   </a>
-  <div class="prose dark:prose-invert !text-sm" set:html={desc} />
+  <div class="prose !text-sm dark:prose-invert" set:html={desc} />
   <PostAttr post={post} />
 </Card>

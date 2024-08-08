@@ -5,12 +5,12 @@ import { siteConfig } from "@configs/site";
 ---
 
 <Card padding="xs">
-  <div class="w-full flex">
+  <div class="flex w-full">
     <div
-      class="flex flex-col items-center md:items-start flex-grow flex-shrink"
+      class="flex flex-shrink flex-grow flex-col items-center md:items-start"
     >
-      <span class="text-sm text-comment inline-flex gap-x-1 items-center">
-        <span class="inline-flex center gap-0.5"
+      <span class="inline-flex items-center gap-x-1 text-sm text-comment">
+        <span class="inline-flex gap-0.5 center"
           ><Icon name="mingcute:copyright-line" /> 2023-2024
           <span
             ><a href={Astro.site} class="text-primary">{siteConfig.title}</a
@@ -20,18 +20,18 @@ import { siteConfig } from "@configs/site";
         <span class="opacity-70">|</span>
         <a
           href="https://github.com/yy4382/yfi.moe"
-          class="inline-flex center gap-0.5"
+          class="inline-flex gap-0.5 center"
         >
           <Icon name="mingcute:github-line" />Source Code</a
         >
       </span>
-      <span class="text-sm text-comment inline-flex gap-1 items-center">
+      <span class="inline-flex items-center gap-1 text-sm text-comment">
         <span class="hidden md:inline">For Robots: </span>
-        <a href="/feed.xml" class="inline-flex center gap-0.5">
+        <a href="/feed.xml" class="inline-flex gap-0.5 center">
           <Icon name="mingcute:rss-2-line" />RSS</a
         >
         <span class="opacity-70">|</span>
-        <a href="/sitemap-index.xml" class="inline-flex center gap-0.5">
+        <a href="/sitemap-index.xml" class="inline-flex gap-0.5 center">
           <Icon name="mingcute:map-line" />Site Map</a
         >
       </span>
@@ -41,7 +41,7 @@ import { siteConfig } from "@configs/site";
         <a href="/credits" class="text-primary">Credits</a>.
       </span>
     </div>
-    <div class="center hidden md:flex">
+    <div class="hidden center md:flex">
       <img
         src="/icon-96.png"
         alt="logo"

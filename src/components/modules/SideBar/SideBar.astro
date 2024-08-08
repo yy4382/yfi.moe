@@ -12,12 +12,12 @@ interface Props {
 const { tocList, seriesID } = Astro.props;
 ---
 
-<div class="flex flex-col gap-4 mb-4">
+<div class="mb-4 flex flex-col gap-4">
   <AuthorCard />
   <Tags />
 </div>
 <div
-  class="flex flex-col gap-4 sticky top-[calc(var(--navbar-height)+var(--navbar-top-margin)+1rem)]"
+  class="sticky top-[calc(var(--navbar-height)+var(--navbar-top-margin)+1rem)] flex flex-col gap-4"
 >
   {tocList && <SideCardToc client:load headings={tocList} />}
   {seriesID && <SideCardSeries id={seriesID} />}

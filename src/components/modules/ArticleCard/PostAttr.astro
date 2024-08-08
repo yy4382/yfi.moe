@@ -10,7 +10,7 @@ const { post } = Astro.props;
 ---
 
 <div
-  class="flex flex-wrap items-center gap-2 lg:gap-3 text-[0.8rem] text-comment"
+  class="flex flex-wrap items-center gap-2 text-[0.8rem] text-comment lg:gap-3"
 >
   <TimeTooltip
     postTime={DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd")}
@@ -18,7 +18,7 @@ const { post } = Astro.props;
     client:load
   >
     <div class="flex select-none items-center">
-      <Icon name="mingcute:calendar-line" class="text-base mr-1" />
+      <Icon name="mingcute:calendar-line" class="mr-1 text-base" />
       {DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd")}
     </div>
   </TimeTooltip>
@@ -27,12 +27,12 @@ const { post } = Astro.props;
   {
     post.data?.tags instanceof Array && (
       <div class="flex select-none items-center">
-        <Icon name="mingcute:hashtag-line" class="text-base mr-1" />
+        <Icon name="mingcute:hashtag-line" class="mr-1 text-base" />
         <span class="space-x-0.5">
           {post.data.tags.map((tag, index) => (
             <>
               {index !== 0 && <span class="text-comment">|</span>}
-              <a href={"/tags/" + tag} class="hover:text-primary transition">
+              <a href={"/tags/" + tag} class="transition hover:text-primary">
                 {tag}
               </a>
             </>
