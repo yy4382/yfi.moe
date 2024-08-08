@@ -43,7 +43,7 @@ const groups = loading
   groups.map((group) => (
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
-        <li class="timeline-dot-item-note-list py-6" id={page.id}>
+        <li class="timeline-dot-item-note-list scroll-mt-20 py-6" id={page.id}>
           <div class="flex h-12 items-center gap-5 py-2">
             <div class="flex select-none items-center gap-2">
               <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
