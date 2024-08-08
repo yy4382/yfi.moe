@@ -16,13 +16,13 @@ const seo = getSeo({
 });
 Astro.response.headers.set(
   "Cache-Control",
-  "public, max-age=0, s-maxage=86400, stale-while-revalidate=86400",
+  "public, max-age=0, s-maxage=3600, stale-while-revalidate=3600",
 );
 ---
 
 <BaseLayout seoConfig={seo} navStats="碎碎念">
   <CompactEntryList keyword="碎碎念">
-    <NoteList server:defer>
+    <NoteList>
       <NoteListUI slot="fallback" loading />
     </NoteList>
   </CompactEntryList>

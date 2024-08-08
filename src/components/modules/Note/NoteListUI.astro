@@ -88,7 +88,7 @@ const groups = loading
               <NoteLoading />
             </div>
           ) : (
-            <NoteCardContent server:defer pageId={page.id}>
+            <NoteCardContent pageId={page.id}>
               <div slot="fallback" class="skeleton flex h-24 w-full p-4 center">
                 <NoteLoading />
               </div>
