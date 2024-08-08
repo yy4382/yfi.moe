@@ -5,6 +5,7 @@ export type PageMeta = {
   createdAt: string;
   updatedAt: string;
   short: boolean;
+  tags: string[];
 };
 export default function (page: PageObjectResponse): PageMeta {
   const title = findTitle(page.properties);
@@ -17,6 +18,10 @@ export default function (page: PageObjectResponse): PageMeta {
       page.properties["Short"]?.type === "checkbox"
         ? page.properties["Short"].checkbox
         : false,
+    tags:
+      page.properties["Tags"]?.type === "multi_select"
+        ? page.properties["Tags"].multi_select.map((tag) => tag.name)
+        : [],
   };
 }
 

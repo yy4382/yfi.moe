@@ -44,7 +44,7 @@ const groups = loading
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
         <li class="timeline-dot-item-note-list py-6">
-          <div class="flex h-12 items-center py-2">
+          <div class="flex h-12 items-center gap-5 py-2">
             <div class="flex select-none items-center gap-2">
               <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
                 <Icon
@@ -60,6 +60,28 @@ const groups = loading
                 </span>
               )}
             </div>
+            {(loading || page.tags.length > 0) && (
+              <div class="flex select-none items-center gap-2">
+                <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
+                  <Icon
+                    name="mingcute:hashtag-line"
+                    class="size-full text-primary"
+                  />
+                </div>
+                {loading ? (
+                  <div class="skeleton h-6 w-20" />
+                ) : (
+                  <span class="space-x-0.5 text-base font-semibold text-comment opacity-75">
+                    {page.tags.map((tag, index) => (
+                      <>
+                        {index !== 0 && <span>|</span>}
+                        <span>{tag}</span>
+                      </>
+                    ))}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
           {loading ? (
             <div class="skeleton flex h-24 w-full p-4 center">
