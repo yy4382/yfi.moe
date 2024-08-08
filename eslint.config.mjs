@@ -6,7 +6,13 @@ import pluginVue from "eslint-plugin-vue";
 
 export default [
   {
-    ignores: ["dist/", "node_modules/", ".astro/", "src/components/icons/"],
+    ignores: [
+      "dist/",
+      "node_modules/",
+      ".astro/",
+      "src/components/icons/",
+      ".vercel/",
+    ],
   },
   // JavaScript and TypeScript
   eslint.configs.recommended,
