@@ -4,7 +4,7 @@ import TocEntry from "./TocEntry.vue";
 import { ref } from "vue";
 import type { MarkdownHeading } from "astro";
 import useHeading from "@utils/useHeading";
-import MingcuteListCheckLine from "@icons/MingcuteListCheckLine.vue";
+import MingcuteListCheckLine from "~icons/mingcute/list-check-line";
 import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
 import { card } from "@styles/tv";
 const props = defineProps<{

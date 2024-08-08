@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MobileDialog from "@comp/elements/MobileDialog.vue";
-import MingCuteMenuLine from "@icons/MingcuteMenuLine.vue";
+import MingCuteMenuLine from "~icons/mingcute/menu-line";
 import { navMenu } from "@configs/navbar";
 </script>
 

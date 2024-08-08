@@ -13,7 +13,7 @@ import { getPostPath } from "@utils/path";
 import { algoliaConfig } from "@configs/algolia";
 import { card } from "@styles/tv";
 import { onMounted, ref } from "vue";
-import MingcuteSearch3Line from "@comp/icons/MingcuteSearch3Line.vue";
+import MingcuteSearch3Line from "~icons/mingcute/search-3-line";
 
 const searchClient = algoliasearch(
   algoliaConfig.appId,

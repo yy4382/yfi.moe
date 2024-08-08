@@ -1,7 +1,7 @@
-import MingcuteDotGridLine from "@comp/icons/MingcuteDotGridLine.vue";
-import MingcuteEdit4Line from "@comp/icons/MingcuteEdit4Line.vue";
-import MingcuteHistoryAnticlockwiseLine from "@comp/icons/MingcuteHistoryAnticlockwiseLine.vue";
-import MingcuteInformationLine from "@comp/icons/MingcuteInformationLine.vue";
+import MingcuteDotGridLine from "~icons/mingcute/dot-grid-fill";
+import MingcuteEdit4Line from "~icons/mingcute/edit-4-line";
+import MingcuteHistoryAnticlockwiseLine from "~icons/mingcute/history-anticlockwise-line";
+import MingcuteInformationLine from "~icons/mingcute/information-line";
 export interface NavMenu {
   text: string;
   link?: string;
