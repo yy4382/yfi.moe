@@ -33,7 +33,11 @@ export function groupingEntries<T>(posts: T[], getYear: (arg0: T) => number) {
 export const interval = 100;
 ---
 
-<Card useHeading={hasKeyword} class:list={[animated && "main-card-onload"]}>
+<Card
+  headSize="3xl"
+  useHeading={hasKeyword}
+  class:list={[animated && "main-card-onload"]}
+>
   {
     hasKeyword && (
       <h1
