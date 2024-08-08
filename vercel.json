@@ -1,32 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "headers": [
-    {
-      "source": "/api/note/(.+)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=120, s-maxage=3600, stale-while-revalidate=604800"
-        }
-      ]
-    },
-    {
-      "source": "/api/note",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=120, s-maxage=3600, stale-while-revalidate=604800"
-        }
-      ]
-    },
-    {
-      "source": "/note/(.+)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=120, s-maxage=3600, stale-while-revalidate=604800"
-        }
-      ]
-    }
-  ]
+  "headers": []
 }

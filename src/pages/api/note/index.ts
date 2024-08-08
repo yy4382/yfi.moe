@@ -21,5 +21,10 @@ export const GET: APIRoute = async () => {
       },
     },
   });
-  return new Response(JSON.stringify(pages));
+  return new Response(JSON.stringify(pages), {
+    headers: {
+      "Cache-Control":
+        "public, max-age=60, s-maxage=600, stale-while-revalidate=3600",
+    },
+  });
 };

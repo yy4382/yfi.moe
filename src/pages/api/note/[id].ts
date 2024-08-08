@@ -22,7 +22,12 @@ export const GET: APIRoute = async ({ params, request: _ }) => {
         return isValid;
       },
     });
-    return new Response(JSON.stringify(pageContent));
+    return new Response(JSON.stringify(pageContent), {
+      headers: {
+        "Cache-Control":
+          "public, max-age=60, s-maxage=600, stale-while-revalidate=3600",
+      },
+    });
   } catch (error) {
     if (
       error instanceof Error &&
