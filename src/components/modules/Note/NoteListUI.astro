@@ -9,13 +9,22 @@ import { DateTime } from "luxon";
 import { Icon } from "astro-icon/components";
 import NoteLoading from "./NoteLoading.astro";
 
-interface Props {
-  pages: PageMeta[];
-  mock?: boolean;
+interface NoteListUIProps {
+  loading?: boolean;
+  pages?: PageMeta[];
 }
-const { pages, mock } = Astro.props;
 
-const groups = mock
+type RequiredPages = {
+  pages: PageMeta[];
+};
+
+type Props =
+  | (NoteListUIProps & { loading: true })
+  | (NoteListUIProps & RequiredPages & { loading?: false | undefined });
+
+const { pages, loading } = Astro.props;
+
+const groups = loading
   ? [
       {
         year: "2024",
@@ -42,23 +51,26 @@ const groups = mock
                   class="size-full text-primary"
                 />
               </div>
-              <slot name="header">
+              {loading ? (
+                <div class="h-6 w-16 skeleton" />
+              ) : (
                 <span class="font-semibold text-comment opacity-75 text-base">
                   {DateTime.fromISO(page.createdAt).toFormat("MM-dd")}
                 </span>
-              </slot>
+              )}
             </div>
           </div>
-          <slot>
+          {loading ? (
+            <div class="w-full h-24 skeleton flex center p-4">
+              <NoteLoading />
+            </div>
+          ) : (
             <NoteCardContent server:defer pageId={page.id}>
-              <div
-                slot="fallback"
-                class="w-full h-24 p-4 animate-pulse text-gray-500 bg-gray-300/40 rounded-md flex center"
-              >
+              <div slot="fallback" class="w-full h-24 skeleton flex center p-4">
                 <NoteLoading />
               </div>
             </NoteCardContent>
-          </slot>
+          )}
         </li>
       ))}
     </CompactEntryListYear>
@@ -92,6 +104,9 @@ const groups = mock
     }
     &:last-child::before {
       @apply h-[calc(0.5rem+var(--top-offset))] top-[calc(-0.5rem)] translate-y-0;
+    }
+    &:first-child:last-child::before {
+      @apply hidden;
     }
   }
 </style>

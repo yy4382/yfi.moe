@@ -76,4 +76,8 @@
   .container-max-lg {
     @apply w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg;
   }
+
+  .skeleton {
+    @apply animate-pulse text-gray-400 dark:text-gray-600 bg-gray-300/40 dark:bg-gray-700/40 rounded-md;
+  }
 }

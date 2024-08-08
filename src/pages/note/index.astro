@@ -5,8 +5,6 @@ import NoteList from "@comp/modules/Note/NoteList.astro";
 import { getSeo } from "@utils/SEO";
 import { CompactEntryList } from "@comp/modules/CompactEntryList";
 import NoteListUI from "@comp/modules/Note/NoteListUI.astro";
-import type { PageMeta } from "@libs/notion-client";
-import NoteLoading from "@comp/modules/Note/NoteLoading.astro";
 
 export const prerender = false;
 
@@ -21,18 +19,7 @@ const seo = getSeo({
 <BaseLayout seoConfig={seo}>
   <CompactEntryList keyword="碎碎念">
     <NoteList server:defer>
-      <NoteListUI slot="fallback" mock pages={[] as PageMeta[]}>
-        <div
-          slot="header"
-          class="h-6 w-16 animate-pulse bg-gray-300/40 rounded-md"
-        >
-        </div>
-        <div
-          class="w-full h-24 animate-pulse p-4 text-gray-400 bg-gray-300/40 rounded-md flex center"
-        >
-          <NoteLoading />
-        </div>
-      </NoteListUI>
+      <NoteListUI slot="fallback" loading />
     </NoteList>
   </CompactEntryList>
 </BaseLayout>
