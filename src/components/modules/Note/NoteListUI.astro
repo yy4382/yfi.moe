@@ -88,11 +88,7 @@ const groups = loading
               <NoteLoading />
             </div>
           ) : (
-            <NoteCardContent pageId={page.id}>
-              <div slot="fallback" class="skeleton flex h-24 w-full p-4 center">
-                <NoteLoading />
-              </div>
-            </NoteCardContent>
+            <NoteCardContent pageId={page.id} />
           )}
         </li>
       ))}

@@ -1,13 +1,33 @@
 ---
-import type { getEntries } from "@libs/notion-client";
-import $selfFetch from "@utils/selfFetch";
+import { getEntries } from "@libs/notion-client";
 import NoteListUI from "./NoteListUI.astro";
+import { NOTION_NOTE_DATABASE_ID, NOTION_API_KEY } from "astro:env/server";
 
-// await new Promise((resolve) => setTimeout(resolve, 2000));
-const { data: pages, error } = await $selfFetch<
-  Awaited<ReturnType<typeof getEntries>>
->("/api/note", { origin: new URL(Astro.request.url).origin });
+const apiKey = NOTION_API_KEY;
+const databaseId = NOTION_NOTE_DATABASE_ID;
+let pages = null;
+let error = null;
+
+try {
+  pages = await getEntries(databaseId, {
+    apiKey,
+    filter: {
+      property: "Is Published",
+      checkbox: {
+        equals: true,
+      },
+    },
+  });
+} catch (err) {
+  error = err instanceof Error ? err.message : "An error occurred";
+  Astro.response.status = 500;
+}
 ---
 
-{pages !== null && <NoteListUI pages={pages} />}
-{error !== null && <span class="text-heading">{error}</span>}
+{
+  pages !== null ? (
+    <NoteListUI pages={pages} />
+  ) : (
+    <span class="text-heading">{error}</span>
+  )
+}

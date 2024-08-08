@@ -1,10 +1,9 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
 import NoteList from "@comp/modules/Note/NoteList.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 
-import { getSeo } from "@utils/SEO";
 import { CompactEntryList } from "@comp/modules/CompactEntryList";
-import NoteListUI from "@comp/modules/Note/NoteListUI.astro";
+import { getSeo } from "@utils/SEO";
 
 export const prerender = false;
 
@@ -22,8 +21,6 @@ Astro.response.headers.set(
 
 <BaseLayout seoConfig={seo} navStats="碎碎念">
   <CompactEntryList keyword="碎碎念">
-    <NoteList>
-      <NoteListUI slot="fallback" loading />
-    </NoteList>
+    <NoteList />
   </CompactEntryList>
 </BaseLayout>

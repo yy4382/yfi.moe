@@ -1,15 +1,51 @@
 ---
-import type { getPageContent } from "@libs/notion-client";
+import { getPageContent, type PageMeta } from "@libs/notion-client";
+import { NOTION_NOTE_DATABASE_ID, NOTION_API_KEY } from "astro:env/server";
 import MdRender from "@comp/elements/MdRender.astro";
 interface Props {
   pageId: string;
 }
 const { pageId } = Astro.props;
 
-import $selfFetch from "@utils/selfFetch";
-const { data: pageContent, error } = await $selfFetch<
-  Awaited<ReturnType<typeof getPageContent>>
->(`/api/note/${pageId}`, { origin: new URL(Astro.request.url).origin });
+const apiKey = NOTION_API_KEY;
+let pageContent: { meta: PageMeta; html: string } | null = null;
+let error: string | null = null;
+try {
+  pageContent = await getPageContent(pageId, {
+    apiKey,
+    accessControl: (resp) => {
+      const isValid =
+        "created_time" in resp &&
+        resp.parent.type === "database_id" &&
+        resp.parent.database_id.replace(/-/g, "") === NOTION_NOTE_DATABASE_ID &&
+        resp.properties["Is Published"].type === "checkbox" &&
+        resp.properties["Is Published"].checkbox === true;
+
+      return isValid;
+    },
+  });
+} catch (err) {
+  if (
+    err instanceof Error &&
+    err.cause &&
+    typeof err.cause === "object" &&
+    "code" in err.cause
+  ) {
+    if (err.cause.code === "ACCESS_DENIED") {
+      Astro.response.status = 403;
+      error = "Access Denied";
+      return;
+    }
+    if (err.cause.code === "NOT_A_PAGE") {
+      Astro.response.status = 400;
+      error = "Invalid Page ID";
+      return;
+    }
+  }
+  Astro.response.status = 500;
+  error = err instanceof Error ? err.message : "An error occurred";
+  return;
+}
 ---
 
 {
