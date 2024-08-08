@@ -4,10 +4,11 @@ import {
   groupingEntries,
 } from "@comp/modules/CompactEntryList";
 import type { PageMeta } from "@libs/notion-client";
-import NoteCardContent from "./NoteCardContent.astro";
+import NoteCardContent from "./NoteContent.astro";
 import { DateTime } from "luxon";
 import { Icon } from "astro-icon/components";
 import NoteLoading from "./NoteLoading.astro";
+import NoteContentStyle from "./NoteContentStyle.astro";
 
 interface NoteListUIProps {
   loading?: boolean;
@@ -76,6 +77,9 @@ const groups = loading
     </CompactEntryListYear>
   ))
 }
+
+<NoteContentStyle />
+
 <style is:global>
   .timeline-dot > li.timeline-dot-item-note-list {
     --top-offset: 3rem;

@@ -1,7 +1,6 @@
 ---
 import type { getPageContent } from "@libs/notion-client";
 import MdRender from "@comp/elements/MdRender.astro";
-import NoteCardStyle from "./NoteCardStyle.astro";
 interface Props {
   pageId: string;
 }
@@ -15,12 +14,9 @@ const { data: pageContent, error } = await $selfFetch<
 
 {
   pageContent !== null ? (
-    <Fragment>
-      <MdRender class="notion-prose">
-        <Fragment set:html={pageContent.html} />
-      </MdRender>
-      <NoteCardStyle />
-    </Fragment>
+    <MdRender class="notion-prose">
+      <Fragment set:html={pageContent.html} />
+    </MdRender>
   ) : (
     <span class="text-heading">{error}</span>
   )
