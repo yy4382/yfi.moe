@@ -1,11 +1,12 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import PaginationBtn from "@comp/elements/PaginationBtn.astro";
+import PaginationBtn from "@comp/ui/Pagination/PaginationBtn.astro";
 import { getSortedPosts } from "@utils/content";
 import { ArticleInfoCard } from "@comp/modules/ArticleCard";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 import { getSeo } from "@utils/SEO";
+import { sitePaths } from "@configs/site";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getStaticPaths({ paginate }: { paginate: any }) {
@@ -30,7 +31,10 @@ const interval = 100;
       ))
     }
     <div class="self-center">
-      <PaginationBtn page={page} />
+      <PaginationBtn
+        page={page}
+        urlTemplate={`${sitePaths.postList}/{{pageNo}}`}
+      />
     </div>
   </div>
 </BaseLayout>

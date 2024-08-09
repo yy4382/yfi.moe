@@ -1,16 +1,27 @@
 ---
 import { Icon } from "astro-icon/components";
-import { getPostPath } from "@utils/path";
 // https://github.com/saicaca/fuwari/raw/47c65cd551a313beef1b0e39d697c1759f264c5e/src/components/control/Pagination.astro
 import type { Page } from "astro";
 
 interface Props {
   page: Page;
+  /**
+   * The URL template for the pagination. {{pageNo}} will be replaced with the page number.
+   *
+   * @example "/post/{{pageNo}}"
+   */
+  urlTemplate: string;
+  /**
+   * Convert {{pageNo}} to "" (empty string) if it is 1.
+   *
+   * @default true
+   */
+  omitFirst?: boolean;
   class?: string;
   style?: string;
 }
 
-const { page, style } = Astro.props;
+const { page, style, urlTemplate, omitFirst = true } = Astro.props;
 
 const HIDDEN = -1;
 
@@ -47,8 +58,8 @@ if (r == page.lastPage - 2) pages.push(page.lastPage - 1);
 if (r < page.lastPage) pages.push(page.lastPage);
 
 const getPageUrl = (p: number) => {
-  if (p == 1) return getPostPath("");
-  return getPostPath(p + "");
+  if (omitFirst && p == 1) return urlTemplate.replace("{{pageNo}}", "");
+  return urlTemplate.replace("{{pageNo}}", p.toString());
 };
 ---
 
