@@ -1,5 +1,5 @@
 ---
-import TimeTooltip from "@comp/elements/TimeTooltip.vue";
+import { TooltipTime } from "@comp/ui/Tooltip";
 import { getPostPath } from "@utils/path";
 import { type CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
@@ -80,7 +80,7 @@ const { base, contentWrapper, content, icon } = postListPopover();
               {post.data.title}
             </a>
             <span class="ml-2 shrink-0 self-end text-xs opacity-70">
-              <TimeTooltip
+              <TooltipTime
                 postTime={DateTime.fromJSDate(post.data.date).toFormat(
                   "yyyy-MM-dd",
                 )}
@@ -92,7 +92,7 @@ const { base, contentWrapper, content, icon } = postListPopover();
                 {relativeTimeFromNow(
                   showUpdateTime ? post.data.updated : post.data.date,
                 )}
-              </TimeTooltip>
+              </TooltipTime>
             </span>
           </li>
         );
