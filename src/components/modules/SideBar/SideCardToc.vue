@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MobileDialog from "@comp/elements/MobileDialog.vue";
+import DialogMobile from "@comp/ui/Dialog/DialogMobile.vue";
 import TocEntry from "./TocEntry.vue";
 import { ref } from "vue";
 import type { MarkdownHeading } from "astro";
@@ -36,7 +36,7 @@ const { base, heading } = card({ padding: "sm" });
     </div>
     <TocEntry :headings="headings" :active-index @click-link="onClickLink" />
   </div>
-  <MobileDialog
+  <DialogMobile
     v-show="shouldMount"
     v-model="open"
     title="Table of Contents"
@@ -56,5 +56,5 @@ const { base, heading } = card({ padding: "sm" });
         </button>
       </div>
     </template>
-  </MobileDialog>
+  </DialogMobile>
 </template>

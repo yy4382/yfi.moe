@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import MobileDialog from "@comp/elements/MobileDialog.vue";
+import DialogMobile from "@comp/ui/Dialog/DialogMobile.vue";
 import MingCuteMenuLine from "~icons/mingcute/menu-line";
 import { navMenu } from "@configs/navbar";
 </script>
 
 <template>
-  <MobileDialog description="Menu Bar for mobile" title="Menu Bar for mobile">
+  <DialogMobile description="Menu Bar for mobile" title="Menu Bar for mobile">
     <template #trigger>
       <MingCuteMenuLine class="h-8 w-8 text-heading outline-0" />
     </template>
@@ -30,5 +30,5 @@ import { navMenu } from "@configs/navbar";
         </ul>
       </section>
     </div>
-  </MobileDialog>
+  </DialogMobile>
 </template>
