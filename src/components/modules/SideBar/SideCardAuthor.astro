@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components";
 import getStatistics from "@utils/statistics";
 import { authorName, contactInfo } from "@configs/author";
-import Card from "@comp/elements/Card.astro";
+import Card from "@comp/ui/Card/Card.astro";
 
 const { articles, words, tags } = await getStatistics();
 ---
