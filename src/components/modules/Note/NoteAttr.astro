@@ -9,7 +9,7 @@ type Props = { page: PageMeta; class?: string };
 const { page, class: className } = Astro.props;
 ---
 
-<div class:list={["flex h-12 items-center gap-5", className]}>
+<div class:list={["flex items-center gap-5", className]}>
   <div class="flex select-none items-center gap-2">
     <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
       <Icon name="mingcute:calendar-line" class="size-full text-primary" />

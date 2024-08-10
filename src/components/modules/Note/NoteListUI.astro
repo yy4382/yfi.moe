@@ -22,7 +22,7 @@ const groups = groupingEntries(pages, (page) =>
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
         <li class="timeline-dot-item-note-list scroll-mt-20 py-6" id={page.id}>
-          <NoteAttr page={page} class="py-2" />
+          <NoteAttr page={page} class="h-12 py-2" />
           <NoteContentById pageId={page.id} />
         </li>
       ))}
