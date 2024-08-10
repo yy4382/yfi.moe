@@ -5,9 +5,8 @@ import {
 } from "@comp/ui/CompactEntryList";
 import type { PageMeta } from "@libs/notion-client";
 import NoteContentById from "./NoteContentById.astro";
-import { DateTime } from "luxon";
-import { Icon } from "astro-icon/components";
 import NoteContentStyle from "./NoteContentStyle.astro";
+import NoteAttr from "./NoteAttr.astro";
 
 type Props = { pages: PageMeta[] };
 
@@ -23,37 +22,7 @@ const groups = groupingEntries(pages, (page) =>
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
         <li class="timeline-dot-item-note-list scroll-mt-20 py-6" id={page.id}>
-          <div class="flex h-12 items-center gap-5 py-2">
-            <div class="flex select-none items-center gap-2">
-              <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
-                <Icon
-                  name="mingcute:calendar-line"
-                  class="size-full text-primary"
-                />
-              </div>
-
-              <span class="text-base font-semibold text-comment opacity-75">
-                {DateTime.fromISO(page.createdAt).toFormat("MM-dd")}
-              </span>
-            </div>
-            <div class="flex select-none items-center gap-2">
-              <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
-                <Icon
-                  name="mingcute:hashtag-line"
-                  class="size-full text-primary"
-                />
-              </div>
-
-              <span class="space-x-0.5 text-base font-semibold text-comment opacity-75">
-                {page.tags.map((tag, index) => (
-                  <>
-                    {index !== 0 && <span>|</span>}
-                    <span>{tag}</span>
-                  </>
-                ))}
-              </span>
-            </div>
-          </div>
+          <NoteAttr page={page} class="py-2" />
           <NoteContentById pageId={page.id} />
         </li>
       ))}
