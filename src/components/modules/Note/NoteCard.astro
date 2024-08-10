@@ -35,15 +35,16 @@ const { pageContent: page } = Astro.props;
 </div>
 
 <script>
-  function backToList(path: string) {
-    window.open(path, "_self");
-  }
   function addEvent() {
     const button = document.getElementById(
       "backToList",
     ) as HTMLAnchorElement | null;
     const path = button?.href ?? "/note";
-    button?.addEventListener("click", () => backToList(path));
+    button?.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.open(path, "_self");
+    });
   }
   addEventListener("astro:after-swap", addEvent);
+  addEvent();
 </script>
