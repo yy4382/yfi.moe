@@ -27,7 +27,7 @@ const { pageContent: page } = Astro.props;
       <NoteAttr page={page.meta} />
     </Card>
   </div>
-  <Card headSize="3xl" class:list={["flex flex-col gap-2"]}>
+  <Card headSize="3xl" class:list={["flex flex-col gap-4"]}>
     <NoteAttr page={page.meta} class="sm:hidden" />
     <NoteContent html={page.html} />
   </Card>
