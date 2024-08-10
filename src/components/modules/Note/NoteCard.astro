@@ -2,13 +2,15 @@
 import Card from "@comp/ui/Card/Card.astro";
 import type { PageMeta } from "@libs/notion-client";
 import NoteContent from "./NoteContent.astro";
+import NoteAttr from "./NoteAttr.astro";
 interface Props {
   pageContent: { meta: PageMeta; html: string };
 }
-const { pageContent } = Astro.props;
+const { pageContent: page } = Astro.props;
 ---
 
 <Card useHeading headSize="3xl" class:list={["space-y-4"]}>
-  <h1 slot="heading">{pageContent.meta.title}</h1>
-  <NoteContent html={pageContent.html} />
+  <h1 slot="heading">{page.meta.title}</h1>
+  <NoteAttr page={page.meta} />
+  <NoteContent html={page.html} />
 </Card>

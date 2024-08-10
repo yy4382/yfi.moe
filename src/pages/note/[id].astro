@@ -1,5 +1,5 @@
 ---
-import NoGridLayout from "@layouts/NoGridLayout.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSeo } from "@utils/SEO";
 import NoteCard from "@comp/modules/Note/NoteCard.astro";
 import getNoteContent from "@comp/modules/Note/getContent";
@@ -19,8 +19,14 @@ if (code !== 200) {
 }
 ---
 
-{/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-<NoGridLayout seoConfig={getSeo({ title: data!.meta.title, type: "article" })}>
+<BaseLayout
+  seoConfig={getSeo({
+    title: data?.meta.title ?? "An Error Occurred",
+    type: "article",
+    noindex: data === null,
+  })}
+  navStats="碎碎念"
+>
   {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
   {error ? <div>{error}</div> : <NoteCard pageContent={data!} />}
-</NoGridLayout>
+</BaseLayout>
