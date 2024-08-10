@@ -1,0 +1,38 @@
+---
+import { Icon } from "astro-icon/components";
+import getNoteContent from "./getContent";
+import NoteContent from "./NoteContent.astro";
+import type { Options as TruncateOptions } from "hast-util-truncate";
+interface Props {
+  pageId: string;
+  truncate?: boolean | TruncateOptions;
+}
+
+const { pageId, truncate } = Astro.props;
+const truncatedSign = "&#x3C;hast-truncated>";
+
+const { data, error, code } = await getNoteContent(pageId, { truncate });
+
+if (code !== 200) {
+  Astro.response.status = code;
+}
+console.log(data?.html.includes("<hast-truncated>"), data?.html);
+---
+
+{
+  error === null ? (
+    <div class="flex flex-col gap-2">
+      <NoteContent html={data?.html.replace(truncatedSign, "") ?? ""} />
+      {data?.html.includes(truncatedSign) && (
+        <a href={`/note/${pageId}`} class="self-end">
+          <div class="flex items-center gap-2 font-semibold text-primary">
+            阅读全文
+            <Icon name="mingcute:right-fill" />
+          </div>
+        </a>
+      )}
+    </div>
+  ) : (
+    <span class="text-heading">{error}</span>
+  )
+}

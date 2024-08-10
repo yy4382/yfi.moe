@@ -4,16 +4,24 @@ import {
   NOTION_API_KEY as apiKey,
 } from "astro:env/server";
 import type { GetPageResponse } from "@notionhq/client/build/src/api-endpoints";
+import type { Options as TruncateOptions } from "hast-util-truncate";
 
 type ResponseData = Awaited<ReturnType<typeof getPageContent>>;
 
-export default async function getNoteContent(pageId: string): Promise<{
+export default async function getNoteContent(
+  pageId: string,
+  options?: { truncate?: boolean | TruncateOptions },
+): Promise<{
   data: ResponseData | null;
   error: string | null;
   code: number;
 }> {
   try {
-    const data = await getPageContent(pageId, { apiKey, accessControl });
+    const data = await getPageContent(pageId, {
+      apiKey,
+      accessControl,
+      truncate: options?.truncate,
+    });
     return { data, error: null, code: 200 };
   } catch (err) {
     if (

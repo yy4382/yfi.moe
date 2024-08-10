@@ -5,6 +5,7 @@ import { blockToHast, Client as Notion2HastClient } from "notion2hast";
 import { h } from "hastscript";
 import type { GetPageResponse } from "@notionhq/client/build/src/api-endpoints";
 import extractMetaFromPage, { type PageMeta } from "./extractMetaFromPage";
+import { truncate, type Options as TruncateOptions } from "hast-util-truncate";
 
 class FromNotion extends Notion2HastClient {
   private client: NotionClient;
@@ -24,6 +25,7 @@ export async function getPageContent(
   options: {
     apiKey: string;
     accessControl: (response: GetPageResponse) => boolean;
+    truncate?: boolean | TruncateOptions;
   },
 ): Promise<{ meta: PageMeta; html: string }> {
   // Check if the user has access to the page
@@ -50,6 +52,19 @@ export async function getPageContent(
     richTexttoHastOpts: { defaultClassName: true },
   });
   console.timeEnd(`Fetching page(block) ${pageId} content from Notion API`);
+  const hast = h(null, tree);
 
-  return { meta: pageMeta, html: toHtml(h(null, tree)) };
+  return {
+    meta: pageMeta,
+    html: toHtml(
+      options.truncate
+        ? truncate(
+            hast,
+            typeof options.truncate === "boolean"
+              ? undefined
+              : options.truncate,
+          )
+        : hast,
+    ),
+  };
 }

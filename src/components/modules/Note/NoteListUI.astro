@@ -4,7 +4,7 @@ import {
   groupingEntries,
 } from "@comp/ui/CompactEntryList";
 import type { PageMeta } from "@libs/notion-client";
-import NoteContentById from "./NoteContentById.astro";
+import NoteContentById from "./NoteListItem.astro";
 import NoteContentStyle from "./NoteContentStyle.astro";
 import NoteAttr from "./NoteAttr.astro";
 
@@ -21,9 +21,12 @@ const groups = groupingEntries(pages, (page) =>
   groups.map((group) => (
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
-        <li class="timeline-dot-item-note-list scroll-mt-20 py-6" id={page.id}>
+        <li class="timeline-dot-item-note-list scroll-mt-20 py-2" id={page.id}>
           <NoteAttr page={page} class="h-12 py-2" />
-          <NoteContentById pageId={page.id} />
+          <NoteContentById
+            pageId={page.id}
+            truncate={{ size: 300, ellipsis: "……<hast-truncated>" }}
+          />
         </li>
       ))}
     </CompactEntryListYear>
@@ -34,7 +37,7 @@ const groups = groupingEntries(pages, (page) =>
 
 <style is:global>
   .timeline-dot > li.timeline-dot-item-note-list {
-    --top-offset: 3rem;
+    --top-offset: 2rem;
     --left-offset: 1.5rem;
     @apply relative ml-[var(--left-offset)];
     &:first-child {
