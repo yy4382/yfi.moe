@@ -4,39 +4,18 @@ import {
   groupingEntries,
 } from "@comp/ui/CompactEntryList";
 import type { PageMeta } from "@libs/notion-client";
-import NoteCardContent from "./NoteContent.astro";
+import NoteContentById from "./NoteContentById.astro";
 import { DateTime } from "luxon";
 import { Icon } from "astro-icon/components";
-import NoteLoading from "./NoteLoading.astro";
 import NoteContentStyle from "./NoteContentStyle.astro";
 
-interface NoteListUIProps {
-  loading?: boolean;
-  pages?: PageMeta[];
-}
+type Props = { pages: PageMeta[] };
 
-type RequiredPages = {
-  pages: PageMeta[];
-};
+const { pages } = Astro.props;
 
-type Props =
-  | (NoteListUIProps & { loading: true })
-  | (NoteListUIProps & RequiredPages & { loading?: false | undefined });
-
-const { pages, loading } = Astro.props;
-
-const groups = loading
-  ? [
-      {
-        year: "2024",
-        posts: [1, 2, 3] as unknown as PageMeta[],
-      },
-      {
-        year: "2023",
-        posts: [1, 2, 3] as unknown as PageMeta[],
-      },
-    ]
-  : groupingEntries(pages, (page) => new Date(page.createdAt).getFullYear());
+const groups = groupingEntries(pages, (page) =>
+  new Date(page.createdAt).getFullYear(),
+);
 ---
 
 {
@@ -52,44 +31,30 @@ const groups = loading
                   class="size-full text-primary"
                 />
               </div>
-              {loading ? (
-                <div class="skeleton h-6 w-16" />
-              ) : (
-                <span class="text-base font-semibold text-comment opacity-75">
-                  {DateTime.fromISO(page.createdAt).toFormat("MM-dd")}
-                </span>
-              )}
+
+              <span class="text-base font-semibold text-comment opacity-75">
+                {DateTime.fromISO(page.createdAt).toFormat("MM-dd")}
+              </span>
             </div>
-            {(loading || page.tags.length > 0) && (
-              <div class="flex select-none items-center gap-2">
-                <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
-                  <Icon
-                    name="mingcute:hashtag-line"
-                    class="size-full text-primary"
-                  />
-                </div>
-                {loading ? (
-                  <div class="skeleton h-6 w-20" />
-                ) : (
-                  <span class="space-x-0.5 text-base font-semibold text-comment opacity-75">
-                    {page.tags.map((tag, index) => (
-                      <>
-                        {index !== 0 && <span>|</span>}
-                        <span>{tag}</span>
-                      </>
-                    ))}
-                  </span>
-                )}
+            <div class="flex select-none items-center gap-2">
+              <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
+                <Icon
+                  name="mingcute:hashtag-line"
+                  class="size-full text-primary"
+                />
               </div>
-            )}
-          </div>
-          {loading ? (
-            <div class="skeleton flex h-24 w-full p-4 center">
-              <NoteLoading />
+
+              <span class="space-x-0.5 text-base font-semibold text-comment opacity-75">
+                {page.tags.map((tag, index) => (
+                  <>
+                    {index !== 0 && <span>|</span>}
+                    <span>{tag}</span>
+                  </>
+                ))}
+              </span>
             </div>
-          ) : (
-            <NoteCardContent pageId={page.id} />
-          )}
+          </div>
+          <NoteContentById pageId={page.id} />
         </li>
       ))}
     </CompactEntryListYear>

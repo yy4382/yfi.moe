@@ -1,0 +1,26 @@
+---
+import NoGridLayout from "@layouts/NoGridLayout.astro";
+import { getSeo } from "@utils/SEO";
+import NoteCard from "@comp/modules/Note/NoteCard.astro";
+import getNoteContent from "@comp/modules/Note/getContent";
+
+export const prerender = false;
+
+const pageId = Astro.params.id;
+if (pageId === undefined) {
+  Astro.response.status = 404;
+  return;
+}
+
+const { data, error, code } = await getNoteContent(pageId);
+
+if (code !== 200) {
+  Astro.response.status = code;
+}
+---
+
+{/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+<NoGridLayout seoConfig={getSeo({ title: data!.meta.title, type: "article" })}>
+  {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+  {error ? <div>{error}</div> : <NoteCard pageContent={data!} />}
+</NoGridLayout>
