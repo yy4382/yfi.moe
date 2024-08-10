@@ -27,6 +27,12 @@ if (code !== 200) {
   })}
   navStats="碎碎念"
 >
-  {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-  {error ? <div>{error}</div> : <NoteCard pageContent={data!} />}
+  {
+    error ? (
+      <div class="text-heading">{error}</div>
+    ) : (
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      <NoteCard pageContent={data!} />
+    )
+  }
 </BaseLayout>
