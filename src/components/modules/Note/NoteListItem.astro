@@ -16,7 +16,6 @@ const { data, error, code } = await getNoteContent(pageId, { truncate });
 if (code !== 200) {
   Astro.response.status = code;
 }
-console.log(data?.html.includes("<hast-truncated>"), data?.html);
 ---
 
 {
@@ -24,7 +23,7 @@ console.log(data?.html.includes("<hast-truncated>"), data?.html);
     <div class="flex flex-col gap-2">
       <NoteContent html={data?.html.replace(truncatedSign, "") ?? ""} />
       {data?.html.includes(truncatedSign) && (
-        <a href={`/note/${pageId}`} class="self-end">
+        <a href={`/note/${pageId}`} class="more-button self-end">
           <div class="flex items-center gap-2 font-semibold text-primary">
             阅读全文
             <Icon name="mingcute:right-fill" />
@@ -36,3 +35,18 @@ console.log(data?.html.includes("<hast-truncated>"), data?.html);
     <span class="text-heading">{error}</span>
   )
 }
+
+<script>
+  function addEvent() {
+    const button = document.querySelector(
+      ".more-button",
+    ) as HTMLAnchorElement | null;
+    const path = button?.href ?? "/note";
+    button?.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.open(path, "_self");
+    });
+  }
+  addEventListener("astro:after-swap", addEvent);
+  addEvent();
+</script>
