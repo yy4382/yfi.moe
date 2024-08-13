@@ -21,6 +21,12 @@ Astro.response.headers.set(
 
 <BaseLayout seoConfig={seo} navStats="碎碎念">
   <CompactEntryList keyword="碎碎念">
+    <div class="mt-4 text-sm text-comment">
+      <p>这里只会显示最近的 20 篇哦 😘</p>
+      <p>
+        但是，指向单个笔记的链接是永久的，所以你可以通过链接访问到任何一篇公开的笔记。
+      </p>
+    </div>
     <NoteList />
   </CompactEntryList>
 </BaseLayout>
