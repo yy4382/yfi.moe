@@ -23,7 +23,7 @@ if (code !== 200) {
     <div class="flex flex-col gap-2">
       <NoteContent html={data?.html.replace(truncatedSign, "") ?? ""} />
       {data?.html.includes(truncatedSign) && (
-        <a href={`/note/${pageId}`} class="more-button self-end">
+        <a href={`/note/${pageId}`} class="self-end">
           <div class="flex items-center gap-2 font-semibold text-primary">
             阅读全文
             <Icon name="mingcute:right-fill" />
@@ -35,18 +35,3 @@ if (code !== 200) {
     <span class="text-heading">{error}</span>
   )
 }
-
-<script>
-  function addEvent() {
-    const button = document.querySelector(
-      ".more-button",
-    ) as HTMLAnchorElement | null;
-    const path = button?.href ?? "/note";
-    button?.addEventListener("click", (event) => {
-      event.preventDefault();
-      window.open(path, "_self");
-    });
-  }
-  addEventListener("astro:after-swap", addEvent);
-  addEvent();
-</script>
