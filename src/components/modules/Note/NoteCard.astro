@@ -16,7 +16,6 @@ const { pageContent: page } = Astro.props;
     <a
       class="flex w-fit shrink-0 bg-card p-3 center shape-card sm:p-4"
       href="/note"
-      id="backToList"
     >
       <div class="flex items-center gap-2 font-semibold text-heading">
         <Icon name="mingcute:left-fill" />
@@ -33,18 +32,3 @@ const { pageContent: page } = Astro.props;
   </Card>
   <CopyrightCard />
 </div>
-
-<script>
-  function addEvent() {
-    const button = document.getElementById(
-      "backToList",
-    ) as HTMLAnchorElement | null;
-    const path = button?.href ?? "/note";
-    button?.addEventListener("click", (event) => {
-      event.preventDefault();
-      window.open(path, "_self");
-    });
-  }
-  addEventListener("astro:after-swap", addEvent);
-  addEvent();
-</script>
