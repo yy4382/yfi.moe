@@ -2,6 +2,7 @@
 import { getEntries } from "@libs/notion-client";
 import NoteListUI from "./NoteListUI.astro";
 import { NOTION_NOTE_DATABASE_ID, NOTION_API_KEY } from "astro:env/server";
+import { InsufficientDataError } from "@libs/notion-client/errors";
 
 const apiKey = NOTION_API_KEY;
 const databaseId = NOTION_NOTE_DATABASE_ID;
@@ -19,7 +20,13 @@ try {
     },
   });
 } catch (err) {
-  error = err instanceof Error ? err.message : "An error occurred";
+  if (err instanceof InsufficientDataError) {
+    error = "No notes found";
+  } else if (err instanceof Error) {
+    error = err.message;
+  } else {
+    error = "An error occurred";
+  }
   Astro.response.status = 500;
 }
 ---
