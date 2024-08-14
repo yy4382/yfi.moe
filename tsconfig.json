@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
@@ -13,7 +13,7 @@
       "@styles/*": ["src/styles/*"],
       "@libs/*": ["src/libs/*"]
     },
-    "types": ["unplugin-icons/types/vue"]
+    "jsxImportSource": "react"
   },
   "exclude": ["dist"]
 }

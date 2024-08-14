@@ -10,7 +10,7 @@ const { page, class: className } = Astro.props;
 ---
 
 <div class:list={["flex items-center gap-5", className]}>
-  <div class="flex select-none items-center gap-2">
+  <div class="flex shrink-0 select-none items-center gap-2">
     <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
       <Icon name="mingcute:calendar-line" class="size-full text-primary" />
     </div>
@@ -24,20 +24,13 @@ const { page, class: className } = Astro.props;
       </span>
     </TooltipTime>
   </div>
-  <div class="flex select-none items-center gap-2">
-    <div class="flex size-8 rounded-md bg-primary/30 p-1 center">
+  <div class="flex min-w-0 select-none items-center gap-2">
+    <div class="flex size-8 shrink-0 rounded-md bg-primary/30 p-1 center">
       <Icon name="mingcute:hashtag-line" class="size-full text-primary" />
     </div>
 
-    <span class="flex gap-0.5 text-base font-semibold text-comment">
-      {
-        page.tags.map((tag, index) => (
-          <>
-            {index !== 0 && <span>|</span>}
-            <span>{tag}</span>
-          </>
-        ))
-      }
+    <span class="truncate text-base font-semibold text-comment">
+      {page.tags.join(" | ")}
     </span>
   </div>
 </div>

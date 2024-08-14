@@ -7,7 +7,7 @@ interface Props {
 const { href, title } = Astro.props;
 ---
 
-<li class:list={["timeline-dot-item group", tvButton()]}>
+<li class:list={["timeline-dot-item group py-2", tvButton()]}>
   <a class="flex flex-col gap-1" href={href}>
     <slot name="title">
       <span

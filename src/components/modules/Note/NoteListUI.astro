@@ -4,9 +4,10 @@ import {
   groupingEntries,
 } from "@comp/ui/CompactEntryList";
 import type { PageMeta } from "@libs/notion-client";
-import NoteContentById from "./NoteListItem.astro";
+import NoteListItem from "./NoteListItem.astro";
 import NoteContentStyle from "./NoteContentStyle.astro";
 import NoteAttr from "./NoteAttr.astro";
+import NoteListItemCopyLink from "./NoteListItemCopyLink";
 
 type Props = { pages: PageMeta[] };
 
@@ -21,12 +22,19 @@ const groups = groupingEntries(pages, (page) =>
   groups.map((group) => (
     <CompactEntryListYear year={group.year} order={1} animated={false}>
       {group.posts.map((page) => (
-        <li class="timeline-dot-item-note-list scroll-mt-20 py-2" id={page.id}>
-          <NoteAttr page={page} class="h-12 py-2" />
-          <NoteContentById
+        <li
+          class="timeline-dot-item-note-list box-border scroll-mt-20"
+          id={page.id}
+        >
+          <div class="flex items-center justify-between gap-2">
+            <NoteAttr page={page} class="h-[var(--attr-height)] py-2" />
+            <NoteListItemCopyLink uriPath={`/note/${page.id}`} client:load />
+          </div>
+          <NoteListItem
             pageId={page.id}
             truncate={{ size: 300, ellipsis: "……<hast-truncated>" }}
           />
+          <div class="divider my-2 h-0 w-full border-b border-dashed border-gray-300 dark:border-gray-700" />
         </li>
       ))}
     </CompactEntryListYear>
@@ -37,8 +45,16 @@ const groups = groupingEntries(pages, (page) =>
 
 <style is:global>
   .timeline-dot > li.timeline-dot-item-note-list {
-    --top-offset: 2rem;
+    --attr-height: 3rem;
+
+    --top-offset: calc(var(--attr-height) / 2);
     --left-offset: 1.5rem;
+
+    --dot-height: 0.5rem;
+    --dot-width: 0.5rem;
+
+    --line-width: 2px;
+
     position: relative;
     margin-left: var(--left-offset);
 
@@ -53,30 +69,39 @@ const groups = groupingEntries(pages, (page) =>
     /* Timeline dot */
     &::after {
       content: "";
-      left: calc(-1 * (var(--left-offset) + 0.25rem));
-      top: calc(var(--top-offset) - 0.25rem);
+      left: calc(-1 * (var(--left-offset) + var(--dot-width) / 2));
+      top: calc(var(--top-offset) - var(--dot-height) / 2);
 
       @apply absolute z-10 size-2 rounded-full bg-content-50 outline outline-2 outline-card;
     }
     /* Timeline line */
     &::before {
       content: "";
-      left: calc(calc(var(--left-offset) + 1px) * -1);
+      left: calc(-1 * (var(--left-offset) + var(--line-width) / 2));
       top: 50%;
-      height: calc(100% + 1rem);
+      height: 100%;
       transform: translateY(-50%);
       @apply pointer-events-none absolute border-l-[2px] border-content-50 opacity-30 transition;
     }
 
     /* Timeline position special cases */
     &:first-child::before {
-      @apply absolute bottom-[calc(-0.5rem)] top-[unset] h-[calc(100%+0.5rem-var(--top-offset))] translate-y-0;
+      bottom: 0;
+      top: unset;
+      height: calc(100% - var(--top-offset));
+      @apply absolute translate-y-0;
     }
     &:last-child::before {
-      @apply top-[calc(-0.5rem)] h-[calc(0.5rem+var(--top-offset))] translate-y-0;
+      top: 0;
+      height: var(--top-offset);
+      @apply translate-y-0;
     }
     &:first-child:last-child::before {
       @apply hidden;
+    }
+
+    &:last-child > .divider {
+      display: none;
     }
   }
 </style>
