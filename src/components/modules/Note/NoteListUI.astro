@@ -21,10 +21,11 @@ const groups = groupingEntries(pages, (page) =>
 {
   groups.map((group) => (
     <CompactEntryListYear year={group.year} order={1} animated={false}>
-      {group.posts.map((page) => (
+      {group.posts.map((page, index) => (
         <li
-          class="timeline-dot-item-note-list box-border scroll-mt-20"
+          class="timeline-dot-item-note-list box-border animate-onload scroll-mt-20"
           id={page.id}
+          style={`animation-delay: ${100 * (index + 1)}ms;`}
         >
           <div class="flex items-center justify-between gap-2">
             <NoteAttr page={page} class="h-[var(--attr-height)] py-2" />
