@@ -39,23 +39,36 @@ const groups = groupingEntries(pages, (page) =>
   .timeline-dot > li.timeline-dot-item-note-list {
     --top-offset: 2rem;
     --left-offset: 1.5rem;
-    @apply relative ml-[var(--left-offset)];
+    position: relative;
+    margin-left: var(--left-offset);
+
     &:first-child {
-      @apply pt-0;
+      padding-top: 0;
       --top-offset: 1.5rem;
     }
     &:last-child {
-      @apply pb-0;
+      padding-bottom: 0;
     }
 
+    /* Timeline dot */
     &::after {
       content: "";
-      @apply absolute -left-[calc(var(--left-offset)+0.25rem)] top-[calc(var(--top-offset)-0.25rem)] z-10 size-2 rounded-full bg-content-50 outline outline-2 outline-card;
+      left: calc(-1 * (var(--left-offset) + 0.25rem));
+      top: calc(var(--top-offset) - 0.25rem);
+
+      @apply absolute z-10 size-2 rounded-full bg-content-50 outline outline-2 outline-card;
     }
+    /* Timeline line */
     &::before {
       content: "";
-      @apply pointer-events-none absolute -left-[calc(var(--left-offset)+1px)] top-1/2 h-[calc(100%+1rem)] -translate-y-1/2 border-l-[2px] border-content-50 opacity-30 transition;
+      left: calc(calc(var(--left-offset) + 1px) * -1);
+      top: 50%;
+      height: calc(100% + 1rem);
+      transform: translateY(-50%);
+      @apply pointer-events-none absolute border-l-[2px] border-content-50 opacity-30 transition;
     }
+
+    /* Timeline position special cases */
     &:first-child::before {
       @apply absolute bottom-[calc(-0.5rem)] top-[unset] h-[calc(100%+0.5rem-var(--top-offset))] translate-y-0;
     }
