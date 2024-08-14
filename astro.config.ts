@@ -14,13 +14,15 @@ import { h } from "hastscript";
 import { siteDomain } from "./src/configs/site";
 import { linkIcons } from "./src/configs/markdown";
 import vercel from "@astrojs/vercel/serverless";
+import svgr from "vite-plugin-svgr";
+import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
   site: siteDomain,
   output: "hybrid",
   adapter: vercel({ imageService: true }),
-  integrations: [tailwind(), vue(), icon(), sitemap()],
+  integrations: [tailwind(), vue(), icon(), sitemap(), react()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [
@@ -60,9 +62,12 @@ export default defineConfig({
   },
   vite: {
     plugins: [
-      Icons({
-        compiler: "vue3",
+      svgr({
+        svgrOptions: {
+          icon: "1em",
+        },
       }),
+      Icons({ compiler: "vue3" }),
     ],
   },
   experimental: {

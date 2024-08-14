@@ -29,7 +29,7 @@ const { year, order, animated = true } = Astro.props;
 </div>
 <ul
   class:list={[
-    "timeline-dot -ml-3 flex flex-col gap-4 md:ml-0",
+    "timeline-dot -ml-3 flex flex-col md:ml-0",
     animated && "animate-onload opacity-0",
   ]}
   style={`animation-delay: ${(order * 2 + 1) * interval}ms;`}
@@ -46,13 +46,13 @@ const { year, order, animated = true } = Astro.props;
     }
     &::before {
       content: "";
-      @apply pointer-events-none absolute left-[calc(1.5rem/2-1px)] top-1/2 h-[calc(100%+1rem)] -translate-y-1/2 border-l-[2px] border-content-50 opacity-30 transition;
+      @apply pointer-events-none absolute left-[calc(1.5rem/2-1px)] top-1/2 h-[calc(100%)] -translate-y-1/2 border-l-[2px] border-content-50 opacity-30 transition;
     }
     &:first-child::before {
-      @apply top-1/2 h-[calc(50%+0.5rem)] translate-y-0;
+      @apply top-1/2 h-[calc(50%)] translate-y-0;
     }
     &:last-child::before {
-      @apply bottom-1/2 top-[unset] h-[calc(50%+0.5rem)] translate-y-0;
+      @apply bottom-1/2 top-[unset] h-[calc(50%)] translate-y-0;
     }
   }
 </style>
