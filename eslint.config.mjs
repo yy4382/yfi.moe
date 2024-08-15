@@ -20,7 +20,6 @@ export default [
   {
     name: "js and ts rules",
     rules: {
-      "@typescript-eslint/triple-slash-reference": "off",
       "no-duplicate-imports": "warn",
       "@typescript-eslint/no-unused-vars": [
         "error",
