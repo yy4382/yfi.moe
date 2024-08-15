@@ -30,3 +30,4 @@ app/blog/src/content/post
 **/.vercel/
 
 **/.turbo/
+.vercel

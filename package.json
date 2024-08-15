@@ -5,8 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "build:vercel": "turbo run fetch-article && turbo run build && cp -r app/blog/.vercel/output .vercel"
   },
   "keywords": [],
   "author": "",

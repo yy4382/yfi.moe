@@ -6,7 +6,7 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
-    "build:fetch": "sh get-article.sh && astro build",
+    "fetch-article": "sh get-article.sh",
     "check": "eslint .; prettier --ignore-unknown --check .; astro check",
     "dev": "astro dev",
     "prepare": "husky",

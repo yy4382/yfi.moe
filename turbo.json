@@ -1,9 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "fetch-article": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".vercel/**"]
+      "cache": false
     },
     "dev": {
       "persistent": true,
