@@ -16,6 +16,7 @@ import { linkIcons } from "./src/configs/markdown";
 import vercel from "@astrojs/vercel/serverless";
 import svgr from "vite-plugin-svgr";
 import react from "@astrojs/react";
+import rehypeImageOptimization from "./src/libs/rehype-image-optimization";
 
 // https://astro.build/config
 export default defineConfig({
@@ -28,6 +29,7 @@ export default defineConfig({
     rehypePlugins: [
       rehypeRaw,
       rehypeRemoveComments,
+      rehypeImageOptimization,
       [
         rehypeExtendedLinks,
         {

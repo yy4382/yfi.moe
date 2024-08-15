@@ -164,6 +164,9 @@ importers:
       unified:
         specifier: ^11.0.5
         version: 11.0.5
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
       unplugin-icons:
         specifier: ^0.19.2
         version: 0.19.2(@svgr/core@8.1.0(typescript@5.5.4))(@vue/compiler-sfc@3.4.36)
