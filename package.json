@@ -5,13 +5,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm -F @yfi/blog dev"
+    "m": "pnpm -F @yfi/blog"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@9.7.1",
   "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/eslint__js": "^8.42.3",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.1.0",

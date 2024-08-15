@@ -48,14 +48,14 @@ export default [
   ...pluginVue.configs["flat/recommended"],
   {
     name: "vue config",
-    files: ["src/**/*.vue"],
+    files: ["app/blog/src/**/*.vue"],
     plugins: {
       "typescript-eslint": tseslint.plugin,
     },
     languageOptions: {
       parserOptions: {
         parser: tseslint.parser,
-        project: "./tsconfig.eslint.json",
+        project: "./app/blog/tsconfig.json",
         extraFileExtensions: [".vue"],
         sourceType: "module",
       },

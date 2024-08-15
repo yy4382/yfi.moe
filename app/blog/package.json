@@ -69,8 +69,6 @@
     "vue-instantsearch": "^4.19.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
-    "@types/eslint__js": "^8.42.3",
     "@types/hast": "^3.0.4",
     "@types/luxon": "^3.4.2",
     "@types/postcss-js": "^4.0.4",
