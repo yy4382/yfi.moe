@@ -27,4 +27,6 @@ pnpm-debug.log*
 
 app/blog/src/content/post
 
-.vercel
+**/.vercel/
+
+**/.turbo/
