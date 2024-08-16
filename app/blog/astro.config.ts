@@ -29,7 +29,31 @@ export default defineConfig({
     rehypePlugins: [
       rehypeRaw,
       rehypeRemoveComments,
-      rehypeImageOptimization,
+      [
+        rehypeImageOptimization,
+        {
+          originValidation: (url: string) => {
+            return new URL(url).hostname === "i.yfi.moe";
+          },
+          optimizeOptions: "f=auto,w=640,fit=scale-down,q=80",
+          srcsetOptionsList: [
+            {
+              optimOptions: "f=auto,w=320,fit=scale-down,q=80",
+              descriptor: "320w",
+            },
+            {
+              optimOptions: "f=auto,w=640,fit=scale-down,q=80",
+              descriptor: "640w",
+            },
+            {
+              optimOptions: "f=auto,w=1280,fit=scale-down,q=80",
+              descriptor: "1280w",
+            },
+          ],
+          sizesOptionsList: ["(max-width: 640px) 320px", "640px"],
+          style: "max-width: 100%; width:100%; height: auto;",
+        } satisfies Parameters<typeof rehypeImageOptimization>[0],
+      ],
       [
         rehypeExtendedLinks,
         {
