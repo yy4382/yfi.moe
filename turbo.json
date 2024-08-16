@@ -11,6 +11,16 @@
     "dev": {
       "persistent": true,
       "cache": false
+    },
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "check-types": {
+      "dependsOn": ["transit"]
+    },
+    "format": {},
+    "lint": {
+      "dependsOn": ["transit"]
     }
   }
 }

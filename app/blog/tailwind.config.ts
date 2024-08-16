@@ -131,11 +131,13 @@ const config: Config = {
   },
   plugins: [
     typography,
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("tailwindcss-animated"),
     addShortcutPlugin,
     colorVariablePlugin,
 
     // import css as plugin is powered by "./cssAsPlugin.cjs"
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("./src/styles/components.css"),
   ],
 };

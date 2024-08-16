@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "check-types": "turbo run check-types",
     "build:vercel": "turbo run fetch-article --env-mode=loose && turbo run build --env-mode=loose && cp -r app/blog/.vercel/output .vercel"
   },
   "keywords": [],

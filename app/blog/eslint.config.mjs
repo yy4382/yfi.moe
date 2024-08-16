@@ -7,11 +7,11 @@ import pluginVue from "eslint-plugin-vue";
 export default [
   {
     ignores: [
-      "dist/",
-      "node_modules/",
-      ".astro/",
+      "**/dist/",
+      "**/node_modules/",
+      "**/.astro/",
       "src/components/icons/",
-      ".vercel/",
+      "**/.vercel/",
     ],
   },
   // JavaScript and TypeScript
@@ -47,14 +47,14 @@ export default [
   ...pluginVue.configs["flat/recommended"],
   {
     name: "vue config",
-    files: ["app/blog/src/**/*.vue"],
+    files: ["src/**/*.vue"],
     plugins: {
       "typescript-eslint": tseslint.plugin,
     },
     languageOptions: {
       parserOptions: {
         parser: tseslint.parser,
-        project: "./app/blog/tsconfig.json",
+        project: "./tsconfig.json",
         extraFileExtensions: [".vue"],
         sourceType: "module",
       },
