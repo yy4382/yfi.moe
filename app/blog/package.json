@@ -12,7 +12,6 @@
     "lint": "eslint .",
     "check-types": "astro check",
     "dev": "astro dev",
-    "prepare": "husky",
     "preview": "astro preview",
     "start": "astro dev"
   },
@@ -53,7 +52,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "reading-time": "^1.5.0",
-    "rehype-extended-links": "^1.0.2",
+    "rehype-extended-links": "workspace:*",
     "rehype-raw": "^7.0.0",
     "rehype-remove-comments": "^6.0.0",
     "rehype-stringify": "^10.0.0",
