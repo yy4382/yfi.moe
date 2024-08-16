@@ -1,0 +1,3 @@
+[submodule "lib/rehype-image-optim"]
+	path = lib/rehype-image-optim
+	url = https://github.com/yy4382/rehype-image-optim.git
