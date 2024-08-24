@@ -6,7 +6,7 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
-    "fetch-article": "sh get-article.sh",
+    "fetch-article": "dotenvx run --quiet -- sh get-article.sh",
     "check": "eslint .; prettier --ignore-unknown --check .; astro check",
     "format": "prettier --ignore-unknown --write .",
     "lint": "eslint .",
@@ -22,6 +22,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vercel": "^7.7.2",
     "@astrojs/vue": "^4.5.0",
+    "@dotenvx/dotenvx": "^1.10.2",
     "@iconify-json/devicon-plain": "^1.1.47",
     "@iconify-json/fa6-brands": "^1.1.22",
     "@iconify-json/mingcute": "^1.1.19",
@@ -53,6 +54,7 @@
     "react-dom": "^18.3.1",
     "reading-time": "^1.5.0",
     "rehype-extended-links": "workspace:*",
+    "rehype-image-optim": "workspace:*",
     "rehype-raw": "^7.0.0",
     "rehype-remove-comments": "^6.0.0",
     "rehype-stringify": "^10.0.0",
@@ -68,17 +70,16 @@
     "unplugin-icons": "^0.19.2",
     "vite-plugin-svgr": "^4.2.0",
     "vue": "^3.4.38",
-    "vue-instantsearch": "^4.19.2",
-    "rehype-image-optim": "workspace:*"
+    "vue-instantsearch": "^4.19.2"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.2",
     "@types/hast": "^3.0.4",
     "@types/luxon": "^3.4.2",
     "@types/postcss-js": "^4.0.4",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/remove-markdown": "^0.3.4",
-    "sharp": "^0.33.4",
-    "@astrojs/check": "^0.9.2"
+    "sharp": "^0.33.4"
   }
 }
