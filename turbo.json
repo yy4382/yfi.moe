@@ -6,21 +6,42 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "cache": false
+      "cache": false,
+      "env": [
+        "LOCAL_PREVIEW",
+        "VERCEL_ENV",
+        "ARTICLE_PAT",
+        "ALGOLIA_WRITE_API_KEY"
+      ],
+      "passThroughEnv": [
+        "ALGOLIA_WRITE_API_KEY",
+        "NOTION_API_KEY",
+        "NOTION_NOTE_DATABASE_ID",
+        "VERCEL_AUTOMATION_BYPASS_SECRET"
+      ]
     },
     "dev": {
       "persistent": true,
-      "cache": false
-    },
-    "transit": {
-      "dependsOn": ["^transit"]
+      "cache": false,
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
+      "passThroughEnv": [
+        "ALGOLIA_WRITE_API_KEY",
+        "NOTION_API_KEY",
+        "NOTION_NOTE_DATABASE_ID",
+        "VERCEL_AUTOMATION_BYPASS_SECRET"
+      ]
     },
     "check-types": {
-      "dependsOn": ["transit"]
+      "dependsOn": ["^check-types"],
+      "cache": false
     },
-    "format": {},
+    "format": {
+      "dependsOn": [],
+      "cache": false
+    },
     "lint": {
-      "dependsOn": ["transit"]
+      "dependsOn": ["^lint"],
+      "cache": false
     }
   }
 }
