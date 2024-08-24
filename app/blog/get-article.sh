@@ -36,5 +36,10 @@ if [ -d "src/content/post" ]; then
   git pull
   cd ../../..
 else
+  if [ -z "$ARTICLE_PAT" ]; then
+    echo "Error: ARTICLE_PAT is not set" >&2
+    exit 1
+  fi
+  echo "ARTICLE_PAT is set"
   git clone "https://$ARTICLE_PAT@github.com/yy4382/blog-posts.git" --depth 1 --branch main --single-branch --quiet src/content/post
 fi

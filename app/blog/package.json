@@ -6,7 +6,7 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
-    "fetch-article": "dotenvx run --quiet -- sh get-article.sh",
+    "fetch-article": "dotenvx run --log-level=warn -- sh get-article.sh",
     "check": "eslint .; prettier --ignore-unknown --check .; astro check",
     "format": "prettier --ignore-unknown --write .",
     "lint": "eslint .",
