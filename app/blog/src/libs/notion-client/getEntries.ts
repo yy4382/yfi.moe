@@ -9,10 +9,6 @@ import { InsufficientDataError } from "./errors";
 type QueryDatabaseFilter = QueryDatabaseParameters["filter"];
 
 /**
- * @typedef {import('./errors').InsufficientDataError} InsufficientDataError
- */
-
-/**
  * Retrieves entries from a Notion database.
  *
  * @param {string} databaseId - The ID of the Notion database.
