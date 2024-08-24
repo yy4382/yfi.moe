@@ -10,7 +10,7 @@
     "lint": "turbo run lint",
     "format": "turbo run format",
     "check-types": "turbo run check-types",
-    "build:vercel": "turbo run fetch-article && turbo run build && cp -r app/blog/.vercel/output .vercel"
+    "build:vercel": "git submodule init && turbo run fetch-article && turbo run build && cp -r app/blog/.vercel/output .vercel"
   },
   "keywords": [],
   "author": "",
