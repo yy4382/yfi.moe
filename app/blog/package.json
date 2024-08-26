@@ -28,6 +28,7 @@
     "@iconify-json/mingcute": "^1.1.19",
     "@iconify/vue": "^4.1.2",
     "@notionhq/client": "^2.2.15",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-popover": "^1.1.1",
     "@tailwindcss/typography": "^0.5.14",
     "@vueuse/core": "^10.11.1",
