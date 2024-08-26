@@ -4,7 +4,7 @@ import MingcuteLinkLine from "@assets/icons/mingcute-link-line.svg?react";
 import MingcuteCheckboxLine from "@assets/icons/mingcute-checkbox-line.svg?react";
 import MingcuteClipboardLine from "@assets/icons/mingcute-clipboard-line.svg?react";
 import MingcuteCloseSquareLine from "@assets/icons/mingcute-close-square-line.svg?react";
-import Tooltip from "@comp/ui/Tooltip/Tooltip";
+import { Tooltip } from "@comp/ui/Tooltip";
 
 export default function (props: { uriPath: string }) {
   const [isHovering, setIsHovering] = useState(false);

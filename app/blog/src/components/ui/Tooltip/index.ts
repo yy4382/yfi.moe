@@ -1,3 +1,2 @@
-export { default as Tooltip } from "./VTooltip.vue";
-export { default as TooltipTime } from "./TimeTooltip.vue";
-export { default as TooltipTimeReact } from "./TimeTooltip.tsx";
+export { default as Tooltip } from "./Tooltip";
+export { default as TooltipTime } from "./TooltipTime";
