@@ -16,7 +16,9 @@ import { linkIcons } from "./src/configs/markdown";
 import vercel from "@astrojs/vercel/serverless";
 import svgr from "vite-plugin-svgr";
 import react from "@astrojs/react";
-import rehypeImageOptimization from "rehype-image-optim";
+import rehypeImageOptimization, {
+  defineOptions as defineOptimizeOptions,
+} from "rehype-image-optim";
 
 // https://astro.build/config
 export default defineConfig({
@@ -31,7 +33,7 @@ export default defineConfig({
       rehypeRemoveComments,
       [
         rehypeImageOptimization,
-        {
+        defineOptimizeOptions({
           provider: "cloudflare",
           originValidation: (url: string) => {
             return new URL(url).hostname === "i.yfi.moe";
@@ -44,7 +46,7 @@ export default defineConfig({
           ],
           sizesOptionsList: ["(max-width: 640px) 320px", "640px"],
           style: "max-width: 100%; width:100%; height: auto;",
-        } satisfies Parameters<typeof rehypeImageOptimization>[0],
+        }),
       ],
       [
         rehypeExtendedLinks,
