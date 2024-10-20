@@ -17,20 +17,11 @@
   "license": "ISC",
   "packageManager": "pnpm@9.7.1",
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
-    "@types/eslint__js": "^8.42.3",
-    "@typescript-eslint/parser": "^8.1.0",
-    "eslint": "^9.9.0",
-    "eslint-plugin-astro": "^1.2.3",
-    "eslint-plugin-vue": "^9.27.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.9",
     "prettier": "^3.3.3",
-    "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.6",
     "turbo": "^2.0.14",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.1.0"
+    "typescript": "^5.5.4"
   },
   "pnpm": {
     "overrides": {
@@ -38,6 +29,6 @@
     }
   },
   "lint-staged": {
-    "*": "prettier --ignore-unknown --write"
+    "*": "turbo run format"
   }
 }
