@@ -41,7 +41,7 @@ export function getDesc(
     content = truncateAtClosestNewline(content, length);
   }
   return removeMd
-    ? RemoveMarkdown(content, { stripListLeaders: false })
+    ? RemoveMarkdown(content, { stripListLeaders: false, useImgAltText: false })
     : content;
 }
 
