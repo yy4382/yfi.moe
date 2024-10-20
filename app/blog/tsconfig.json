@@ -16,6 +16,5 @@
     "jsxImportSource": "react",
     "types": ["unplugin-icons/types/vue"]
   },
-  "exclude": ["dist"],
-  "references": [{ "path": "../../lib/rehype-image-optim" }]
+  "exclude": ["dist"]
 }
