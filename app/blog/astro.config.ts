@@ -91,7 +91,6 @@ export default defineConfig({
     ],
   },
   experimental: {
-    serverIslands: true,
     env: {
       schema: {
         // Algolia
