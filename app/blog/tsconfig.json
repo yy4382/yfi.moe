@@ -14,7 +14,7 @@
       "@libs/*": ["src/libs/*"]
     },
     "jsxImportSource": "react",
-    "types": ["unplugin-icons/types/vue"]
+    "types": ["unplugin-icons/types/react"]
   },
   "exclude": ["dist"]
 }

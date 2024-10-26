@@ -14,7 +14,6 @@ import { h } from "hastscript";
 import { siteDomain } from "./src/configs/site";
 import { linkIcons } from "./src/configs/markdown";
 import vercel from "@astrojs/vercel/serverless";
-import svgr from "vite-plugin-svgr";
 import react from "@astrojs/react";
 import rehypeImageOptimization, {
   defineOptions as defineOptimizeOptions,
@@ -81,14 +80,7 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [
-      svgr({
-        svgrOptions: {
-          icon: "1em",
-        },
-      }),
-      Icons({ compiler: "vue3" }),
-    ],
+    plugins: [Icons({ compiler: "jsx", jsx: "react" })],
   },
   experimental: {
     env: {

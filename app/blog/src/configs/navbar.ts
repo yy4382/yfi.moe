@@ -7,7 +7,7 @@ export interface NavMenu {
   text: string;
   link?: string;
   icon?: string;
-  vueIcon?: unknown;
+  iconSvg?: typeof MingcuteChat1Line;
   subMenu?: NavMenu[];
 }
 
@@ -16,7 +16,7 @@ export const navMenu: NavMenu[] = [
     text: "首页",
     link: "/",
     icon: "mingcute:dot-grid-fill",
-    vueIcon: MingcuteDotGridLine,
+    iconSvg: MingcuteDotGridLine,
     subMenu: [
       { text: "站志", link: "/site-history" },
       { text: "致谢", link: "/credits" },
@@ -26,7 +26,7 @@ export const navMenu: NavMenu[] = [
     text: "文章",
     link: "/post",
     icon: "mingcute:edit-4-line",
-    vueIcon: MingcuteEdit4Line,
+    iconSvg: MingcuteEdit4Line,
     subMenu: [
       { text: "介绍 & 教程", link: "/categories/介绍 & 教程" },
       { text: "编程 & 技术", link: "/categories/编程 & 技术" },
@@ -38,19 +38,19 @@ export const navMenu: NavMenu[] = [
     text: "碎碎念",
     link: "/note",
     icon: "mingcute:chat-1-line",
-    vueIcon: MingcuteChat1Line,
+    iconSvg: MingcuteChat1Line,
   },
   {
     text: "时光机",
     link: "/achieve",
     icon: "mingcute:history-anticlockwise-line",
-    vueIcon: MingcuteHistoryAnticlockwiseLine,
+    iconSvg: MingcuteHistoryAnticlockwiseLine,
   },
   {
     text: "关于",
     link: "/about",
     icon: "mingcute:information-line",
-    vueIcon: MingcuteInformationLine,
+    iconSvg: MingcuteInformationLine,
     subMenu: [
       { text: "关于本站", link: "/about" },
       { text: "我的项目", link: "/projects" },

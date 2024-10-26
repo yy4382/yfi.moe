@@ -13,7 +13,6 @@ import { getPostPath } from "@utils/path";
 import { algoliaConfig } from "@configs/algolia";
 import { card } from "@styles/tv";
 import { onMounted, ref } from "vue";
-import MingcuteSearch3Line from "~icons/mingcute/search-3-line";
 
 const searchClient = algoliasearch(
   algoliaConfig.appId,
@@ -51,7 +50,6 @@ onMounted(() => {
           class="relative mt-52 flex size-full gap-4 px-4 transition-[margin-top] will-change-transform center focus-within:mt-4"
           @submit.prevent=""
         >
-          <MingcuteSearch3Line class="size-5 text-content" />
           <input
             type="search"
             class="ais-SearchBox-input size-full bg-transparent text-content outline-none"

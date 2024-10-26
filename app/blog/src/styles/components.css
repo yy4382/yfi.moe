@@ -80,4 +80,15 @@
   .skeleton {
     @apply animate-pulse rounded-md bg-gray-300/40 text-gray-400 dark:bg-gray-700/40 dark:text-gray-600;
   }
+
+  .transition-expand {
+    transition:
+      width 300ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      border-radius 200ms ease-in-out 100ms;
+  }
+  .transition-shrink {
+    transition:
+      width 300ms cubic-bezier(0.18, 0.89, 0.32, 1.28),
+      border-radius 200ms ease-in-out;
+  }
 }

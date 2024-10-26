@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import MingcuteLinkLine from "@assets/icons/mingcute-link-line.svg?react";
-import MingcuteCheckboxLine from "@assets/icons/mingcute-checkbox-line.svg?react";
-import MingcuteClipboardLine from "@assets/icons/mingcute-clipboard-line.svg?react";
-import MingcuteCloseSquareLine from "@assets/icons/mingcute-close-square-line.svg?react";
+import MingcuteLinkLine from "~icons/mingcute/link-line";
+import MingcuteCheckboxLine from "~icons/mingcute/checkbox-line";
+import MingcuteClipboardLine from "~icons/mingcute/clipboard-line";
+import MingcuteCloseSquareLine from "~icons/mingcute/close-square-line";
 import { Tooltip } from "@comp/ui/Tooltip";
 
 export default function (props: { uriPath: string }) {

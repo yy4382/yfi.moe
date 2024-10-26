@@ -4,7 +4,7 @@ import TocEntry from "./TocEntry";
 import { useState, useEffect, useRef, useMemo } from "react";
 import type { MarkdownHeading } from "astro";
 import useBreakpoints, { breakpointsTailwind } from "@utils/useBreakpoints";
-import MingcuteListCheckLine from "@assets/icons/mingcute-list-check-line.svg?react";
+import MingcuteListCheckLine from "~icons/mingcute/list-check-line";
 
 function useHeading(headingsInput: MarkdownHeading[]) {
   const [headings] = useState<MarkdownHeading[]>(headingsInput);
