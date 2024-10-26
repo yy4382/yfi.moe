@@ -121,7 +121,6 @@ const Navbar: React.FC<NavbarProps> = ({ navStats, children }) => {
           })}
         </div>
         <div className="flex h-fit gap-4 justify-self-end">
-          {/* <ColorSelectPopover /> */}
           <a href="/search" aria-label="Search Button" className="size-6">
             <MingcuteSearch3Line className="size-6" />
           </a>
