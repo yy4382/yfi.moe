@@ -16,47 +16,28 @@ export async function GET() {
   const client = algoliasearch(algoliaConfig.appId, ALGOLIA_WRITE_API_KEY);
 
   const posts = await getCollection("post");
-  console.log(posts.length, "posts found");
+
   function post2Index(post: CollectionEntry<"post">) {
-    const index = {
-      objectID: post.slug,
-      title: post.data.title,
-      content: removeMD(post.body),
-      slug: post.slug,
-    };
+    const content = removeMD(post.body);
+    const contentChunks = chunkString(content, 8000);
 
-    const indexString = JSON.stringify(index);
-    // console.log(post.data.title, indexString.length, "bytes");
-    const byteLength = new TextEncoder().encode(indexString).length;
-    // console.log(post.data.title, byteLength, "bytes");
-    if (byteLength >= 7000) {
-      const contentChunks = chunkContent(removeMD(post.body));
-      const indexes = contentChunks.map((chunk, index) => ({
-        objectID: `${post.slug}_${index}`,
+    if (contentChunks.length === 1) {
+      return {
+        objectID: post.slug,
         title: post.data.title,
-        content: chunk,
+        content: contentChunks[0],
         slug: post.slug,
-      }));
-      // console.log(post.data.title, indexes.map((i) => new TextEncoder().encode(JSON.stringify(i)).length, "bytes"));
-      return indexes;
+      };
     }
-
-    return index;
-  }
-
-  function chunkContent(content: string) {
-    const chunkSize = 5000;
-    const chunks = [];
-    for (let i = 0; i < content.length; i += chunkSize) {
-      chunks.push(content.slice(i, i + chunkSize));
-    }
-    return chunks;
+    return contentChunks.map((chunk, index) => ({
+      objectID: `${post.slug}_${index}`,
+      title: post.data.title,
+      content: chunk,
+      slug: post.slug,
+    }));
   }
 
   const index = posts.flatMap(post2Index);
-  // index.forEach((i) => {
-  //   console.log(i.objectID, new TextEncoder().encode(JSON.stringify(i)).length, "bytes");
-  // });
 
   await client
     .initIndex("posts")
@@ -64,4 +45,29 @@ export async function GET() {
     .then((res) => console.log(res, "algolia index updated"));
 
   return new Response("You shouldn't be here", { status: 404 });
+}
+
+function chunkString(str: string, maxBytes: number = 10000): string[] {
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(str);
+  const decoder = new TextDecoder();
+  const chunks: string[] = [];
+
+  let offset = 0;
+  while (offset < bytes.length) {
+    // Find a good splitting point within maxBytes
+    let end = Math.min(offset + maxBytes, bytes.length);
+
+    // If we're not at the end, try to avoid splitting multi-byte characters
+    if (end < bytes.length) {
+      while (end > offset && (bytes[end] & 0xc0) === 0x80) {
+        end--;
+      }
+    }
+
+    chunks.push(decoder.decode(bytes.subarray(offset, end)));
+    offset = end;
+  }
+
+  return chunks;
 }
