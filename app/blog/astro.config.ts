@@ -85,11 +85,6 @@ export default defineConfig({
   experimental: {
     env: {
       schema: {
-        // Algolia
-        ALGOLIA_WRITE_API_KEY: envField.string({
-          context: "server",
-          access: "secret",
-        }),
 
         // Notion
         NOTION_API_KEY: envField.string({

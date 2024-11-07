@@ -8,9 +8,8 @@
     "build": {
       "dependsOn": ["^build"],
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "ALGOLIA_WRITE_API_KEY"],
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
       "passThroughEnv": [
-        "ALGOLIA_WRITE_API_KEY",
         "NOTION_API_KEY",
         "NOTION_NOTE_DATABASE_ID",
         "VERCEL_AUTOMATION_BYPASS_SECRET"
@@ -19,9 +18,8 @@
     "dev": {
       "persistent": true,
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "ALGOLIA_WRITE_API_KEY"],
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
       "passThroughEnv": [
-        "ALGOLIA_WRITE_API_KEY",
         "NOTION_API_KEY",
         "NOTION_NOTE_DATABASE_ID",
         "VERCEL_AUTOMATION_BYPASS_SECRET"

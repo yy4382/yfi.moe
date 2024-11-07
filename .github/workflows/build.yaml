@@ -68,7 +68,6 @@ jobs:
         run: pnpm i
       - name: Build
         run: |
-          export ALGOLIA_WRITE_API_KEY=${{ secrets.ALGOLIA_WRITE_API_KEY }}
           pnpm build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.5.0

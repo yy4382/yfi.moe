@@ -5,6 +5,7 @@ import { type NavMenu, navMenu } from "@configs/navbar";
 import { siteConfig } from "@configs/site";
 import MingcuteSearch3Line from "~icons/mingcute/search-3-line";
 import NavbarMobile from "./NavBarMobile";
+import * as Popover from "@radix-ui/react-popover";
 
 const DEFAULT_NAV_TOP_MARGIN = 1; // in rem
 
@@ -68,6 +69,59 @@ const NavbarWrapper: React.FC<NavbarWrapperProps> = ({ children }) => {
   );
 };
 
+const SearchBar: React.FC = () => {
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const query = e.currentTarget.query.value;
+        const searchUrl = `https://bing.com/search?q=${encodeURIComponent(query)}+site:yfi.moe`;
+        window.open(searchUrl, "_blank");
+      }}
+      className="flex h-12 items-center gap-1 rounded-lg bg-black/[0.04] px-3 transition-all focus-within:bg-black/[0.06] hover:bg-black/[0.06] dark:bg-white/5 dark:focus-within:bg-white/10 dark:hover:bg-white/10"
+    >
+      <input
+        type="text"
+        name="query"
+        className="w-20 bg-transparent outline-none transition-all focus:w-40 active:w-40 dark:text-white"
+        placeholder="Search..."
+      />
+      <button type="submit">
+        <MingcuteSearch3Line className="size-6 dark:text-white" />
+      </button>
+    </form>
+  );
+};
+
+const ReactiveSearchBar: React.FC = () => {
+  return (
+    <div className="flex center">
+      <div className="hidden md:block">
+        <SearchBar />
+      </div>
+      <div className="md:hidden flex center">
+        <Popover.Root>
+          <Popover.Trigger>
+            <MingcuteSearch3Line className="size-7" />
+          </Popover.Trigger>
+          <Popover.Portal>
+            <Popover.Content
+              sideOffset={36}
+              side="bottom"
+              align="end"
+              alignOffset={-8}
+            >
+              <div className="z-50 rounded-lg bg-card">
+                <SearchBar />
+              </div>
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover.Root>
+      </div>
+    </div>
+  );
+};
+
 interface NavbarProps {
   navStats?: NavMenu | string;
   children?: React.ReactNode;
@@ -121,9 +175,7 @@ const Navbar: React.FC<NavbarProps> = ({ navStats, children }) => {
           })}
         </div>
         <div className="flex h-fit gap-4 justify-self-end">
-          <a href="/search" aria-label="Search Button" className="size-6">
-            <MingcuteSearch3Line className="size-6" />
-          </a>
+          <ReactiveSearchBar />
         </div>
       </div>
     </NavbarWrapper>
