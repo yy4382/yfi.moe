@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "build:vercel": "git submodule init && turbo run fetch-article && turbo run build && cp -r app/blog/.vercel/output .vercel",
+    "build:vercel": "git submodule init && turbo run fetch-article && turbo run build",
     "check-types": "turbo run check-types",
     "dev": "turbo run dev",
     "format": "turbo run format",
