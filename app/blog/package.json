@@ -34,7 +34,6 @@
     "@vueuse/core": "^10.11.1",
     "@vueuse/motion": "^2.2.6",
     "@waline/client": "^3.3.2",
-    "algoliasearch": "^4.24.0",
     "astro": "^4.16.6",
     "astro-icon": "^1.1.1",
     "astro-loading-indicator": "^0.5.0",
@@ -68,8 +67,7 @@
     "unist-util-visit": "^5.0.0",
     "unplugin-icons": "^0.19.3",
     "vite-plugin-svgr": "^4.2.0",
-    "vue": "^3.5.12",
-    "vue-instantsearch": "^4.19.7"
+    "vue": "^3.5.12"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
