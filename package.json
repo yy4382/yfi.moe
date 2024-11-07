@@ -1,21 +1,23 @@
 {
   "name": "blog",
   "version": "1.0.0",
-  "description": "",
   "private": true,
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "type": "module",
   "scripts": {
-    "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "turbo run lint",
-    "format": "turbo run format",
+    "build:vercel": "git submodule init && turbo run fetch-article && turbo run build && cp -r app/blog/.vercel/output .vercel",
     "check-types": "turbo run check-types",
-    "build:vercel": "git submodule init && turbo run fetch-article && turbo run build && cp -r app/blog/.vercel/output .vercel"
+    "dev": "turbo run dev",
+    "format": "turbo run format",
+    "lint": "turbo run lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@9.12.2",
+  "lint-staged": {
+    "*": "turbo run format"
+  },
   "devDependencies": {
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
@@ -23,12 +25,10 @@
     "turbo": "^2.2.3",
     "typescript": "^5.6.3"
   },
+  "packageManager": "pnpm@9.12.2",
   "pnpm": {
     "overrides": {
       "@iconify/tools": "^4.0.7"
     }
-  },
-  "lint-staged": {
-    "*": "turbo run format"
   }
 }

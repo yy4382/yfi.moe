@@ -59,9 +59,6 @@ importers:
       '@iconify-json/mingcute':
         specifier: ^1.2.1
         version: 1.2.1
-      '@iconify/vue':
-        specifier: ^4.1.2
-        version: 4.1.2(vue@3.5.12(typescript@5.6.3))
       '@notionhq/client':
         specifier: ^2.2.15
         version: 2.2.15
@@ -803,11 +800,6 @@ packages:
 
   '@iconify/utils@2.1.33':
     resolution: {integrity: sha512-jP9h6v/g0BIZx0p7XGJJVtkVnydtbgTgt9mVNcGDYwaa7UhdHdI9dvoq+gKj9sijMSJKxUPEG2JyjsgXjxL7Kw==}
-
-  '@iconify/vue@4.1.2':
-    resolution: {integrity: sha512-CQnYqLiQD5LOAaXhBrmj1mdL2/NCJvwcC4jtW2Z8ukhThiFkLDkutarTOV2trfc9EXqUqRs0KqXOL9pZ/IyysA==}
-    peerDependencies:
-      vue: '>=3'
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -5433,11 +5425,6 @@ snapshots:
       mlly: 1.7.2
     transitivePeerDependencies:
       - supports-color
-
-  '@iconify/vue@4.1.2(vue@3.5.12(typescript@5.6.3))':
-    dependencies:
-      '@iconify/types': 2.0.0
-      vue: 3.5.12(typescript@5.6.3)
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
