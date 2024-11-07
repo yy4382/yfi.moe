@@ -85,17 +85,6 @@ export default defineConfig({
   experimental: {
     env: {
       schema: {
-
-        // Notion
-        NOTION_API_KEY: envField.string({
-          context: "server",
-          access: "secret",
-        }),
-        NOTION_NOTE_DATABASE_ID: envField.string({
-          context: "server",
-          access: "secret",
-        }),
-
         // Preview
         LOCAL_PREVIEW: envField.boolean({
           context: "server",

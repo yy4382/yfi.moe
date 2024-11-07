@@ -9,21 +9,13 @@
       "dependsOn": ["^build"],
       "cache": false,
       "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
-      "passThroughEnv": [
-        "NOTION_API_KEY",
-        "NOTION_NOTE_DATABASE_ID",
-        "VERCEL_AUTOMATION_BYPASS_SECRET"
-      ]
+      "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
     },
     "dev": {
       "persistent": true,
       "cache": false,
       "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
-      "passThroughEnv": [
-        "NOTION_API_KEY",
-        "NOTION_NOTE_DATABASE_ID",
-        "VERCEL_AUTOMATION_BYPASS_SECRET"
-      ]
+      "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
     },
     "check-types": {
       "dependsOn": ["^check-types"],

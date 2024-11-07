@@ -2,12 +2,12 @@ import MingcuteDotGridLine from "~icons/mingcute/dot-grid-fill";
 import MingcuteEdit4Line from "~icons/mingcute/edit-4-line";
 import MingcuteHistoryAnticlockwiseLine from "~icons/mingcute/history-anticlockwise-line";
 import MingcuteInformationLine from "~icons/mingcute/information-line";
-import MingcuteChat1Line from "~icons/mingcute/chat-1-line";
+
 export interface NavMenu {
   text: string;
   link?: string;
   icon?: string;
-  iconSvg?: typeof MingcuteChat1Line;
+  iconSvg?: typeof MingcuteInformationLine;
   subMenu?: NavMenu[];
 }
 
@@ -33,12 +33,6 @@ export const navMenu: NavMenu[] = [
       { text: "记录 & 分享", link: "/categories/记录 & 分享" },
       { text: "折腾 & 笔记", link: "/categories/折腾 & 笔记" },
     ],
-  },
-  {
-    text: "碎碎念",
-    link: "/note",
-    icon: "mingcute:chat-1-line",
-    iconSvg: MingcuteChat1Line,
   },
   {
     text: "时光机",
