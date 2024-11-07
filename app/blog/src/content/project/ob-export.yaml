@@ -1,7 +1,0 @@
-name: Obsidian Static Site Exporter
-description: Export specific notes from Obsidian to general markdown for static site generator like Hugo, Hexo, Astro and more.
-language:
-  - devicon-plain:typescript
-links:
-  - icon: mingcute:github-line
-    url: https://github.com/yy4382/obsidian-static-site-export

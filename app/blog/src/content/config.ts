@@ -35,18 +35,8 @@ const pageCollection = defineCollection({
     copyright: z.boolean().default(true),
   }),
 });
-const projectCollection = defineCollection({
-  type: "data",
-  schema: z.object({
-    name: z.string(),
-    description: z.string(),
-    language: z.array(z.string()),
-    links: z.array(z.object({ icon: z.string(), url: z.string() })),
-  }),
-});
 // 导出一个单独的 `collections` 对象来注册你的集合
 export const collections = {
   post: postsCollection,
   page: pageCollection,
-  project: projectCollection,
 };

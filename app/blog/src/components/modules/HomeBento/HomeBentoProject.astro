@@ -4,7 +4,6 @@ import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
 import { popover } from "@styles/tv";
 import { Icon } from "astro-icon/components";
 import Card from "@comp/ui/Card/Card.astro";
-import { sitePaths } from "@configs/site";
 import { projects } from "@configs/author";
 const projectPopover = tv({
   extend: popover,
@@ -39,11 +38,6 @@ const { base, contentWrapper, content, icon } = projectPopover();
           {
             [
               {
-                href: sitePaths.projectList,
-                text: '"项目"页',
-                currentTab: true,
-              },
-              {
                 text: "GitHub 主页",
                 href: "https://github.com/yy4382",
                 icon: "mingcute:github-line",
@@ -59,7 +53,7 @@ const { base, contentWrapper, content, icon } = projectPopover();
                 <a
                   href={link.href}
                   class=""
-                  target={link.currentTab ? "_self" : "_blank"}
+                  target="_blank"
                 >
                   {link.text}
                 </a>

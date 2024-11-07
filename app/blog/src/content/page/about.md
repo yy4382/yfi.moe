@@ -13,8 +13,6 @@ copyright: false
 
 ## 本站的一些独立页面
 
-[Projects](/projects): 我的项目
-
 [我的听书方法汇总](/book-listening-collection)
 
 [站志：本站历史小记](/site-history)

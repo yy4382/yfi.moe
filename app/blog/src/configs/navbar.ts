@@ -53,7 +53,6 @@ export const navMenu: NavMenu[] = [
     iconSvg: MingcuteInformationLine,
     subMenu: [
       { text: "关于本站", link: "/about" },
-      { text: "我的项目", link: "/projects" },
       { text: "订阅 RSS", link: "/feed.xml" },
       { text: "看源码", link: "https://github.com/yy4382/yfi.moe" },
     ],

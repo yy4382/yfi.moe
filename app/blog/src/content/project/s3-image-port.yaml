@@ -1,8 +1,0 @@
-name: S3 Image Port
-description: A dashboard to manage your images in S3 buckets. Can be used as a image hosting service.
-language:
-  - "devicon-plain:typescript"
-  - "devicon-plain:vuejs"
-links:
-  - icon: "mingcute:github-line"
-    url: "https://github.com/yy4382/s3-image-port"

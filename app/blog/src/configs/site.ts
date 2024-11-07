@@ -2,7 +2,6 @@ export const siteDomain = "https://yfi.moe";
 export const sitePaths = {
   postPrefix: "/post",
   postList: "/post",
-  projectList: "/projects",
 };
 
 export const siteConfig = {
