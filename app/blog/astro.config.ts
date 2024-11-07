@@ -13,7 +13,6 @@ import Icons from "unplugin-icons/vite";
 import { h } from "hastscript";
 import { siteDomain } from "./src/configs/site";
 import { linkIcons } from "./src/configs/markdown";
-import vercel from "@astrojs/vercel/serverless";
 import react from "@astrojs/react";
 import rehypeImageOptimization, {
   defineOptions as defineOptimizeOptions,
@@ -22,8 +21,7 @@ import rehypeImageOptimization, {
 // https://astro.build/config
 export default defineConfig({
   site: siteDomain,
-  output: "hybrid",
-  adapter: vercel({ imageService: true }),
+  output: "static",
   integrations: [tailwind(), vue(), icon(), sitemap(), react()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
