@@ -58,7 +58,7 @@ export function getDesc(
  */
 export async function renderDesc(
   content: string,
-  length?: number,
+  length = 80,
   tryMore?: boolean,
 ) {
   return await renderMd(getDesc(content, { length, tryMore }));
