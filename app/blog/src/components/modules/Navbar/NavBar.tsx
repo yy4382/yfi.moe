@@ -75,7 +75,7 @@ const SearchBar: React.FC = () => {
       onSubmit={(e) => {
         e.preventDefault();
         const query = e.currentTarget.query.value;
-        const searchUrl = `https://bing.com/search?q=${encodeURIComponent(query)}+site:yfi.moe`;
+        const searchUrl = `https://google.com/search?q=${encodeURIComponent(query)}+site:yfi.moe`;
         window.open(searchUrl, "_blank");
       }}
       className="flex h-12 items-center gap-1 rounded-lg bg-black/[0.04] px-3 transition-all focus-within:bg-black/[0.06] hover:bg-black/[0.06] dark:bg-white/5 dark:focus-within:bg-white/10 dark:hover:bg-white/10"
