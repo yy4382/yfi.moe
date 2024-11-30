@@ -6,6 +6,7 @@ import ArticleCard from "@comp/modules/ArticleCard";
 import PrevNext from "@comp/elements/PrevNext.astro";
 import CommentCard from "@comp/ui/ArticleCard/CommentCard.vue";
 import { commentConfig } from "@configs/site";
+import { getOgImageUrl } from "@utils/og-image/getOgImageUrl";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");
@@ -33,7 +34,11 @@ const seoConfig = getSeo({
     post.data.description || getDesc(post.body ?? "", { removeMd: true }),
   image: post.data.image
     ? new URL(post.data.image, Astro.url).toString()
-    : Astro.url.origin + Astro.url.pathname + ".png",
+    : await getOgImageUrl(
+        `blog/post/${post.id}`,
+        post.data.title,
+        post.data.date.toISOString(),
+      ),
   type: "article",
 });
 ---

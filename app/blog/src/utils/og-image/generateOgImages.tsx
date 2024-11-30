@@ -1,10 +1,37 @@
 import satori, { type SatoriOptions } from "satori";
 import { Resvg } from "@resvg/resvg-js";
-import type { CollectionEntry } from "astro:content";
-import fs from "node:fs";
 import { DateTime } from "luxon";
+import { resolve, dirname } from "node:path";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
-const logo = fs.readFileSync(new URL("../assets/logo.svg", import.meta.url));
+import logo from "@assets/logo.svg?raw";
+
+const findRootDir = (startDir: string, rootDir: string): string => {
+  const parts = startDir.split(/[\\/]/);
+  const rootIndex = parts.lastIndexOf(rootDir);
+  if (rootIndex === -1) {
+    throw new Error(`Cannot find ${rootDir} directory`);
+  }
+  return parts.slice(0, rootIndex + 1).join("/");
+};
+
+const fetchFonts = async () => {
+  const currentDir = dirname(fileURLToPath(import.meta.url));
+  const srcDir = findRootDir(currentDir, "blog");
+  const assetsDir = resolve(srcDir, "src/assets");
+
+  // Use Promise.all with async readFile
+  const [fontRegular, fontBold] = await Promise.all([
+    readFile(resolve(assetsDir, "fonts/SarasaUiSC-Regular.ttf")),
+    readFile(resolve(assetsDir, "fonts/SarasaUiSC-Bold.ttf")),
+  ]);
+
+  return { fontRegular, fontBold };
+};
+
+const { fontRegular, fontBold } = await fetchFonts();
+
 const logoDataUrl = `data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`;
 const clickDataUrl = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0xMSAyMUw0IDRsMTcgN2wtNi4yNjUgMi42ODVhMiAyIDAgMCAwLTEuMDUgMS4wNXoiLz48L3N2Zz4=`;
 
@@ -14,22 +41,21 @@ const options: SatoriOptions = {
   fonts: [
     {
       name: "Regular",
-      data: fs.readFileSync(
-        new URL("../assets/SarasaUiSC-Regular.ttf", import.meta.url),
-      ),
+      data: fontRegular,
     },
     {
       name: "Bold",
-      data: fs.readFileSync(
-        new URL("../assets/SarasaUiSC-Bold.ttf", import.meta.url),
-      ),
+      data: fontBold,
     },
   ],
 };
-
-export async function generateOgImageForPost(post: CollectionEntry<"post">) {
+type OgImageInfo = {
+  title: string;
+  date: string;
+};
+export async function generateOgImageForPost(info: OgImageInfo) {
   // console.log(post);
-  const node = postOgImage(post);
+  const node = postOgImage(info);
   const svg = await satori(node, options);
   // console.log(svg);
   return svgBufferToPngBuffer(svg);
@@ -42,7 +68,7 @@ function svgBufferToPngBuffer(svg: string) {
   return pngData.asPng();
 }
 
-function postOgImage(post: CollectionEntry<"post">) {
+function postOgImage(info: OgImageInfo) {
   return (
     <div
       style={{
@@ -87,7 +113,7 @@ function postOgImage(post: CollectionEntry<"post">) {
               textWrap: "balance",
             }}
           >
-            {post.data.title}
+            {info.title}
           </span>
           <span
             style={{
@@ -96,7 +122,7 @@ function postOgImage(post: CollectionEntry<"post">) {
               letterSpacing: "-0.02em",
             }}
           >
-            {DateTime.fromJSDate(post.data.date)
+            {DateTime.fromISO(info.date)
               .setLocale("en")
               .toFormat("LLLL dd, yyyy")}
           </span>

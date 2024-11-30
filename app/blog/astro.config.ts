@@ -103,6 +103,14 @@ export default defineConfig({
         access: "secret",
         optional: true,
       }),
+      OG_IMG_ENDPOINT: envField.string({
+        context: "server",
+        access: "public",
+      }),
+      OG_IMG_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+      }),
     },
   },
   devToolbar: {
