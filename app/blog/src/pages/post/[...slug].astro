@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import SideBar from "@comp/modules/SideBar";
 import ArticleCard from "@comp/modules/ArticleCard";
@@ -15,21 +15,22 @@ export async function getStaticPaths() {
         new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
     )
     .map((post, i) => ({
-      params: { slug: post.slug },
+      params: { slug: post.id },
       props: { post, prev: blogEntries[i - 1], next: blogEntries[i + 1] },
     }));
 }
 
 const { post, prev, next } = Astro.props;
 
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
 
 import { getSeo } from "@utils/SEO";
 import { getDesc } from "@utils/markdown";
 
 const seoConfig = getSeo({
   title: post.data.title,
-  description: post.data.description || getDesc(post.body, { removeMd: true }),
+  description:
+    post.data.description || getDesc(post.body ?? "", { removeMd: true }),
   image: post.data.image
     ? new URL(post.data.image, Astro.url).toString()
     : undefined,

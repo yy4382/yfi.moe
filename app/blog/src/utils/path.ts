@@ -6,5 +6,5 @@ export function getPostPath(
   if (entryOrSlug === undefined) return "";
   if (typeof entryOrSlug === "string")
     return `${sitePaths.postPrefix}/${entryOrSlug}`;
-  else return getPostPath(entryOrSlug.slug);
+  else return getPostPath(entryOrSlug.id);
 }

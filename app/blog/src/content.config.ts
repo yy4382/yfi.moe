@@ -1,8 +1,8 @@
-// 从 `astro:content` 导入辅助工具
-import { z, defineCollection } from "astro:content";
-// 为每一个集合定义一个 `type` 和 `schema`
-const postsCollection = defineCollection({
-  type: "content",
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
+
+const post = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/post" }),
   schema: z.object({
     title: z.string(),
     date: z.date(),
@@ -23,8 +23,9 @@ const postsCollection = defineCollection({
     copyright: z.boolean().default(true),
   }),
 });
-const pageCollection = defineCollection({
-  type: "content",
+
+const page = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/page" }),
   schema: z.object({
     title: z.string(),
     date: z.date().optional(),
@@ -35,8 +36,5 @@ const pageCollection = defineCollection({
     copyright: z.boolean().default(true),
   }),
 });
-// 导出一个单独的 `collections` 对象来注册你的集合
-export const collections = {
-  post: postsCollection,
-  page: pageCollection,
-};
+
+export const collections = { post, page };

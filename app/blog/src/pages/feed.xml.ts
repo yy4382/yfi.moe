@@ -14,7 +14,7 @@ export async function GET(context: APIContext) {
       pubDate: entry.data.date,
       description: entry.data.description,
       link: getPostPath(entry),
-      content: await renderMd(entry.body),
+      content: await renderMd(entry.body ?? ""),
     });
   }
   return rss({

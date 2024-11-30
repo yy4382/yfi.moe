@@ -13,7 +13,7 @@ const { post, style, class: className } = Astro.props;
 
 let desc = "";
 if (post.data.description === undefined) {
-  desc = await renderDesc(post.body);
+  desc = await renderDesc(post.body ?? "");
 } else {
   desc = "<p>" + post.data.description + "</p>" || "";
 }

@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import ArticleCard from "@comp/modules/ArticleCard";
 import SideBar from "@comp/modules/SideBar";
@@ -8,13 +8,14 @@ import { getSeo } from "@utils/SEO";
 export async function getStaticPaths() {
   const pages = await getCollection("page");
   return pages.map((page) => ({
-    params: { page: page.slug },
+    params: { page: page.id },
     props: { page },
   }));
 }
 const { page } = Astro.props;
-const { Content, headings } = await page.render();
-const desc = page.data.description || getDesc(page.body, { removeMd: true });
+const { Content, headings } = await render(page);
+const desc =
+  page.data.description || getDesc(page.body ?? "", { removeMd: true });
 
 const seoConfig = getSeo({
   title: page.data.title,

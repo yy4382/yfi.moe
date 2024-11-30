@@ -80,27 +80,26 @@ export default defineConfig({
   vite: {
     plugins: [Icons({ compiler: "jsx", jsx: "react" })],
   },
-  experimental: {
-    env: {
-      schema: {
-        // Preview
-        LOCAL_PREVIEW: envField.boolean({
-          context: "server",
-          access: "public",
-          default: false,
-        }),
-        VERCEL_ENV: envField.enum({
-          values: ["production", "preview", "development"],
-          context: "server",
-          access: "public",
-          optional: true,
-        }),
-        VERCEL_AUTOMATION_BYPASS_SECRET: envField.string({
-          context: "server",
-          access: "secret",
-          optional: true,
-        }),
-      },
+
+  env: {
+    schema: {
+      // Preview
+      LOCAL_PREVIEW: envField.boolean({
+        context: "server",
+        access: "public",
+        default: false,
+      }),
+      VERCEL_ENV: envField.enum({
+        values: ["production", "preview", "development"],
+        context: "server",
+        access: "public",
+        optional: true,
+      }),
+      VERCEL_AUTOMATION_BYPASS_SECRET: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
     },
   },
   devToolbar: {

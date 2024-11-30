@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import "@styles/base.css";
 import { type SEOProps, SEO } from "astro-seo";
 import Favicon from "@comp/modules/head/Favicon.astro";
@@ -33,7 +33,7 @@ const { seoConfig, stopTrack } = Astro.props;
     <LoadColor />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <ViewTransitions fallback="swap" />
+    <ClientRouter fallback="swap" />
     <LoadingIndicator color="hsl(236, 100%, 81%)" />
   </head>
   <slot />
