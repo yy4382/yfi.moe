@@ -2,7 +2,7 @@
 dist/
 
 # Local fonts
-fonts/
+# fonts/
 
 # cache files
 .eslintcache
