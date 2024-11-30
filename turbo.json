@@ -8,13 +8,13 @@
     "build": {
       "dependsOn": ["^build"],
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "OG_IMG_ENDPOINT", "OG_IMG_TOKEN"],
       "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
     },
     "dev": {
       "persistent": true,
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "OG_IMG_ENDPOINT", "OG_IMG_TOKEN"],
       "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
     },
     "check-types": {
