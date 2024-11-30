@@ -1,0 +1,56 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import SideBar from "@comp/modules/SideBar";
+import ArticleCard from "@comp/modules/ArticleCard";
+import PrevNext from "@comp/elements/PrevNext.astro";
+import CommentCard from "@comp/ui/ArticleCard/CommentCard.vue";
+import { commentConfig } from "@configs/site";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("post");
+  return blogEntries
+    .sort(
+      (a, b) =>
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+    )
+    .map((post, i) => ({
+      params: { slug: post.id },
+      props: { post, prev: blogEntries[i - 1], next: blogEntries[i + 1] },
+    }));
+}
+
+const { post, prev, next } = Astro.props;
+
+const { Content, headings } = await render(post);
+
+import { getSeo } from "@utils/SEO";
+import { getDesc } from "@utils/markdown";
+
+const seoConfig = getSeo({
+  title: post.data.title,
+  description:
+    post.data.description || getDesc(post.body ?? "", { removeMd: true }),
+  image: post.data.image
+    ? new URL(post.data.image, Astro.url).toString()
+    : Astro.url.origin + Astro.url.pathname + ".png",
+  type: "article",
+});
+---
+
+<BaseLayout seoConfig={seoConfig} navStats="文章">
+  <div class="flex flex-col gap-4">
+    <ArticleCard entry={post}>
+      <Content />
+    </ArticleCard>
+    <PrevNext prev={prev} next={next} />
+    {
+      commentConfig.enable && (
+        <CommentCard client:load serverUrl={commentConfig.walineUrl} />
+      )
+    }
+  </div>
+  <Fragment slot="sidebar">
+    <SideBar tocList={headings} seriesID={post.data.series?.id} />
+  </Fragment>
+</BaseLayout>

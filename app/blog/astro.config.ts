@@ -79,6 +79,9 @@ export default defineConfig({
   },
   vite: {
     plugins: [Icons({ compiler: "jsx", jsx: "react" })],
+    ssr: { external: ["@resvg/resvg-js"] },
+    optimizeDeps: { exclude: ["@resvg/resvg-js"] },
+    build: { rollupOptions: { external: ["@resvg/resvg-js"] } },
   },
 
   env: {

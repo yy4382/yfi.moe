@@ -11,7 +11,7 @@ export function getSeo(config: {
   const {
     title,
     description,
-    image = new URL("/icon-512.png", siteDomain).href,
+    image = new URL("/base-og.webp", siteDomain).href,
     type = "website",
     noindex = false,
   } = config;
@@ -29,7 +29,7 @@ export function getSeo(config: {
     noindex,
     twitter: {
       creator: "@yunfini",
-      card: config.image ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       image,
       title,
       description,
