@@ -1,11 +1,12 @@
 import satori, { type SatoriOptions } from "satori";
 import { Resvg } from "@resvg/resvg-js";
-import { DateTime } from "luxon";
-import { resolve, dirname } from "node:path";
+import { resolve } from "node:path";
 import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
 
-import logo from "@assets/logo.svg?raw";
+import { postOgImage } from "./og-image-template";
+
+import fontRegularUrl from "@assets/fonts/SarasaUiSC-Regular.ttf?url";
+import fontBoldUrl from "@assets/fonts/SarasaUiSC-Bold.ttf?url";
 
 const findRootDir = (startDir: string, rootDir: string): string => {
   const parts = startDir.split(/[\\/]/);
@@ -17,14 +18,11 @@ const findRootDir = (startDir: string, rootDir: string): string => {
 };
 
 const fetchFonts = async () => {
-  const currentDir = dirname(fileURLToPath(import.meta.url));
-  const srcDir = findRootDir(currentDir, "blog");
-  const assetsDir = resolve(srcDir, "src/assets");
-
+  const rootDir = findRootDir(import.meta.dirname, "blog"); // dirty hack
   // Use Promise.all with async readFile
   const [fontRegular, fontBold] = await Promise.all([
-    readFile(resolve(assetsDir, "fonts/SarasaUiSC-Regular.ttf")),
-    readFile(resolve(assetsDir, "fonts/SarasaUiSC-Bold.ttf")),
+    readFile(resolve(rootDir, fontRegularUrl.slice(1))),
+    readFile(resolve(rootDir, fontBoldUrl.slice(1))),
   ]);
 
   return { fontRegular, fontBold };
@@ -32,133 +30,28 @@ const fetchFonts = async () => {
 
 const { fontRegular, fontBold } = await fetchFonts();
 
-const logoDataUrl = `data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`;
-const clickDataUrl = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0xMSAyMUw0IDRsMTcgN2wtNi4yNjUgMi42ODVhMiAyIDAgMCAwLTEuMDUgMS4wNXoiLz48L3N2Zz4=`;
-
 const options: SatoriOptions = {
   width: 1200,
   height: 630,
   fonts: [
-    {
-      name: "Regular",
-      data: fontRegular,
-    },
-    {
-      name: "Bold",
-      data: fontBold,
-    },
+    { name: "Regular", data: fontRegular },
+    { name: "Bold", data: fontBold },
   ],
 };
-type OgImageInfo = {
+
+export type OgImageInfo = {
   title: string;
   date: string;
 };
+
 export async function generateOgImageForPost(info: OgImageInfo) {
-  // console.log(post);
   const node = postOgImage(info);
   const svg = await satori(node, options);
-  // console.log(svg);
   return svgBufferToPngBuffer(svg);
-  // return Buffer.from([1]);
 }
 
 function svgBufferToPngBuffer(svg: string) {
   const resvg = new Resvg(svg);
   const pngData = resvg.render();
   return pngData.asPng();
-}
-
-function postOgImage(info: OgImageInfo) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundImage: `linear-gradient(to top right, rgb(225, 183, 205), rgb(209, 188, 232), rgb(136, 146, 217))`,
-        padding: "48px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          maxWidth: "80%",
-          maxHeight: "80%",
-          alignItems: "center",
-          gap: "32px",
-        }}
-      >
-        <img
-          src={logoDataUrl}
-          style={{ borderRadius: "16px", border: "4px solid #555" }}
-          alt="logo"
-          width={128}
-          height={128}
-        />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "40px",
-              fontFamily: "Bold",
-              letterSpacing: "-0.02em",
-              textWrap: "balance",
-            }}
-          >
-            {info.title}
-          </span>
-          <span
-            style={{
-              fontSize: "36px",
-              fontFamily: "Regular",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            {DateTime.fromISO(info.date)
-              .setLocale("en")
-              .toFormat("LLLL dd, yyyy")}
-          </span>
-        </div>
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          bottom: "32px",
-          right: "32px",
-          padding: "16px 24px",
-          borderRadius: "16px",
-          backgroundColor: "#f5edef",
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "center",
-          gap: "8px",
-          boxShadow: "0 0 16px 0 rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <span
-          style={{
-            fontSize: "36px",
-            fontFamily: "Bold",
-          }}
-        >
-          yfi.moe
-        </span>
-        <img
-          src={clickDataUrl}
-          alt="click"
-          width={48}
-          height={48}
-          style={{ transform: "translateY(2px)" }}
-        />
-      </div>
-    </div>
-  );
 }
