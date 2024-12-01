@@ -38,6 +38,10 @@ const { year, order, animated = true } = Astro.props;
 </ul>
 
 <style is:global>
+  /* TODO: temp workaround for tailwind v4 beta, https://github.com/tailwindlabs/tailwindcss/issues/15219 */
+  @import "tailwindcss/theme" theme(reference);
+  @import "../../../styles/theme.css" theme(reference);
+
   .timeline-dot > li.timeline-dot-item {
     @apply relative pl-6;
     &::after {
