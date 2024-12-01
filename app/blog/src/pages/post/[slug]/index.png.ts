@@ -1,4 +1,4 @@
-import type { APIRoute } from "astro";
+import type { APIRoute, InferGetStaticPropsType } from "astro";
 import { getCollection } from "astro:content";
 import { generateOgImageForPost } from "@utils/og-image/generateOgImages";
 
@@ -11,7 +11,15 @@ export async function getStaticPaths() {
   }));
 }
 
-export const GET: APIRoute = async ({ props }) =>
-  new Response(await generateOgImageForPost(props.data), {
-    headers: { "Content-Type": "image/png" },
-  });
+export const GET: APIRoute<
+  InferGetStaticPropsType<typeof getStaticPaths>
+> = async ({ props }) =>
+  new Response(
+    await generateOgImageForPost({
+      ...props.data,
+      date: props.data.date.toISOString(),
+    }),
+    {
+      headers: { "Content-Type": "image/png" },
+    },
+  );
