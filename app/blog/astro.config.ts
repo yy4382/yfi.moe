@@ -7,7 +7,7 @@ import remarkReadingTime from "./src/utils/remarkReadingTime.mjs";
 import rehypeExtendedLinks from "rehype-extended-links";
 import rehypeRemoveComments from "rehype-remove-comments";
 import rehypeRaw from "rehype-raw";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import Icons from "unplugin-icons/vite";
 import { h } from "hastscript";
@@ -22,7 +22,7 @@ import rehypeImageOptimization, {
 export default defineConfig({
   site: siteDomain,
   output: "static",
-  integrations: [tailwind(), vue(), icon(), sitemap(), react()],
+  integrations: [vue(), icon(), sitemap(), react()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [
@@ -78,7 +78,11 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [Icons({ compiler: "jsx", jsx: "react" }), fileSystemPath()],
+    plugins: [
+      tailwindcss(),
+      Icons({ compiler: "jsx", jsx: "react" }),
+      fileSystemPath(),
+    ],
     ssr: { external: ["@resvg/resvg-js"] },
     optimizeDeps: { exclude: ["@resvg/resvg-js"] },
     build: { rollupOptions: { external: ["@resvg/resvg-js"] } },

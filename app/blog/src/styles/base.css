@@ -1,9 +1,42 @@
-@import "colors.css";
-@import "icons.css";
-@tailwind components;
+@import "tailwindcss";
+@plugin "tailwindcss-animated";
+@plugin "@tailwindcss/typography";
+
+@import "./colors.css";
+@import "./icons.css";
+@import "./theme.css";
+@import "./components.css";
+
+@variant dark (&:where(.dark, .dark *));
+
+@utility center {
+  align-items: center;
+  justify-content: center;
+}
+
+@utility shape-card {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lg);
+}
+
+@utility container-max-lg {
+  @apply w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg;
+}
+
+/* for nav menus */
+.transition-expand {
+  transition:
+    width 300ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-radius 200ms ease-in-out 100ms;
+}
+.transition-shrink {
+  transition:
+    width 300ms cubic-bezier(0.18, 0.89, 0.32, 1.28),
+    border-radius 200ms ease-in-out;
+}
 
 .copy-code {
-  @apply /* btn-regular !TODO */ absolute right-1 top-1 !rounded-lg px-2 py-1 text-xs;
+  @apply /* btn-regular !TODO */ absolute top-1 right-1 !rounded-lg px-2 py-1 text-xs;
 }
 
 .main-card-onload {
@@ -14,12 +47,51 @@
     --inner-card-delay: 0ms;
   }
 }
+@layer utilities {
+  .prose {
+    max-width: unset;
+    a {
+      text-decoration: none;
+      border-bottom: 2px solid var(--link-underline-normal);
+      transition: all 0.15s ease-in-out;
+      &:hover {
+        color: var(--content-primary);
+        border-bottom: 2px solid var(--link-underline-hover);
+      }
+      &:active {
+        border-bottom: 2px solid var(--link-underline-active);
+      }
+    }
+    strong {
+      color: var(--content-primary);
+      font-weight: var(--font-weight-semi-bold);
+      & > code {
+        color: var(--content-primary);
+      }
+    }
+    *:not(pre) > code {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    blockquote {
+      font-weight: inherit;
+      font-style: normal;
+      p {
+        &:first-of-type::before {
+          content: none;
+        }
+        &:last-of-type::after {
+          content: none;
+        }
+      }
+    }
+  }
 
-.prose a > img,
-.prose-invert a > img {
-  @apply !mb-2 !mt-2;
+  .prose a > img,
+  .prose-invert a > img {
+    @apply !mt-2 !mb-2;
+  }
 }
-
 :root {
   font-family:
     system-ui,
@@ -37,7 +109,7 @@
 
   --edge-padding: 1rem;
 
-  /* dynamically changed in src/components/modules/Navbar/NavBar.vue
+  /* dynamically changed in src/components/modules/Navbar/NavBar.tsx
   *  to match the height of the navbar
   *  Giving default values here to avoid FOUC
   */
