@@ -78,7 +78,7 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [Icons({ compiler: "jsx", jsx: "react" })],
+    plugins: [Icons({ compiler: "jsx", jsx: "react" }), fileSystemPath()],
     ssr: { external: ["@resvg/resvg-js"] },
     optimizeDeps: { exclude: ["@resvg/resvg-js"] },
     build: { rollupOptions: { external: ["@resvg/resvg-js"] } },
@@ -118,3 +118,17 @@ const nodeHas = (node: Element, tagName: string | string[]): boolean => {
         : tagName.includes(child.tagName)),
   );
 };
+
+function fileSystemPath() {
+  return {
+    name: "vite-plugin-file-system-path",
+    transform(_: unknown, id: string) {
+      if (id.endsWith("?filepath")) {
+        return {
+          code: `export default ${JSON.stringify(id.slice(0, -9))}`,
+          map: null,
+        };
+      }
+    },
+  };
+}

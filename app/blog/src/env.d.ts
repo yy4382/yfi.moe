@@ -8,3 +8,8 @@
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare module "*?filepath" {
+  const value: string;
+  export default value;
+}
