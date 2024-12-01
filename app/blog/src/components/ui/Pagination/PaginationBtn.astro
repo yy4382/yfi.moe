@@ -71,7 +71,7 @@ const getPageUrl = (p: number) => {
     href={page.url.prev}
     aria-label={page.url.prev ? "Previous Page" : null}
     class:list={[
-      "flex h-11 w-11 items-center justify-center overflow-hidden rounded-lg bg-card text-primary shape-card",
+      "flex h-11 w-11 items-center justify-center overflow-hidden shape-card rounded-lg bg-card text-primary",
     ]}
   >
     <Icon
@@ -91,7 +91,7 @@ const getPageUrl = (p: number) => {
           return <Icon name="mingcute:more-1-line" class="mx-1" />;
         if (p == page.currentPage)
           return (
-            <div class="flex h-11 w-11 items-center justify-center rounded-lg bg-card font-bold text-primary shape-card">
+            <div class="flex h-11 w-11 items-center justify-center shape-card rounded-lg bg-card font-bold text-primary">
               {p}
             </div>
           );
@@ -99,7 +99,7 @@ const getPageUrl = (p: number) => {
           <a
             href={getPageUrl(p)}
             aria-label={`Page ${p}`}
-            class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-lg bg-card shape-card active:scale-[0.85]"
+            class="flex h-11 w-11 items-center justify-center overflow-hidden shape-card rounded-lg bg-card active:scale-[0.85]"
           >
             {p}
           </a>
@@ -111,7 +111,7 @@ const getPageUrl = (p: number) => {
     href={page.url.next}
     aria-label={page.url.next ? "Next Page" : null}
     class:list={[
-      "flex h-11 w-11 items-center justify-center overflow-hidden rounded-lg bg-card text-primary shape-card",
+      "flex h-11 w-11 items-center justify-center overflow-hidden shape-card rounded-lg bg-card text-primary",
       { disabled: page.url.next == undefined },
     ]}
   >

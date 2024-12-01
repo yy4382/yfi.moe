@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 export const card = tv({
   slots: {
-    base: "bg-card shape-card",
+    base: "shape-card bg-card",
     heading: "text-heading",
   },
   variants: {

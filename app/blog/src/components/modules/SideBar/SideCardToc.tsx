@@ -112,7 +112,7 @@ const Toc: React.FC<{
       triggerAsChild
       trigger={
         <button
-          className="fixed bottom-4 right-4 z-20 animate-onload border bg-card p-2 opacity-0 animate-delay-300 shape-card dark:border-gray-600"
+          className="fixed right-4 bottom-4 z-20 animate-onload shape-card border bg-card p-2 opacity-0 animate-delay-300 dark:border-gray-600"
           onClick={() => setOpen(true)}
         >
           <MingcuteListCheckLine className="size-6 text-heading" />
