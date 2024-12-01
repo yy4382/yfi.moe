@@ -8,7 +8,7 @@
     "build": {
       "dependsOn": ["^build"],
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "OG_IMG_ENDPOINT", "OG_IMG_TOKEN"],
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
       "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
     },
     "dev": {
