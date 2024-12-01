@@ -17,7 +17,7 @@ const { year, order, animated = true } = Astro.props;
 >
   {/* https://stackoverflow.com/a/73146972 */}
   <span
-    class="absolute -left-4 top-4 text-8xl font-bold leading-none text-transparent opacity-10 [-webkit-text-stroke:4px_theme('colors.content.200')] sm:text-[9rem]"
+    class="absolute top-4 -left-4 text-8xl leading-none font-bold text-transparent opacity-10 [-webkit-text-stroke:4px_theme('colors.content.200')] sm:text-[9rem]"
   >
     {year}
     <span
@@ -46,17 +46,17 @@ const { year, order, animated = true } = Astro.props;
     @apply relative pl-6;
     &::after {
       content: "";
-      @apply absolute left-2 top-1/2 z-10 size-2 -translate-y-1/2 rounded-full bg-content-50 outline outline-2 outline-card transition-all hover:left-2.5 hover:h-5 hover:w-1 hover:bg-primary hover:outline-none;
+      @apply absolute top-1/2 left-2 z-10 size-2 -translate-y-1/2 rounded-full bg-content-50 outline-2 outline-card transition-all hover:left-2.5 hover:h-5 hover:w-1 hover:bg-primary hover:outline-none;
     }
     &::before {
       content: "";
-      @apply pointer-events-none absolute left-[calc(1.5rem/2-1px)] top-1/2 h-[calc(100%)] -translate-y-1/2 border-l-[2px] border-content-50 opacity-30 transition;
+      @apply pointer-events-none absolute top-1/2 left-[calc(1.5rem/2-1px)] h-[calc(100%)] -translate-y-1/2 border-l-[2px] border-content-50 opacity-30 transition;
     }
     &:first-child::before {
       @apply top-1/2 h-[calc(50%)] translate-y-0;
     }
     &:last-child::before {
-      @apply bottom-1/2 top-[unset] h-[calc(50%)] translate-y-0;
+      @apply top-[unset] bottom-1/2 h-[calc(50%)] translate-y-0;
     }
   }
 </style>

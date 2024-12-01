@@ -9,10 +9,10 @@ export default function (props: {
     <Tooltip
       content={
         <>
-          <div className="flex select-none items-center">
+          <div className="flex items-center select-none">
             Posted on {props.postTime}
           </div>
-          <div className="flex select-none items-center">
+          <div className="flex items-center select-none">
             Updated on {props.updatedTime}
           </div>
         </>

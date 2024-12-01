@@ -18,7 +18,7 @@ const cardClass = base({
     <div class="signature-wrapper float-right">
       <Fragment set:html={Sign} />
     </div>
-    <p class="!mb-2 !mt-0">
+    <p class="!mt-0 !mb-2">
       本文使用“<a
         href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en"
         >署名-非商业性使用-相同方式共享 4.0 国际(CC BY-NC-SA 4.0)</a
@@ -34,7 +34,7 @@ const cardClass = base({
   </div>
 
   <div
-    class="absolute -bottom-4 -right-4 flex gap-2 text-8xl text-black opacity-5 md:text-[8rem] dark:text-white"
+    class="absolute -right-4 -bottom-4 flex gap-2 text-8xl text-black opacity-5 md:text-[8rem] dark:text-white"
   >
     <Icon name="fa6-brands:creative-commons" />
   </div>
@@ -48,7 +48,7 @@ const cardClass = base({
   .signature-wrapper {
     --signature-length: 2550px;
     & > svg {
-      @apply ml-4 h-auto w-20 opacity-100 sm:-mr-3 sm:-mt-1;
+      @apply ml-4 h-auto w-20 opacity-100 sm:-mt-1 sm:-mr-3;
     }
   }
   /* https://antfu.me/posts/animated-svg-logo */

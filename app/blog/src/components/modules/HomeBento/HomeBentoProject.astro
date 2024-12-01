@@ -8,7 +8,7 @@ import { projects } from "@configs/author";
 const projectPopover = tv({
   extend: popover,
   slots: {
-    base: "bottom-2 right-2 hover:h-32 hover:w-44",
+    base: "right-2 bottom-2 hover:h-32 hover:w-44",
     contentWrapper: "group-hover:h-32 group-hover:w-44",
     content: "flex flex-col p-4 text-content",
   },
@@ -50,11 +50,7 @@ const { base, contentWrapper, content, icon } = projectPopover();
                     class="inline-block -translate-y-[1px] translate-x-[2px]"
                   />
                 )}
-                <a
-                  href={link.href}
-                  class=""
-                  target="_blank"
-                >
+                <a href={link.href} class="" target="_blank">
                   {link.text}
                 </a>
               </li>

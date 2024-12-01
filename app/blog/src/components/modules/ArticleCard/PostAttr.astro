@@ -17,7 +17,7 @@ const { post } = Astro.props;
     updatedTime={DateTime.fromJSDate(post.data.updated).toFormat("yyyy-MM-dd")}
     client:load
   >
-    <div class="flex select-none items-center">
+    <div class="flex items-center select-none">
       <Icon name="mingcute:calendar-line" class="mr-1 text-base" />
       {DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd")}
     </div>
@@ -26,7 +26,7 @@ const { post } = Astro.props;
   <!-- Tags -->
   {
     post.data?.tags instanceof Array && (
-      <div class="flex select-none items-center">
+      <div class="flex items-center select-none">
         <Icon name="mingcute:hashtag-line" class="mr-1 text-base" />
         <span class="space-x-0.5">
           {post.data.tags.map((tag, index) => (

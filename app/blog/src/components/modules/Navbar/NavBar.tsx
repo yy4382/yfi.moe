@@ -83,7 +83,7 @@ const SearchBar: React.FC = () => {
       <input
         type="text"
         name="query"
-        className="w-20 bg-transparent outline-none transition-all focus:w-40 active:w-40 dark:text-white"
+        className="w-20 bg-transparent transition-all outline-none focus:w-40 active:w-40 dark:text-white"
         placeholder="Search..."
       />
       <button type="submit">
@@ -99,7 +99,7 @@ const ReactiveSearchBar: React.FC = () => {
       <div className="hidden md:block">
         <SearchBar />
       </div>
-      <div className="md:hidden flex center">
+      <div className="flex center md:hidden">
         <Popover.Root>
           <Popover.Trigger>
             <MingcuteSearch3Line className="size-7" />
@@ -156,11 +156,11 @@ const Navbar: React.FC<NavbarProps> = ({ navStats, children }) => {
               <a
                 key={item.text}
                 href={item.link}
-                className={`flex h-full w-20 font-medium center ${
+                className={`flex h-full w-20 center font-medium ${
                   highlight === index ? "text-primary" : "text-heading"
                 } ${tvButton()}`}
               >
-                <span className="z-1 inline-flex select-none items-center gap-1 self-center align-middle">
+                <span className="z-1 inline-flex items-center gap-1 self-center align-middle select-none">
                   {highlight === index && Icon && <Icon />}
                   <span
                     style={{

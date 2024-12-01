@@ -51,9 +51,9 @@ import { tv } from "tailwind-variants";
 const postListPopover = tv({
   extend: popover,
   slots: {
-    base: "bottom-2 right-2 hover:w-20",
+    base: "right-2 bottom-2 hover:w-20",
     contentWrapper: "h-8 group-hover:w-20",
-    content: "mr-5 flex h-full flex-grow text-center text-content center",
+    content: "mr-5 flex h-full flex-grow center text-center text-content",
   },
 });
 const { base, contentWrapper, content, icon } = postListPopover();

@@ -33,7 +33,7 @@ const stats: [number | string, string, string][] = [
 <div class="bento-layout">
   <!-- MARK: Introduction -->
   <Card
-    class="mb-[calc(50vh-10rem-6rem)] mt-[calc(50vh-9rem-6rem)] flex min-h-48 items-center justify-center gap-4 overflow-hidden sm:mb-0 sm:mt-0 sm:min-h-0 sm:[grid-area:introduction]"
+    class="mt-[calc(50vh-9rem-6rem)] mb-[calc(50vh-10rem-6rem)] flex min-h-48 items-center justify-center gap-4 overflow-hidden sm:mt-0 sm:mb-0 sm:min-h-0 sm:[grid-area:introduction]"
   >
     <div class="flex items-center gap-2 text-xl">
       <img
@@ -60,7 +60,7 @@ const stats: [number | string, string, string][] = [
             <a
               href={social.link}
               target="_blank"
-              class="flex size-9 rounded-full p-2 transition-all center hover:scale-105"
+              class="flex size-9 center rounded-full p-2 transition-all hover:scale-105"
               style={`background-color: ${social.color}`}
               rel="noreferer"
             >
@@ -100,7 +100,7 @@ const stats: [number | string, string, string][] = [
     >
       {
         stats.map(([num, unit, text]) => (
-          <p class="flex w-fit flex-col whitespace-nowrap center sm:block">
+          <p class="flex w-fit flex-col center whitespace-nowrap sm:block">
             <span class="text-5xl font-semibold text-primary">{num}</span>
             <span class="sm:hidden">{text}</span>
             <span class="hidden sm:inline">{unit ? unit + text : text}</span>
@@ -117,7 +117,7 @@ const stats: [number | string, string, string][] = [
     >
       <Icon name="mingcute:history-line" class="text-8xl text-primary" />
       <span
-        class="whitespace-nowrap text-nowrap text-2xl font-semibold text-content transition-colors group-hover:text-primary"
+        class="text-2xl font-semibold text-nowrap whitespace-nowrap text-content transition-colors group-hover:text-primary"
       >
         时光机 <Icon
           class="inline-block -translate-y-[2px] transition-transform group-hover:scale-110"
@@ -134,10 +134,10 @@ const stats: [number | string, string, string][] = [
     >
       <Icon
         name="mingcute:rss-line"
-        class="text-7xl text-heading text-yellow-600 lg:-m-[0.375rem]"
+        class="text-7xl text-yellow-600 lg:-m-[0.375rem]"
       />
       <span
-        class="ml-1 whitespace-nowrap text-nowrap text-2xl font-semibold text-content transition-colors group-hover:text-primary lg:ml-0 xl:ml-1"
+        class="ml-1 text-2xl font-semibold text-nowrap whitespace-nowrap text-content transition-colors group-hover:text-primary lg:ml-0 xl:ml-1"
       >
         RSS <Icon
           class="inline-block -translate-y-[2px] transition-transform group-hover:scale-110"
@@ -148,7 +148,7 @@ const stats: [number | string, string, string][] = [
   </Card>
   <!-- MARK: Slogan -->
   <Card class="flex items-center justify-center [grid-area:slogan]">
-    <p class="whitespace-nowrap text-2xl font-semibold text-heading">
+    <p class="text-2xl font-semibold whitespace-nowrap text-heading">
       Coding with Passion and <Icon
         name="mingcute:heart-fill"
         class="inline-block -translate-y-[2px] text-[1.25em] text-red-400"
