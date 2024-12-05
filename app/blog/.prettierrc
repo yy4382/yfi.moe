@@ -9,6 +9,6 @@
       }
     }
   ],
-  "tailwindConfig": "./tailwind.config.ts",
-  "tailwindFunctions": ["tv"]
+  "tailwindFunctions": ["tv"],
+  "tailwindStylesheet": "./src/styles/base.css"
 }

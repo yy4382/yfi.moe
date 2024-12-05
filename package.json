@@ -19,14 +19,14 @@
     "*": "turbo run format"
   },
   "devDependencies": {
-    "husky": "^9.1.6",
+    "@eslint/plugin-kit": ">=0.2.4",
+    "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3",
-    "turbo": "^2.2.3",
-    "typescript": "^5.6.3",
-    "@eslint/plugin-kit": ">=0.2.3"
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
   },
-  "packageManager": "pnpm@9.12.2",
+  "packageManager": "pnpm@9.14.4",
   "pnpm": {
     "overrides": {
       "@iconify/tools": "^4.0.7"
