@@ -1,8 +1,17 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
+import { githubLoader } from "@utils/github-loader";
+import { ARTICLE_PAT } from "astro:env/server";
 
 const post = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/post" }),
+  // loader: glob({ pattern: "**/*.md", base: "./src/content/post" }),
+  loader: githubLoader({
+    owner: "yy4382",
+    repo: "blog-posts",
+    ref: "release",
+    path: "",
+    pat: ARTICLE_PAT,
+  }),
   schema: z.object({
     title: z.string(),
     date: z.date(),

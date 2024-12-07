@@ -90,6 +90,7 @@ export default defineConfig({
 
   env: {
     schema: {
+      ARTICLE_PAT: envField.string({ context: "server", access: "secret" }),
       // Preview
       LOCAL_PREVIEW: envField.boolean({
         context: "server",

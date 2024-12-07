@@ -1,14 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "fetch-article": {
-      "cache": false,
-      "env": ["ARTICLE_PAT"]
-    },
     "build": {
       "dependsOn": ["^build"],
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV"],
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "ARTICLE_PAT"],
       "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
     },
     "dev": {

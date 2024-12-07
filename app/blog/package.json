@@ -9,13 +9,13 @@
     "check": "eslint .; prettier --ignore-unknown --check .; astro check",
     "check-types": "astro check",
     "dev": "astro dev",
-    "fetch-article": "dotenvx run --log-level=warn -- sh get-article.sh",
     "format": "prettier --ignore-unknown --write .",
     "lint": "eslint .",
     "preview": "astro preview",
     "start": "astro dev"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^6.0.0",
     "@astrojs/react": "4.0.0",
     "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.2.1",
@@ -61,8 +61,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "@dotenvx/dotenvx": "^1.28.0",
     "@eslint/js": "^9.16.0",
+    "@octokit/openapi-types": "^22.2.0",
     "@types/eslint__js": "^8.42.3",
     "@types/hast": "^3.0.4",
     "@types/luxon": "^3.4.2",
