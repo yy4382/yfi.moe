@@ -23,6 +23,7 @@ const { seoConfig, stopTrack } = Astro.props;
     <meta charset="utf-8" />
     <Favicon />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <!-- <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> -->
     {runtimeEnv() === "production" && !stopTrack && <TagManagers />}
     <SEO
       {...seoConfig}
