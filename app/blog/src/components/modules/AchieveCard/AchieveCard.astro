@@ -1,14 +1,7 @@
 ---
 import { getSortedPosts } from "@utils/content";
-import AchieveAttr from "./AchieveAttr.astro";
-import { getPostPath } from "@utils/path";
-import {
-  CompactEntryList,
-  CompactEntryListItem,
-  CompactEntryListYear,
-  groupingEntries,
-} from "@comp/ui/CompactEntryList";
-
+import { AchieveCard as AchieveCardReact } from "./AchieveCard";
+import { groupingEntries } from "@comp/ui/CompactEntryList";
 interface Props {
   keyword?: string;
   tag?: string;
@@ -19,22 +12,6 @@ let posts = await getSortedPosts();
 
 if (tag) posts = posts.filter((post) => post.data.tags.includes(tag));
 const groups = groupingEntries(posts, (post) => post.data.date.getFullYear());
-let order = 1;
 ---
 
-<CompactEntryList keyword={keyword}>
-  {
-    groups.map((group) => (
-      <CompactEntryListYear year={group.year} order={order++}>
-        {group.posts.map((post) => (
-          <CompactEntryListItem
-            href={getPostPath(post)}
-            title={post.data.title}
-          >
-            <AchieveAttr post={post} />
-          </CompactEntryListItem>
-        ))}
-      </CompactEntryListYear>
-    ))
-  }
-</CompactEntryList>
+<AchieveCardReact keyword={keyword} rows={groups} client:load />

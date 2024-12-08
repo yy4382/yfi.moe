@@ -7,6 +7,8 @@
 @import "./theme.css";
 @import "./components.css";
 
+@import "../components/ui/CompactEntryList/CompactEntryList.css";
+
 @variant dark (&:where(.dark, .dark *));
 
 @utility center {
@@ -39,14 +41,6 @@
   @apply /* btn-regular !TODO */ absolute top-1 right-1 !rounded-lg px-2 py-1 text-xs;
 }
 
-.main-card-onload {
-  @apply animate-onload opacity-0;
-  --inner-card-delay: 100ms;
-  @supports (view-transition-name: none) {
-    @apply !opacity-100;
-    --inner-card-delay: 0ms;
-  }
-}
 @layer utilities {
   .prose {
     max-width: unset;
