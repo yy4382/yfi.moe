@@ -45,18 +45,6 @@ export const relativeTimeFromNow = (
     return `${Math.round(elapsed / msPerYear)} 年前`;
   }
 };
-
-import { popover } from "@styles/tv";
-import { tv } from "tailwind-variants";
-const postListPopover = tv({
-  extend: popover,
-  slots: {
-    base: "right-2 bottom-2 hover:w-20",
-    contentWrapper: "h-8 group-hover:w-20",
-    content: "mr-5 flex h-full flex-grow center text-center text-content",
-  },
-});
-const { base, contentWrapper, content, icon } = postListPopover();
 ---
 
 <Card
@@ -101,14 +89,13 @@ const { base, contentWrapper, content, icon } = postListPopover();
   </ul>
   {
     link && (
-      <div class={base()}>
-        <div class={contentWrapper()}>
-          <a class={content()} href={link}>
-            更多
-          </a>
-        </div>
-        <Icon name="mingcute:more-3-line" class={icon()} size={24} />
-      </div>
+      <a
+        href={link}
+        class="mb-auto flex center justify-end gap-1 text-sm text-content transition-colors hover:text-primary"
+      >
+        <Icon name="mingcute:arrow-right-circle-line" size={16} />
+        查看更多
+      </a>
     )
   }
 </Card>
