@@ -16,14 +16,12 @@ interface NavbarWrapperProps {
 const NavbarWrapper: React.FC<NavbarWrapperProps> = ({ children }) => {
   const navRef = useRef<HTMLElement>(null);
   const [height, setHeight] = useState(0);
-  const [scrollY, setScrollY] = useState(0);
-
-  const isFixed = scrollY >= remToPixel(DEFAULT_NAV_TOP_MARGIN);
+  const [isFixed, setIsFixed] = useState(false);
 
   // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      setIsFixed(window.scrollY >= remToPixel(DEFAULT_NAV_TOP_MARGIN));
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
