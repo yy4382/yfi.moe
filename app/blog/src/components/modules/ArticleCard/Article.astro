@@ -10,25 +10,19 @@ interface Props {
 const { entry } = Astro.props;
 ---
 
-<div transition:name="post-card" class="main-card-onload">
+<div class="article-main-card opacity-0">
   <Card class="space-y-4" useHeading headSize="3xl">
-    <h1
-      slot="heading"
-      transition:name="post-heading"
-      class="animate-onload opacity-0 animate-delay-[calc(var(--inner-card-delay))]"
-    >
+    <h1 slot="heading" class="article-title">
       {entry.data.title}
     </h1>
     {
       entry.data.date && (
-        <div class="animate-onload opacity-0 animate-delay-[calc(var(--inner-card-delay)+75ms)]">
+        <div class="article-info-line">
           <PostAttr post={entry as CollectionEntry<"post">} />
         </div>
       )
     }
-    <div
-      class="animate-onload opacity-0 animate-delay-[calc(var(--inner-card-delay)+150ms)]"
-    >
+    <div class="article-main-content">
       <MdRender>
         <slot />
       </MdRender>
@@ -36,3 +30,43 @@ const { entry } = Astro.props;
   </Card>
 </div>
 {entry.data.copyright && <CopyrightCard entry={entry} />}
+
+<script>
+  import { animate } from "motion";
+  const defaultOpt = { duration: 0.8, type: "spring", bounce: 0.5 } as const;
+  const animater = () => {
+    console.debug("animater run");
+
+    const mainCard = document.querySelector(".article-main-card");
+    if (!mainCard) {
+      return;
+    }
+
+    animate(mainCard, { y: [20, 0], opacity: [0, 1] }, defaultOpt);
+
+    const articleTitle = mainCard.querySelector(".article-title");
+    if (articleTitle)
+      animate(
+        articleTitle,
+        { y: [50, 0] },
+        { ...defaultOpt, duration: defaultOpt.duration * 1.2 },
+      );
+
+    const articleInfoLine = mainCard.querySelector(".article-info-line");
+    if (articleInfoLine)
+      animate(
+        articleInfoLine,
+        { y: [50, 0] },
+        { ...defaultOpt, duration: defaultOpt.duration * 1.3 },
+      );
+
+    const articleMainContent = mainCard.querySelector(".article-main-content");
+    if (articleMainContent)
+      animate(
+        articleMainContent,
+        { y: [50, 0] },
+        { ...defaultOpt, duration: defaultOpt.duration * 1.4 },
+      );
+  };
+  document.addEventListener("astro:page-load", () => animater());
+</script>
