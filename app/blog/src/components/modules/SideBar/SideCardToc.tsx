@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import type { MarkdownHeading } from "astro";
 import useBreakpoints, { breakpointsTailwind } from "@utils/useBreakpoints";
 import MingcuteListCheckLine from "~icons/mingcute/list-check-line";
+import { motion } from "motion/react";
 
 function useHeading(headingsInput: MarkdownHeading[]) {
   const [headings] = useState<MarkdownHeading[]>(headingsInput);
@@ -111,12 +112,18 @@ const Toc: React.FC<{
       disableCloseAutoFocus
       triggerAsChild
       trigger={
-        <button
-          className="fixed right-4 bottom-4 z-20 animate-onload shape-card border bg-card p-2 opacity-0 animate-delay-300 dark:border-gray-600"
+        <motion.button
+          initial={{ y: 16, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            default: { type: "spring", bounce: 0.5, duration: 0.7, delay: 0.5 },
+            opacity: { ease: "linear", duration: 0.3, delay: 0.5 },
+          }}
+          className="fixed right-4 bottom-4 z-20 shape-card border bg-card p-2 dark:border-gray-600"
           onClick={() => setOpen(true)}
         >
           <MingcuteListCheckLine className="size-6 text-heading" />
-        </button>
+        </motion.button>
       }
     >
       <TocEntry

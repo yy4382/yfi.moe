@@ -33,7 +33,7 @@ const stats: [number | string, string, string][] = [
 <div class="bento-layout">
   <!-- MARK: Introduction -->
   <Card
-    class="mt-[calc(50vh-9rem-6rem)] mb-[calc(50vh-10rem-6rem)] flex min-h-48 items-center justify-center gap-4 overflow-hidden sm:mt-0 sm:mb-0 sm:min-h-0 sm:[grid-area:introduction]"
+    class="mt-[calc(50vh-9rem-6rem)] mb-[calc(50vh-10rem-6rem)] flex min-h-48 items-center justify-center gap-4 sm:mt-0 sm:mb-0 sm:min-h-0 sm:[grid-area:introduction]"
   >
     <div class="flex items-center gap-2 text-xl">
       <img
@@ -163,12 +163,17 @@ const stats: [number | string, string, string][] = [
     flex-direction: column;
     max-width: 100%;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    padding: 1rem 0;
+
+    > * {
+      /* for animation */
+      opacity: 0;
+    }
 
     > div {
       min-width: 0px;
       padding: 1.5rem;
-      overflow: hidden;
     }
   }
   @media (min-width: 640px) {
@@ -208,3 +213,23 @@ const stats: [number | string, string, string][] = [
     }
   }
 </style>
+
+<script>
+  import { animate, stagger } from "motion";
+  const animater = () => {
+    animate(
+      ".bento-layout > *",
+      {
+        y: [50, 0],
+        opacity: [0, 1],
+      },
+      {
+        delay: stagger(0.05),
+        duration: 1,
+        type: "spring",
+        bounce: 0.5,
+      },
+    );
+  };
+  document.addEventListener("astro:page-load", animater);
+</script>
