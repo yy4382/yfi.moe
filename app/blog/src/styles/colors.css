@@ -13,7 +13,6 @@
 
     --bg-page: theme("colors.portage.100");
     --bg-card: oklch(100 0 var(--primary-hue));
-    --bg-popover: theme("colors.gray.50");
 
     --content-50: theme("colors.gray.600");
     --content-100: theme("colors.gray.700");
@@ -30,8 +29,6 @@
 
     --bg-page: oklch(15% 0.02 var(--primary-hue));
     --bg-card: oklch(25% 0.025 var(--primary-hue));
-
-    --bg-popover: oklch(30% 0.025 var(--primary-hue));
 
     --content-50: theme("colors.gray.400");
     --content-100: theme("colors.gray.300");

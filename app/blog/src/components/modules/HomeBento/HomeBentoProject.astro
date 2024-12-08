@@ -1,19 +1,7 @@
 ---
-import { tv } from "tailwind-variants";
 import HomeBentoProjectItem from "./HomeBentoProjectItem.astro";
-import { popover } from "@styles/tv";
-import { Icon } from "astro-icon/components";
 import Card from "@comp/ui/Card/Card.astro";
 import { projects } from "@configs/author";
-const projectPopover = tv({
-  extend: popover,
-  slots: {
-    base: "right-2 bottom-2 hover:h-32 hover:w-44",
-    contentWrapper: "group-hover:h-32 group-hover:w-44",
-    content: "flex flex-col p-4 text-content",
-  },
-});
-const { base, contentWrapper, content, icon } = projectPopover();
 ---
 
 <Card class="relative sm:[grid-area:projects]">
@@ -28,37 +16,5 @@ const { base, contentWrapper, content, icon } = projectPopover();
     >
       {projects.map((project) => <HomeBentoProjectItem {...project} />)}
     </div>
-  </div>
-
-  <div class:list={base()}>
-    <div class:list={contentWrapper()}>
-      <div class:list={content()}>
-        <p class="text-lg font-medium text-heading">更多</p>
-        <ul class="mt-2 flex flex-col gap-2 text-primary">
-          {
-            [
-              {
-                text: "GitHub 主页",
-                href: "https://github.com/yy4382",
-                icon: "mingcute:github-line",
-              },
-            ].map((link) => (
-              <li class="underlined-link w-fit">
-                {link.icon && (
-                  <Icon
-                    name={link.icon}
-                    class="inline-block -translate-y-[1px] translate-x-[2px]"
-                  />
-                )}
-                <a href={link.href} class="" target="_blank">
-                  {link.text}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
-    <Icon name="mingcute:more-3-line" class={icon()} size={24} />
   </div>
 </Card>
