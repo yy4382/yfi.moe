@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function (props: {
   content: React.ReactNode;

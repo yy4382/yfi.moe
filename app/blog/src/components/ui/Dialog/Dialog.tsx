@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { motion, AnimatePresence, type PanInfo } from "framer-motion";
+import { motion, AnimatePresence, type PanInfo } from "motion/react";
 
 const AnimatedDialog = (props: {
   trigger: React.ReactNode;
