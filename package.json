@@ -16,13 +16,9 @@
     "lint": "turbo run lint",
     "prepare": "husky"
   },
-  "lint-staged": {
-    "*": "turbo run format"
-  },
   "devDependencies": {
     "@eslint/plugin-kit": ">=0.2.4",
     "husky": "^9.1.7",
-    "lint-staged": "^15.2.10",
     "prettier": "^3.4.2",
     "turbo": "^2.3.3",
     "typescript": "^5.7.2"
@@ -30,8 +26,7 @@
   "packageManager": "pnpm@9.14.4",
   "pnpm": {
     "overrides": {
-      "@iconify/tools": "^4.0.7",
-      "cross-spawn": "^7.0.5"
+      "@iconify/tools": "^4.0.7"
     }
   }
 }
