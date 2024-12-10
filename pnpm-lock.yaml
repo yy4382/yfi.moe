@@ -6,6 +6,7 @@ settings:
 
 overrides:
   '@iconify/tools': ^4.0.7
+  cross-spawn: ^7.0.5
 
 importers:
 
@@ -81,8 +82,8 @@ importers:
         specifier: ^1.1.4
         version: 1.1.4
       astro-loading-indicator:
-        specifier: ^0.6.1
-        version: 0.6.1(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(lightningcss@1.28.2)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.0))
+        specifier: ^0.7.0
+        version: 0.7.0(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(lightningcss@1.28.2)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.0))
       astro-seo:
         specifier: ^0.8.4
         version: 0.8.4(prettier-plugin-astro@0.14.1)(prettier@3.4.2)(typescript@5.7.2)
@@ -201,12 +202,6 @@ importers:
       eslint-plugin-vue:
         specifier: ^9.32.0
         version: 9.32.0(eslint@9.16.0(jiti@2.4.1))
-      husky:
-        specifier: ^9.1.7
-        version: 9.1.7
-      lint-staged:
-        specifier: ^15.2.10
-        version: 15.2.10
       prettier:
         specifier: ^3.4.2
         version: 3.4.2
@@ -2013,10 +2008,10 @@ packages:
   astro-icon@1.1.4:
     resolution: {integrity: sha512-sMLkQaevIQLv38WBzb/RDbsmxhg5+X+KcNmpTi9cE6MLurNWU1MPnlO87d9Vwg4HxTenKpDlYp81A3syXFW/gw==}
 
-  astro-loading-indicator@0.6.1:
-    resolution: {integrity: sha512-IdQBOMDL9RR7apMD9OhaV7Con7ZYaBU9h7WIF3UdcFXTBLvPHExikx9sc2mxcH2ESowIq8OC/JJVvJWJL2Arnw==}
+  astro-loading-indicator@0.7.0:
+    resolution: {integrity: sha512-oNSUYbHq8Aaol0zcVuBzGz+qrqKsviOvKl1xaaKo3DLkEef7HCzHQAgTgWv4lB1iYFWa5GaieQvlxBO4KjzKZg==}
     peerDependencies:
-      astro: ^4.0.0
+      astro: ^4.0.0 || ^5.0.0
 
   astro-seo@0.8.4:
     resolution: {integrity: sha512-Ou1vzQSXAxa0K8rtNtXNvSpYqOGEgMhh0immMxJeXmbVZac3UKCNWAoXWyOQDFYsZvBugCRSg0N1phBqPMVgCw==}
@@ -2247,10 +2242,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  cross-spawn@7.0.3:
-    resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
-    engines: {node: '>= 8'}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -6562,7 +6553,7 @@ snapshots:
       - debug
       - supports-color
 
-  astro-loading-indicator@0.6.1(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(lightningcss@1.28.2)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.0)):
+  astro-loading-indicator@0.7.0(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(lightningcss@1.28.2)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.0)):
     dependencies:
       astro: 5.0.2(@types/node@22.10.1)(jiti@2.4.1)(lightningcss@1.28.2)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.0)
 
@@ -6873,12 +6864,6 @@ snapshots:
       path-type: 4.0.0
     optionalDependencies:
       typescript: 5.7.2
-
-  cross-spawn@7.0.3:
-    dependencies:
-      path-key: 3.1.1
-      shebang-command: 2.0.0
-      which: 2.0.2
 
   cross-spawn@7.0.6:
     dependencies:
@@ -7237,7 +7222,7 @@ snapshots:
 
   execa@8.0.1:
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       get-stream: 8.0.1
       human-signals: 5.0.0
       is-stream: 3.0.0
