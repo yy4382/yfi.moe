@@ -46,7 +46,7 @@ const seoConfig = getSeo({
     <PrevNext prev={prev} next={next} />
     {
       commentConfig.enable && (
-        <CommentCard client:load serverUrl={commentConfig.walineUrl} />
+        <CommentCard client:visible serverUrl={commentConfig.walineUrl} />
       )
     }
   </div>
