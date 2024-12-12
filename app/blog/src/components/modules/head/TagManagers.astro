@@ -11,16 +11,20 @@ const {
   is:inline
   define:vars={{ umamiSrc, umamiId, umamiDomains }}
   async
+  type="text/partytown"
   src={umamiSrc}
   data-website-id={umamiId}
   data-domains={umamiDomains.join(",")}></script>
+
 <script
   is:inline
   define:vars={{ googleMeasurementId }}
   async
+  type="text/partytown"
   src={`https://www.googletagmanager.com/gtag/js?id=${googleMeasurementId}`}
 ></script>
-<script is:inline define:vars={{ googleMeasurementId }}>
+
+<script is:inline define:vars={{ googleMeasurementId }} type="text/partytown">
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     // eslint-disable-next-line prefer-rest-params
@@ -28,6 +32,5 @@ const {
   }
   gtag("js", new Date());
 
-  /* cSpell:disable */
   gtag("config", googleMeasurementId);
 </script>

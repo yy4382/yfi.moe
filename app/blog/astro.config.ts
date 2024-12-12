@@ -17,12 +17,13 @@ import react from "@astrojs/react";
 import rehypeImageOptimization, {
   defineOptions as defineOptimizeOptions,
 } from "rehype-image-optim";
+import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
   site: siteDomain,
   output: "static",
-  integrations: [vue(), icon(), sitemap(), react()],
+  integrations: [vue(), icon(), sitemap(), react(), partytown()],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [
