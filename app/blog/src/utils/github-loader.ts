@@ -66,6 +66,7 @@ export function githubLoader(inputOptions: Options): Loader {
         files.forEach((file) => {
           untouched.delete(file.id);
           ctx.store.set(file);
+          ctx.logger.info(`Loaded file ${file.id}`);
         });
 
         // removed files that no longer in repo
@@ -76,6 +77,8 @@ export function githubLoader(inputOptions: Options): Loader {
       if (curSha !== lastSha) {
         await syncContent();
         ctx.meta.set("lastSha", curSha);
+      } else {
+        ctx.logger.info("No new commits, skipping sync");
       }
     },
   };
@@ -148,7 +151,7 @@ async function fetchFileContent(
 
 async function processFile(
   file: GetRepoContentFile,
-  ctx: Pick<LoaderContext, "generateDigest">,
+  ctx: Pick<LoaderContext, "generateDigest" | "parseData">,
   processor: MarkdownProcessor,
 ): Promise<Parameters<DataStore["set"]>[0]> {
   if (file.encoding !== "base64") {
@@ -163,15 +166,18 @@ async function processFile(
 
   const id = (frontmatter.slug as string) ?? file.name.split(".")[0];
 
-  const digest = ctx.generateDigest(rawContent);
+  const parsedFm = await ctx.parseData({
+    id,
+    data: frontmatter,
+  });
 
   const { code, metadata } = await processor.render(content.trim());
 
   return {
     id,
     body: content.trim(),
-    data: frontmatter,
-    digest,
+    data: parsedFm,
+    digest: ctx.generateDigest(rawContent),
     rendered: {
       html: code,
       metadata,
