@@ -19,7 +19,17 @@ const post = defineCollection({
     author: z.string().default("Yunfi"),
     image: z.string().optional(),
     updated: z.date(),
-    categories: z.union([z.string().array(), z.string()]),
+    categories: z
+      .union([z.string().array(), z.string()])
+      .transform((val, ctx) => {
+        if (!Array.isArray(val)) return val;
+        if (val.length >= 1) return val[0];
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "At least one category is required",
+        });
+        return z.NEVER;
+      }),
     tags: z.array(z.string()),
     series: z
       .object({

@@ -9,10 +9,7 @@ export const getStaticPaths = (async () => {
   const categoriesWithPosts: Record<string, CollectionEntry<"post">[]> = {};
   posts.forEach((post: CollectionEntry<"post">) => {
     if (!post.data.categories) return;
-    post.data.categories = Array.isArray(post.data.categories)
-      ? post.data.categories[0]
-      : post.data.categories;
-    const categories = post.data.categories as string;
+    const categories = post.data.categories;
     categoriesWithPosts[categories] = categoriesWithPosts[categories] || [];
     categoriesWithPosts[categories].push(post);
   });
