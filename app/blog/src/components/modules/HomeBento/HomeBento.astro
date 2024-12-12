@@ -215,18 +215,19 @@ const stats: [number | string, string, string][] = [
 </style>
 
 <script>
-  import { animate, stagger } from "motion";
+  import { animate } from "motion/mini";
+  import { spring, stagger } from "motion";
   const animater = () => {
     animate(
       ".bento-layout > *",
       {
-        y: [50, 0],
-        opacity: [0, 1],
+        transform: ["translateY(50px)", "translateY(0)"],
+        opacity: 1,
       },
       {
         delay: stagger(0.05),
         duration: 1,
-        type: "spring",
+        type: spring,
         bounce: 0.5,
       },
     );
