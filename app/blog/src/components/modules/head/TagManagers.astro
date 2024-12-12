@@ -17,19 +17,17 @@ const {
   data-domains={umamiDomains.join(",")}></script>
 
 <script
-  is:inline
-  define:vars={{ googleMeasurementId }}
-  async
   type="text/partytown"
+  define:vars={{ googleMeasurementId }}
   src={`https://www.googletagmanager.com/gtag/js?id=${googleMeasurementId}`}
 ></script>
 
-<script is:inline define:vars={{ googleMeasurementId }} type="text/partytown">
+<script type="text/partytown" define:vars={{ googleMeasurementId }}>
   window.dataLayer = window.dataLayer || [];
-  function gtag() {
+  window.gtag = function gtag() {
     // eslint-disable-next-line prefer-rest-params
     dataLayer.push(arguments);
-  }
+  };
   gtag("js", new Date());
 
   gtag("config", googleMeasurementId);
