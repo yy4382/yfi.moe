@@ -23,7 +23,20 @@ import partytown from "@astrojs/partytown";
 export default defineConfig({
   site: siteDomain,
   output: "static",
-  integrations: [vue(), icon(), sitemap(), react(), partytown()],
+  integrations: [
+    vue(),
+    icon(),
+    sitemap({
+      serialize: (sitemapItem) => ({
+        ...sitemapItem,
+        url: sitemapItem.url.endsWith("/")
+          ? sitemapItem.url.slice(0, -1)
+          : sitemapItem.url,
+      }),
+    }),
+    react(),
+    partytown(),
+  ],
   markdown: {
     remarkPlugins: [remarkGithubAlerts, remarkReadingTime],
     rehypePlugins: [
