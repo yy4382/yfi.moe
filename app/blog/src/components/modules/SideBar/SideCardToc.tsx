@@ -111,6 +111,7 @@ const Toc: React.FC<{
       onOpenChange={setOpen}
       disableCloseAutoFocus
       triggerAsChild
+      ariaDescription="table of contents"
       trigger={
         <motion.button
           initial={{ y: 16, opacity: 0 }}

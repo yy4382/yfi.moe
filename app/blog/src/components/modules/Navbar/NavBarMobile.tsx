@@ -5,7 +5,10 @@ import { navMenu } from "@configs/navbar";
 
 const NavbarMobile: React.FC = () => {
   return (
-    <Dialog trigger={<MingCuteMenuLine className="size-8" />}>
+    <Dialog
+      ariaDescription="Menu Dropdown"
+      trigger={<MingCuteMenuLine className="size-8" />}
+    >
       <div className="flex flex-col gap-4">
         {navMenu.map((nav) => (
           <section key={nav.text}>

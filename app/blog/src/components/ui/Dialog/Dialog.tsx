@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { motion, AnimatePresence, type PanInfo } from "motion/react";
 
 const AnimatedDialog = (props: {
@@ -9,6 +10,7 @@ const AnimatedDialog = (props: {
   onOpenChange?: (open: boolean) => void;
   disableCloseAutoFocus?: boolean;
   triggerAsChild?: boolean;
+  ariaDescription: string;
 }) => {
   const {
     trigger,
@@ -65,17 +67,22 @@ const AnimatedDialog = (props: {
                 }}
                 transition={{
                   type: "spring",
-                  damping: 20,
-                  stiffness: 250,
-                  duration: 0.1,
+                  bounce: 0.3,
+                  visualDuration: 0.3,
                 }}
                 drag="y"
                 dragConstraints={{ top: 0, bottom: 100 }}
-                dragElastic={0.2}
+                dragElastic={0.4}
                 dragSnapToOrigin={true}
                 onDragEnd={handleDragEnd}
                 className="fixed inset-0 top-[unset] z-50 mt-24 h-fit max-h-[90vh] shape-card !rounded-b-none bg-card p-8 pt-9 focus-visible:outline-none"
               >
+                <VisuallyHidden.Root>
+                  <Dialog.Title>{props.ariaDescription}</Dialog.Title>
+                  <Dialog.Description>
+                    {props.ariaDescription}
+                  </Dialog.Description>
+                </VisuallyHidden.Root>
                 {children}
                 <Dialog.Close asChild>
                   <div className="absolute top-1 left-1/2 translate-x-[-50%] p-3 outline-none">
