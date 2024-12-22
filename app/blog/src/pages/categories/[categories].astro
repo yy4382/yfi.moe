@@ -22,7 +22,7 @@ export const getStaticPaths = (async () => {
 
 const { categories, posts } = Astro.props;
 import { getSeo } from "@utils/SEO";
-const seoConfig = getSeo({ title: "分类：" + categories }); // !TODO
+const seoConfig = getSeo({ title: "分类：" + categories, noindex: true });
 ---
 
 <BaseLayout seoConfig={seoConfig} navStats="文章">

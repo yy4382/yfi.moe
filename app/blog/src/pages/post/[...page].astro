@@ -14,7 +14,7 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
   return paginate(allPosts, { pageSize: 10 });
 }
 const { page } = Astro.props as { page: Page };
-const seoConfig = getSeo({ title: "文章列表" });
+const seoConfig = getSeo({ title: "文章列表", noindex: true });
 type PostType = CollectionEntry<"post">;
 ---
 
