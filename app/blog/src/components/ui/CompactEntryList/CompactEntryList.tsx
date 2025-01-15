@@ -2,10 +2,16 @@ import React, { Fragment } from "react";
 import { card, tvButton } from "@styles/tv";
 import { motion } from "motion/react";
 
-const springOpt = {
+const noBounceSpring = {
   type: "spring",
-  visualDuration: 0.35,
+  duration: 0.5,
+  bounce: 0,
+} as const;
+
+const bouncySpring = {
+  type: "spring",
   bounce: 0.5,
+  visualDuration: 0.5,
 } as const;
 
 const BASE_DELAY = 0.1;
@@ -33,8 +39,8 @@ export const CompactEntryList: React.FC<CompactEntryListProps> = ({
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
-        default: springOpt,
-        opacity: { duration: 0.5, ease: "linear" },
+        default: noBounceSpring,
+        opacity: { duration: 0.2, ease: "ease" },
       }}
     >
       {keyword && (
@@ -43,7 +49,7 @@ export const CompactEntryList: React.FC<CompactEntryListProps> = ({
           initial={{ y: 20 }}
           animate={{ y: 0 }}
           transition={{
-            ...springOpt,
+            ...noBounceSpring,
             delay: BASE_DELAY,
           }}
         >
@@ -53,21 +59,35 @@ export const CompactEntryList: React.FC<CompactEntryListProps> = ({
       {rows.map((row, yearIndex) => (
         <Fragment key={row.year}>
           <motion.div
-            initial={{ y: 50 }}
-            animate={{ y: 0 }}
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{
-              ...springOpt,
-              delay: BASE_DELAY + yearIndex * INTERVAL,
+              default: {
+                ...bouncySpring,
+                delay: BASE_DELAY + yearIndex * INTERVAL,
+              },
+              opacity: {
+                duration: 0.2,
+                ease: "ease",
+                delay: BASE_DELAY + yearIndex * INTERVAL,
+              },
             }}
           >
             <CompactEntryListYear year={row.year} />
           </motion.div>
           <motion.div
-            initial={{ y: 50 }}
-            animate={{ y: 0 }}
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{
-              ...springOpt,
-              delay: BASE_DELAY + yearIndex * INTERVAL + INTERVAL / 2,
+              default: {
+                ...bouncySpring,
+                delay: BASE_DELAY + yearIndex * INTERVAL + INTERVAL / 3,
+              },
+              opacity: {
+                duration: 0.2,
+                ease: "ease",
+                delay: BASE_DELAY + yearIndex * INTERVAL + INTERVAL / 3,
+              },
             }}
           >
             <CompactEntryListItems items={row.items} />

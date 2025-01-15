@@ -21,8 +21,8 @@ type PostType = CollectionEntry<"post">;
 <BaseLayout seoConfig={seoConfig} navStats="文章">
   <div class="flex flex-col gap-4">
     {
-      page.data.map((post: PostType) => (
-        <div class="article-info-card opacity-5">
+      page.data.map((post: PostType, i) => (
+        <div class="article-info-card" style={`animation-delay: ${0.1 * i}s;`}>
           <ArticleInfoCard post={post} />
         </div>
       ))
@@ -36,26 +36,10 @@ type PostType = CollectionEntry<"post">;
   </div>
 </BaseLayout>
 
-<script>
-  import { stagger, spring } from "motion";
-  import { animate } from "motion/mini";
-
-  const animater = () => {
-    const elements = document.querySelectorAll(".article-info-card");
-    if (!elements.length) return;
-    animate(
-      elements,
-      {
-        opacity: 1,
-        transform: ["translateY(50px)", "translateY(0)"],
-      },
-      {
-        delay: stagger(0.1),
-        duration: 1,
-        type: spring,
-        bounce: 0.5,
-      },
-    );
-  };
-  document.addEventListener("astro:page-load", animater);
-</script>
+<style>
+  .article-info-card {
+    animation:
+      moveIn 0.5s var(--ease-out-quint) both,
+      fadeIn 0.2s both;
+  }
+</style>

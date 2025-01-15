@@ -218,8 +218,12 @@ const stats: [number | string, string, string][] = [
   import { animate } from "motion/mini";
   import { spring, stagger } from "motion";
   const animater = () => {
+    const elements = document.querySelectorAll(".bento-layout > *");
+    if (elements.length === 0) {
+      return;
+    }
     animate(
-      ".bento-layout > *",
+      elements,
       {
         transform: ["translateY(50px)", "translateY(0)"],
         opacity: 1,
