@@ -4,9 +4,6 @@
 
 @import "./colors.css";
 @import "./icons.css";
-@import "./components.css";
-
-@import "../components/ui/CompactEntryList/CompactEntryList.css";
 
 @theme {
   --color-portage-50: oklch(97.78% 0.0108 var(--primary-hue));

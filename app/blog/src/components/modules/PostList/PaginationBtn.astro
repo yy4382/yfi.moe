@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 // https://github.com/saicaca/fuwari/raw/47c65cd551a313beef1b0e39d697c1759f264c5e/src/components/control/Pagination.astro
 import type { Page } from "astro";
+import Card from "@comp/ui/Card/Card.astro";
 
 interface Props {
   page: Page;
@@ -63,58 +64,60 @@ const getPageUrl = (p: number) => {
 };
 ---
 
-<div
-  class:list={[className, "flex flex-row justify-center gap-3"]}
-  style={style}
->
-  <a
-    href={page.url.prev}
-    aria-label={page.url.prev ? "Previous Page" : null}
-    class:list={[
-      "flex h-11 w-11 items-center justify-center overflow-hidden shape-card rounded-lg bg-card text-primary",
-    ]}
-  >
-    <Icon
-      name="mingcute:arrows-left-line"
-      class:list={[
-        "text-[1.75rem]",
-        page.url.prev === undefined && "text-comment",
-      ]}
-    />
-  </a>
+<Card>
   <div
-    class="flex flex-row items-center gap-2 rounded-lg bg-none font-bold text-neutral-700 dark:text-neutral-300"
+    class:list={[className, "flex flex-row justify-center gap-3"]}
+    style={style}
   >
-    {
-      pages.map((p) => {
-        if (p == HIDDEN)
-          return <Icon name="mingcute:more-1-line" class="mx-1" />;
-        if (p == page.currentPage)
+    <a
+      href={page.url.prev}
+      aria-label={page.url.prev ? "Previous Page" : null}
+      class:list={["button text-content"]}
+    >
+      <Icon
+        name={page.url.prev === undefined
+          ? "mingcute:forbid-circle-line"
+          : "mingcute:arrows-left-line"}
+        size={24}
+      />
+    </a>
+    <div
+      class="flex flex-row items-center gap-2 bg-none font-bold text-content"
+    >
+      {
+        pages.map((p) => {
+          if (p == HIDDEN)
+            return <Icon name="mingcute:more-1-line" class="mx-1" />;
+          if (p == page.currentPage)
+            return (
+              <div class="button !size-9 rounded-full bg-primary/20">{p}</div>
+            );
           return (
-            <div class="flex h-11 w-11 items-center justify-center shape-card rounded-lg bg-card font-bold text-primary">
+            <a href={getPageUrl(p)} aria-label={`Page ${p}`} class="button">
               {p}
-            </div>
+            </a>
           );
-        return (
-          <a
-            href={getPageUrl(p)}
-            aria-label={`Page ${p}`}
-            class="flex h-11 w-11 items-center justify-center overflow-hidden shape-card rounded-lg bg-card active:scale-[0.85]"
-          >
-            {p}
-          </a>
-        );
-      })
-    }
+        })
+      }
+    </div>
+    <a
+      href={page.url.next}
+      aria-label={page.url.next ? "Next Page" : null}
+      class:list={["button"]}
+    >
+      <Icon
+        name={page.url.next === undefined
+          ? "mingcute:forbid-circle-line"
+          : "mingcute:arrows-right-line"}
+        size={24}
+      />
+    </a>
   </div>
-  <a
-    href={page.url.next}
-    aria-label={page.url.next ? "Next Page" : null}
-    class:list={[
-      "flex h-11 w-11 items-center justify-center overflow-hidden shape-card rounded-lg bg-card text-primary",
-      { disabled: page.url.next == undefined },
-    ]}
-  >
-    <Icon name="mingcute:arrows-right-line" class="text-[1.75rem]" />
-  </a>
-</div>
+</Card>
+
+<style>
+  @reference "../../../styles/base.css";
+  .button {
+    @apply flex size-12 items-center justify-center overflow-hidden;
+  }
+</style>

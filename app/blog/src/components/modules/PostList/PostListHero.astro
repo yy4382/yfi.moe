@@ -1,0 +1,19 @@
+---
+import Card from "@comp/ui/Card/Card.astro";
+type Props = {
+  title: string;
+  desc?: string;
+};
+const { title, desc } = Astro.props;
+---
+
+<Card class="@container bg-grid h-52 p-0 lg:h-96">
+  <div
+    class="post-list-padding flex h-full flex-col items-start justify-center"
+  >
+    <h1 class="text-5xl font-bold text-heading @3xl:text-6xl">
+      {title}
+    </h1>
+    {desc && <p class="mt-4 ml-1 text-lg text-content">{desc}</p>}
+  </div>
+</Card>

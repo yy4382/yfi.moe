@@ -6,7 +6,6 @@
 
     --primary: var(--color-portage-400);
 
-    --bg-page: var(--color-portage-100);
     --bg-card: oklch(100 0 var(--primary-hue));
 
     --content-50: var(--color-gray-600);
@@ -23,7 +22,6 @@
     @variant dark {
       --primary: var(--color-portage-300);
 
-      --bg-page: oklch(15% 0.02 var(--primary-hue));
       --bg-card: oklch(25% 0.025 var(--primary-hue));
 
       --content-50: var(--color-gray-400);

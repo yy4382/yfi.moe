@@ -11,7 +11,7 @@ export type WalineOptions = Omit<WalineInitOptions, "el"> & { path: string };
 
 const Waline = (props: WalineOptions) => {
   const config: WalineOptions = {
-    dark: "html.dark",
+    dark: "auto",
     lang: "zh-CN",
     search: false,
     emoji: false,

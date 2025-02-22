@@ -1,10 +1,5 @@
 ---
-import { getCollection, render } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
-import ArticleCard from "@comp/modules/ArticleCard";
-import PrevNext from "@comp/elements/PrevNext.astro";
-import CommentCard from "@comp/ui/ArticleCard/CommentCard.tsx";
-import { commentConfig } from "@configs/site";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("post");
@@ -19,12 +14,18 @@ export async function getStaticPaths() {
     }));
 }
 
-const { post, prev, next } = Astro.props;
+type Props = {
+  post: CollectionEntry<"post">;
+  prev?: CollectionEntry<"post">;
+  next?: CollectionEntry<"post">;
+};
 
-const { Content, headings } = await render(post);
+const { post, prev, next } = Astro.props;
 
 import { getSeo } from "@utils/SEO";
 import { getDesc } from "@utils/markdown";
+import ArticleLayout from "@layouts/ArticleLayout.astro";
+import type { CollectionEntry } from "astro:content";
 
 const seoConfig = getSeo({
   title: post.data.title,
@@ -37,20 +38,9 @@ const seoConfig = getSeo({
 });
 ---
 
-<BaseLayout seoConfig={seoConfig}>
-  <div class="flex flex-col gap-4">
-    <ArticleCard entry={post}>
-      <Content />
-    </ArticleCard>
-    <PrevNext prev={prev} next={next} />
-    {
-      commentConfig.enable && (
-        <CommentCard
-          client:visible
-          path={Astro.url.pathname}
-          serverURL={commentConfig.walineUrl}
-        />
-      )
-    }
-  </div>
-</BaseLayout>
+<ArticleLayout
+  seoConfig={seoConfig}
+  entry={post}
+  enableComments={false}
+  navigation={{ prev, next }}
+/>

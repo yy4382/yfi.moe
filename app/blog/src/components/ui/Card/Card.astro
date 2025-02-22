@@ -8,10 +8,12 @@ interface Props {
 }
 
 const { class: className, style, classOuter, styleOuter } = Astro.props;
+export const outerClass = "border-b border-container";
+export const innerClass = "main-container px-6 py-4";
 ---
 
-<section class={cn("border-b border-container", classOuter)} style={styleOuter}>
-  <div class={cn("main-container px-6 py-4", className)} style={style}>
+<section class={cn(outerClass, classOuter)} style={styleOuter}>
+  <div class={cn(innerClass, className)} style={style}>
     <slot />
   </div>
 </section>

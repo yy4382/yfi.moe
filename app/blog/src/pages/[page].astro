@@ -1,10 +1,9 @@
 ---
-import { getCollection, render } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
-import ArticleCard from "@comp/modules/ArticleCard";
+import { getCollection } from "astro:content";
 import { getDesc } from "@utils/markdown";
 import { getSeo } from "@utils/SEO";
 import ArticleLayout from "@layouts/ArticleLayout.astro";
+
 export async function getStaticPaths() {
   const pages = await getCollection("page");
   return pages.map((page) => ({
@@ -13,7 +12,6 @@ export async function getStaticPaths() {
   }));
 }
 const { page } = Astro.props;
-const { Content, headings } = await render(page);
 const desc =
   page.data.description || getDesc(page.body ?? "", { removeMd: true });
 

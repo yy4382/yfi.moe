@@ -52,7 +52,6 @@
     "remove-markdown": "^0.6.0",
     "satori": "^0.12.0",
     "tailwind-merge": "^3.0.1",
-    "tailwind-variants": "^0.3.1",
     "tailwindcss": "4.0.8",
     "tailwindcss-animated": "^2.0.0",
     "unified": "^11.0.5",

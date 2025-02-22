@@ -1,0 +1,37 @@
+---
+import PostListHero from "@comp/modules/PostList/PostListHero.astro";
+import BaseLayout from "./BaseLayout.astro";
+import type { CollectionEntry } from "astro:content";
+import PostListItem from "@comp/modules/PostList/PostListItem.astro";
+import PaginationBtn from "@comp/modules/PostList/PaginationBtn.astro";
+import type { Page } from "astro";
+
+type Props = Parameters<typeof BaseLayout>[0] & {
+  page: Page<CollectionEntry<"post">>;
+  paginationTemplate: string;
+  title?: string;
+};
+const { page, title = "Blog", paginationTemplate, ...props } = Astro.props;
+---
+
+<BaseLayout {...props}>
+  <PostListHero
+    title={title}
+    desc={`共 ${page.total} 篇。${page.lastPage !== 1 ? `第 ${page.currentPage} / ${page.lastPage} 页。` : ""}`}
+  />
+  <div class="border-b border-container">
+    {
+      page.data.map((post, i) => (
+        <PostListItem
+          post={post}
+          class={{ "border-b-0": i === page.data.length - 1 }}
+        />
+      ))
+    }
+  </div>
+  {
+    page.lastPage !== 1 && (
+      <PaginationBtn page={page} urlTemplate={paginationTemplate} />
+    )
+  }
+</BaseLayout>
