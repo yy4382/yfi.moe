@@ -9,6 +9,5 @@
       }
     }
   ],
-  "tailwindConfig": "./app/blog/tailwind.config.ts",
-  "tailwindFunctions": ["tv"]
+  "tailwindStylesheet": "./src/styles/base.css"
 }

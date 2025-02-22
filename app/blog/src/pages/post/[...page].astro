@@ -1,44 +1,28 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PaginationBtn from "@comp/ui/Pagination/PaginationBtn.astro";
 import { getSortedPosts } from "@utils/content";
-import { ArticleInfoCard } from "@comp/modules/ArticleCard";
-import type { Page } from "astro";
-import type { CollectionEntry } from "astro:content";
 import { getSeo } from "@utils/SEO";
-import { sitePaths } from "@configs/site";
+import PostListLayout from "@layouts/PostListLayout.astro";
+import type {
+  InferGetStaticParamsType,
+  InferGetStaticPropsType,
+  GetStaticPaths,
+} from "astro";
+import { siteConfig, sitePaths } from "@configs/site";
 
-export async function getStaticPaths({ paginate }: { paginate: any }) {
+export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await getSortedPosts();
-  return paginate(allPosts, { pageSize: 10 });
-}
-const { page } = Astro.props as { page: Page };
+  return paginate(allPosts, { pageSize: 15 });
+}) satisfies GetStaticPaths;
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props;
 const seoConfig = getSeo({ title: "文章列表", noindex: true });
-type PostType = CollectionEntry<"post">;
 ---
 
-<BaseLayout seoConfig={seoConfig} navStats="文章">
-  <div class="flex flex-col gap-4">
-    {
-      page.data.map((post: PostType, i) => (
-        <div class="article-info-card" style={`animation-delay: ${0.1 * i}s;`}>
-          <ArticleInfoCard post={post} />
-        </div>
-      ))
-    }
-    <div class="self-center">
-      <PaginationBtn
-        page={page}
-        urlTemplate={`${sitePaths.postList}/{{pageNo}}`}
-      />
-    </div>
-  </div>
-</BaseLayout>
-
-<style>
-  .article-info-card {
-    animation:
-      moveIn 0.5s var(--ease-out-quint) both,
-      fadeIn 0.2s both;
-  }
-</style>
+<PostListLayout
+  seoConfig={seoConfig}
+  page={page}
+  paginationTemplate={`${sitePaths.postList}/{{pageNo}}`}
+/>

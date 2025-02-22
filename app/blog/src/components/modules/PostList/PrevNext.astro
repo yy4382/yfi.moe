@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getPostPath } from "@utils/path";
+import { Icon } from "astro-icon/components";
+import { outerClass, innerClass } from "@comp/ui/Card/Card.astro";
+import { cn } from "@utils/cn";
+interface Props {
+  prev?: CollectionEntry<"post">;
+  next?: CollectionEntry<"post">;
+}
+const { prev, next } = Astro.props;
+
+if (!prev && !next) {
+  throw new Error("PrevNext: prev and next are both empty");
+}
+---
+
+{
+  prev && next && (
+    <div class={cn(outerClass, "block", "hidden lg:block")}>
+      <div class={cn(innerClass, "grid grid-cols-2 p-0")}>
+        <a
+          class={cn("flex items-center", "border-r border-container")}
+          href={getPostPath(prev)}
+        >
+          <Icon name="mingcute:arrows-left-line" size={36} class="shrink-0" />
+          <div>
+            <p class="text-sm text-comment">上一篇</p>
+            <p class="@lg:text-lg">{prev.data.title}</p>
+          </div>
+        </a>
+        <a
+          class={cn("flex flex-row-reverse items-center")}
+          href={getPostPath(next)}
+        >
+          <Icon name="mingcute:arrows-right-line" class="shrink-0" size={36} />
+          <div class="flex flex-col items-end">
+            <p class="text-sm text-comment">下一篇</p>
+            <p class="@lg:text-lg">{next!.data.title}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  )
+}
+{
+  prev && (
+    <div class={cn(outerClass, "block", next && "lg:hidden")}>
+      <a class={cn(innerClass, "flex items-center")} href={getPostPath(prev)}>
+        <Icon name="mingcute:arrows-left-line" size={36} class="shrink-0" />
+        <div>
+          <p class="text-sm text-comment">上一篇</p>
+          <p class="@lg:text-lg">{prev.data.title}</p>
+        </div>
+      </a>
+    </div>
+  )
+}
+{
+  next && (
+    <div class={cn(outerClass, "block", prev && "lg:hidden")}>
+      <a
+        class={cn(innerClass, "flex flex-row-reverse items-center")}
+        href={getPostPath(next)}
+      >
+        <Icon name="mingcute:arrows-right-line" size={36} class="shrink-0" />
+        <div class="flex flex-col items-end">
+          <p class="text-sm text-comment">下一篇</p>
+          <p class="@lg:text-lg">{next!.data.title}</p>
+        </div>
+      </a>
+    </div>
+  )
+}
+
+<style>
+  @import "../../../styles/base.css";
+  a {
+    @apply transition-colors hover:bg-gray-200 dark:hover:bg-gray-800;
+    @apply @container gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8;
+    /* FIXME @container and @lg on same element */
+  }
+</style>

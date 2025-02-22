@@ -9,6 +9,5 @@
       }
     }
   ],
-  "tailwindFunctions": ["tv"],
   "tailwindStylesheet": "./src/styles/base.css"
 }
