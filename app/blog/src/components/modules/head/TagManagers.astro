@@ -26,7 +26,6 @@ const {
 <script type="text/partytown" is:inline define:vars={{ googleMeasurementId }}>
   window.dataLayer = window.dataLayer || [];
   window.gtag = function gtag() {
-    // eslint-disable-next-line prefer-rest-params
     dataLayer.push(arguments);
   };
   gtag("js", new Date());

@@ -20,7 +20,6 @@ export async function GET(context: APIContext) {
   return rss({
     title: "Yunfi Blog",
     description: "记录折腾，分享经验",
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     site: context.site!,
     items: items,
     stylesheet: "/rss-style.xsl",

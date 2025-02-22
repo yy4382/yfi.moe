@@ -8,7 +8,6 @@ import type { CollectionEntry } from "astro:content";
 import { getSeo } from "@utils/SEO";
 import { sitePaths } from "@configs/site";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const allPosts = await getSortedPosts();
   return paginate(allPosts, { pageSize: 10 });
