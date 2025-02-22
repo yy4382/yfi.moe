@@ -71,6 +71,9 @@ export function githubLoader(inputOptions: Options): Loader {
       if (curSha !== lastSha) {
         await syncContent();
         ctx.meta.set("lastSha", curSha);
+        ctx.logger.info(
+          `Synced content with sha ${curSha}, now has ${ctx.store.keys().length} files`,
+        );
       } else {
         ctx.logger.info("No new commits, skipping sync");
       }
