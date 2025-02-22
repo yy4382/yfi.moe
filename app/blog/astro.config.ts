@@ -1,6 +1,5 @@
 import type { Element } from "hast";
 import { defineConfig, envField } from "astro/config";
-import vue from "@astrojs/vue";
 import remarkGithubAlerts from "remark-github-alerts";
 import icon from "astro-icon";
 import remarkReadingTime from "./src/utils/remarkReadingTime.mjs";
@@ -24,7 +23,6 @@ export default defineConfig({
   site: siteDomain,
   output: "static",
   integrations: [
-    vue(),
     icon(),
     sitemap({
       serialize: (sitemapItem) => ({

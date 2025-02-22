@@ -4,29 +4,52 @@ import { Icon } from "astro-icon/components";
 import { siteConfig } from "@configs/site";
 ---
 
-<Card padding="xs">
-  <div class="flex w-full">
-    <div
-      class="flex flex-shrink flex-grow flex-col items-center md:items-start"
-    >
+<div class="main-container flex items-center justify-between px-6 py-4">
+  <a href="/" class="flex gap-4 text-2xl font-bold">
+    <img
+      src="/icon-96.png"
+      alt="logo"
+      class="h-8 w-8 rounded-lg"
+      width={32}
+      height={32}
+    />
+    Yunfi
+  </a>
+  <div
+    class="flex flex-shrink flex-grow flex-col items-center gap-2 md:items-end"
+  >
+    <ul class="inline-flex flex-row items-center gap-x-6 text-sm text-comment">
+      <li>
+        <span class="inline-flex items-center font-medium text-content"
+          >关于<Icon name="mingcute:right-line" size={16} /></span
+        >
+        <span class="inline-flex gap-2">
+          <a href="/about">关于我</a>
+          <a href="/site-history">关于本站</a>
+          <a href="https://github.com/yy4382/yfi.moe">本站源码</a>
+        </span>
+      </li>
+      <li>
+        <span class="inline-flex items-center font-medium text-content"
+          >联系<Icon name="mingcute:right-line" size={16} /></span
+        >
+        <span class="inline-flex gap-2">
+          <button onclick="copyEmailLink()">发邮件</button>
+          <a href="https://t.me/YunfiDiscuz">Telegram</a>
+          <a href="https://github.com/yy4382">GitHub</a>
+        </span>
+      </li>
+    </ul>
+    <div class="flex flex-col items-end">
       <span class="inline-flex items-center gap-x-1 text-sm text-comment">
         <span class="inline-flex center gap-0.5"
           ><Icon name="mingcute:copyright-line" /> 2023-2024
           <span
-            ><a href={Astro.site} class="text-primary">{siteConfig.title}</a
+            ><a href={Astro.site} class="underline">{siteConfig.title}</a
             >.</span
           ></span
         >
         <span class="opacity-70">|</span>
-        <a
-          href="https://github.com/yy4382/yfi.moe"
-          class="inline-flex center gap-0.5"
-        >
-          <Icon name="mingcute:github-line" />Source Code</a
-        >
-      </span>
-      <span class="inline-flex items-center gap-1 text-sm text-comment">
-        <span class="hidden md:inline">For Robots: </span>
         <a href="/feed.xml" class="inline-flex center gap-0.5">
           <Icon name="mingcute:rss-2-line" />RSS</a
         >
@@ -37,18 +60,22 @@ import { siteConfig } from "@configs/site";
       </span>
       <span class="text-sm text-comment">
         Powered by
-        <a href="https://astro.build" class="text-primary">Astro</a>. See all
-        <a href="/credits" class="text-primary">Credits</a>.
+        <a href="https://astro.build" class="underline">Astro</a>. See all
+        <a href="/credits" class="underline">Credits</a>.
       </span>
     </div>
-    <div class="hidden center md:flex">
-      <img
-        src="/icon-96.png"
-        alt="logo"
-        class="rounded-lg"
-        width="48"
-        height="48"
-      />
-    </div>
   </div>
-</Card>
+</div>
+
+<script is:inline>
+  function copyEmailLink() {
+    const email = "";
+    try {
+      navigator.clipboard.writeText(email);
+      alert("Email address copied to clipboard");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+      alert("Failed to copy email address");
+    }
+  }
+</script>

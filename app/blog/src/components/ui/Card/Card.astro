@@ -1,44 +1,17 @@
 ---
-import { tv, type VariantProps } from "tailwind-variants";
-import { card } from "@styles/tv";
+import { cn } from "@utils/cn";
 interface Props {
   class?: string;
   style?: string;
-  ui?: Partial<typeof card.slots>;
-  padding?: VariantProps<typeof card>["padding"];
-  useHeading?: boolean;
-  useIndicator?: VariantProps<typeof card>["useIndicator"];
-  headSize?: VariantProps<typeof card>["headSize"];
-  leftExtraPadding?: VariantProps<typeof card>["leftExtraPadding"];
-  lessBottomPadding?: VariantProps<typeof card>["lessBottomPadding"];
+  classOuter?: string;
+  styleOuter?: string;
 }
 
-const {
-  padding,
-  useIndicator,
-  headSize,
-  useHeading,
-  leftExtraPadding,
-  lessBottomPadding,
-  ...props
-} = Astro.props;
-
-const ui = tv({ extend: card, slots: props.ui })({
-  padding,
-  headSize,
-  useIndicator,
-  leftExtraPadding,
-  lessBottomPadding,
-});
+const { class: className, style, classOuter, styleOuter } = Astro.props;
 ---
 
-<div class={ui.base({ class: props.class })} style={props.style}>
-  {
-    useHeading && (
-      <div class={ui.heading()}>
-        <slot name="heading" />
-      </div>
-    )
-  }
-  <slot />
-</div>
+<section class={cn("border-b border-container", classOuter)} style={styleOuter}>
+  <div class={cn("main-container px-6 py-4", className)} style={style}>
+    <slot />
+  </div>
+</section>

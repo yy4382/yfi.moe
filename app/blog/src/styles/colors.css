@@ -1,42 +1,41 @@
-@layer base;
+@layer theme;
 
-@layer base {
+@layer theme {
   :root {
-    /* set via js */
-    /* --primary-hue: 280; */
-
-    --primary-hue-gradient: calc(
-      var(--primary-hue) + 20
-    ); /* Oh no, Safari doesn't support calc() in oklch(from) */
+    --primary-hue: 280;
 
     --primary: var(--color-portage-400);
 
-    --bg-page: theme("colors.portage.100");
+    --bg-page: var(--color-portage-100);
     --bg-card: oklch(100 0 var(--primary-hue));
 
-    --content-50: theme("colors.gray.600");
-    --content-100: theme("colors.gray.700");
-    --content-200: theme("colors.gray.900");
+    --content-50: var(--color-gray-600);
+    --content-100: var(--color-gray-700);
+    --content-200: var(--color-gray-900);
     --content-primary: var(--color-portage-600);
 
-    --link-underline-normal: theme("colors.gray.900 / 40%");
-    --link-underline-hover: theme("colors.gray.900 / 60%");
-    --link-underline-active: theme("colors.gray.900 / 80%");
-  }
+    --link-underline-normal: --alpha(var(--color-gray-900) / 0.4);
+    --link-underline-hover: --alpha(var(--color-gray-900) / 0.6);
+    --link-underline-active: --alpha(var(--color-gray-900) / 0.8);
 
-  html.dark {
-    --primary: var(--color-portage-300);
+    --container-border: var(--color-gray-300);
 
-    --bg-page: oklch(15% 0.02 var(--primary-hue));
-    --bg-card: oklch(25% 0.025 var(--primary-hue));
+    @variant dark {
+      --primary: var(--color-portage-300);
 
-    --content-50: theme("colors.gray.400");
-    --content-100: theme("colors.gray.300");
-    --content-200: theme("colors.gray.100");
-    --content-primary: var(--color-portage-300);
+      --bg-page: oklch(15% 0.02 var(--primary-hue));
+      --bg-card: oklch(25% 0.025 var(--primary-hue));
 
-    --link-underline-normal: theme("colors.gray.100 / 50%");
-    --link-underline-hover: theme("colors.gray.100 / 60%");
-    --link-underline-active: theme("colors.gray.100 / 80%");
+      --content-50: var(--color-gray-400);
+      --content-100: var(--color-gray-300);
+      --content-200: var(--color-gray-100);
+      --content-primary: var(--color-portage-300);
+
+      --link-underline-normal: --alpha(var(--color-gray-100) / 0.5);
+      --link-underline-hover: --alpha(var(--color-gray-100) / 0.6);
+      --link-underline-active: --alpha(var(--color-gray-100) / 0.8);
+
+      --container-border: var(--color-gray-700);
+    }
   }
 }

@@ -4,37 +4,18 @@ import CopyrightCard from "@comp/ui/ArticleCard/CopyrightCard.astro";
 import MdRender from "@comp/elements/MdRender.astro";
 import Card from "@comp/ui/Card/Card.astro";
 import { type CollectionEntry } from "astro:content";
+import { render } from "astro:content";
 interface Props {
   entry: CollectionEntry<"post"> | CollectionEntry<"page">;
 }
 const { entry } = Astro.props;
+const { Content } = await render(entry);
 ---
 
-<div class="article-main-card">
-  <Card class="space-y-4" useHeading headSize="3xl">
-    <h1 slot="heading" class="article-title">
-      {entry.data.title}
-    </h1>
-    {
-      entry.data.date && (
-        <div class="article-info-line">
-          <PostAttr post={entry as CollectionEntry<"post">} />
-        </div>
-      )
-    }
-    <div class="article-main-content">
-      <MdRender>
-        <slot />
-      </MdRender>
-    </div>
-  </Card>
-</div>
-{entry.data.copyright && <CopyrightCard entry={entry} />}
-
-<style>
-  .article-main-card {
-    animation:
-      moveIn 0.5s var(--ease-out-quint) both,
-      fadeIn 0.2s both;
-  }
-</style>
+<section class="border-b border-container">
+  <div class="main-container px-4 py-18">
+    <MdRender>
+      <Content />
+    </MdRender>
+  </div>
+</section>

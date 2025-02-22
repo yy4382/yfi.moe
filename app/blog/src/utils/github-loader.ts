@@ -31,16 +31,24 @@ export function githubLoader(inputOptions: Options): Loader {
     pat: undefined,
   };
 
-  const fetchWithHeader = (...args: Parameters<typeof fetch>) =>
-    fetch(args[0], {
-      ...args[1],
-      headers: {
-        ...args[1]?.headers,
-        Authorization: `Bearer ${pat}`,
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    });
+  const fetchWithHeader = (...args: Parameters<typeof fetch>) => {
+    try {
+      return fetch(args[0], {
+        ...args[1],
+        headers: {
+          ...args[1]?.headers,
+          Authorization: `Bearer ${pat}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+    } catch (e) {
+      throw new Error(
+        "Failed to fetch with header in github loader",
+        e as Error,
+      );
+    }
+  };
 
   return {
     name: "github-loader",

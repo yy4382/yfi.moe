@@ -1,10 +1,7 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { SideCardTags } from "@comp/modules/SideBar";
 import { getSeo } from "@utils/SEO";
 const seoConfig = getSeo({ title: "标签", noindex: true });
 ---
 
-<BaseLayout seoConfig={seoConfig}>
-  <SideCardTags showAll />
-</BaseLayout>
+<BaseLayout seoConfig={seoConfig} />

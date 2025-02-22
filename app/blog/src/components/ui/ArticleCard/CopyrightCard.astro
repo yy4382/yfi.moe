@@ -1,23 +1,23 @@
 ---
 import { Icon } from "astro-icon/components";
-import { card } from "@styles/tv";
 import Sign from "@assets/signature-yunfi.svg?raw";
-const { base } = card();
-const cardClass = base({
-  padding: "sm",
-  class: `relative overflow-hidden`,
-});
+import Card from "../Card/Card.astro";
 ---
 
-<div class={cardClass}>
+<Card class="overflow-hidden py-10">
   <div
     class:list={[
-      "prose !text-sm opacity-80 dark:prose-invert prose-p:text-comment prose-a:!text-content",
+      "mx-auto prose max-w-[75ch] !text-sm dark:prose-invert prose-p:text-comment/80 prose-a:!text-content/90",
     ]}
   >
     <div class="signature-wrapper float-right">
       <Fragment set:html={Sign} />
     </div>
+    <!-- <div
+      class="absolute -top-2 -right-2 flex text-8xl text-black opacity-5 md:top-1/2 md:right-0 md:translate-x-1/4 md:-translate-y-1/2 md:text-[8rem] dark:text-white"
+    >
+      <Icon name="fa6-brands:creative-commons" />
+    </div> -->
     <p class="!mt-0 !mb-2">
       本文使用“<a
         href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en"
@@ -32,18 +32,10 @@ const cardClass = base({
       >协议分发您贡献的作品。
     </p>
   </div>
-
-  <div
-    class="absolute -right-4 -bottom-4 flex gap-2 text-8xl text-black opacity-5 md:text-[8rem] dark:text-white"
-  >
-    <Icon name="fa6-brands:creative-commons" />
-  </div>
-</div>
+</Card>
 
 <style is:global>
-  /* TODO: temp workaround for tailwind v4 beta, https://github.com/tailwindlabs/tailwindcss/issues/15219 */
-  @import "tailwindcss/theme" theme(reference);
-  @import "../../../styles/theme.css" theme(reference);
+  @reference "../../../styles/base.css";
 
   .signature-wrapper {
     --signature-length: 2550px;

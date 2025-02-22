@@ -3,7 +3,7 @@ title: 我的听书方法汇总
 tags:
   - 听书
 date: 2024-03-10T23:47:43+08:00
-updated: 2024-03-11T00:38:52+08:00
+updated: 2025-02-22T16:11:53+08:00
 slug: book-listening-collection
 ---
 
@@ -11,12 +11,12 @@ slug: book-listening-collection
 
 ## 一表流
 
-|       名称       |  状态   | 链接 🔗                                                                                                      |
-| :--------------: | :-----: | :----------------------------------------------------------------------------------------------------------- |
-| Azure 文本转语音 | ✅ 可用 | [创建资源教程](/post/azure-tts-trial#使用官方-api创建资源导入软件) \| [导入器](https://tts-importer.yfi.moe) |
-|  Edge 大声朗读   | ✅ 可用 | 教程 [Vercel版](/post/ifreetime-mstts-vercel) \| [Docker 版](/post/ifreetime-mstts-selfhost)                 |
-|   星铁语音导入   | ✅ 可用 | [油猴脚本](https://github.com/yy4382/genshinvoice-import) \| [语音网站](https://bv2.firefly.matce.cn/)       |
-|  Azure 试用接口  | ❌ 失效 | [教程](/post/azure-tts-trial)                                                                                |
+|       名称       |  状态   | 链接 🔗                                                                                                                   |
+| :--------------: | :-----: | :------------------------------------------------------------------------------------------------------------------------ |
+| Azure 文本转语音 | ✅ 可用 | [创建资源教程][tts-importer-reg] \| [导入器][tts-importer-web]                                                            |
+|  Edge 大声朗读   | ✅ 可用 | 新版 [CF Workers 版][read-aloud-github] <br> 旧版教程 [Vercel版][ra-vercel-tutorial] \| [Docker 版][ra-selfhost-tutorial] |
+|   星铁语音导入   | ❌ 失效 | [油猴脚本](https://github.com/yy4382/genshinvoice-import) \| [语音网站](https://bv2.firefly.matce.cn/)                    |
+|  Azure 试用接口  | ❌ 失效 | [教程](/post/azure-tts-trial)                                                                                             |
 
 ## 有哪些语音？
 
@@ -26,12 +26,12 @@ slug: book-listening-collection
 
 ## 有哪些方法能用？
 
-星铁语音导入~~已经失效~~又复活了，现在可用。
+星铁语音导入~~已经失效~~ ~~又复活了，现在可用~~又失效了。
 
 对于微软语音，现在来看，还可以正常使用的方法有两种：
 
 1. 微软给它的不少服务（比如 Edge 和 Word）提供了一个叫“大声朗读 (Read Aloud)”的功能，它的背后就是 Azure 的 TTS 服务；我们可以使用这个接口来合成语音。
-2. 注册 Azure，使用它每月赠送的 50 万字符合成量。这是最正统的方法，我主要是为数个常用的小说阅读器制作了[一键导入器](https://tts-importer.yfi.moe)。只要注册好了 Azure 并获得了 API Key，就可以一键将自己喜欢的语音导入自己喜欢的阅读器了。
+2. 注册 Azure，使用它每月赠送的 50 万字符合成量。这是最正统的方法，我主要是为数个常用的小说阅读器制作了[一键导入器][tts-importer-web]。只要注册好了 Azure 并获得了 API Key，就可以一键将自己喜欢的语音导入自己喜欢的阅读器了。
 
 ## 方法的优劣如何？
 
@@ -50,22 +50,33 @@ slug: book-listening-collection
 
 ### 大声朗读（Read Aloud）
 
-🔗 [微软TTS Vercel部署教程](/post/ifreetime-mstts-vercel)
+[Cloudflare / 自建服务器上的 Read Aloud][read-aloud-github]
+
+新方法。可以部署在 Cloudflare Workers 或者自己的服务器上。适用于爱阅记、阅读、源阅读。
+
+🔗 [微软TTS Vercel部署教程][ra-vercel-tutorial]
 
 最受欢迎的教程。可能也是最简单的教程。适用于（安卓的）阅读、爱阅书香、爱阅记。
 
-🔗 [配置微软 TTS 听书 - Docker 自建版](/post/ifreetime-mstts-selfhost)
+🔗 [配置微软 TTS 听书 - Docker 自建版][ra-selfhost-tutorial]
 
-和上文基本相同，适合有自己服务器的人。
+~~和上文基本相同，适合有自己服务器的人。~~ 现在不再推荐这样。请使用上面的第一个方法。
 
-🔗 [源阅读配置微软 TTS 听书](/post/sourcereader-mstts)
+🔗 [源阅读配置微软 TTS 听书][ra-sourcereader-tutorial]
 
 方法和上文相同，只是写了一些关于源阅读的导入方法
 
 ### Azure API
 
-实际上不需要教程，只要你拿到了 API 凭据，直接打开 <https://tts-import.yfi.moe>，就能一键导入到爱阅记、阅读、源阅读了。在导入网站上我也写了一些教程，不会的话可以看看。
+实际上不需要教程，只要你拿到了 API 凭据，直接打开 <https://tts.yfi.moe>，就能一键导入到爱阅记、阅读、源阅读了。在导入网站上我也写了一些教程，不会的话可以看看。
 
 如果你已经注册了 Azure，但是不知道从那里获取 API 凭据，我也写了一些教程。但是，还请你在读完本段剩下的话之后再打开下一段的链接，以免产生不必要的疑惑。下一段给出的链接原本介绍的方法已经失效，因此我将它“废物利用”，在它的前半部分添加了获取 Azure API 凭据的教程。所以，如果点开后看到“该方法已失效”，不要慌张，因为失效的不是你想用的方法😊。
 
-🔗 [更方便地导入微软TTS听书：阅读、爱阅书香、源阅读](/post/azure-tts-trial)
+[更方便地导入微软TTS听书：阅读、爱阅书香、源阅读][tts-importer-reg]
+
+[read-aloud-github]: https://github.com/yy4382/read-aloud
+[tts-importer-web]: https://tts.yfi.moe
+[tts-importer-reg]: https://tts.yfi.moe/help/reg
+[ra-vercel-tutorial]: /post/ifreetime-mstts-vercel
+[ra-selfhost-tutorial]: /post/ifreetime-mstts-selfhost
+[ra-sourcereader-tutorial]: /post/sourcereader-mstts

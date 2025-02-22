@@ -4,32 +4,34 @@ import { TooltipTime } from "@comp/ui/Tooltip";
 import { Icon } from "astro-icon/components";
 import { type CollectionEntry } from "astro:content";
 interface Props {
-  post: CollectionEntry<"post">;
+  data:
+    | Pick<CollectionEntry<"post">["data"], "date" | "updated" | "tags">
+    | Pick<CollectionEntry<"page">["data"], "date" | "updated">;
 }
-const { post } = Astro.props;
+const { data } = Astro.props;
 ---
 
 <div
   class="flex flex-wrap items-center gap-2 text-[0.8rem] text-comment lg:gap-3"
 >
   <TooltipTime
-    postTime={DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd")}
-    updatedTime={DateTime.fromJSDate(post.data.updated).toFormat("yyyy-MM-dd")}
+    postTime={DateTime.fromJSDate(data.date).toFormat("yyyy-MM-dd")}
+    updatedTime={DateTime.fromJSDate(data.updated).toFormat("yyyy-MM-dd")}
     client:load
   >
     <div class="flex items-center select-none">
       <Icon name="mingcute:calendar-line" class="mr-1 text-base" />
-      {DateTime.fromJSDate(post.data.date).toFormat("yyyy-MM-dd")}
+      {DateTime.fromJSDate(data.date).toFormat("yyyy-MM-dd")}
     </div>
   </TooltipTime>
 
   <!-- Tags -->
   {
-    post.data?.tags instanceof Array && (
+    "tags" in data && data?.tags instanceof Array && (
       <div class="flex items-center select-none">
         <Icon name="mingcute:hashtag-line" class="mr-1 text-base" />
         <span class="space-x-0.5">
-          {post.data.tags.map((tag, index) => (
+          {data.tags.map((tag, index) => (
             <>
               {index !== 0 && <span class="text-comment">|</span>}
               <a href={"/tags/" + tag} class="transition hover:text-primary">

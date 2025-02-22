@@ -2,9 +2,9 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import ArticleCard from "@comp/modules/ArticleCard";
-import SideBar from "@comp/modules/SideBar";
 import { getDesc } from "@utils/markdown";
 import { getSeo } from "@utils/SEO";
+import ArticleLayout from "@layouts/ArticleLayout.astro";
 export async function getStaticPaths() {
   const pages = await getCollection("page");
   return pages.map((page) => ({
@@ -27,13 +27,4 @@ const seoConfig = getSeo({
 });
 ---
 
-<BaseLayout seoConfig={seoConfig}>
-  <div class="flex flex-col gap-4">
-    <ArticleCard entry={page}>
-      <Content />
-    </ArticleCard>
-  </div>
-  <Fragment slot="sidebar">
-    <SideBar tocList={headings} />
-  </Fragment>
-</BaseLayout>
+<ArticleLayout seoConfig={seoConfig} entry={page} />

@@ -2,6 +2,8 @@
 title: 关于
 slug: about
 copyright: false
+date: 2024-01-29
+updated: 2025-02-22
 ---
 
 学生。

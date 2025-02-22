@@ -1,6 +1,5 @@
 ---
-import NoGridLayout from "@layouts/NoGridLayout.astro";
-import HomeBento from "@comp/modules/HomeBento";
+import NoGridLayout from "@layouts/BaseLayout.astro";
 import { getSeo } from "@utils/SEO";
 const seoConfig = getSeo({
   title: "首页",
@@ -8,10 +7,4 @@ const seoConfig = getSeo({
 });
 ---
 
-<NoGridLayout seoConfig={seoConfig} navStats={"首页"}>
-  <div
-    class="w-full overflow-x-hidden lg:ml-[calc(50%-50vw)] lg:w-screen lg:max-w-screen-xl lg:px-4 xl:ml-[calc(50%-640px)]"
-  >
-    <HomeBento />
-  </div>
-</NoGridLayout>
+<NoGridLayout seoConfig={seoConfig} />

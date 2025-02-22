@@ -1,28 +1,16 @@
 ---
 import HeadTag from "@layouts/HeadTag.astro";
-import SideBar from "@comp/modules/SideBar";
 import type { SEOProps } from "astro-seo";
-import type { NavMenu } from "@configs/navbar";
 import BaseBody from "./BaseBody.astro";
 interface Props {
   seoConfig: SEOProps;
   stopTrack?: boolean;
-  navStats?: NavMenu | string;
 }
-const { seoConfig, stopTrack, navStats } = Astro.props;
+const { seoConfig, stopTrack } = Astro.props;
 ---
 
 <HeadTag seoConfig={seoConfig} stopTrack={stopTrack}>
-  <BaseBody navStats={navStats}>
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_30%]">
-      <div class="">
-        <slot />
-      </div>
-      <aside>
-        <slot name="sidebar">
-          <SideBar />
-        </slot>
-      </aside>
-    </div>
+  <BaseBody>
+    <slot />
   </BaseBody>
 </HeadTag>

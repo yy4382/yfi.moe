@@ -3,6 +3,17 @@ import { glob } from "astro/loaders";
 import { githubLoader } from "@utils/github-loader";
 import { ARTICLE_PAT } from "astro:env/server";
 
+const baseSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+
+  date: z.date(),
+  updated: z.date(),
+
+  image: z.string().optional(),
+  copyright: z.boolean().default(true),
+});
+
 const post = defineCollection({
   // loader: glob({ pattern: "**/*.md", base: "./src/content/post" }),
   loader: githubLoader({
@@ -12,24 +23,7 @@ const post = defineCollection({
     path: "",
     pat: ARTICLE_PAT,
   }),
-  schema: z.object({
-    title: z.string(),
-    date: z.date(),
-    description: z.string().optional(),
-    author: z.string().default("Yunfi"),
-    image: z.string().optional(),
-    updated: z.date(),
-    categories: z
-      .union([z.string().array(), z.string()])
-      .transform((val, ctx) => {
-        if (!Array.isArray(val)) return val;
-        if (val.length >= 1) return val[0];
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "At least one category is required",
-        });
-        return z.NEVER;
-      }),
+  schema: baseSchema.extend({
     tags: z.array(z.string()),
     series: z
       .object({
@@ -39,21 +33,12 @@ const post = defineCollection({
       })
       .optional(),
     highlight: z.boolean().optional(),
-    copyright: z.boolean().default(true),
   }),
 });
 
 const page = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/page" }),
-  schema: z.object({
-    title: z.string(),
-    date: z.date().optional(),
-    updated: z.date().optional(),
-    author: z.string().default("Yunfi"),
-    description: z.string().optional(),
-    image: z.string().optional(),
-    copyright: z.boolean().default(true),
-  }),
+  schema: baseSchema,
 });
 
 export const collections = { post, page };

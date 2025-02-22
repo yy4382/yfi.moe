@@ -1,38 +1,19 @@
 ---
-import Navbar from "@comp/modules/Navbar";
+import Navbar from "@comp/elements/Navbar.astro";
 import Footer from "@comp/elements/Footer.astro";
-import type { NavMenu } from "@configs/navbar";
-interface Props {
-  navStats?: NavMenu | string;
-}
-const { navStats } = Astro.props;
+import Card from "@comp/ui/Card/Card.astro";
 ---
 
-<body class="bg-fixed">
-  <div
-    class:list={[
-      "mx-auto h-full min-h-screen container-max-lg p-[var(--edge-padding)]",
-      "grid grid-cols-1 grid-rows-[auto_1fr_auto] place-items-center gap-4",
-    ]}
-  >
-    <Navbar navStats={navStats} />
-    <div class="w-full place-self-stretch">
+<body
+  class="m-0 overflow-x-hidden bg-fixed p-0 dark:bg-gray-900"
+  style="text-rendering: optimizeLegibility;"
+>
+  <div class="grid min-h-[100lvh] grid-rows-[auto_auto_1fr_auto]">
+    <Navbar />
+    <div class="w-full">
       <slot />
     </div>
-    <div class="w-full">
-      <Footer />
-    </div>
+    <Card class="bg-grid h-full px-0 py-0" classOuter="min-h-12" />
+    <Footer />
   </div>
 </body>
-
-<style>
-  body {
-    /* for browser background padding */
-    background-color: var(--bg-page);
-    background-image: linear-gradient(
-      to bottom right,
-      oklch(from var(--bg-page) l c var(--primary-hue-gradient)),
-      var(--bg-page)
-    );
-  }
-</style>

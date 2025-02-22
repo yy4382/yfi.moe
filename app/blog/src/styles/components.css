@@ -1,75 +1,52 @@
-@layer utilities {
-  .underlined-link {
-    color: currentColor;
-    background-image: linear-gradient(
-      theme("colors.primary.DEFAULT"),
-      theme("colors.primary.DEFAULT")
-    );
-    background-size: 0% 1.5px;
-    background-repeat: no-repeat;
+@utility timeline {
+  position: relative;
 
-    transition: all 200ms cubic-bezier(0.46, 0.03, 0.52, 0.96);
+  @apply min-w-0 flex-1 list-inside justify-between;
 
-    @apply border-0 no-underline;
-
-    background-position: left 1.2em;
-
-    &:hover {
-      background-size: 100% 1.5px;
-
-      transition: all 200ms cubic-bezier(0.46, 0.03, 0.52, 0.96);
-    }
+  & > li::before {
+    content: "";
+    position: absolute;
+    left: -13px;
+    bottom: 0;
+    border-left: 2px solid theme("colors.primary.DEFAULT");
   }
-  .timeline {
+
+  & > li:first-child:last-child::before {
+    border-left: 0;
+  }
+
+  & > li:not(:first-child):not(:last-child)::before {
+    top: 0;
+  }
+
+  & > li:first-child::before {
+    top: 50%;
+  }
+
+  & > li:last-child::before {
+    bottom: 50%;
+    top: 0;
+  }
+
+  & > li {
     position: relative;
+    list-style-type: none;
 
-    @apply min-w-0 flex-1 list-inside justify-between;
+    line-height: 1.6;
+    padding: 3px 0;
 
-    & > li::before {
-      content: "";
-      position: absolute;
-      left: -13px;
-      bottom: 0;
-      border-left: 2px solid theme("colors.primary.DEFAULT");
-    }
+    @apply text-sm;
+  }
 
-    & > li:first-child:last-child::before {
-      border-left: 0;
-    }
-
-    & > li:not(:first-child):not(:last-child)::before {
-      top: 0;
-    }
-
-    & > li:first-child::before {
-      top: 50%;
-    }
-
-    & > li:last-child::before {
-      bottom: 50%;
-      top: 0;
-    }
-
-    & > li {
-      position: relative;
-      list-style-type: none;
-
-      line-height: 1.6;
-      padding: 3px 0;
-
-      @apply text-sm;
-    }
-
-    & > li::after {
-      content: "";
-      left: -1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 8px;
-      width: 8px;
-      border-radius: 50%;
-      position: absolute;
-      background-color: theme("colors.primary.DEFAULT");
-    }
+  & > li::after {
+    content: "";
+    left: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: theme("colors.primary.DEFAULT");
   }
 }

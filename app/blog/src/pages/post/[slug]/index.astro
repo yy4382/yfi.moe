@@ -1,10 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import SideBar from "@comp/modules/SideBar";
 import ArticleCard from "@comp/modules/ArticleCard";
 import PrevNext from "@comp/elements/PrevNext.astro";
-import CommentCard from "@comp/ui/ArticleCard/CommentCard.vue";
+import CommentCard from "@comp/ui/ArticleCard/CommentCard.tsx";
 import { commentConfig } from "@configs/site";
 
 export async function getStaticPaths() {
@@ -38,7 +37,7 @@ const seoConfig = getSeo({
 });
 ---
 
-<BaseLayout seoConfig={seoConfig} navStats="文章">
+<BaseLayout seoConfig={seoConfig}>
   <div class="flex flex-col gap-4">
     <ArticleCard entry={post}>
       <Content />
@@ -46,11 +45,12 @@ const seoConfig = getSeo({
     <PrevNext prev={prev} next={next} />
     {
       commentConfig.enable && (
-        <CommentCard client:visible serverUrl={commentConfig.walineUrl} />
+        <CommentCard
+          client:visible
+          path={Astro.url.pathname}
+          serverURL={commentConfig.walineUrl}
+        />
       )
     }
   </div>
-  <Fragment slot="sidebar">
-    <SideBar tocList={headings} seriesID={post.data.series?.id} />
-  </Fragment>
 </BaseLayout>

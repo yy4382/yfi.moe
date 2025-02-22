@@ -1,0 +1,44 @@
+---
+
+---
+
+<header class="border-b border-container">
+  <section
+    class="main-container flex items-center justify-between px-6 py-4 text-content"
+  >
+    <a href="/" class="flex gap-4 text-2xl font-bold">
+      <img
+        src="/icon-96.png"
+        alt="logo"
+        class="h-8 w-8 rounded-lg"
+        width={32}
+        height={32}
+      />
+      Yunfi
+    </a>
+    <ul class="flex list-none flex-nowrap gap-4">
+      <li>
+        <a
+          href="/"
+          class:list={[
+            { "text-content-primary": "/" === Astro.url.pathname },
+            "text-content-50 transition-colors hover:text-content-primary",
+          ]}
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          href="/post"
+          class:list={[
+            { "text-content-primary": Astro.url.pathname.startsWith("/post") },
+            "text-content-50 transition-colors hover:text-content-primary",
+          ]}
+        >
+          Posts
+        </a>
+      </li>
+    </ul>
+  </section>
+</header>

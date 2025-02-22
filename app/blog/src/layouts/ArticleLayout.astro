@@ -1,0 +1,14 @@
+---
+import Article from "@comp/modules/ArticleCard/Article.astro";
+import BaseLayout from "./BaseLayout.astro";
+import ArticleHero from "@comp/modules/ArticleCard/ArticleHero.astro";
+import CopyrightCard from "@comp/ui/ArticleCard/CopyrightCard.astro";
+type Props = Parameters<typeof BaseLayout>[0] & Parameters<typeof Article>[0];
+const { entry, ...props } = Astro.props;
+---
+
+<BaseLayout {...props}>
+  <ArticleHero data={entry.data} />
+  <Article entry={entry} />
+  {entry.data.copyright && <CopyrightCard />}
+</BaseLayout>
