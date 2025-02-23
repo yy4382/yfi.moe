@@ -34,7 +34,10 @@ const { data } = Astro.props;
           {data.tags.map((tag, index) => (
             <>
               {index !== 0 && <span class="text-comment">|</span>}
-              <a href={"/tags/" + tag} class="transition hover:text-primary">
+              <a
+                href={"/tags/" + tag}
+                class="transition hover:text-content-primary"
+              >
                 {tag}
               </a>
             </>
