@@ -8,5 +8,5 @@ full_status=$(git status --porcelain)
 if [ -z "$ignore_submodule_status" ] && [ -n "$full_status" ]; then
   echo "The current changes only include submodule updates, skipping lint-staged"
 else
-  pnpm run format
+  pnpm dlx lint-staged
 fi
