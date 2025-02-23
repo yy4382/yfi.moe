@@ -6,6 +6,7 @@ import CopyrightCard from "@comp/modules/ArticleCard/CopyrightCard.astro";
 import PrevNext from "@comp/modules/PostList/PrevNext.astro";
 import { commentConfig } from "@configs/site";
 import CommentCard from "@comp/modules/ArticleCard/CommentCard";
+import Card from "@comp/ui/Card/Card.astro";
 type Props = Parameters<typeof BaseLayout>[0] &
   Parameters<typeof Article>[0] & {
     navigation?: Parameters<typeof PrevNext>[0];
@@ -21,11 +22,13 @@ const { entry, navigation, enableComments, ...props } = Astro.props;
   {navigation && <PrevNext {...navigation} />}
   {
     commentConfig.enable && enableComments && (
-      <CommentCard
-        client:visible
-        path={Astro.url.pathname}
-        serverURL={commentConfig.walineUrl}
-      />
+      <Card padding="article" class="mx-auto max-w-2xl">
+        <CommentCard
+          client:visible
+          path={Astro.url.pathname}
+          serverURL={commentConfig.walineUrl}
+        />
+      </Card>
     )
   }
 </BaseLayout>
