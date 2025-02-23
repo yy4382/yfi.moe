@@ -24,10 +24,14 @@ const seoConfig = getSeo({ title: "标签", noindex: true });
     <div class="post-list-padding py-10">
       {
         Object.entries(allTags)
-          .sort((a, b) => (a[1] > b[1] ? -1 : 1))
+          // .sort((a, b) => (a[1] > b[1] ? -1 : 1))
           .map(([tag, count]) => (
-            <a href={`/tags/${tag}`} class="tag">
-              {tag} ({count})
+            <a
+              href={`/tags/${tag}`}
+              class="transition-colors hover:text-content-primary"
+              style={`font-size: ${2 - 1 / count}rem`}
+            >
+              {tag} <span class="font-mono">({count})</span>
             </a>
           ))
       }
