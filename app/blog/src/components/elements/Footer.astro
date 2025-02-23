@@ -1,10 +1,11 @@
 ---
-import Card from "@comp/ui/Card/Card.astro";
 import { Icon } from "astro-icon/components";
 import { siteConfig } from "@configs/site";
 ---
 
-<div class="main-container flex items-center justify-between px-6 py-4">
+<div
+  class="main-container flex flex-col-reverse items-center justify-between gap-6 px-6 py-4 md:flex-row"
+>
   <a href="/" class="flex gap-4 text-2xl font-bold">
     <img
       src="/icon-96.png"
@@ -16,9 +17,11 @@ import { siteConfig } from "@configs/site";
     Yunfi
   </a>
   <div
-    class="flex flex-shrink flex-grow flex-col items-center gap-2 md:items-end"
+    class="flex w-full flex-shrink flex-grow flex-col items-start gap-8 md:w-[unset] md:items-end md:gap-2"
   >
-    <ul class="inline-flex flex-row items-center gap-x-6 text-sm text-comment">
+    <ul
+      class="flex flex-col items-start gap-x-6 gap-y-1 text-comment lg:flex-row lg:items-end"
+    >
       <li>
         <span class="inline-flex items-center font-medium text-content"
           >关于<Icon name="mingcute:right-line" size={16} /></span
@@ -40,8 +43,10 @@ import { siteConfig } from "@configs/site";
         </span>
       </li>
     </ul>
-    <div class="flex flex-col items-end">
-      <span class="inline-flex items-center gap-x-1 text-sm text-comment">
+    <div
+      class="flex flex-col items-center self-center text-sm md:items-end md:self-end"
+    >
+      <span class="inline-flex items-center gap-x-1 text-comment">
         <span class="inline-flex items-center gap-0.5"
           ><Icon name="mingcute:copyright-line" /> 2023-2024
           <span
@@ -58,7 +63,7 @@ import { siteConfig } from "@configs/site";
           <Icon name="mingcute:map-line" />Site Map</a
         >
       </span>
-      <span class="text-sm text-comment">
+      <span class="text-comment">
         Powered by
         <a href="https://astro.build" class="underline">Astro</a>. See all
         <a href="/credits" class="underline">Credits</a>.
