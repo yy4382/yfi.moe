@@ -1,9 +1,9 @@
 ---
+import { cardInner, cardContainer } from "@comp/ui/Card/Card.astro";
 import { renderDesc } from "@utils/markdown";
 import { getPostPath } from "@utils/path";
 import type { CollectionEntry } from "astro:content";
 import PostAttr from "../ArticleCard/PostAttr.astro";
-import { cn } from "@utils/cn";
 import type { ClassValue } from "clsx";
 
 type Props = {
@@ -20,10 +20,8 @@ if (post.data.description === undefined) {
 }
 ---
 
-<div
-  class={cn("@container main-container border-b border-container", className)}
->
-  <div class="post-list-padding py-8 @4xl:py-12">
+<div class={cardContainer(className)}>
+  <div class={cardInner({ padding: "postList", class: "py-8 @4xl:py-12" })}>
     <a href={getPostPath(post)}>
       <h2
         class="mb-2 text-lg font-bold transition-colors hover:text-primary @xl:text-xl @4xl:text-3xl"
@@ -38,10 +36,3 @@ if (post.data.description === undefined) {
     />
   </div>
 </div>
-
-<style is:global>
-  @reference "../../../styles/base.css";
-  .post-list-padding {
-    @apply px-6 @xl:px-10 @4xl:px-16 @6xl:px-32;
-  }
-</style>

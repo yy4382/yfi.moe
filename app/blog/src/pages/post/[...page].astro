@@ -3,18 +3,18 @@ import { getSortedPosts } from "@utils/content";
 import { getSeo } from "@utils/SEO";
 import PostListLayout from "@layouts/PostListLayout.astro";
 import type {
-  InferGetStaticParamsType,
+  // InferGetStaticParamsType,
   InferGetStaticPropsType,
   GetStaticPaths,
 } from "astro";
-import { siteConfig, sitePaths } from "@configs/site";
+import { sitePaths } from "@configs/site";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await getSortedPosts();
   return paginate(allPosts, { pageSize: 15 });
 }) satisfies GetStaticPaths;
 
-type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+// type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page } = Astro.props;

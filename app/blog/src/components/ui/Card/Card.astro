@@ -1,19 +1,56 @@
 ---
+import { cva, type VariantProps } from "cva";
+import type { ClassValue } from "clsx";
 import { cn } from "@utils/cn";
-interface Props {
-  class?: string;
-  style?: string;
-  classOuter?: string;
-  styleOuter?: string;
-}
 
-const { class: className, style, classOuter, styleOuter } = Astro.props;
-export const outerClass = "border-b border-container";
-export const innerClass = "main-container px-6 py-4";
+export const cardInner = cva("", {
+  variants: {
+    padding: {
+      sm: "px-6 py-4",
+      article: "px-4 py-18",
+      postList: "px-6 @xl:px-10 @4xl:px-16 @6xl:px-32",
+    },
+    bg: {
+      grid: "bg-grid",
+    },
+  },
+});
+
+/**
+ * Card container
+ *
+ * `@container main-container h-full`
+ */
+export const cardContainer = (className?: ClassValue) =>
+  cn("@container main-container h-full", className);
+
+/**
+ * Card outer container
+ *
+ * `border-b border-container`
+ */
+export const cardOuter = (className?: ClassValue) =>
+  cn("border-b border-container", className);
+
+type Props = VariantProps<typeof cardInner> & {
+  class?: ClassValue;
+  classOuter?: ClassValue;
+  classContainer?: ClassValue;
+};
+
+const {
+  class: className,
+  classOuter,
+  classContainer,
+  padding,
+  bg,
+} = Astro.props;
 ---
 
-<section class={cn(outerClass, classOuter)} style={styleOuter}>
-  <div class={cn(innerClass, className)} style={style}>
-    <slot />
+<section class={cardOuter(classOuter)}>
+  <div class={cardContainer(classContainer)}>
+    <div class={cn(cardInner({ padding, bg, class: className }))}>
+      <slot />
+    </div>
   </div>
 </section>

@@ -1,6 +1,4 @@
 ---
-import PostAttr from "./PostAttr.astro";
-import CopyrightCard from "@comp/ui/ArticleCard/CopyrightCard.astro";
 import MdRender from "@comp/elements/MdRender.astro";
 import Card from "@comp/ui/Card/Card.astro";
 import { type CollectionEntry } from "astro:content";
@@ -12,10 +10,8 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<section class="border-b border-container">
-  <div class="main-container px-4 py-18">
-    <MdRender>
-      <Content />
-    </MdRender>
-  </div>
-</section>
+<Card padding="article">
+  <MdRender>
+    <Content />
+  </MdRender>
+</Card>

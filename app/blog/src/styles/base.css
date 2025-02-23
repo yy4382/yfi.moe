@@ -49,6 +49,10 @@
   @apply mx-auto box-border w-screen max-w-screen border-container sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px] 2xl:w-[1440px];
 }
 
+@utility post-list-padding {
+  @apply px-6 @xl:px-10 @4xl:px-16 @6xl:px-32;
+}
+
 @utility bg-grid {
   --bg-grid-color: var(--color-gray-200);
   @variant dark {

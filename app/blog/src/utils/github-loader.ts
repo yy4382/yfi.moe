@@ -32,25 +32,6 @@ export function githubLoader(inputOptions: Options): Loader {
     pat: undefined,
   };
 
-  // const fetchWithHeader = (...args: Parameters<typeof fetch>) => {
-  //   try {
-  //     return fetch(args[0], {
-  //       ...args[1],
-  //       headers: {
-  //         ...args[1]?.headers,
-  //         Authorization: `Bearer ${pat}`,
-  //         Accept: "application/vnd.github+json",
-  //         "X-GitHub-Api-Version": "2022-11-28",
-  //       },
-  //     });
-  //   } catch (e) {
-  //     throw new Error(
-  //       "Failed to fetch with header in github loader",
-  //       e as Error,
-  //     );
-  //   }
-  // };
-
   const fetcher = ofetch.create({
     headers: {
       Authorization: `Bearer ${pat}`,
@@ -66,7 +47,7 @@ export function githubLoader(inputOptions: Options): Loader {
     name: "github-loader",
     load: async (ctx) => {
       // check if last sha is the same as current sha
-      const curSha = await fetchRefSha(options, fetcher, ctx);
+      const curSha = await fetchRefSha(options, fetcher);
       const lastSha = ctx.meta.get("lastSha");
       if (curSha !== lastSha) {
         await syncContent();
@@ -83,7 +64,7 @@ export function githubLoader(inputOptions: Options): Loader {
 
         const untouched = new Set(ctx.store.keys());
 
-        const dirFiles = (await fetchDir(options, fetcher, ctx)).filter(
+        const dirFiles = (await fetchDir(options, fetcher)).filter(
           (file) => file.type === "file",
         );
         const files = await Promise.all(
@@ -91,7 +72,6 @@ export function githubLoader(inputOptions: Options): Loader {
             const fileResp = await fetchFileContent(
               { ...options, path: file.path },
               fetcher,
-              ctx,
             );
             return processFile(fileResp, ctx, processor);
           }),
@@ -112,7 +92,6 @@ export function githubLoader(inputOptions: Options): Loader {
 async function fetchRefSha(
   options: Omit<Options, "pat">,
   fetcher: typeof ofetch,
-  ctx: LoaderContext,
 ) {
   const { owner, repo, ref } = options;
   const url = new URL(
@@ -126,7 +105,6 @@ async function fetchRefSha(
 async function fetchDir(
   options: Omit<Options, "pat">,
   fetcher: typeof ofetch,
-  ctx: LoaderContext,
 ): Promise<GetRepoContentDir> {
   const { owner, repo, path, ref } = options;
   const url = new URL(
@@ -144,7 +122,6 @@ async function fetchDir(
 async function fetchFileContent(
   options: Omit<Options, "pat">,
   fetcher: typeof ofetch,
-  ctx: LoaderContext,
 ): Promise<GetRepoContentFile> {
   const { owner, repo, path, ref } = options;
   const url = new URL(

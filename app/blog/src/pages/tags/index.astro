@@ -1,8 +1,36 @@
 ---
+import PostListHero from "@comp/modules/PostList/PostListHero.astro";
+import Card from "@comp/ui/Card/Card.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSeo } from "@utils/SEO";
+import { getCollection } from "astro:content";
+
+const allTags = (await getCollection("post")).reduce(
+  (acc, post) => {
+    post.data.tags.forEach((tag) => {
+      acc[tag] = (acc[tag] || 0) + 1;
+    });
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+
 const seoConfig = getSeo({ title: "标签", noindex: true });
-// TODO: Implement tags page
 ---
 
-<BaseLayout seoConfig={seoConfig} />
+<BaseLayout seoConfig={seoConfig}>
+  <PostListHero title="标签" />
+  <Card class="@container p-0">
+    <div class="post-list-padding py-10">
+      {
+        Object.entries(allTags)
+          .sort((a, b) => (a[1] > b[1] ? -1 : 1))
+          .map(([tag, count]) => (
+            <a href={`/tags/${tag}`} class="tag">
+              {tag} ({count})
+            </a>
+          ))
+      }
+    </div>
+  </Card>
+</BaseLayout>

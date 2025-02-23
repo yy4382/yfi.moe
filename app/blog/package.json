@@ -34,6 +34,7 @@
     "astro-loading-indicator": "^0.7.0",
     "astro-seo": "^0.8.4",
     "clsx": "^2.1.1",
+    "cva": "npm:class-variance-authority@^0.7.1",
     "hastscript": "^9.0.0",
     "luxon": "^3.5.0",
     "mdast-util-to-string": "^4.0.0",
