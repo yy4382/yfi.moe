@@ -1,17 +1,27 @@
 ---
 import MdRender from "@comp/elements/MdRender.astro";
-import Card from "@comp/ui/Card/Card.astro";
+import { cardContainer, cardInner, cardOuter } from "@comp/ui/Card/Card.astro";
 import { type CollectionEntry } from "astro:content";
 import { render } from "astro:content";
+import Toc from "./toc/Toc";
 interface Props {
   entry: CollectionEntry<"post"> | CollectionEntry<"page">;
 }
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 ---
 
-<Card padding="article">
-  <MdRender>
-    <Content />
-  </MdRender>
-</Card>
+<div class={cardOuter()}>
+  <div class={cardContainer("relative")}>
+    <div class="sticky top-0">
+      <div class="flex justify-end">
+        <Toc headings={headings} client:load />
+      </div>
+    </div>
+    <div class={cardInner({ padding: "article" })}>
+      <MdRender>
+        <Content />
+      </MdRender>
+    </div>
+  </div>
+</div>

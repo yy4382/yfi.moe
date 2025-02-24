@@ -12,7 +12,9 @@ type Props = Parameters<typeof BaseLayout>[0] &
     navigation?: Parameters<typeof PrevNext>[0];
     enableComments?: boolean;
   };
-const { entry, navigation, enableComments, ...props } = Astro.props;
+const { entry, navigation, enableComments, series, ...props } = Astro.props;
+
+// TODO series article panel
 ---
 
 <BaseLayout {...props}>

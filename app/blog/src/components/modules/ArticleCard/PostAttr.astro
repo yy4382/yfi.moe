@@ -1,6 +1,5 @@
 ---
 import { DateTime } from "luxon";
-import { TooltipTime } from "@comp/ui/Tooltip";
 import { Icon } from "astro-icon/components";
 import { type CollectionEntry } from "astro:content";
 interface Props {
@@ -14,16 +13,11 @@ const { data } = Astro.props;
 <div
   class="flex flex-wrap items-center gap-2 text-[0.8rem] text-comment lg:gap-3"
 >
-  <TooltipTime
-    postTime={DateTime.fromJSDate(data.date).toFormat("yyyy-MM-dd")}
-    updatedTime={DateTime.fromJSDate(data.updated).toFormat("yyyy-MM-dd")}
-    client:load
-  >
-    <div class="flex items-center select-none">
-      <Icon name="mingcute:calendar-line" class="mr-1 text-base" />
-      {DateTime.fromJSDate(data.date).toFormat("yyyy-MM-dd")}
-    </div>
-  </TooltipTime>
+  // TODO show updated date
+  <div class="flex items-center select-none">
+    <Icon name="mingcute:calendar-line" class="mr-1 text-base" />
+    {DateTime.fromJSDate(data.date).toFormat("yyyy-MM-dd")}
+  </div>
 
   <!-- Tags -->
   {
