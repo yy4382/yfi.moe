@@ -13,7 +13,7 @@ const { Content, headings } = await render(entry);
 
 <div class={cardOuter()}>
   <div class={cardContainer("relative")}>
-    <div class="sticky top-0">
+    <div class="sticky top-0 z-50">
       <div class="flex justify-end">
         <Toc headings={headings} client:load />
       </div>

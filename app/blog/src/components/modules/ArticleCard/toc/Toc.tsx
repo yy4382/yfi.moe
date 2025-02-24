@@ -81,7 +81,7 @@ const Toc: React.FC<{
   return (
     <DpRoot modal={false}>
       <DpTrigger asChild>
-        <button className="z-100 flex size-10 center border-b border-l border-container bg-bg">
+        <button className="flex size-10 center border-b border-l border-container bg-bg">
           <MingcuteListCheckLine className="size-6 text-heading" />
         </button>
       </DpTrigger>
