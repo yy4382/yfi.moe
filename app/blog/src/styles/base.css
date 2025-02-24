@@ -23,7 +23,6 @@
   --color-content-200: var(--content-200);
   --color-content-primary: var(--content-primary);
 
-  --color-card: var(--bg-card);
   --color-primary: var(--primary);
 
   --color-content: var(--content-100);
@@ -31,6 +30,7 @@
   --color-comment: var(--content-50);
 
   --border-color-container: var(--container-border);
+  --border-color-container-light: var(--container-light-border);
 
   --radius-card: 0.75rem;
 }
@@ -46,7 +46,7 @@
 }
 
 @utility main-container {
-  @apply mx-auto box-border w-screen max-w-screen border-container sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px] 2xl:w-[1440px];
+  @apply mx-auto box-border w-screen max-w-screen border-container sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
 }
 
 @utility post-list-padding {
@@ -54,16 +54,24 @@
 }
 
 @utility bg-grid {
-  --bg-grid-color: var(--color-gray-200);
-  @variant dark {
-    --bg-grid-color: var(--color-gray-800);
-  }
   background-image:
-    linear-gradient(to right, var(--bg-grid-color) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--bg-grid-color) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      var(--container-light-border) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      var(--container-light-border) 1px,
+      transparent 1px
+    );
   background-size: 14px 14px;
   background-position: -1px -1px;
   box-sizing: border-box;
+}
+
+@utility card-btn {
+  @apply transition-colors hover:bg-gray-200 dark:hover:bg-gray-800;
 }
 
 .copy-code {

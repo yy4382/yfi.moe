@@ -41,12 +41,12 @@ export const projects = [
     links: [
       {
         href: "https://github.com/yy4382/s3-image-port",
-        text: "Github",
+        text: "GitHub",
         icon: "mingcute:github-line",
       },
       {
         href: "https://iport.yfi.moe",
-        text: "Demo Web App",
+        text: "Web App",
         icon: "mingcute:compass-3-line",
       },
     ],
@@ -58,11 +58,11 @@ export const projects = [
     links: [
       {
         href: "https://github.com/yy4382/tts-importer",
-        text: "Github",
+        text: "GitHub",
         icon: "mingcute:github-line",
       },
       {
-        href: "https://tts-importer.yfi.moe",
+        href: "https://tts.yfi.moe",
         text: "Web App",
         icon: "mingcute:compass-3-line",
       },
@@ -71,7 +71,7 @@ export const projects = [
   {
     icon: "ob-export",
     title: "Obsidian Site Exporter",
-    desc: "将 Obsidian 笔记导出为可用于建站的通用 Markdown 文件",
+    desc: "将 Obsidian 笔记导出为通用 Markdown 文件",
     links: [
       {
         href: "https://github.com/yy4382/obsidian-static-site-export",
