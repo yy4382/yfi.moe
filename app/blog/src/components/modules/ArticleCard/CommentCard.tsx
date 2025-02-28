@@ -24,6 +24,9 @@ const Waline = (props: WalineOptions) => {
   useEffect(() => {
     walineInstanceRef.current = init({
       ...config,
+      path: window.location.pathname.endsWith("/")
+        ? window.location.pathname.slice(0, -1)
+        : window.location.pathname,
       el: containerRef.current,
     });
 
