@@ -35,6 +35,7 @@ export const contactInfo: {
 
 export const projects = [
   {
+    // filename.svg in /src/icons folder
     icon: "s3-image-port",
     title: "S3 Image Port",
     desc: "将 S3 作为图床",
