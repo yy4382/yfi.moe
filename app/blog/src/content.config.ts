@@ -15,7 +15,6 @@ const baseSchema = z.object({
 });
 
 const post = defineCollection({
-  // loader: glob({ pattern: "**/*.md", base: "./src/content/post" }),
   loader: githubLoader({
     owner: "yy4382",
     repo: "blog-posts",
@@ -37,7 +36,13 @@ const post = defineCollection({
 });
 
 const page = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/page" }),
+  loader: githubLoader({
+    owner: "yy4382",
+    repo: "blog-posts",
+    ref: "release-page",
+    path: "",
+    pat: ARTICLE_PAT,
+  }),
   schema: baseSchema,
 });
 
