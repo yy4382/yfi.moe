@@ -4,7 +4,7 @@ import { generateOgImageForPost } from "@utils/og-image/generateOgImages";
 import runtimeEnv from "@utils/runtimeEnv";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("post", (p) => !p.data.image);
+  const posts = await getCollection("post");
 
   return posts.map((post) => ({
     params: { slug: post.id },
@@ -16,12 +16,10 @@ export const GET: APIRoute<
   InferGetStaticPropsType<typeof getStaticPaths>
 > = async ({ props }) =>
   new Response(
-    runtimeEnv() === "production"
-      ? await generateOgImageForPost({
-          ...props.data,
-          date: props.data.date.toISOString(),
-        })
-      : new ArrayBuffer(0),
+    await generateOgImageForPost({
+      ...props.data,
+      date: props.data.date.toISOString(),
+    }),
     {
       headers: { "Content-Type": "image/png" },
     },
