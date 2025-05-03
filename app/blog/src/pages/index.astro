@@ -7,7 +7,7 @@ import logo from "@assets/logo.png";
 import { authorName, contactInfo, projects } from "@configs/author";
 import getStatistics from "@utils/statistics";
 import { getSortedPosts } from "@utils/content";
-import { DateTime } from "luxon";
+import { format } from "date-fns";
 import { Icon } from "astro-icon/components";
 import { cn } from "@utils/cn";
 
@@ -39,7 +39,7 @@ const seoConfig = getSeo({
     <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
     <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
       从 {
-        DateTime.fromJSDate(firstData).toFormat("yyyy 年 M 月 d 日")
+        format(firstData, "yyyy 年 M 月 d 日")
       }的第一篇文章开始，本站已经更新了……
     </p>
     <div

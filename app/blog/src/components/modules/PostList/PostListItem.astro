@@ -29,7 +29,7 @@ if (post.data.description === undefined) {
         {post.data.title}
       </h2>
     </a>
-    <PostAttr data={post.data} />
+    <PostAttr data={post.data} alignment="left" />
     <div
       class="prose mt-4 hidden max-w-[90ch] @5xl:block dark:prose-invert"
       set:html={desc}

@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import { format } from "date-fns";
 import logo from "@assets/logo.svg?raw";
 import type { OgImageInfo } from "./generateOgImages";
 
@@ -59,9 +59,7 @@ export function postOgImage(info: OgImageInfo) {
               letterSpacing: "-0.02em",
             }}
           >
-            {DateTime.fromISO(info.date)
-              .setLocale("en")
-              .toFormat("LLLL dd, yyyy")}
+            {format(info.date, "LLLL dd, yyyy")}
           </span>
         </div>
       </div>
