@@ -25,7 +25,7 @@ const baseClass = cn(
       {format(data.date, "yyyy-MM-dd")}
     </div>
     {
-      !isSameDay(data.date, data.updated) && (
+      data.updated && !isSameDay(data.date, data.updated) && (
         <div class="flex items-center select-none">
           <Icon name="mingcute:edit-line" class="mr-1 text-base" />
           {format(data.updated, "yyyy-MM-dd")}

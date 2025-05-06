@@ -1,5 +1,4 @@
 import { defineCollection, z } from "astro:content";
-import { glob } from "astro/loaders";
 import { githubLoader } from "@utils/github-loader";
 import { ARTICLE_PAT } from "astro:env/server";
 
@@ -8,7 +7,7 @@ const baseSchema = z.object({
   description: z.string().optional(),
 
   date: z.date(),
-  updated: z.date(),
+  updated: z.date().optional(),
 
   image: z.string().optional(),
   copyright: z.boolean().default(true),
@@ -32,6 +31,7 @@ const post = defineCollection({
       })
       .optional(),
     highlight: z.boolean().optional(),
+    published: z.boolean(),
   }),
 });
 

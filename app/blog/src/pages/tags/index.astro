@@ -2,10 +2,10 @@
 import PostListHero from "@comp/modules/PostList/PostListHero.astro";
 import Card from "@comp/ui/Card/Card.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getSortedPosts } from "@utils/content";
 import { getSeo } from "@utils/SEO";
-import { getCollection } from "astro:content";
 
-const allTags = (await getCollection("post")).reduce(
+const allTags = (await getSortedPosts()).reduce(
   (acc, post) => {
     post.data.tags.forEach((tag) => {
       acc[tag] = (acc[tag] || 0) + 1;

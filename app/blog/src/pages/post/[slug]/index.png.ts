@@ -1,12 +1,9 @@
 import type { APIRoute, InferGetStaticPropsType } from "astro";
-import { getCollection } from "astro:content";
 import { generateOgImageForPost } from "@utils/og-image/generateOgImages";
-import runtimeEnv from "@utils/runtimeEnv";
+import { getSortedPosts } from "@utils/content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("post");
-
-  return posts.map((post) => ({
+  return (await getSortedPosts()).map((post) => ({
     params: { slug: post.id },
     props: post,
   }));

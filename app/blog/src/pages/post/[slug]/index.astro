@@ -1,17 +1,16 @@
 ---
-import { getCollection } from "astro:content";
+import { getSeo } from "@utils/SEO";
+import { getDesc } from "@utils/markdown";
+import ArticleLayout from "@layouts/ArticleLayout.astro";
+import type { CollectionEntry } from "astro:content";
+import { getSortedPosts } from "@utils/content";
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection("post");
-  return blogEntries
-    .sort(
-      (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-    )
-    .map((post, i) => ({
-      params: { slug: post.id },
-      props: { post, prev: blogEntries[i - 1], next: blogEntries[i + 1] },
-    }));
+  const blogEntries = await getSortedPosts();
+  return blogEntries.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, prev: blogEntries[i - 1], next: blogEntries[i + 1] },
+  }));
 }
 
 type Props = {
@@ -21,11 +20,6 @@ type Props = {
 };
 
 const { post, prev, next } = Astro.props;
-
-import { getSeo } from "@utils/SEO";
-import { getDesc } from "@utils/markdown";
-import ArticleLayout from "@layouts/ArticleLayout.astro";
-import type { CollectionEntry } from "astro:content";
 
 const seoConfig = getSeo({
   title: post.data.title,
