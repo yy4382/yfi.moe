@@ -103,13 +103,6 @@
       margin-bottom: --spacing(2) !important;
     }
   }
-  strong {
-    color: var(--content-primary);
-    font-weight: var(--font-weight-semi-bold);
-    & > code {
-      color: var(--content-primary);
-    }
-  }
   *:not(pre) > code {
     white-space: pre-wrap;
     word-break: break-word;
