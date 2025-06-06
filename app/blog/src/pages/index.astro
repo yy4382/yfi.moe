@@ -34,7 +34,7 @@ const seoConfig = getSeo({
     </div>
   </Card>
   <Card class="min-h-18" />
-  <Card class="relative pt-20 sm:pt-8">
+  <Card class="relative pt-20 pb-16 sm:pt-8">
     <span class="section-number">01</span>
     <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
     <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
@@ -42,29 +42,36 @@ const seoConfig = getSeo({
         format(firstData, "yyyy 年 M 月 d 日")
       }的第一篇文章开始，本站已经更新了……
     </p>
-    <div
-      class="grid-row-3 sm:grid-row-1 relative grid place-items-stretch border-t border-container sm:grid-cols-3"
-    >
+    <div class="dashed flex flex-col">
       <div
-        class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
+        class="grid-row-3 sm:grid-row-1 relative grid place-items-stretch border-y border-container sm:grid-cols-3"
       >
-        <div class="text-3xl font-bold text-heading">
-          {statistics.articles} 篇
+        <div
+          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
+        >
+          <div class="text-3xl font-bold text-heading">
+            {statistics.articles} 篇
+          </div>
+          <div class="text-comment">文章</div>
         </div>
-        <div class="text-comment">文章</div>
-      </div>
-      <div
-        class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
-      >
-        <div class="text-3xl font-bold text-heading">
-          {(statistics.words / 10000).toFixed(2)} 万
+        <div
+          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
+        >
+          <div class="text-3xl font-bold text-heading">
+            {(statistics.words / 10000).toFixed(2)} 万
+          </div>
+          <div class="text-comment">字数</div>
         </div>
-        <div class="text-comment">字数</div>
+        <div class="flex flex-col center border-container py-8">
+          <div class="text-3xl font-bold text-heading">
+            {statistics.tags} 个
+          </div>
+          <div class="text-comment">标签</div>
+        </div>
       </div>
-      <div class="flex flex-col center border-container py-8">
-        <div class="text-3xl font-bold text-heading">{statistics.tags} 个</div>
-        <div class="text-comment">标签</div>
-      </div>
+      <a class="flex center gap-1 card-btn py-6 font-semibold" href="/post">
+        文章列表 <Icon name="mingcute:external-link-line" size={20} />
+      </a>
     </div>
   </Card>
   <Card class="min-h-18" />
@@ -117,7 +124,7 @@ const seoConfig = getSeo({
         ))
       }
       <a
-        class="flex center gap-1 card-btn py-6 text-xl font-bold"
+        class="flex center gap-1 card-btn py-6 font-semibold"
         href="https://github.com/yy4382"
       >
         更多 <Icon name="mingcute:external-link-line" size={20} />
