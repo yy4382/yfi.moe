@@ -1,10 +1,6 @@
 import type { Loader, LoaderContext, DataStore } from "astro/loaders";
 import type { components } from "@octokit/openapi-types";
-import {
-  createMarkdownProcessor,
-  parseFrontmatter,
-  type MarkdownProcessor,
-} from "@astrojs/markdown-remark";
+import { parseFrontmatter } from "./markdown/frontmatter";
 import { ofetch } from "ofetch";
 
 type GetRepoContentDir = components["schemas"]["content-directory"];
@@ -60,8 +56,6 @@ export function githubLoader(inputOptions: Options): Loader {
       }
 
       async function syncContent() {
-        const processor = await createMarkdownProcessor(ctx.config.markdown);
-
         const untouched = new Set(ctx.store.keys());
 
         const dirFiles = (await fetchDir(options, fetcher)).filter(
@@ -73,7 +67,7 @@ export function githubLoader(inputOptions: Options): Loader {
               { ...options, path: file.path },
               fetcher,
             );
-            return processFile(fileResp, ctx, processor);
+            return processFile(fileResp, ctx);
           }),
         );
         files.forEach((file) => {
@@ -138,8 +132,7 @@ async function fetchFileContent(
 
 async function processFile(
   file: GetRepoContentFile,
-  ctx: Pick<LoaderContext, "generateDigest" | "parseData">,
-  processor: MarkdownProcessor,
+  ctx: LoaderContext,
 ): Promise<Parameters<DataStore["set"]>[0]> {
   if (file.encoding !== "base64") {
     throw new Error(
@@ -151,23 +144,21 @@ async function processFile(
     frontmatter: "empty-with-spaces",
   });
 
-  const id = (frontmatter.slug as string) ?? file.name.split(".")[0];
+  if (!("slug" in frontmatter && typeof frontmatter.slug === "string")) {
+    ctx.logger.error(`File ${file.name} has no slug`);
+    throw new Error(`File ${file.name} has no slug`);
+  }
 
   const parsedFm = await ctx.parseData({
-    id,
+    id: frontmatter.slug,
     data: frontmatter,
   });
 
-  const { code, metadata } = await processor.render(content.trim());
-
   return {
-    id,
+    id: frontmatter.slug,
     body: content.trim(),
     data: parsedFm,
     digest: ctx.generateDigest(rawContent),
-    rendered: {
-      html: code,
-      metadata,
-    },
+    rendered: await ctx.renderMarkdown(content.trim()),
   };
 }
