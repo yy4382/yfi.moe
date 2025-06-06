@@ -24,7 +24,7 @@ const { entry, navigation, enableComments, ...props } = Astro.props;
   {navigation && <PrevNext {...navigation} />}
   {
     commentConfig.enable && enableComments && (
-      <Card padding="article" class="mx-auto max-w-2xl">
+      <Card padding="article" class="mx-auto max-w-2xl py-12">
         <CommentCard
           client:visible
           path={Astro.url.pathname}

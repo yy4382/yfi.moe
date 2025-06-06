@@ -15,6 +15,8 @@ const Waline = (props: WalineOptions) => {
     lang: "zh-CN",
     search: false,
     emoji: false,
+    // @ts-expect-error waline types are not updated
+    reaction: false,
     requiredMeta: ["nick", "mail"],
     ...props,
   };
@@ -31,6 +33,12 @@ const Waline = (props: WalineOptions) => {
     });
 
     return () => walineInstanceRef.current?.destroy();
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("astro:before-preparation", () => {
+      walineInstanceRef.current?.destroy();
+    });
   }, []);
 
   useEffect(() => {
