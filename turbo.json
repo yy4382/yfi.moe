@@ -4,14 +4,18 @@
     "build": {
       "dependsOn": ["^build"],
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "ARTICLE_PAT"],
-      "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
+      "env": [
+        "LOCAL_PREVIEW",
+        "VERCEL_ENV",
+        "ARTICLE_PAT",
+        "POST_GH_INFO",
+        "PAGE_GH_INFO"
+      ]
     },
     "dev": {
       "persistent": true,
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "OG_IMG_ENDPOINT", "OG_IMG_TOKEN"],
-      "passThroughEnv": ["VERCEL_AUTOMATION_BYPASS_SECRET"]
+      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "POST_GH_INFO", "PAGE_GH_INFO"]
     },
     "check-types": {
       "dependsOn": ["^check-types"],

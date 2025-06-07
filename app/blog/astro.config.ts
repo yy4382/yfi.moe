@@ -115,7 +115,12 @@ export default defineConfig({
         access: "public",
         optional: true,
       }),
-      VERCEL_AUTOMATION_BYPASS_SECRET: envField.string({
+      POST_GH_INFO: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      PAGE_GH_INFO: envField.string({
         context: "server",
         access: "secret",
         optional: true,
