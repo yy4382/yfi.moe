@@ -40,17 +40,8 @@
   justify-content: center;
 }
 
-@utility shape-card {
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-lg);
-}
-
 @utility main-container {
   @apply mx-auto box-border w-screen max-w-screen border-container sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
-}
-
-@utility post-list-padding {
-  @apply px-6 @xl:px-10 @4xl:px-16 @6xl:px-32;
 }
 
 @utility bg-grid {
@@ -81,22 +72,29 @@
   @apply transition-colors hover:bg-gray-200 dark:hover:bg-gray-800;
 }
 
-.copy-code {
-  @apply /* btn-regular !TODO */ absolute top-1 right-1 !rounded-lg px-2 py-1 text-xs;
+@utility prose {
+  --link-underline-color: --alpha(var(--color-gray-900) / 0.4);
+  --link-underline-color-hover: --alpha(var(--color-gray-900) / 0.6);
+  --link-underline-color-active: --alpha(var(--color-gray-900) / 0.8);
 }
 
-.prose {
-  /* max-width: unset; */
+@utility prose-invert {
+  --link-underline-color: --alpha(var(--color-gray-100) / 0.5);
+  --link-underline-color-hover: --alpha(var(--color-gray-100) / 0.6);
+  --link-underline-color-active: --alpha(var(--color-gray-100) / 0.8);
+}
+
+@utility prose {
   :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     text-decoration: none;
-    border-bottom: 2px solid --alpha(var(--color-gray-900) / 0.4);
+    border-bottom: 2px solid var(--link-underline-color);
     transition: all 0.15s ease-in-out;
     &:hover {
       color: var(--content-primary);
-      border-bottom: 2px solid --alpha(var(--color-gray-900) / 0.6);
+      border-bottom: 2px solid var(--link-underline-color-hover);
     }
     &:active {
-      border-bottom: 2px solid --alpha(var(--color-gray-900) / 0.8);
+      border-bottom: 2px solid var(--link-underline-color-active);
     }
     & > img {
       margin-top: --spacing(2) !important;
@@ -117,18 +115,6 @@
       &:last-of-type::after {
         content: none;
       }
-    }
-  }
-}
-
-.prose-invert {
-  :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-    border-bottom: 2px solid --alpha(var(--color-gray-100) / 0.5);
-    &:hover {
-      border-bottom: 2px solid --alpha(var(--color-gray-100) / 0.6);
-    }
-    &:active {
-      border-bottom: 2px solid --alpha(var(--color-gray-100) / 0.8);
     }
   }
 }

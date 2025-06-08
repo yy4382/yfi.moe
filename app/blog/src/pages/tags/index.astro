@@ -4,6 +4,7 @@ import Card from "@comp/ui/Card/Card.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getSortedPosts } from "@utils/content";
 import { getSeo } from "@utils/SEO";
+import { cardInner } from "@comp/ui/Card/Card.astro";
 
 const allTags = (await getSortedPosts()).reduce(
   (acc, post) => {
@@ -21,7 +22,7 @@ const seoConfig = getSeo({ title: "标签", noindex: true });
 <BaseLayout seoConfig={seoConfig}>
   <PostListHero title="标签" />
   <Card class="@container p-0">
-    <div class="post-list-padding py-10">
+    <div class:list={[cardInner({ padding: "postList" }), "py-10"]}>
       {
         Object.entries(allTags)
           // .sort((a, b) => (a[1] > b[1] ? -1 : 1))
