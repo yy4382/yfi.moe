@@ -1,7 +1,7 @@
 import type { Loader, LoaderContext, DataStore } from "astro/loaders";
 import type { components } from "@octokit/openapi-types";
-import { parseFrontmatter } from "./markdown/frontmatter";
 import { ofetch } from "ofetch";
+import { parseMarkdown } from "./markdown/render";
 
 type GetRepoContentDir = components["schemas"]["content-directory"];
 type GetRepoContentFile = components["schemas"]["content-file"];
@@ -140,25 +140,19 @@ async function processFile(
     );
   }
   const rawContent = Buffer.from(file.content, "base64").toString("utf-8");
-  const { frontmatter, content } = parseFrontmatter(rawContent, {
-    frontmatter: "empty-with-spaces",
-  });
 
-  if (!("slug" in frontmatter && typeof frontmatter.slug === "string")) {
-    ctx.logger.error(`File ${file.name} has no slug`);
-    throw new Error(`File ${file.name} has no slug`);
-  }
+  const { id, body, data } = await parseMarkdown(
+    rawContent,
+    file.name,
+    ctx.logger,
+  );
 
-  const parsedFm = await ctx.parseData({
-    id: frontmatter.slug,
-    data: frontmatter,
-  });
+  const parsedFm = await ctx.parseData({ id, data });
 
   return {
-    id: frontmatter.slug,
-    body: content.trim(),
+    id,
+    body,
     data: parsedFm,
     digest: ctx.generateDigest(rawContent),
-    rendered: await ctx.renderMarkdown(content.trim()),
   };
 }

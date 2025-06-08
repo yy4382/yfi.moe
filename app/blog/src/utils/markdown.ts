@@ -6,6 +6,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeRemoveComments from "rehype-remove-comments";
 import { unified } from "unified";
 import RemoveMarkdown from "remove-markdown";
+import { hastProcessor } from "./markdown/render";
 
 function truncateAtClosestNewline(str: string, targetPosition = 150) {
   while (str.startsWith("\n")) {
@@ -65,12 +66,7 @@ export async function renderDesc(
 }
 
 export async function renderMd(content: string) {
-  const HTML = await unified()
-    .use(remarkParse)
-    .use(remarkGithubAlerts)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw)
-    .use(rehypeRemoveComments)
+  const HTML = await hastProcessor()
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(content);
   return HTML.value.toString();

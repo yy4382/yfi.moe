@@ -2,13 +2,21 @@
 import MdRender from "@comp/elements/MdRender.astro";
 import { cardContainer, cardInner, cardOuter } from "@comp/ui/Card/Card.astro";
 import { type CollectionEntry } from "astro:content";
-import { render } from "astro:content";
 import Toc from "./toc/Toc";
+import { Markdown } from "@comp/elements/Markdown";
+import type { Root } from "hast";
 interface Props {
   entry: CollectionEntry<"post"> | CollectionEntry<"page">;
 }
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { headings } = entry.data;
+let hast: Root | null;
+try {
+  hast = JSON.parse(entry.data.hastString);
+} catch (error) {
+  console.error(error);
+  hast = null;
+}
 ---
 
 <div class={cardOuter()}>
@@ -20,7 +28,13 @@ const { Content, headings } = await render(entry);
     </div>
     <div class={cardInner({ padding: "article" })}>
       <MdRender>
-        <Content />
+        {
+          hast ? (
+            <Markdown hast={hast} client:load />
+          ) : (
+            <div>Error rendering markdown</div>
+          )
+        }
       </MdRender>
     </div>
   </div>

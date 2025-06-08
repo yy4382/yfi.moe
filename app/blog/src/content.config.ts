@@ -11,6 +11,21 @@ const baseSchema = z.object({
 
   image: z.string().optional(),
   copyright: z.boolean().default(true),
+
+  hastString: z.string(),
+  headings: z.array(
+    z.object({
+      slug: z.string(),
+      text: z.string(),
+      depth: z.number(),
+    }),
+  ),
+  readingTime: z.object({
+    text: z.string(),
+    minutes: z.number(),
+    time: z.number(),
+    words: z.number(),
+  }),
 });
 
 function parseGhInfo(info: string | undefined) {

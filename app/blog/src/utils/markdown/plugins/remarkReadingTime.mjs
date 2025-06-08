@@ -5,10 +5,8 @@ export default function remarkReadingTime() {
   return (tree, { data }) => {
     const textOnPage = toString(tree);
     const readingTime = getReadingTime(textOnPage);
-    data.astro.frontmatter.minutes = Math.max(
-      1,
-      Math.round(readingTime.minutes),
-    );
-    data.astro.frontmatter.words = readingTime.words;
+    data.astro ??= {};
+    data.astro.frontmatter ??= {};
+    data.astro.frontmatter.readingTime = readingTime;
   };
 }

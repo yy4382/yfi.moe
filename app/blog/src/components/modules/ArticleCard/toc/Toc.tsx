@@ -48,7 +48,6 @@ function useHeading(headingsInput: MarkdownHeading[]) {
     headersRef.current.forEach((header) => {
       if (header) {
         observerRef.current?.observe(header);
-        header.style.scrollMarginTop = "5rem";
       }
     });
 
