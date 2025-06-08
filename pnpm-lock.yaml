@@ -142,6 +142,9 @@ importers:
       '@octokit/openapi-types':
         specifier: ^25.1.0
         version: 25.1.0
+      '@types/hast':
+        specifier: ^3.0.4
+        version: 3.0.4
       '@types/react':
         specifier: ^19.1.6
         version: 19.1.6

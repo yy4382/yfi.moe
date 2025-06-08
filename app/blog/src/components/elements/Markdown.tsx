@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { jsxDEV } from "react/jsx-dev-runtime";
@@ -6,9 +5,6 @@ import type { Root } from "hast";
 import { mdComponents } from "@comp/md-components";
 
 export function Markdown({ hast }: { hast: Root }) {
-  useEffect(() => {
-    console.log(hast);
-  }, [hast]);
   let Comp;
   try {
     Comp = toJsxRuntime(hast, {
