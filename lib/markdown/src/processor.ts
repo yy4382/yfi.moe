@@ -16,6 +16,8 @@ import remarkReadingTime from "./plugins/remarkReadingTime.mjs";
 import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy";
 import { rehypeHast } from "./plugins/rehype-hast";
 import rehypeStringify from "rehype-stringify";
+import remarkDirective from "remark-directive";
+import { remarkGithubRepo } from "./plugins/remark-github-repo";
 
 export const linkIcons = (): [string, RegExp][] => [
   ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
@@ -30,6 +32,8 @@ export const baseProcessor = unified()
   .use(remarkParse)
   .use(remarkGithubAlerts)
   .use(remarkReadingTime)
+  .use(remarkDirective)
+  .use(remarkGithubRepo)
   .use(remarkRehype, {
     allowDangerousHtml: true,
   })
