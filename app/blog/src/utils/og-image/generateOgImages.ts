@@ -1,6 +1,6 @@
 import satori, { type SatoriOptions } from "satori";
-import { Resvg } from "@resvg/resvg-js";
 import { readFile } from "node:fs/promises";
+import sharp from "sharp";
 
 import { postOgImage } from "./og-image-template";
 
@@ -39,8 +39,6 @@ export async function generateOgImageForPost(info: OgImageInfo) {
   return svgBufferToPngBuffer(svg);
 }
 
-function svgBufferToPngBuffer(svg: string) {
-  const resvg = new Resvg(svg);
-  const pngData = resvg.render();
-  return pngData.asPng();
+async function svgBufferToPngBuffer(svg: string) {
+  return await sharp(Buffer.from(svg)).png().toBuffer();
 }

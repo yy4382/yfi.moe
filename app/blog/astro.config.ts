@@ -30,9 +30,6 @@ export default defineConfig({
       Icons({ compiler: "jsx", jsx: "react" }),
       fileSystemPath(),
     ],
-    ssr: { external: ["@resvg/resvg-js"] },
-    optimizeDeps: { exclude: ["@resvg/resvg-js"] },
-    build: { rollupOptions: { external: ["@resvg/resvg-js"] } },
   },
 
   env: {
