@@ -15,7 +15,8 @@ import rehypeShiki from "@shikijs/rehype";
 import { parseFrontmatter, rehypeHeadingIds } from "@astrojs/markdown-remark";
 import type { LoaderContext } from "astro/loaders";
 import remarkReadingTime from "@utils/markdown/plugins/remarkReadingTime.mjs";
-import { visit } from "unist-util-visit";
+import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy";
+import { rehypeHast } from "./plugins/rehype-hast";
 
 export const remarkPlugins: PluggableList = [remarkGithubAlerts];
 export const rehypePlugins: PluggableList = [];
@@ -29,6 +30,7 @@ export const hastProcessor = unified()
   })
   .use(rehypeRaw)
   .use(rehypeRemoveComments)
+
   .use(
     rehypeImageOptimization,
     defineOptimizeOptions({
@@ -70,7 +72,8 @@ export const hastProcessor = unified()
   .use(rehypeHeadingIds)
   .use(rehypeShiki, {
     theme: "catppuccin-macchiato",
-  });
+  })
+  .use(rehypeCodeblockCopy);
 
 const nodeHas = (node: Element, tagName: string | string[]): boolean => {
   return node.children.some(
@@ -97,17 +100,8 @@ export const parseMarkdown = async (
   }
 
   const hastVfile = await hastProcessor()
-    .use(function () {
-      const self = this;
-      function compiler(tree: Node) {
-        visit(tree, (node) => {
-          if ("position" in node) {
-            node.position = undefined;
-          }
-        });
-        return JSON.stringify(tree);
-      }
-      self.compiler = compiler;
+    .use(rehypeHast, {
+      removePosition: true,
     })
     .process(structuredClone(content));
 
