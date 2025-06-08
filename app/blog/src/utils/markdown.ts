@@ -1,12 +1,5 @@
-import rehypeStringify from "rehype-stringify";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import remarkGithubAlerts from "remark-github-alerts";
-import rehypeRaw from "rehype-raw";
-import rehypeRemoveComments from "rehype-remove-comments";
-import { unified } from "unified";
 import RemoveMarkdown from "remove-markdown";
-import { hastProcessor } from "./markdown/render";
+import { htmlProcessor } from "@repo/markdown/processor";
 
 function truncateAtClosestNewline(str: string, targetPosition = 150) {
   while (str.startsWith("\n")) {
@@ -66,8 +59,6 @@ export async function renderDesc(
 }
 
 export async function renderMd(content: string) {
-  const HTML = await hastProcessor()
-    .use(rehypeStringify, { allowDangerousHtml: true })
-    .process(content);
+  const HTML = await htmlProcessor.process(content);
   return HTML.value.toString();
 }

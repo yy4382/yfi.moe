@@ -1,3 +1,7 @@
 packages:
   - "app/*"
   - "lib/*"
+
+catalog:
+  "vitest": "^3"
+  "typescript": "^5"

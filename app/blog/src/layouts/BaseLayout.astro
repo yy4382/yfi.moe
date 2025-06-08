@@ -3,9 +3,7 @@ import { type SEOProps, SEO } from "astro-seo";
 import runtimeEnv from "@utils/runtimeEnv";
 import { siteConfig } from "@configs/site";
 
-import "remark-github-alerts/styles/github-base.css";
-import "remark-github-alerts/styles/github-colors-light.css";
-import "remark-github-alerts/styles/github-colors-dark-class.css";
+import "@repo/markdown/style";
 import "@styles/base.css";
 
 import { ClientRouter } from "astro:transitions";

@@ -1,7 +1,7 @@
 import type { Loader, LoaderContext, DataStore } from "astro/loaders";
 import type { components } from "@octokit/openapi-types";
 import { ofetch } from "ofetch";
-import { parseMarkdown } from "./markdown/render";
+import { parseMarkdown } from "@repo/markdown/parse";
 
 type GetRepoContentDir = components["schemas"]["content-directory"];
 type GetRepoContentFile = components["schemas"]["content-file"];

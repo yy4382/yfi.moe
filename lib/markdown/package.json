@@ -1,0 +1,38 @@
+{
+  "name": "@repo/markdown",
+  "type": "module",
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "test": "vitest --run",
+    "check-types": "tsc"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^6.3.2",
+    "@shikijs/rehype": "^3.6.0",
+    "hastscript": "^9.0.0",
+    "mdast-util-to-string": "^4.0.0",
+    "reading-time": "^1.5.0",
+    "rehype-extended-links": "workspace:*",
+    "rehype-image-optim": "^0.0.3",
+    "rehype-raw": "^7.0.0",
+    "rehype-remove-comments": "^6.1.1",
+    "rehype-stringify": "^10.0.1",
+    "remark-github-alerts": "0.1.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/hast": "^3.0.4",
+    "tsdown": "^0.12.7",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "exports": {
+    "./parse": "./dist/parse.js",
+    "./processor": "./dist/processor.js",
+    "./style": "./src/style/index.css"
+  }
+}

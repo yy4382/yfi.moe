@@ -195,7 +195,3 @@
 .toc-card[data-state="closed"] {
   animation: fadeOut 150ms ease-in;
 }
-
-.copy-code-pre {
-  position: relative;
-}

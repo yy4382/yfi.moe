@@ -1,4 +1,4 @@
-import { unified, type PluggableList } from "unified";
+import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGithubAlerts from "remark-github-alerts";
 import remarkRehype from "remark-rehype";
@@ -9,19 +9,24 @@ import rehypeImageOptimization, {
 } from "rehype-image-optim";
 import rehypeExtendedLinks from "rehype-extended-links";
 import { h } from "hastscript";
-import type { Element, Node } from "hast";
-import { linkIcons } from "../../configs/markdown";
+import type { Element } from "hast";
 import rehypeShiki from "@shikijs/rehype";
-import { parseFrontmatter, rehypeHeadingIds } from "@astrojs/markdown-remark";
-import type { LoaderContext } from "astro/loaders";
-import remarkReadingTime from "@utils/markdown/plugins/remarkReadingTime.mjs";
+import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import remarkReadingTime from "./plugins/remarkReadingTime.mjs";
 import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy";
 import { rehypeHast } from "./plugins/rehype-hast";
+import rehypeStringify from "rehype-stringify";
 
-export const remarkPlugins: PluggableList = [remarkGithubAlerts];
-export const rehypePlugins: PluggableList = [];
+export const linkIcons = (): [string, RegExp][] => [
+  ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
+  [
+    "i-mingcute-twitter-line",
+    /^(https?:\/\/)?(www\.)?(twitter|x|fxtwitter|fixupx)\.com\/.*/i,
+  ],
+  ["i-mingcute-sword-line", /^(https?:\/\/)?([\w-]+\.)*yfi\.moe(\/.*)?$/],
+];
 
-export const hastProcessor = unified()
+export const baseProcessor = unified()
   .use(remarkParse)
   .use(remarkGithubAlerts)
   .use(remarkReadingTime)
@@ -85,36 +90,10 @@ const nodeHas = (node: Element, tagName: string | string[]): boolean => {
   );
 };
 
-export const parseMarkdown = async (
-  rawContent: string,
-  filename?: string,
-  logger?: LoaderContext["logger"],
-) => {
-  const { frontmatter, content } = parseFrontmatter(rawContent, {
-    frontmatter: "empty-with-spaces",
-  });
+export const hastProcessor = baseProcessor().use(rehypeHast, {
+  removePosition: true,
+});
 
-  if (!("slug" in frontmatter && typeof frontmatter.slug === "string")) {
-    logger?.error(`File ${filename} has no slug`);
-    throw new Error(`File ${filename} has no slug`);
-  }
-
-  const hastVfile = await hastProcessor()
-    .use(rehypeHast, {
-      removePosition: true,
-    })
-    .process(structuredClone(content));
-
-  const hastString = String(hastVfile);
-
-  return {
-    id: frontmatter.slug,
-    body: content.trim(),
-    data: {
-      ...frontmatter,
-      hastString,
-      headings: hastVfile.data.astro?.headings,
-      readingTime: hastVfile.data.astro?.frontmatter?.readingTime,
-    },
-  };
-};
+export const htmlProcessor = baseProcessor().use(rehypeStringify, {
+  allowDangerousHtml: true,
+});
