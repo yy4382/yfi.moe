@@ -39,10 +39,22 @@ export const GhCard = ({ user, repo }: { user: string; repo: string }) => {
       </div>
     );
   }
+  const repoUrl = `https://github.com/${user}/${repo}`;
 
   return (
     <div className="flex w-full justify-center">
-      <ErrorBoundary fallbackRender={() => <div>Error</div>}>
+      <ErrorBoundary
+        fallbackRender={() => (
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="not-prose group relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center text-red-500 transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+          >
+            加载 GitHub 数据失败，点击直接访问仓库 {user}/{repo}。
+          </a>
+        )}
+      >
         <GhCardImpl user={user} repo={repo} />
       </ErrorBoundary>
     </div>
@@ -52,20 +64,28 @@ export const GhCard = ({ user, repo }: { user: string; repo: string }) => {
 function GhCardImpl({ user, repo }: { user: string; repo: string }) {
   const [data, setData] = useState<GetRepoResp | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      setError(false);
+      setErrorMessage(null);
       try {
         const res = await fetch(`https://api.github.com/repos/${user}/${repo}`);
         if (!res.ok) {
-          throw new Error(`GitHub API returned ${res.status}`);
+          if (res.status === 403) {
+            const body = await res.json();
+            if (body.message?.includes("API rate limit exceeded")) {
+              throw new Error("Rate limited by Github");
+            }
+          }
+          throw new Error(
+            `Could not load repository data for: ${user}/${repo}.`,
+          );
         }
         setData(await res.json());
-      } catch (e) {
-        setError(true);
+      } catch (e: any) {
+        setErrorMessage(e.message);
         console.error("Failed to fetch GitHub repo data", e);
       } finally {
         setLoading(false);
@@ -79,16 +99,38 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
     return languageColorMap[data.language] || "#888888";
   }, [data?.language]);
 
+  const repoUrl = `https://github.com/${user}/${repo}`;
+
   if (loading) {
-    return <GhCardSkeleton />;
+    return (
+      <a
+        href={repoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="not-prose block max-w-sm"
+      >
+        <GhCardSkeleton />
+      </a>
+    );
   }
 
-  if (error || !data) {
+  if (errorMessage) {
     return (
-      <div className="text-red-500">
-        Could not load repository data for: {user}/{repo}.
-      </div>
+      <a
+        href={repoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="not-prose group relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center text-comment transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+      >
+        {errorMessage}
+        <br />
+        点击直接访问仓库 {user}/{repo}
+      </a>
     );
+  }
+
+  if (!data) {
+    return null;
   }
 
   return (

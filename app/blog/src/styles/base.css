@@ -85,9 +85,9 @@
   @apply /* btn-regular !TODO */ absolute top-1 right-1 !rounded-lg px-2 py-1 text-xs;
 }
 
-@utility prose {
+.prose {
   /* max-width: unset; */
-  a {
+  :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     text-decoration: none;
     border-bottom: 2px solid --alpha(var(--color-gray-900) / 0.4);
     transition: all 0.15s ease-in-out;
@@ -121,8 +121,8 @@
   }
 }
 
-@utility prose-invert {
-  a {
+.prose-invert {
+  :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     border-bottom: 2px solid --alpha(var(--color-gray-100) / 0.5);
     &:hover {
       border-bottom: 2px solid --alpha(var(--color-gray-100) / 0.6);
