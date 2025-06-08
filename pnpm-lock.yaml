@@ -216,6 +216,9 @@ importers:
       remark-directive:
         specifier: ^4.0.0
         version: 4.0.0
+      remark-gfm:
+        specifier: ^4.0.1
+        version: 4.0.1
       remark-github-alerts:
         specifier: 0.1.1
         version: 0.1.1(@types/mdast@4.0.4)(unified@11.0.5)

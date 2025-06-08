@@ -18,6 +18,7 @@ import { rehypeHast } from "./plugins/rehype-hast";
 import rehypeStringify from "rehype-stringify";
 import remarkDirective from "remark-directive";
 import { remarkGithubRepo } from "./plugins/remark-github-repo";
+import remarkGfm from "remark-gfm";
 
 export const linkIcons = (): [string, RegExp][] => [
   ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
@@ -30,6 +31,7 @@ export const linkIcons = (): [string, RegExp][] => [
 
 export const baseProcessor = unified()
   .use(remarkParse)
+  .use(remarkGfm)
   .use(remarkGithubAlerts)
   .use(remarkReadingTime)
   .use(remarkDirective)
