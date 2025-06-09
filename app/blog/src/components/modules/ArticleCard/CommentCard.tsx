@@ -15,7 +15,6 @@ const Waline = (props: WalineOptions) => {
     lang: "zh-CN",
     search: false,
     emoji: false,
-    // @ts-expect-error waline types are not updated
     reaction: false,
     requiredMeta: ["nick", "mail"],
     ...props,

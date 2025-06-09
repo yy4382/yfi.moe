@@ -27,6 +27,12 @@ importers:
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
+      prettier-plugin-astro:
+        specifier: ^0.14.1
+        version: 0.14.1
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.12
+        version: 0.6.12(prettier-plugin-astro@0.14.1)(prettier@3.5.3)
       turbo:
         specifier: ^2.5.4
         version: 2.5.4
@@ -148,15 +154,6 @@ importers:
       ofetch:
         specifier: ^1.4.1
         version: 1.4.1
-      prettier:
-        specifier: ^3.5.3
-        version: 3.5.3
-      prettier-plugin-astro:
-        specifier: ^0.14.1
-        version: 0.14.1
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.12
-        version: 0.6.12(prettier-plugin-astro@0.14.1)(prettier@3.5.3)
       sharp:
         specifier: ^0.34.2
         version: 0.34.2

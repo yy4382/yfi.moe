@@ -6,10 +6,8 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
-    "check": "prettier --ignore-unknown --check .; astro check",
     "check-types": "astro check",
     "dev": "astro dev",
-    "format": "prettier --ignore-unknown --write .",
     "preview": "astro preview",
     "start": "astro dev"
   },
@@ -53,9 +51,6 @@
     "@types/remove-markdown": "^0.3.4",
     "hast-util-to-jsx-runtime": "^2.3.6",
     "ofetch": "^1.4.1",
-    "prettier": "^3.5.3",
-    "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.12",
     "sharp": "^0.34.2",
     "typescript": "catalog:",
     "vitest": "catalog:"

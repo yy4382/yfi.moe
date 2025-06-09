@@ -20,14 +20,6 @@
     "check-types": {
       "dependsOn": ["^check-types"],
       "cache": false
-    },
-    "format": {
-      "dependsOn": [],
-      "cache": false
-    },
-    "lint": {
-      "dependsOn": ["^lint"],
-      "cache": false
     }
   }
 }
