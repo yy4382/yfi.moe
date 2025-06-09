@@ -7,7 +7,7 @@ import rehypeRemoveComments from "rehype-remove-comments";
 import rehypeImageOptimization, {
   defineOptions as defineOptimizeOptions,
 } from "rehype-image-optim";
-import rehypeExtendedLinks from "rehype-extended-links";
+import rehypeExtendedLinks from "./plugins/rehype-extended-links";
 import { h } from "hastscript";
 import type { Element } from "hast";
 import rehypeShiki from "@shikijs/rehype";
