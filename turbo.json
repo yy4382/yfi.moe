@@ -19,7 +19,8 @@
     },
     "check-types": {
       "dependsOn": ["^check-types"],
-      "cache": false
+      "cache": false,
+      "env": ["ARTICLE_PAT", "POST_GH_INFO", "PAGE_GH_INFO"]
     }
   }
 }
