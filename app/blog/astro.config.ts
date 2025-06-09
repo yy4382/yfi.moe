@@ -50,12 +50,10 @@ export default defineConfig({
       POST_GH_INFO: envField.string({
         context: "server",
         access: "secret",
-        optional: true,
       }),
       PAGE_GH_INFO: envField.string({
         context: "server",
         access: "secret",
-        optional: true,
       }),
     },
   },

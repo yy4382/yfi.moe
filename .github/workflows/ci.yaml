@@ -45,6 +45,10 @@ jobs:
               args: [--frozen-lockfile]
 
       - run: pnpm check-types
+        env:
+          ARTICLE_PAT: ${{ secrets.ARTICLE_PAT }}
+          POST_GH_INFO: ${{ secrets.POST_GH_INFO }}
+          PAGE_GH_INFO: ${{ secrets.PAGE_GH_INFO }}
 
   sherif-check:
     runs-on: ubuntu-latest
