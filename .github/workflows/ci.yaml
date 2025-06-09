@@ -43,13 +43,6 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile]
-
-      - name: set env
-        run: |
-          export ARTICLE_PAT=${{ secrets.ARTICLE_PAT }}
-          export POST_GH_INFO=${{ secrets.POST_GH_INFO }}
-          export PAGE_GH_INFO=${{ secrets.PAGE_GH_INFO }}
-
       - run: pnpm turbo run check-types --env-mode=loose
         env:
           ARTICLE_PAT: ${{ secrets.ARTICLE_PAT }}
