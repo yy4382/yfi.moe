@@ -18,7 +18,6 @@
     "@astrojs/react": "4.3.0",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.4.1",
-    "@iconify-json/devicon-plain": "^1.2.26",
     "@iconify-json/fa6-brands": "^1.2.3",
     "@iconify-json/mingcute": "^1.2.1",
     "@repo/markdown": "workspace:*",
