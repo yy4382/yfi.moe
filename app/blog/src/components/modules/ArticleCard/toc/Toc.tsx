@@ -2,12 +2,8 @@ import TocEntry from "./TocEntry";
 import { useState, useEffect, useRef, useMemo } from "react";
 import type { MarkdownHeading } from "astro";
 import MingcuteListCheckLine from "~icons/mingcute/list-check-line";
-import {
-  Root as DpRoot,
-  Trigger as DpTrigger,
-  Portal as DpPortal,
-  Content as DpContent,
-} from "@radix-ui/react-dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@comp/ui/Popover";
+import { motion } from "motion/react";
 
 function useHeading(headingsInput: MarkdownHeading[]) {
   const [headings] = useState<MarkdownHeading[]>(headingsInput);
@@ -78,20 +74,27 @@ const Toc: React.FC<{
   const activeIndex = useHeading(headings);
 
   return (
-    <DpRoot modal={false}>
-      <DpTrigger asChild>
+    <Popover modal={false}>
+      <PopoverTrigger asChild>
         <button className="flex size-10 center border-b border-l border-container bg-bg">
-          <MingcuteListCheckLine className="size-6 text-heading" />
+          <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <MingcuteListCheckLine className="size-6 text-heading" />
+          </motion.span>
         </button>
-      </DpTrigger>
-      <DpPortal>
-        <DpContent sideOffset={5} asChild collisionPadding={5}>
-          <div className="toc-card w-76 border border-container bg-bg px-6 py-8">
-            <TocEntry headings={headings} activeIndex={activeIndex} />
-          </div>
-        </DpContent>
-      </DpPortal>
-    </DpRoot>
+      </PopoverTrigger>
+      <PopoverContent
+        sideOffset={5}
+        asChild
+        collisionPadding={5}
+        align="end"
+        side="bottom"
+        alignOffset={-10}
+      >
+        <div className="toc-card w-76 border border-container bg-bg px-6 py-8">
+          <TocEntry headings={headings} activeIndex={activeIndex} />
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 };
 
