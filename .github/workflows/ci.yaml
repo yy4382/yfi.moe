@@ -50,7 +50,7 @@ jobs:
           export POST_GH_INFO=${{ secrets.POST_GH_INFO }}
           export PAGE_GH_INFO=${{ secrets.PAGE_GH_INFO }}
 
-      - run: pnpm check-types
+      - run: pnpm turbo run check-types --env-mode=loose
 
   sherif-check:
     runs-on: ubuntu-latest
