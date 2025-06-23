@@ -2,34 +2,19 @@ import "@dotenvx/dotenvx/config";
 
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { auth } from "./auth.js";
+import { commentApp } from "./comments.js";
+import { injectDeps, type Variables } from "./middleware.js";
+import { db } from "./db/instance.js";
 
-export type AuthVariables = {
-  user: typeof auth.$Infer.Session.user | null;
-  session: typeof auth.$Infer.Session.session | null;
-};
+const app = new Hono<{ Variables: Variables }>();
 
-const app = new Hono<{ Variables: AuthVariables }>();
+injectDeps(app, db);
 
-app.use("/api/**", async (c, next) => {
-  const session = await auth.api.getSession({ headers: c.req.raw.headers });
-
-  if (!session) {
-    c.set("user", null);
-    c.set("session", null);
-    return next();
-  }
-
-  c.set("user", session.user);
-  c.set("session", session.session);
-  return next();
+app.on(["POST", "GET"], "/api/auth/**", (c) => {
+  return c.get("auth").handler(c.req.raw);
 });
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
-
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
+app.route("/api/comments", commentApp);
 
 serve(
   {

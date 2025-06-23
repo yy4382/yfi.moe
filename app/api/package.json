@@ -11,13 +11,15 @@
     "@libsql/client": "^0.15.9",
     "better-auth": "^1.2.9",
     "drizzle-orm": "^0.44.2",
-    "hono": "^4.7.11"
+    "hono": "^4.7.11",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.44.2",
     "@types/node": "^20.11.17",
     "drizzle-kit": "^0.31.1",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

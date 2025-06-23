@@ -88,12 +88,12 @@ export const comment = sqliteTable(
       (): AnySQLiteColumn => comment.id,
     ),
 
-    createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
-      () => /* @__PURE__ */ new Date(),
-    ),
-    updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(
-      () => /* @__PURE__ */ new Date(),
-    ),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => /* @__PURE__ */ new Date()),
+    updatedAt: integer("updated_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => /* @__PURE__ */ new Date()),
     deletedAt: integer("deleted_at", { mode: "timestamp" }),
 
     userId: text("user_id").references(() => user.id),
@@ -102,7 +102,6 @@ export const comment = sqliteTable(
 
     visitorName: text("visitor_name"),
     visitorEmail: text("visitor_email"),
-    visitorWebsite: text("visitor_website"),
 
     anonymousName: text("anonymous_name"),
 
@@ -114,8 +113,8 @@ export const comment = sqliteTable(
       sql`(${table.userId} IS NULL AND ${table.visitorName} IS NOT NULL) OR (${table.userId} IS NOT NULL AND ${table.visitorName} IS NULL)`,
     ),
     check(
-      "no_visitor_email_or_website_if_no_name",
-      sql`${table.visitorName} IS NOT NULL OR (${table.visitorEmail} IS NULL AND ${table.visitorWebsite} IS NULL)`,
+      "no_visitor_email_if_no_name",
+      sql`${table.visitorName} IS NOT NULL OR (${table.visitorEmail} IS NULL)`,
     ),
   ],
 );
