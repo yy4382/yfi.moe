@@ -1,0 +1,16 @@
+{
+  "name": "@repo/api-datatypes",
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "exports": {
+    "./comment": "./comment.ts"
+  }
+}

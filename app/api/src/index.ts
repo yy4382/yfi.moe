@@ -14,6 +14,8 @@ app.on(["POST", "GET"], "/api/auth/**", (c) => {
   return c.get("auth").handler(c.req.raw);
 });
 
+app.get("/api/ping", (c) => c.json({ message: "pong" }));
+
 app.route("/api/comments", commentApp);
 
 serve(

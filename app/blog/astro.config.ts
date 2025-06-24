@@ -30,6 +30,11 @@ export default defineConfig({
       Icons({ compiler: "jsx", jsx: "react" }),
       fileSystemPath(),
     ],
+    server: {
+      proxy: {
+        "/api": "http://localhost:3000",
+      },
+    },
   },
 
   env: {

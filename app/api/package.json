@@ -9,10 +9,11 @@
   "dependencies": {
     "@hono/node-server": "^1.14.4",
     "@libsql/client": "^0.15.9",
-    "better-auth": "^1.2.9",
+    "better-auth": "catalog:",
     "drizzle-orm": "^0.44.2",
     "hono": "^4.7.11",
-    "zod": "^3.25.64"
+    "zod": "catalog:",
+    "@repo/api-datatypes": "workspace:*"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.44.2",

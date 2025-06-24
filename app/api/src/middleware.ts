@@ -21,7 +21,6 @@ export function injectDeps(
   app.use("/api/*", async (c, next) => {
     c.set("db", dbInstance);
     c.set("auth", auth);
-    console.log("injecting deps");
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
     if (!session) {

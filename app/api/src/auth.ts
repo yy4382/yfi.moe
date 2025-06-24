@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import type { db } from "./db/instance.js"; // your drizzle instance
+import type { db } from "./db/instance.js";
+import { admin } from "better-auth/plugins";
 
 export function getAuth(dbInst: typeof db) {
   return betterAuth({
@@ -10,16 +11,7 @@ export function getAuth(dbInst: typeof db) {
     emailAndPassword: {
       enabled: true,
     },
-    user: {
-      additionalFields: {
-        role: {
-          type: "string",
-          required: true,
-          defaultValue: "user",
-          input: false,
-        },
-      },
-    },
+    plugins: [admin()],
   });
 }
 

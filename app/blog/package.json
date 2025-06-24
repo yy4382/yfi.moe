@@ -18,14 +18,18 @@
     "@astrojs/sitemap": "^3.4.1",
     "@iconify-json/fa6-brands": "^1.2.3",
     "@iconify-json/mingcute": "^1.2.1",
+    "@repo/api-datatypes": "workspace:*",
     "@repo/markdown": "workspace:*",
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "4.1.8",
+    "@tanstack/react-query": "^5.81.2",
+    "@tanstack/react-query-devtools": "^5.81.2",
     "@waline/client": "^3.5.7",
     "astro": "5.9.0",
     "astro-icon": "^1.1.4",
     "astro-loading-indicator": "^0.7.0",
     "astro-seo": "^0.8.4",
+    "better-auth": "catalog:",
     "clsx": "^2.1.1",
     "cva": "npm:class-variance-authority@^0.7.1",
     "date-fns": "^4.1.0",
@@ -40,7 +44,8 @@
     "tailwindcss": "4.1.8",
     "tailwindcss-animated": "^2.0.0",
     "unplugin-icons": "^22.1.0",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

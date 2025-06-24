@@ -4,57 +4,18 @@ import { comment, user } from "./db/schema.js";
 import { eq, and, isNull } from "drizzle-orm";
 import { validator } from "hono/validator";
 import z, { prettifyError } from "zod/v4";
+import {
+  commentDataUserSchema,
+  commentDataAdminSchema,
+  type CommentDataUser,
+  type CommentDataAdmin,
+} from "@repo/api-datatypes/comment";
 
 const commentApp = new Hono<{ Variables: Variables }>();
 
-export type Comment = {
-  id: number;
-  content: string;
-  parentId: number | null;
-  replyToId: number | null;
-  createdAt: Date;
-  updatedAt: Date;
-
-  userImage: string | null;
-
-  displayName: string;
-  isMine: boolean;
-
-  /**
-   * Admin only
-   */
-  userId?: string | null;
-  /**
-   * Admin only
-   */
-  userIp?: string | null;
-  /**
-   * Admin only
-   */
-  userAgent?: string | null;
-  /**
-   * Admin only
-   */
-  userName?: string | null;
-  /**
-   * Admin only
-   */
-  userEmail?: string | null;
-  /**
-   * Admin only
-   */
-  anonymousName?: string | null;
-  /**
-   * Admin only
-   */
-  visitorName?: string | null;
-  /**
-   * Admin only
-   */
-  visitorEmail?: string | null;
+type LayeredComment<T extends CommentDataAdmin | CommentDataUser> = T & {
+  children: T[];
 };
-
-type LayeredComment = Comment & { children: Comment[] };
 
 commentApp.get("/:path", async (c) => {
   const path = decodeURIComponent(c.req.param("path"));
@@ -93,7 +54,7 @@ commentApp.get("/:path", async (c) => {
       ),
     );
 
-  const sanitizedComments = comments.map((comment): Comment => {
+  const adminCommentData: CommentDataAdmin[] = comments.map((comment) => {
     let sanitized = {
       ...comment,
       isMine: false,
@@ -104,23 +65,28 @@ commentApp.get("/:path", async (c) => {
     if (currentUser && currentUser.id === comment.userId) {
       sanitized.isMine = true;
     }
-    if (currentUser?.role === "admin") {
-      return sanitized;
-    }
-    return {
-      id: sanitized.id,
-      content: sanitized.content,
-      parentId: sanitized.parentId,
-      replyToId: sanitized.replyToId,
-      createdAt: sanitized.createdAt,
-      updatedAt: sanitized.updatedAt,
-      displayName: sanitized.displayName,
-      isMine: sanitized.isMine,
-      userImage: sanitized.userImage,
-    };
+    return commentDataAdminSchema.parse(sanitized satisfies CommentDataAdmin);
   });
 
-  return c.json(layerComments(sanitizedComments));
+  const sanitizedComments: CommentDataAdmin[] | CommentDataUser[] =
+    currentUser?.role === "admin"
+      ? adminCommentData
+      : adminCommentData.map((c): CommentDataUser => {
+          const data = {
+            id: c.id,
+            content: c.content,
+            parentId: c.parentId,
+            replyToId: c.replyToId,
+            createdAt: c.createdAt,
+            updatedAt: c.updatedAt,
+            userImage: c.userImage,
+            displayName: c.displayName,
+            isMine: c.isMine,
+          };
+          return commentDataUserSchema.parse(data satisfies CommentDataUser);
+        });
+
+  return c.json(sanitizedComments);
 });
 
 const commentPostBodySchema = z.object({
@@ -133,16 +99,17 @@ const commentPostBodySchema = z.object({
     },
     z.string().min(1, "Content is required"),
   ),
-  parentId: z.number().nullable(),
-  replyToId: z.number().nullable(),
-  anonymousName: z.string().nullable(),
-  visitorName: z.string().nullable(),
-  visitorEmail: z.string().nullable(),
+  parentId: z.number().optional(),
+  replyToId: z.number().optional(),
+  anonymousName: z.string().optional(),
+  visitorName: z.string().optional(),
+  visitorEmail: z.string().optional(),
 });
 
 commentApp.post(
   "/:path",
   validator("json", (value, c) => {
+    console.log(value);
     const parsed = commentPostBodySchema.safeParse(value);
     if (!parsed.success) {
       return c.json({ error: prettifyError(parsed.error) }, 400);
@@ -174,7 +141,7 @@ commentApp.post(
         replyToId,
         anonymousName,
         visitorEmail: currentUser ? undefined : visitorEmail,
-        visitorName: currentUser ? undefined : visitorName,
+        visitorName: currentUser ? undefined : (visitorName ?? "Anonymous"),
         isSpam: false,
         userId: currentUser?.id,
         userIp: c.req.header("x-forwarded-for"),
@@ -186,8 +153,10 @@ commentApp.post(
   },
 );
 
-function layerComments(comments: Comment[]): LayeredComment[] {
-  const map = new Map<number, LayeredComment | { children: Comment[] }>();
+function layerComments<T extends CommentDataAdmin | CommentDataUser>(
+  comments: T[],
+): LayeredComment<T>[] {
+  const map = new Map<number, LayeredComment<T> | { children: T[] }>();
 
   for (const comment of comments) {
     if (comment.parentId === null) {
@@ -208,7 +177,7 @@ function layerComments(comments: Comment[]): LayeredComment[] {
   }
 
   return Array.from(map.values()).filter(
-    (value): value is LayeredComment => "id" in value,
+    (value): value is LayeredComment<T> => "id" in value,
   );
 }
 
