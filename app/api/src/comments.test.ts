@@ -4,18 +4,20 @@ import { drizzle } from "drizzle-orm/libsql";
 import { commentApp } from "./comments.js";
 import { describe, test, expect } from "vitest";
 import * as schema from "./db/schema.js";
-import { createRequire } from "node:module";
+// import { createRequire } from "node:module";
+import { migrate } from "drizzle-orm/libsql/migrator";
 
-const require = createRequire(import.meta.url);
+// const require = createRequire(import.meta.url);
 
 async function getTestApp() {
-  const { pushSQLiteSchema } =
-    require("drizzle-kit/api") as typeof import("drizzle-kit/api");
+  // const { pushSQLiteSchema } =
+  // require("drizzle-kit/api") as typeof import("drizzle-kit/api");
   const app = new Hono<{ Variables: Variables }>();
   const db = drizzle(":memory:", { schema });
 
-  const { apply } = await pushSQLiteSchema(schema, db as any);
-  await apply();
+  // const { apply } = await pushSQLiteSchema(schema, db as any);
+  // await apply();
+  await migrate(db, { migrationsFolder: "./drizzle" });
 
   console.log("creating test app");
   injectDeps(app, db as any);

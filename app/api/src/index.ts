@@ -5,8 +5,11 @@ import { Hono } from "hono";
 import { commentApp } from "./comments.js";
 import { injectDeps, type Variables } from "./middleware.js";
 import { db } from "./db/instance.js";
+import { migrate } from "drizzle-orm/libsql/migrator";
 
 const app = new Hono<{ Variables: Variables }>();
+
+await migrate(db, { migrationsFolder: "./drizzle" });
 
 injectDeps(app, db);
 
