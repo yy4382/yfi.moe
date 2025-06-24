@@ -1,4 +1,6 @@
 ---
+import { cn } from "@utils/cn";
+
 interface Props {
   class?: string;
 }
@@ -6,10 +8,10 @@ const props = Astro.props;
 ---
 
 <div
-  class:list={[
+  class:list={cn([
     "mx-auto prose break-words prose-gray dark:prose-invert prose-headings:scroll-mt-8",
     props.class,
-  ]}
+  ])}
 >
   <slot />
 </div>
