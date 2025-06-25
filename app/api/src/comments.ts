@@ -9,6 +9,7 @@ import {
   commentDataAdminSchema,
   type CommentDataUser,
   type CommentDataAdmin,
+  commentPostBodySchema,
 } from "@repo/api-datatypes/comment";
 
 const commentApp = new Hono<{ Variables: Variables }>();
@@ -89,30 +90,13 @@ commentApp.get("/:path", async (c) => {
   return c.json(sanitizedComments);
 });
 
-const commentPostBodySchema = z.object({
-  content: z.preprocess(
-    (value) => {
-      if (typeof value === "string") {
-        return value.trim();
-      }
-      return value;
-    },
-    z.string().min(1, "Content is required"),
-  ),
-  parentId: z.number().optional(),
-  replyToId: z.number().optional(),
-  anonymousName: z.string().optional(),
-  visitorName: z.string().optional(),
-  visitorEmail: z.string().optional(),
-});
-
 commentApp.post(
   "/:path",
   validator("json", (value, c) => {
     console.log(value);
     const parsed = commentPostBodySchema.safeParse(value);
     if (!parsed.success) {
-      return c.json({ error: prettifyError(parsed.error) }, 400);
+      return c.json({ error: parsed.error.issues, type: "zod error" }, 400);
     }
     return parsed.data;
   }),
@@ -128,6 +112,10 @@ commentApp.post(
       visitorEmail,
       visitorName,
     } = c.req.valid("json");
+
+    if (!currentUser && (!visitorName || !visitorEmail)) {
+      return c.json({ error: "昵称和邮箱不能为空", type: "data error" }, 400);
+    }
 
     const id = await c
       .get("db")

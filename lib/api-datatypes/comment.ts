@@ -24,3 +24,20 @@ export const commentDataAdminSchema = commentDataUserSchema.extend({
 });
 
 export type CommentDataAdmin = z.infer<typeof commentDataAdminSchema>;
+
+export const commentPostBodySchema = z.object({
+  content: z.preprocess(
+    (value) => {
+      if (typeof value === "string") {
+        return value.trim();
+      }
+      return value;
+    },
+    z.string().min(1, "内容不能为空"),
+  ),
+  parentId: z.number().optional(),
+  replyToId: z.number().optional(),
+  anonymousName: z.string().optional(),
+  visitorName: z.string().optional(),
+  visitorEmail: z.email("邮箱不合法").optional(),
+});
