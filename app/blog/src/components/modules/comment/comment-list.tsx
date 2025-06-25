@@ -89,7 +89,15 @@ function layerComments<T extends CommentDataAdmin | CommentDataUser>(
     }
   }
 
-  return Array.from(map.values()).filter(
-    (value): value is LayeredComment<T> => "id" in value,
-  );
+  return Array.from(map.values())
+    .filter((value): value is LayeredComment<T> => "id" in value)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .map((entry) => {
+      return {
+        ...entry,
+        children: entry.children.sort(
+          (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+        ),
+      };
+    });
 }
