@@ -19,7 +19,7 @@ app.on(["POST", "GET"], "/api/auth/**", (c) => {
 
 app.get("/api/ping", (c) => c.json({ message: "pong" }));
 
-app.route("/api/comments", commentApp);
+app.route("/api/comments/v1", commentApp);
 
 serve(
   {

@@ -29,7 +29,7 @@ export function CommentBox({
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: z.infer<typeof commentPostBodySchema>) => {
       const response = await fetch(
-        `/api/comments/${encodeURIComponent(pathname)}`,
+        `/api/comments/v1/${encodeURIComponent(pathname)}`,
         {
           method: "POST",
           headers: {

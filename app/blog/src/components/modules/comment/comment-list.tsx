@@ -17,7 +17,7 @@ export function CommentList() {
       LayeredComment<CommentDataAdmin | CommentDataUser>[]
     > => {
       const response = await fetch(
-        `/api/comments/${encodeURIComponent(pathname)}`,
+        `/api/comments/v1/${encodeURIComponent(pathname)}`,
       );
       const data = await response.json();
       const getData = (data: unknown) => {

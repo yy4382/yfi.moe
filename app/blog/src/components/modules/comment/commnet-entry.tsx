@@ -21,7 +21,7 @@ export function CommentEntry({
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: async (id: number) => {
-      const resp = await fetch(`/api/comments/${id}`, {
+      const resp = await fetch(`/api/comments/v1/${id}`, {
         method: "DELETE",
       });
       if (!resp.ok) {
