@@ -7,7 +7,7 @@ import ReplyIcon from "~icons/mingcute/comment-line";
 import { CommentBox } from "./comment-box";
 import DeleteIcon from "~icons/mingcute/delete-line";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { authClient } from "@utils/auth-client";
+import { sessionOptions } from "./session";
 
 export function CommentEntry({
   entry,
@@ -15,12 +15,7 @@ export function CommentEntry({
   entry: CommentDataAdmin | CommentDataUser;
 }) {
   const [replying, setReplying] = useState(false);
-  const { data: session } = useQuery({
-    queryKey: ["session"],
-    queryFn: async () => {
-      return await authClient.getSession();
-    },
-  });
+  const { data: session } = useQuery(sessionOptions());
 
   const queryClient = useQueryClient();
 
@@ -90,7 +85,7 @@ export function CommentEntry({
             <span className="text-xs text-gray-500">
               {formatTime(entry.createdAt)}
             </span>
-            {(entry.isMine || session?.data?.user.role === "admin") && (
+            {(entry.isMine || session?.user.role === "admin") && (
               <button
                 className="flex items-center gap-1 text-xs text-red-700 transition-colors hover:text-red-500"
                 onClick={() => deleteComment(entry.id)}

@@ -11,6 +11,7 @@ import XIcon from "~icons/mingcute/close-line";
 import { toast } from "sonner";
 import type { ZodIssue } from "zod";
 import { getGravatarUrl } from "@utils/get-gavatar";
+import { sessionOptions } from "./session";
 
 export function CommentBox({
   parentId,
@@ -23,7 +24,7 @@ export function CommentBox({
 }) {
   const pathname = usePathname();
   const queryClient = useQueryClient();
-  const { data: session } = authClient.useSession();
+  const { data: session } = useQuery(sessionOptions());
   const [content, setContent] = useState("");
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: z.infer<typeof commentPostBodySchema>) => {
@@ -83,8 +84,12 @@ export function CommentBox({
             />
             <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-gray-500/50 p-0.5 group-hover:block">
               <button
-                onClick={() => {
-                  authClient.signOut();
+                onClick={async () => {
+                  await authClient.signOut();
+                  queryClient.invalidateQueries({ queryKey: ["session"] });
+                  queryClient.invalidateQueries({ queryKey: ["accounts"] });
+                  // need to invalidate comments, because `isMine` or other admin fields may be changed due to sign out
+                  queryClient.invalidateQueries({ queryKey: ["comments"] });
                 }}
                 className="flex size-full items-center justify-center"
               >
