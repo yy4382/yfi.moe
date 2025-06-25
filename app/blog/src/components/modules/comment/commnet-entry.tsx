@@ -5,6 +5,9 @@ import type {
 import { useState } from "react";
 import ReplyIcon from "~icons/mingcute/comment-line";
 import { CommentBox } from "./comment-box";
+import DeleteIcon from "~icons/mingcute/delete-line";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { authClient } from "@utils/auth-client";
 
 export function CommentEntry({
   entry,
@@ -12,6 +15,29 @@ export function CommentEntry({
   entry: CommentDataAdmin | CommentDataUser;
 }) {
   const [replying, setReplying] = useState(false);
+  const { data: session } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      return await authClient.getSession();
+    },
+  });
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: async (id: number) => {
+      const resp = await fetch(`/api/comments/${id}`, {
+        method: "DELETE",
+      });
+      if (!resp.ok) {
+        throw new Error("Failed to delete comment");
+      }
+      return await resp.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+    },
+  });
 
   const formatTime = (date: Date) => {
     const now = new Date();
@@ -64,6 +90,14 @@ export function CommentEntry({
             <span className="text-xs text-gray-500">
               {formatTime(entry.createdAt)}
             </span>
+            {(entry.isMine || session?.data?.user.role === "admin") && (
+              <button
+                className="flex items-center gap-1 text-xs text-red-700 transition-colors hover:text-red-500"
+                onClick={() => deleteComment(entry.id)}
+              >
+                <DeleteIcon /> 删除
+              </button>
+            )}
           </div>
 
           {/* 评论内容 */}

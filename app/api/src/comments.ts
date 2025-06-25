@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import type { Variables } from "./middleware.js";
 import { comment, user } from "./db/schema.js";
-import { eq, and, isNull } from "drizzle-orm";
+import { eq, and, isNull, or, sql } from "drizzle-orm";
 import { validator } from "hono/validator";
 import {
   commentDataUserSchema,
@@ -11,6 +11,7 @@ import {
   commentPostBodySchema,
 } from "@repo/api-datatypes/comment";
 import SparkMD5 from "spark-md5";
+import z from "zod/v4";
 
 const commentApp = new Hono<{ Variables: Variables }>();
 
@@ -140,6 +141,43 @@ commentApp.post(
     return c.json({ id: id[0].id });
   },
 );
+
+commentApp.delete("/:id", async (c) => {
+  const id = z.coerce.number().parse(c.req.param("id"));
+  const currentUser = c.get("user");
+  if (!currentUser) {
+    return c.json({ error: "Unauthorized", type: "auth error" }, 401);
+  }
+
+  const now = new Date();
+  // delete if comment's user is current user or current user is admin
+  const res = await c
+    .get("db")
+    .update(comment)
+    .set({
+      deletedAt: now,
+      updatedAt: now,
+    })
+    .where(
+      and(
+        eq(comment.id, id),
+        isNull(comment.deletedAt),
+        or(
+          eq(comment.userId, currentUser.id),
+          sql`EXISTS (
+          SELECT 1 FROM ${user} WHERE ${user.id} = ${currentUser.id} AND ${user.role} = 'admin'
+        )`,
+        ),
+      ),
+    )
+    .returning({ id: comment.id });
+
+  if (res.length === 0) {
+    return c.json({ error: "Comment not found", type: "data error" }, 404);
+  }
+
+  return c.json({ success: true, id: res[0].id });
+});
 
 export { commentApp };
 
