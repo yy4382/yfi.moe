@@ -6,7 +6,7 @@ export const commentDataUserSchema = z.object({
   replyToId: z.number().nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
-  userImage: z.string().nullable(),
+  userImage: z.string(),
   displayName: z.string(),
   isMine: z.boolean(),
 });

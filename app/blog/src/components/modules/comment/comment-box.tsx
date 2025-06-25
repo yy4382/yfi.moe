@@ -6,13 +6,21 @@ import { authClient } from "@utils/auth-client";
 import { commentPostBodySchema } from "@repo/api-datatypes/comment";
 import z from "zod/v4";
 import { motion } from "motion/react";
-import SparkMD5 from "spark-md5";
 import GithubIcon from "~icons/mingcute/github-line";
 import XIcon from "~icons/mingcute/close-line";
 import { toast } from "sonner";
 import type { ZodIssue } from "zod";
+import { getGravatarUrl } from "@utils/get-gavatar";
 
-export function CommentBox() {
+export function CommentBox({
+  parentId,
+  replyingTo,
+  onSuccess,
+}: {
+  parentId?: number;
+  replyingTo?: number;
+  onSuccess?: () => void;
+}) {
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const { data: session } = authClient.useSession();
@@ -26,7 +34,7 @@ export function CommentBox() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ ...data, parentId, replyingTo }),
         },
       );
       if (!response.ok) {
@@ -47,6 +55,7 @@ export function CommentBox() {
     onSuccess: () => {
       setContent("");
       queryClient.invalidateQueries({ queryKey: ["comments", pathname] });
+      onSuccess?.();
     },
   });
 
@@ -219,15 +228,4 @@ function InputBox({ value, onChange, onSubmit, isPending }: InputBoxProps) {
       </div>
     </div>
   );
-}
-
-function getGravatarUrl(
-  email: string,
-  size = 200,
-  defaultImage = "identicon",
-  rating = "g",
-) {
-  const cleanEmail = email.trim().toLowerCase();
-  const hash = SparkMD5.hash(cleanEmail);
-  return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=${defaultImage}&r=${rating}`;
 }

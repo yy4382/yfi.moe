@@ -3,7 +3,6 @@ import type { Variables } from "./middleware.js";
 import { comment, user } from "./db/schema.js";
 import { eq, and, isNull } from "drizzle-orm";
 import { validator } from "hono/validator";
-import z, { prettifyError } from "zod/v4";
 import {
   commentDataUserSchema,
   commentDataAdminSchema,
@@ -11,12 +10,9 @@ import {
   type CommentDataAdmin,
   commentPostBodySchema,
 } from "@repo/api-datatypes/comment";
+import SparkMD5 from "spark-md5";
 
 const commentApp = new Hono<{ Variables: Variables }>();
-
-type LayeredComment<T extends CommentDataAdmin | CommentDataUser> = T & {
-  children: T[];
-};
 
 commentApp.get("/:path", async (c) => {
   const path = decodeURIComponent(c.req.param("path"));
@@ -62,6 +58,10 @@ commentApp.get("/:path", async (c) => {
       displayName:
         (comment.anonymousName || comment.visitorName || comment.userName) ??
         "Unknown",
+      userImage: comment.anonymousName
+        ? "https://avatar.vercel.sh/anonymous"
+        : (comment.userImage ??
+          getGravatarUrl(comment.userEmail ?? comment.visitorEmail ?? "")),
     };
     if (currentUser && currentUser.id === comment.userId) {
       sanitized.isMine = true;
@@ -141,32 +141,15 @@ commentApp.post(
   },
 );
 
-function layerComments<T extends CommentDataAdmin | CommentDataUser>(
-  comments: T[],
-): LayeredComment<T>[] {
-  const map = new Map<number, LayeredComment<T> | { children: T[] }>();
-
-  for (const comment of comments) {
-    if (comment.parentId === null) {
-      map.set(comment.id, {
-        ...comment,
-        children: map.get(comment.id)?.children ?? [],
-      });
-    } else {
-      const parent = map.get(comment.parentId);
-      if (parent) {
-        parent.children.push(comment);
-      } else {
-        map.set(comment.parentId, {
-          children: [],
-        });
-      }
-    }
-  }
-
-  return Array.from(map.values()).filter(
-    (value): value is LayeredComment<T> => "id" in value,
-  );
-}
-
 export { commentApp };
+
+function getGravatarUrl(
+  email: string,
+  size = 200,
+  defaultImage = "identicon",
+  rating = "g",
+) {
+  const cleanEmail = email.trim().toLowerCase();
+  const hash = SparkMD5.hash(cleanEmail);
+  return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=${defaultImage}&r=${rating}`;
+}
