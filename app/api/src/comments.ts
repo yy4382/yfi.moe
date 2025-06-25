@@ -12,6 +12,7 @@ import {
 } from "@repo/api-datatypes/comment";
 import SparkMD5 from "spark-md5";
 import z from "zod/v4";
+import { parseMarkdown } from "@repo/markdown/basic";
 
 const commentApp = new Hono<{ Variables: Variables }>();
 
@@ -117,15 +118,14 @@ commentApp.post(
     if (!currentUser && (!visitorName || !visitorEmail)) {
       return c.json({ error: "昵称和邮箱不能为空", type: "data error" }, 400);
     }
-
+    const renderedContent = await parseMarkdown(content);
     const id = await c
       .get("db")
       .insert(comment)
       .values({
         path,
         rawContent: content,
-        // TODO: render content
-        renderedContent: content,
+        renderedContent,
         parentId,
         replyToId,
         anonymousName,

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "@utils/hooks/usePathname";
-import { useState, type ComponentProps } from "react";
+import { createContext, useContext, useState } from "react";
 import SendIcon from "~icons/mingcute/send-plane-line";
 import { authClient } from "@utils/auth-client";
 import { commentPostBodySchema } from "@repo/api-datatypes/comment";
@@ -12,6 +12,19 @@ import { toast } from "sonner";
 import type { ZodIssue } from "zod";
 import { getGravatarUrl } from "@utils/get-gavatar";
 import { sessionOptions } from "./session";
+import LoadingIcon from "~icons/mingcute/loading-line";
+
+const CommentBoxContext = createContext<{
+  parentId?: number;
+  replyingTo?: number;
+  value: string;
+  onChange: (value: string) => void;
+  submitPending: boolean;
+}>({
+  value: "",
+  onChange: () => {},
+  submitPending: false,
+});
 
 export function CommentBox({
   parentId,
@@ -73,62 +86,67 @@ export function CommentBox({
   });
 
   return (
-    <div>
-      {session ? (
-        <div className="flex w-full items-end gap-4">
-          <div className="group relative mb-2 flex-shrink-0">
-            <img
-              src={session.user.image ?? getGravatarUrl(session.user.email)}
-              alt={session.user.name}
-              className="aspect-square size-14 rounded-full ring-2 ring-black dark:ring-white"
-            />
-            <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-gray-500/50 p-0.5 group-hover:block">
-              <button
-                onClick={async () => {
-                  await authClient.signOut();
-                  queryClient.invalidateQueries({ queryKey: ["session"] });
-                  queryClient.invalidateQueries({ queryKey: ["accounts"] });
-                  // need to invalidate comments, because `isMine` or other admin fields may be changed due to sign out
-                  queryClient.invalidateQueries({ queryKey: ["comments"] });
-                }}
-                className="flex size-full items-center justify-center"
-              >
-                <XIcon className="size-2.5" />
-              </button>
+    <CommentBoxContext
+      value={{
+        parentId,
+        replyingTo,
+        value: content,
+        onChange: setContent,
+        submitPending: isPending,
+      }}
+    >
+      <div>
+        {session ? (
+          <div className="flex w-full items-end gap-4">
+            <div className="group relative mb-2 flex-shrink-0">
+              <img
+                src={session.user.image ?? getGravatarUrl(session.user.email)}
+                alt={session.user.name}
+                className="aspect-square size-14 rounded-full ring-2 ring-black dark:ring-white"
+              />
+              <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-gray-500/50 p-0.5 group-hover:block">
+                <button
+                  onClick={async () => {
+                    await authClient.signOut();
+                    queryClient.invalidateQueries({ queryKey: ["session"] });
+                    queryClient.invalidateQueries({ queryKey: ["accounts"] });
+                    // need to invalidate comments, because `isMine` or other admin fields may be changed due to sign out
+                    queryClient.invalidateQueries({ queryKey: ["comments"] });
+                  }}
+                  className="flex size-full items-center justify-center"
+                >
+                  <XIcon className="size-2.5" />
+                </button>
+              </div>
+              {!isAccountsError &&
+                !isAccountsPending &&
+                accounts?.data?.find(
+                  (account: any) => account.provider === "github",
+                ) && (
+                  <span className="absolute -right-1 -bottom-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
+                    <GithubIcon className="size-3.5 text-black" />
+                  </span>
+                )}
             </div>
-            {!isAccountsError &&
-              !isAccountsPending &&
-              accounts?.data?.find(
-                (account: any) => account.provider === "github",
-              ) && (
-                <span className="absolute -right-1 -bottom-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
-                  <GithubIcon className="size-3.5 text-black" />
-                </span>
-              )}
+            <InputBox onSubmit={(data) => mutate({ content, ...data })} />
           </div>
-          <InputBox
-            value={content}
-            onChange={setContent}
+        ) : (
+          <VisitorCommentBox
             onSubmit={(data) => mutate({ content, ...data })}
-            isPending={isPending}
           />
-        </div>
-      ) : (
-        <VisitorCommentBox
-          value={content}
-          onChange={setContent}
-          onSubmit={(data) => mutate({ content, ...data })}
-          isPending={isPending}
-        />
-      )}
-    </div>
+        )}
+      </div>
+    </CommentBoxContext>
   );
 }
 
 function VisitorCommentBox({
   onSubmit,
-  ...props
-}: ComponentProps<typeof InputBox>) {
+}: {
+  onSubmit: (
+    data?: Omit<Partial<z.infer<typeof commentPostBodySchema>>, "content">,
+  ) => void;
+}) {
   const [asVisitor, setAsVisitor] = useState(false);
   const [visitorName, setVisitorName] = useState("");
   const [visitorEmail, setVisitorEmail] = useState("");
@@ -159,7 +177,6 @@ function VisitorCommentBox({
             </button>
           </div>
           <InputBox
-            {...props}
             onSubmit={() =>
               onSubmit({
                 visitorName: visitorName ? visitorName : undefined,
@@ -201,35 +218,95 @@ function VisitorCommentBox({
   );
 }
 
-type InputBoxProps = {
-  value: string;
-  onChange: (value: string) => void;
+function InputBox({
+  onSubmit,
+}: {
   onSubmit: (
     data?: Omit<Partial<z.infer<typeof commentPostBodySchema>>, "content">,
   ) => void;
-  isPending: boolean;
-};
-function InputBox({ value, onChange, onSubmit, isPending }: InputBoxProps) {
+}) {
+  const { parentId, replyingTo, value, onChange, submitPending } =
+    useContext(CommentBoxContext);
+
+  const [preview, setPreview] = useState(false);
+  const queryClient = useQueryClient();
+
+  const {
+    data: previewData,
+    isPending: isPreviewPending,
+    error: previewError,
+  } = useQuery({
+    queryKey: ["markdown", { parentId, replyingTo }],
+    queryFn: async () => {
+      const response = await fetch("/api/utils/v1/getMarkdown", {
+        method: "POST",
+        body: JSON.stringify({ markdown: value }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to parse markdown");
+      }
+      const data = await response.json();
+      return data.html as string;
+    },
+    enabled: !!value && preview,
+  });
   return (
     <div className="group flex min-h-36 w-full flex-col justify-between rounded-sm border border-container p-1 focus-within:ring focus-within:ring-primary">
-      <textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Leave a comment"
-        className="field-sizing-content min-h-18 w-full flex-1 resize-none bg-transparent px-1 py-0.5 text-sm outline-none"
-      />
+      {preview && value.trim().length > 0 ? (
+        <div className="min-h-18 w-full flex-1 bg-transparent px-1 py-0.5 text-sm">
+          {isPreviewPending ? (
+            <div className="flex items-center justify-center">
+              <LoadingIcon className="size-4 animate-spin" />
+            </div>
+          ) : previewError ? (
+            <div className="text-red-500">{previewError.message}</div>
+          ) : (
+            <div
+              className="prose prose-sm *:first:mt-0 *:last:mb-0 dark:prose-invert prose-p:my-2"
+              dangerouslySetInnerHTML={{ __html: previewData }}
+            />
+          )}
+        </div>
+      ) : (
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Leave a comment"
+          className="field-sizing-content min-h-18 w-full flex-1 resize-none bg-transparent px-1 py-0.5 text-sm outline-none"
+          disabled={submitPending}
+        />
+      )}
       <div className="flex items-center justify-between gap-2 px-1 text-sm text-comment">
-        <div>{value.length} / 500</div>
-        <motion.button
-          onClick={() => onSubmit()}
-          className="flex items-center gap-0.5 disabled:opacity-50"
-          disabled={isPending}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <SendIcon />
-          发送
-        </motion.button>
+        <div className="flex items-center gap-2 text-xs text-comment/90">
+          <div className="flex items-center gap-2">
+            支持 Markdown
+            <motion.button
+              onClick={() => {
+                setPreview(!preview);
+                queryClient.invalidateQueries({ queryKey: ["markdown"] });
+              }}
+              className="rounded-md border border-container px-1 text-xs disabled:opacity-50"
+              disabled={submitPending || !value.trim()}
+              whileHover={{ scale: value.trim().length > 0 ? 1.05 : 1 }}
+              whileTap={{ scale: value.trim().length > 0 ? 0.95 : 1 }}
+            >
+              {preview ? "编辑" : "预览"}
+            </motion.button>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <div>{value.length} / 500</div>
+          <motion.button
+            onClick={() => onSubmit()}
+            className="flex items-center gap-0.5 disabled:opacity-50"
+            disabled={submitPending || !value.trim()}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <SendIcon />
+            发送
+          </motion.button>
+        </div>
       </div>
     </div>
   );

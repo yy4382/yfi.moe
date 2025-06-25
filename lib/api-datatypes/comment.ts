@@ -33,7 +33,7 @@ export const commentPostBodySchema = z.object({
       }
       return value;
     },
-    z.string().min(1, "内容不能为空"),
+    z.string().min(1, "内容不能为空").max(500, "内容不能超过 500 字"),
   ),
   parentId: z.number().optional(),
   replyToId: z.number().optional(),

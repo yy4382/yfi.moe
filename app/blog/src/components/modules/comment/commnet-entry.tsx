@@ -96,8 +96,11 @@ export function CommentEntry({
           </div>
 
           {/* 评论内容 */}
-          <div className="relative inline-block rounded-md rounded-bl-none bg-gray-600/5 px-2 py-1 text-sm leading-relaxed break-words whitespace-pre-wrap text-content">
-            {entry.content}
+          <div className="relative inline-block rounded-md rounded-bl-none bg-gray-600/5 px-2 py-1 text-sm break-words">
+            <div
+              className="prose prose-sm dark:prose-invert prose-p:my-1"
+              dangerouslySetInnerHTML={{ __html: entry.content }}
+            />
             <div className="absolute -right-0 -bottom-0 z-10 cursor-pointer">
               <button
                 className="flex size-5 translate-x-2/3 translate-y-1/4 items-center justify-center rounded-full border border-container bg-gray-600/10 p-0.5 text-xs text-comment"

@@ -6,6 +6,7 @@ import { commentApp } from "./comments.js";
 import { injectDeps, type Variables } from "./middleware.js";
 import { db } from "./db/instance.js";
 import { migrate } from "drizzle-orm/libsql/migrator";
+import { utils } from "./utils.js";
 
 const app = new Hono<{ Variables: Variables }>();
 
@@ -20,6 +21,7 @@ app.on(["POST", "GET"], "/api/auth/**", (c) => {
 app.get("/api/ping", (c) => c.json({ message: "pong" }));
 
 app.route("/api/comments/v1", commentApp);
+app.route("/api/utils/v1", utils);
 
 serve(
   {
