@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "@utils/hooks/usePathname";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useRef, useState } from "react";
 import SendIcon from "~icons/mingcute/send-plane-line";
 import { authClient } from "@utils/auth-client";
 import { commentPostBodySchema } from "@repo/api-datatypes/comment";
@@ -14,16 +14,27 @@ import { getGravatarUrl } from "@utils/get-gavatar";
 import { sessionOptions } from "./session";
 import LoadingIcon from "~icons/mingcute/loading-line";
 
+type CommentBoxInputValue = Omit<
+  z.infer<typeof commentPostBodySchema>,
+  "parentId" | "replyToId"
+>;
+
+const defaultValues: CommentBoxInputValue = {
+  content: "",
+};
+
 const CommentBoxContext = createContext<{
   parentId?: number;
   replyingTo?: number;
-  value: string;
-  onChange: (value: string) => void;
+  value: CommentBoxInputValue;
+  setValue: (value: CommentBoxInputValue) => void;
   submitPending: boolean;
+  onSubmit: () => void;
 }>({
-  value: "",
-  onChange: () => {},
+  value: defaultValues,
+  setValue: () => {},
   submitPending: false,
+  onSubmit: () => {},
 });
 
 export function CommentBox({
@@ -38,9 +49,10 @@ export function CommentBox({
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const { data: session } = useQuery(sessionOptions());
-  const [content, setContent] = useState("");
+  const [value, setValue] = useState(defaultValues);
+
   const { isPending, mutate } = useMutation({
-    mutationFn: async (data: z.infer<typeof commentPostBodySchema>) => {
+    mutationFn: async (data: CommentBoxInputValue) => {
       const response = await fetch(
         `/api/comments/v1/${encodeURIComponent(pathname)}`,
         {
@@ -67,7 +79,7 @@ export function CommentBox({
       toast.error(error.message);
     },
     onSuccess: () => {
-      setContent("");
+      setValue(defaultValues);
       queryClient.invalidateQueries({ queryKey: ["comments", pathname] });
       onSuccess?.();
     },
@@ -90,9 +102,10 @@ export function CommentBox({
       value={{
         parentId,
         replyingTo,
-        value: content,
-        onChange: setContent,
+        value,
+        setValue,
         submitPending: isPending,
+        onSubmit: () => mutate(value),
       }}
     >
       <div>
@@ -128,28 +141,27 @@ export function CommentBox({
                   </span>
                 )}
             </div>
-            <InputBox onSubmit={(data) => mutate({ content, ...data })} />
+            <InputBox />
           </div>
         ) : (
-          <VisitorCommentBox
-            onSubmit={(data) => mutate({ content, ...data })}
-          />
+          <VisitorCommentBox />
         )}
       </div>
     </CommentBoxContext>
   );
 }
 
-function VisitorCommentBox({
-  onSubmit,
-}: {
-  onSubmit: (
-    data?: Omit<Partial<z.infer<typeof commentPostBodySchema>>, "content">,
-  ) => void;
-}) {
+function VisitorCommentBox() {
   const [asVisitor, setAsVisitor] = useState(false);
-  const [visitorName, setVisitorName] = useState("");
-  const [visitorEmail, setVisitorEmail] = useState("");
+  const { value, setValue } = useContext(CommentBoxContext);
+  const visitorName = value.visitorName;
+  const visitorEmail = value.visitorEmail;
+  function setVisitorName(newValue: string) {
+    setValue({ ...value, visitorName: newValue });
+  }
+  function setVisitorEmail(newValue: string) {
+    setValue({ ...value, visitorEmail: newValue });
+  }
   return (
     <div>
       {asVisitor ? (
@@ -176,14 +188,7 @@ function VisitorCommentBox({
               使用社交账号登录
             </button>
           </div>
-          <InputBox
-            onSubmit={() =>
-              onSubmit({
-                visitorName: visitorName ? visitorName : undefined,
-                visitorEmail: visitorEmail ? visitorEmail : undefined,
-              })
-            }
-          />
+          <InputBox />
         </div>
       ) : (
         <div className="flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border border-container bg-gray-50 py-4 dark:bg-gray-950">
@@ -218,18 +223,16 @@ function VisitorCommentBox({
   );
 }
 
-function InputBox({
-  onSubmit,
-}: {
-  onSubmit: (
-    data?: Omit<Partial<z.infer<typeof commentPostBodySchema>>, "content">,
-  ) => void;
-}) {
-  const { parentId, replyingTo, value, onChange, submitPending } =
+function InputBox() {
+  const { parentId, replyingTo, value, setValue, submitPending, onSubmit } =
     useContext(CommentBoxContext);
 
+  const content = value.content;
+  function setContent(newValue: string) {
+    setValue({ ...value, content: newValue });
+  }
+
   const [preview, setPreview] = useState(false);
-  const queryClient = useQueryClient();
 
   const {
     data: previewData,
@@ -240,7 +243,7 @@ function InputBox({
     queryFn: async () => {
       const response = await fetch("/api/utils/v1/getMarkdown", {
         method: "POST",
-        body: JSON.stringify({ markdown: value }),
+        body: JSON.stringify({ markdown: content }),
       });
       if (!response.ok) {
         throw new Error("Failed to parse markdown");
@@ -248,11 +251,12 @@ function InputBox({
       const data = await response.json();
       return data.html as string;
     },
-    enabled: !!value && preview,
+    enabled: !!content && preview,
   });
+
   return (
     <div className="group flex min-h-36 w-full flex-col justify-between rounded-sm border border-container p-1 focus-within:ring focus-within:ring-primary">
-      {preview && value.trim().length > 0 ? (
+      {preview && content.trim().length > 0 ? (
         <div className="min-h-18 w-full flex-1 bg-transparent px-1 py-0.5 text-sm">
           {isPreviewPending ? (
             <div className="flex items-center justify-center">
@@ -269,44 +273,63 @@ function InputBox({
         </div>
       ) : (
         <textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           placeholder="Leave a comment"
           className="field-sizing-content min-h-18 w-full flex-1 resize-none bg-transparent px-1 py-0.5 text-sm outline-none"
           disabled={submitPending}
         />
       )}
-      <div className="flex items-center justify-between gap-2 px-1 text-sm text-comment">
-        <div className="flex items-center gap-2 text-xs text-comment/90">
-          <div className="flex items-center gap-2">
-            支持 Markdown
-            <motion.button
-              onClick={() => {
-                setPreview(!preview);
-                queryClient.invalidateQueries({ queryKey: ["markdown"] });
-              }}
-              className="rounded-md border border-container px-1 text-xs disabled:opacity-50"
-              disabled={submitPending || !value.trim()}
-              whileHover={{ scale: value.trim().length > 0 ? 1.05 : 1 }}
-              whileTap={{ scale: value.trim().length > 0 ? 0.95 : 1 }}
-            >
-              {preview ? "编辑" : "预览"}
-            </motion.button>
-          </div>
-        </div>
+      <InputBoxFooter preview={preview} setPreview={setPreview} />
+    </div>
+  );
+}
+
+function InputBoxFooter({
+  preview,
+  setPreview,
+}: {
+  preview: boolean;
+  setPreview: (value: boolean) => void;
+}) {
+  const { submitPending, value, onSubmit } = useContext(CommentBoxContext);
+  const content = value.content;
+  const queryClient = useQueryClient();
+  return (
+    <div className="flex items-center justify-between gap-2 px-1 text-sm text-comment">
+      <div className="flex items-center gap-2 text-xs text-comment/90">
         <div className="flex items-center gap-2">
-          <div>{value.length} / 500</div>
+          支持 Markdown
           <motion.button
-            onClick={() => onSubmit()}
-            className="flex items-center gap-0.5 disabled:opacity-50"
-            disabled={submitPending || !value.trim()}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              setPreview(!preview);
+              queryClient.invalidateQueries({ queryKey: ["markdown"] });
+            }}
+            className="rounded-md border border-container px-1 text-xs disabled:opacity-50"
+            disabled={submitPending || !content.trim()}
+            whileHover={{ scale: content.trim().length > 0 ? 1.05 : 1 }}
+            whileTap={{ scale: content.trim().length > 0 ? 0.95 : 1 }}
           >
-            <SendIcon />
-            发送
+            {preview ? "编辑" : "预览"}
           </motion.button>
         </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <div>{content.length} / 500</div>
+        <motion.button
+          onClick={() => onSubmit()}
+          className="flex items-center gap-0.5 disabled:opacity-50"
+          disabled={submitPending || !content.trim()}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {submitPending ? (
+            <LoadingIcon className="size-4 animate-spin" />
+          ) : (
+            <SendIcon />
+          )}
+          发送
+        </motion.button>
       </div>
     </div>
   );
