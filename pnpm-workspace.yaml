@@ -7,3 +7,4 @@ catalog:
   "typescript": "^5"
   "better-auth": "^1.2.9"
   "zod": "^3.25.64"
+  "eslint": "^9"

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "@utils/hooks/usePathname";
-import { createContext, useContext, useMemo, useRef, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import SendIcon from "~icons/mingcute/send-plane-line";
 import { authClient } from "@utils/auth-client";
 import { commentPostBodySchema } from "@repo/api-datatypes/comment";
@@ -134,7 +134,7 @@ export function CommentBox({
               {!isAccountsError &&
                 !isAccountsPending &&
                 accounts?.data?.find(
-                  (account: any) => account.provider === "github",
+                  (account) => account.provider === "github",
                 ) && (
                   <span className="absolute -right-1 -bottom-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
                     <GithubIcon className="size-3.5 text-black" />
@@ -224,7 +224,7 @@ function VisitorCommentBox() {
 }
 
 function InputBox() {
-  const { parentId, replyingTo, value, setValue, submitPending, onSubmit } =
+  const { parentId, replyingTo, value, setValue, submitPending } =
     useContext(CommentBoxContext);
 
   const content = value.content;

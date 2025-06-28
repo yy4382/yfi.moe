@@ -57,11 +57,17 @@
     "@types/react-dom": "^19.1.6",
     "@types/remove-markdown": "^0.3.4",
     "@types/spark-md5": "^3.0.5",
+    "eslint": "catalog:",
     "hast-util-to-jsx-runtime": "^2.3.6",
     "ofetch": "^1.4.1",
     "sharp": "^0.34.2",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "@eslint/js": "^9.30.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "typescript-eslint": "^8.35.0"
   },
   "lint-staged": {
     "*": "prettier --ignore-unknown --write"
