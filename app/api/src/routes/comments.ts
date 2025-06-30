@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import type { Variables } from "./middleware.js";
-import { comment, user } from "./db/schema.js";
+import type { Variables } from "@/middleware.js";
+import { comment, user } from "@/db/schema.js";
 import { eq, and, isNull, or, sql } from "drizzle-orm";
 import { validator } from "hono/validator";
 import {

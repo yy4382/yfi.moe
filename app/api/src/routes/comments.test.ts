@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { injectDeps, type Variables } from "./middleware.js";
+import { injectDeps, type Variables } from "@/middleware.js";
 import { drizzle } from "drizzle-orm/libsql";
 import { commentApp } from "./comments.js";
 import { describe, test, expect } from "vitest";
-import * as schema from "./db/schema.js";
+import * as schema from "@/db/schema.js";
 // import { createRequire } from "node:module";
 import { migrate } from "drizzle-orm/libsql/migrator";
 

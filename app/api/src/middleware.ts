@@ -1,5 +1,5 @@
-import type { db } from "./db/instance.js";
-import { type Auth, getAuth } from "./auth.js";
+import type { db } from "@/db/instance.js";
+import { type Auth, getAuth } from "@/auth.js";
 import type { Hono } from "hono";
 
 export type AuthVariables = {

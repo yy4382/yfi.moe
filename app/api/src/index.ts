@@ -2,11 +2,11 @@ import "@dotenvx/dotenvx/config";
 
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { commentApp } from "./comments.js";
-import { injectDeps, type Variables } from "./middleware.js";
-import { db } from "./db/instance.js";
+import { commentApp } from "@/routes/comments.js";
+import { injectDeps, type Variables } from "@/middleware.js";
+import { db } from "@/db/instance.js";
 import { migrate } from "drizzle-orm/libsql/migrator";
-import { utils } from "./utils.js";
+import { utils } from "@/routes/utils.js";
 
 const app = new Hono<{ Variables: Variables }>();
 

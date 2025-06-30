@@ -1,8 +1,8 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import type { db } from "./db/instance.js";
+import type { db } from "@/db/instance.js";
 import { admin } from "better-auth/plugins";
-import * as schema from "./db/schema.js";
+import * as schema from "@/db/schema.js";
 
 export function getAuth(dbInst: typeof db) {
   return betterAuth({
