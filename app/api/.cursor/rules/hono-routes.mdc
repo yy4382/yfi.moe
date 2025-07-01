@@ -1,0 +1,27 @@
+---
+description: 
+globs: app/api/src/**/*
+alwaysApply: false
+---
+This rule specifies some design choices when creating Hono routes.
+
+- Each main subpath under `/api` should have a seperate file in src/routes in the api package. For example, all endpoints in `/api/comments` should be in `src/routes/comments.ts` and uses hono's `.route()` to use them in index.
+- "db" and "auth" are injected in [middleware.ts](mdc:app/api/src/middleware.ts). Don't import them in hono routes, but use `c.get("db")` to get them from hono variables.
+- use hono's validator `import { validator } from "hono/validator";` to validate incoming request, don't use `zValidator`. But do use zod to validte, e.g.
+```typescript
+commentApp.post(
+  "/:path",
+  validator("json", (value, c) => {
+    console.log(value);
+    const parsed = commentPostBodySchema.safeParse(value);
+    if (!parsed.success) {
+      return c.json({ error: parsed.error.issues, type: "zod error" }, 400);
+    }
+    return parsed.data;
+  }),
+  async (c) => {
+    ...
+  }
+)
+```
+- If the zod schema is not simple, put them in the `lib/api-datatypes` package to make it easy to reuse in blog package.

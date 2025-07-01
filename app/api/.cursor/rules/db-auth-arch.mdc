@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This rule specifies the db schema and better-auth config for the `api` package.
+
+For better-auth config, refer to [auth.ts](mdc:app/api/src/auth.ts).
+
+For db schema, I use sqlite (libsql) with drizzle. Schema is in [schema.ts](mdc:app/api/src/db/schema.ts), and the `user`, `session`, `account` and `verification` tables are using better-auth's requirements.
