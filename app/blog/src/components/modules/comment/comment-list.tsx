@@ -16,9 +16,17 @@ export function CommentList() {
     queryFn: async (): Promise<
       LayeredComment<CommentDataAdmin | CommentDataUser>[]
     > => {
-      const response = await fetch(
-        `/api/comments/v1/${encodeURIComponent(pathname)}`,
-      );
+      const response = await fetch("/api/comments/v1/getComments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          path: pathname,
+          limit: 100, // 获取前100条根评论
+          offset: 0,
+        }),
+      });
       const data = await response.json();
       const getData = (data: unknown) => {
         const adminData = z.array(commentDataAdminSchema).safeParse(data);

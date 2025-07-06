@@ -1,11 +1,12 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { useAuth } from "@/lib/auth-provider";
-import { authClient } from "@/lib/auth";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "motion/react";
 import { Github, Loader2 } from "lucide-react";
+import { authClient } from "@/lib/auth";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -14,26 +15,29 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { refresh } = useAuth();
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleGitHubLogin = async () => {
     setIsLoading(true);
     setError("");
 
     try {
-      const result = await authClient.signIn.social({
-        provider: "github",
-        callbackURL: `${window.location.origin}/admin`,
-      });
+      const result = await authClient.signIn.social(
+        {
+          provider: "github",
+          callbackURL: `${window.location.origin}/admin`,
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({
+              queryKey: ["auth", "session"],
+            });
+          },
+        },
+      );
 
       if (result.error) {
         setError(result.error.message || "登录失败");
-      } else {
-        // The GitHub OAuth will redirect, so we don't need to handle success here
-        // But if we reach here, refresh the auth state
-        await refresh();
-        router.navigate({ to: "/" });
       }
     } catch (err) {
       setError("登录过程中发生错误");

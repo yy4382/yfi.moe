@@ -21,8 +21,12 @@ export function CommentEntry({
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: async (id: number) => {
-      const resp = await fetch(`/api/comments/v1/${id}`, {
-        method: "DELETE",
+      const resp = await fetch("/api/comments/v1/deleteComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
       });
       if (!resp.ok) {
         throw new Error("Failed to delete comment");

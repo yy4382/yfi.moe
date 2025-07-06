@@ -9,6 +9,7 @@ export const commentDataUserSchema = z.object({
   userImage: z.string(),
   displayName: z.string(),
   isMine: z.boolean(),
+  path: z.string(),
 });
 export type CommentDataUser = z.infer<typeof commentDataUserSchema>;
 
@@ -26,6 +27,7 @@ export const commentDataAdminSchema = commentDataUserSchema.extend({
 export type CommentDataAdmin = z.infer<typeof commentDataAdminSchema>;
 
 export const commentPostBodySchema = z.object({
+  path: z.string(),
   content: z.preprocess(
     (value) => {
       if (typeof value === "string") {

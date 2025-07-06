@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useAuth } from "@/lib/auth-provider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -13,18 +12,25 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trash2, AlertTriangle } from "lucide-react";
+import { Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import { sessionQueryOptions } from "@/lib/auth";
 
 export const Route = createFileRoute("/comments")({
   component: CommentsPage,
 });
 
-async function fetchComments(path?: string) {
-  const url = path
-    ? `/api/comments/v1/${encodeURIComponent(path)}`
-    : "/api/comments/v1/all";
-  const response = await fetch(`http://localhost:3000${url}`);
+async function fetchAllComments(limit: number, offset: number) {
+  const response = await fetch(`/api/comments/v1/getComments/all`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      limit,
+      offset,
+    }),
+  });
   if (!response.ok) {
     throw new Error("Failed to fetch comments");
   }
@@ -32,13 +38,14 @@ async function fetchComments(path?: string) {
 }
 
 async function deleteComment(commentId: number) {
-  const response = await fetch(
-    `http://localhost:3000/api/comments/v1/${commentId}`,
-    {
-      method: "DELETE",
-      credentials: "include",
+  const response = await fetch(`/api/comments/v1/deleteComment`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    credentials: "include",
+    body: JSON.stringify({ id: commentId }),
+  });
   if (!response.ok) {
     throw new Error("Failed to delete comment");
   }
@@ -46,25 +53,19 @@ async function deleteComment(commentId: number) {
 }
 
 function CommentsPage() {
-  const { user } = useAuth();
-  const [selectedPath, setSelectedPath] = useState<string>("");
+  const authData = useQuery(sessionQueryOptions);
+  const [page, setPage] = useState(0);
+  const pageSize = 20;
 
-  // Fetch all comment paths for admin users
-  const { data: paths = [] } = useQuery({
-    queryKey: ["comment-paths"],
-    queryFn: async () => {
-      if (user?.role === "admin") {
-        // This would need an API endpoint to get all paths with comments
-        return []; // For now, return empty array
-      }
-      return [];
-    },
-    enabled: user?.role === "admin",
-  });
+  const user = authData.data?.user;
 
-  const { data: comments = [], refetch } = useQuery({
-    queryKey: ["comments", selectedPath],
-    queryFn: () => fetchComments(selectedPath || undefined),
+  const {
+    data: comments = [],
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["auth", "session", "all-comments", page],
+    queryFn: () => fetchAllComments(pageSize, page * pageSize),
     enabled: !!user,
   });
 
@@ -79,139 +80,148 @@ function CommentsPage() {
     }
   };
 
-  if (!user) {
-    return <div>未登录</div>;
-  }
+  const canDelete = (comment: any) => {
+    if (!user) return false;
+    // Admin 可以删除所有评论，普通用户只能删除自己的评论
+    return user.role === "admin" || comment.isMine;
+  };
 
-  const isAdmin = user.role === "admin";
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-2">未登录</h2>
+          <p className="text-muted-foreground">请先登录以查看评论管理页面</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">评论管理</h1>
+        <Badge variant="secondary">
+          {user.role === "admin" ? "管理员" : "用户"}
+        </Badge>
       </div>
 
-      <Tabs defaultValue="all" className="w-full">
-        <TabsList>
-          <TabsTrigger value="all">所有评论</TabsTrigger>
-          {isAdmin && <TabsTrigger value="reported">举报的评论</TabsTrigger>}
-          {!isAdmin && <TabsTrigger value="mine">我的评论</TabsTrigger>}
-        </TabsList>
-
-        <TabsContent value="all" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                {isAdmin ? "所有评论" : "我的评论"}
-                <Badge variant="secondary" className="ml-2">
-                  {comments.length} 条
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {comments.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  暂无评论
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>内容</TableHead>
-                      <TableHead>作者</TableHead>
-                      <TableHead>页面路径</TableHead>
-                      <TableHead>创建时间</TableHead>
-                      <TableHead>操作</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {comments.map((comment: any) => (
-                      <TableRow key={comment.id}>
-                        <TableCell className="max-w-xs">
-                          <div
-                            className="prose prose-sm max-w-none truncate"
-                            dangerouslySetInnerHTML={{
-                              __html: comment.content,
-                            }}
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            所有评论
+            {comments.length > 0 && (
+              <Badge variant="secondary" className="ml-2">
+                {comments.length} 条
+              </Badge>
+            )}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="text-center py-8">
+              <p>加载中...</p>
+            </div>
+          ) : comments.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              暂无评论
+            </div>
+          ) : (
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>内容</TableHead>
+                    <TableHead>作者</TableHead>
+                    <TableHead>页面路径</TableHead>
+                    <TableHead>创建时间</TableHead>
+                    <TableHead className="w-[100px]">操作</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {comments.map((comment: any) => (
+                    <TableRow key={comment.id}>
+                      <TableCell className="max-w-xs">
+                        <div
+                          className="prose prose-sm max-w-none line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: comment.content,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell className="max-w-xs">
+                        <div className="flex items-center space-x-2">
+                          <img
+                            src={comment.userImage}
+                            alt=""
+                            className="w-6 h-6 rounded-full flex-shrink-0"
                           />
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-2">
-                            <img
-                              src={comment.userImage}
-                              alt=""
-                              className="w-6 h-6 rounded-full"
-                            />
-                            <span>{comment.displayName}</span>
-                            {comment.isMine && (
-                              <Badge variant="outline" className="text-xs">
-                                我的
-                              </Badge>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell className="font-mono text-xs">
-                          {isAdmin && (comment as any).path}
-                        </TableCell>
-                        <TableCell>
-                          {new Date(comment.createdAt).toLocaleString("zh-CN")}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-2">
-                            {(isAdmin || comment.isMine) && (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleDeleteComment(comment.id)}
-                                className="text-destructive hover:text-destructive"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
+                          <span className="text-sm truncate min-w-0">
+                            {comment.displayName}
+                          </span>
+                          {comment.isMine && (
+                            <Badge
+                              variant="outline"
+                              className="text-xs flex-shrink-0"
+                            >
+                              我的
+                            </Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-mono text-xs">
+                        {comment.path || "-"}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {new Date(comment.createdAt).toLocaleString("zh-CN")}
+                      </TableCell>
+                      <TableCell>
+                        {canDelete(comment) && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteComment(comment.id)}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
 
-        {isAdmin && (
-          <TabsContent value="reported" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <AlertTriangle className="h-5 w-5 text-orange-500" />
-                  <span>举报的评论</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-muted-foreground">
-                  暂无举报的评论
+              {/* 分页控件 */}
+              <div className="flex items-center justify-between mt-4">
+                <div className="text-sm text-muted-foreground">
+                  第 {page + 1} 页，每页 {pageSize} 条
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        )}
-
-        {!isAdmin && (
-          <TabsContent value="mine" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>我的评论</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-muted-foreground">
-                  这里显示用户自己的评论
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPage(Math.max(0, page - 1))}
+                    disabled={page === 0}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    上一页
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPage(page + 1)}
+                    disabled={comments.length < pageSize}
+                  >
+                    下一页
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        )}
-      </Tabs>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

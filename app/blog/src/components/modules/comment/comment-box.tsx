@@ -16,7 +16,7 @@ import LoadingIcon from "~icons/mingcute/loading-line";
 
 type CommentBoxInputValue = Omit<
   z.infer<typeof commentPostBodySchema>,
-  "parentId" | "replyToId"
+  "path" | "parentId" | "replyToId"
 >;
 
 const defaultValues: CommentBoxInputValue = {
@@ -53,16 +53,18 @@ export function CommentBox({
 
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: CommentBoxInputValue) => {
-      const response = await fetch(
-        `/api/comments/v1/${encodeURIComponent(pathname)}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...data, parentId, replyingTo }),
+      const response = await fetch("/api/comments/v1/addComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          ...data,
+          path: pathname,
+          parentId,
+          replyingTo,
+        }),
+      });
       if (!response.ok) {
         const data = await response.json();
         if (data.type === "zod error") {
