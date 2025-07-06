@@ -8,3 +8,7 @@ catalog:
   "better-auth": "^1.2.9"
   "zod": "^3.25.64"
   "eslint": "^9"
+  "react": "^19.1.0"
+  "react-dom": "^19.1.0"
+  "@types/react": "^19.1.6"
+  "@types/react-dom": "^19.1.6"
