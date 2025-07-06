@@ -74,7 +74,9 @@ function UserManagement() {
       return authClient.admin.createUser(userData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      queryClient.invalidateQueries({
+        queryKey: ["auth", "session", "admin-users"],
+      });
       setNewUserDialogOpen(false);
     },
   });
@@ -91,7 +93,9 @@ function UserManagement() {
       return authClient.admin.setRole({ userId, role });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      queryClient.invalidateQueries({
+        queryKey: ["auth", "session", "admin-users"],
+      });
     },
   });
 
@@ -101,7 +105,9 @@ function UserManagement() {
       return authClient.admin.banUser({ userId });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      queryClient.invalidateQueries({
+        queryKey: ["auth", "session", "admin-users"],
+      });
     },
   });
 
@@ -111,7 +117,9 @@ function UserManagement() {
       return authClient.admin.unbanUser({ userId });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      queryClient.invalidateQueries({
+        queryKey: ["auth", "session", "admin-users"],
+      });
     },
   });
 
