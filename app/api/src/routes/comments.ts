@@ -98,7 +98,7 @@ commentApp.post(
       return c.json({ error: "昵称和邮箱不能为空", type: "data error" }, 400);
     }
     const renderedContent = await parseMarkdown(content);
-    const id = await c
+    const inserted = await c
       .get("db")
       .insert(comment)
       .values({
@@ -115,9 +115,21 @@ commentApp.post(
         userIp: c.req.header("x-forwarded-for"),
         userAgent: c.req.header("user-agent"),
       })
-      .returning({ id: comment.id });
+      .returning();
 
-    return c.json({ id: id[0].id });
+    const newComment = inserted[0];
+    const commentId = newComment.id;
+
+    // Send notifications asynchronously (don't await)
+    const notificationService = c.get("notificationService");
+    if (notificationService) {
+      // Don't await - run in background
+      notificationService.notifyNewComment(newComment).catch(error => {
+        console.error("Failed to send comment notification:", error);
+      });
+    }
+
+    return c.json({ id: commentId });
   },
 );
 
