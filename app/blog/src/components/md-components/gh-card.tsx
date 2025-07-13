@@ -84,8 +84,12 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
           );
         }
         setData(await res.json());
-      } catch (e: any) {
-        setErrorMessage(e.message);
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setErrorMessage(e.message);
+        } else {
+          setErrorMessage("Unknown error");
+        }
         console.error("Failed to fetch GitHub repo data", e);
       } finally {
         setLoading(false);

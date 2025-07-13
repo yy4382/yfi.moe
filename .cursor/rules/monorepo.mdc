@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This rule specifies the packages in this monorepo and you should use them.
+
+Each folder in ROOT_DIR/app or ROOT_DIR/lib is a package.
+
+- `/app/blog` The main package, a astro project of my blog
+- `/app/api` the backend of my blog, serving api endpoints in the `/api` path of url.
+- `/lib/markdown` All things related to transform markdown to html or hast.
+- `/lib/api-datatypes` stores the zod schemas for api, used in both blog and api package. Complicated types should go into this project.

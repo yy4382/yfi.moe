@@ -72,12 +72,13 @@ function Popover({ children, ...props }: PopoverProps) {
     if (props?.open !== undefined) setIsOpen(props.open);
   }, [props?.open]);
 
+  const propOnOpenChange = props.onOpenChange;
   const handleOpenChange = React.useCallback(
     (open: boolean) => {
       setIsOpen(open);
-      props.onOpenChange?.(open);
+      propOnOpenChange?.(open);
     },
-    [props.onOpenChange],
+    [propOnOpenChange],
   );
 
   return (

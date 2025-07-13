@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- use tailwind to style
+   - the config is in [base.css](mdc:app/blog/src/styles/base.css), use the color (or other config) from the config file first
+   - The color system: Use the colors in config first, builtin gray-* is also part of the color system. Don't use other tailwind's builtin colors unless we realy need that color (example of case that really needs: use `text-red-500` for serious alert or destructive actions)
+- use framer motion (now import from `motion/react`) to animate interactive components such as buttons. e.g. `whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}`
+- use radix components if needs complicated reactivity.
+- use tanstack query if needs to communicate with server.
+- For icons, use `astro-icon` in astro components, and `unplugin-icons` for react components, e.g. `import SendIcon from "~icons/mingcute/send-plane-line";`
+   - use mingcute icon if possible
+   - if you don't know what name a mingcute (or other icon) is, leave a placeholder there, and a `/* TODO icon placeholder */` comment. I'll find and replace them

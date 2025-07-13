@@ -1,0 +1,36 @@
+{
+  "name": "api",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsdown",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "files": [
+    "dist",
+    "drizzle"
+  ],
+  "dependencies": {
+    "@hono/node-server": "^1.14.4",
+    "@libsql/client": "^0.15.9",
+    "@repo/api-datatypes": "workspace:*",
+    "@repo/markdown": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "^0.44.2",
+    "hono": "^4.7.11",
+    "spark-md5": "^3.0.2",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.44.2",
+    "@types/node": "^20.11.17",
+    "@types/spark-md5": "^3.0.5",
+    "drizzle-kit": "^0.31.1",
+    "tsdown": "^0.12.9",
+    "tsx": "^4.20.3",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

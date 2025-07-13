@@ -1,0 +1,9 @@
+---
+description: 
+globs: app/admin/**/*.ts,app/admin/**/*.tsx
+alwaysApply: false
+---
+- Use shadcn components if possible.
+- Use tanstack query for api requests
+- use framer motion is possible
+- use lucide icons
