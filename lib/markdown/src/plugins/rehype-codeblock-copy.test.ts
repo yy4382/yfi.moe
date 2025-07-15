@@ -3,11 +3,9 @@ import { rehypeCodeblockCopy } from "./rehype-codeblock-copy";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
-import rehypeStringify from "rehype-stringify";
 import rehypeShiki from "@shikijs/rehype";
-import { rehypeHast } from "./rehype-hast";
-import rehypeRaw from "rehype-raw";
 import rehypeRemoveComments from "rehype-remove-comments";
+import rehypeStringify from "rehype-stringify";
 
 describe("rehypeCodeblockCopy", () => {
   it("should add a copy button to code blocks", async () => {
@@ -18,30 +16,26 @@ describe("rehypeCodeblockCopy", () => {
 console.log("Hello, world!");
 \`\`\`
     `;
-    const hast = await unified()
+    const vfile = await unified()
       .use(remarkParse)
       .use(remarkRehype)
       .use(rehypeCodeblockCopy)
-      .use(rehypeHast, {
-        removePosition: true,
-      })
+      .use(rehypeStringify)
       .process(md);
-    expect(JSON.stringify(JSON.parse(String(hast)), null, 2)).toMatchSnapshot();
+    expect(String(vfile)).toMatchSnapshot();
   });
   it("should not add button to non-code blocks", async () => {
     const md = `
 # abc
 a \`inline\` code block
 `;
-    const hast = await unified()
+    const vfile = await unified()
       .use(remarkParse)
       .use(remarkRehype)
       .use(rehypeCodeblockCopy)
-      .use(rehypeHast, {
-        removePosition: true,
-      })
+      .use(rehypeStringify)
       .process(md);
-    expect(JSON.stringify(JSON.parse(String(hast)), null, 2)).toMatchSnapshot();
+    expect(String(vfile)).toMatchSnapshot();
   });
   it("should work with shiki", async () => {
     const md = `
@@ -50,7 +44,7 @@ console.log("Hello, world!");
 // comment
 \`\`\`
     `;
-    const hast = await unified()
+    const vfile = await unified()
       .use(remarkParse)
       .use(remarkRehype)
       .use(rehypeRemoveComments)
@@ -58,10 +52,8 @@ console.log("Hello, world!");
         theme: "catppuccin-macchiato",
       })
       .use(rehypeCodeblockCopy)
-      .use(rehypeHast, {
-        removePosition: true,
-      })
+      .use(rehypeStringify)
       .process(md);
-    expect(JSON.stringify(JSON.parse(String(hast)), null, 2)).toMatchSnapshot();
+    expect(String(vfile)).toMatchSnapshot();
   });
 });

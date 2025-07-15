@@ -1,0 +1,50 @@
+import {
+  getPageCollection,
+  getPostCollection,
+} from "@/lib/content-layer/collections";
+import type { MetadataRoute } from "next";
+const origin = "https://yfi.moe";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const posts = await getPostCollection({ includeDraft: false });
+  const tags = [...new Set(posts.map((post) => post.data.tags).flat())];
+  const pages = await getPageCollection();
+  return [
+    {
+      url: origin,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      url: `${origin}/tags`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${origin}/post`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    ...posts.map((post): MetadataRoute.Sitemap[0] => ({
+      url: `${origin}/post/${post.id}`,
+      lastModified: post.data.date,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    })),
+    ...tags.map((tag): MetadataRoute.Sitemap[0] => ({
+      url: `${origin}/tags/${tag}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    })),
+    ...pages.map((page): MetadataRoute.Sitemap[0] => ({
+      url: `${origin}/${page.id}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    })),
+  ];
+}

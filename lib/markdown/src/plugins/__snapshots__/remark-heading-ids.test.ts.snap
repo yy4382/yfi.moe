@@ -1,0 +1,89 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`remarkHeadingIds > should add custom ids 2`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "position": undefined,
+          "type": "text",
+          "value": "Hello",
+        },
+      ],
+      "data": {
+        "hProperties": {
+          "id": "custom-id",
+        },
+      },
+      "depth": 1,
+      "position": undefined,
+      "type": "heading",
+    },
+  ],
+  "position": undefined,
+  "type": "root",
+}
+`;
+
+exports[`remarkHeadingIds > should add ids to headings 2`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "position": undefined,
+          "type": "text",
+          "value": "Hello",
+        },
+      ],
+      "data": {
+        "hProperties": {
+          "id": "hello",
+        },
+      },
+      "depth": 2,
+      "position": undefined,
+      "type": "heading",
+    },
+  ],
+  "position": undefined,
+  "type": "root",
+}
+`;
+
+exports[`remarkHeadingIds > should handle complicated custom ids 2`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "position": undefined,
+          "type": "text",
+          "value": "Hello",
+        },
+        {
+          "position": undefined,
+          "type": "inlineCode",
+          "value": "id",
+        },
+        {
+          "position": undefined,
+          "type": "text",
+          "value": "",
+        },
+      ],
+      "data": {
+        "hProperties": {
+          "id": "custom-id",
+        },
+      },
+      "depth": 1,
+      "position": undefined,
+      "type": "heading",
+    },
+  ],
+  "position": undefined,
+  "type": "root",
+}
+`;

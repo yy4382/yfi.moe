@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /tags/
+
+Sitemap: https://yfi.moe/sitemap.xml

@@ -1,18 +1,22 @@
-import type { Root } from "hast";
-import { visit } from "unist-util-visit";
+import type { Root as HastRoot, Node } from "hast";
+import type { Processor } from "unified";
+import { removePosition as removePositionUtil } from "unist-util-remove-position";
 
-export function rehypeHast({ removePosition }: { removePosition: boolean }) {
-  // @ts-expect-error this is a plugin
-  const self = this;
-  function compiler(tree: Root) {
-    if (removePosition) {
-      visit(tree, (node) => {
-        if ("position" in node) {
-          node.position = undefined;
-        }
-      });
-    }
-    return JSON.stringify(tree);
+declare module "unified" {
+  interface CompileResultMap {
+    HastRoot: HastRoot;
   }
-  self.compiler = compiler;
+}
+
+export function rehypeHast(
+  this: Processor,
+  { removePosition }: { removePosition: boolean },
+) {
+  function compiler(tree: Node): HastRoot {
+    if (removePosition) {
+      removePositionUtil(tree);
+    }
+    return tree as HastRoot;
+  }
+  this.compiler = compiler;
 }

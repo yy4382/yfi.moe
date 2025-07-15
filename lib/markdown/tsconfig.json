@@ -16,6 +16,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
 
     /* If NOT transpiling with TypeScript: */
     "module": "preserve",
