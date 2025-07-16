@@ -40,7 +40,7 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
-  app/blog-next:
+  app/blog:
     dependencies:
       '@next/third-parties':
         specifier: ^15.4.1
