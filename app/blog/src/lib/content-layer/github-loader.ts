@@ -109,6 +109,9 @@ export class GithubCollection<T extends { slug: string }>
 
   private async fetchCollectionRedis() {
     const cacheKey = `content-layer:${this.collectionId}`;
+    console.info(
+      `[GithubCollection-${this.collectionId}] Reaching Redis for list`,
+    );
     const cached = await redis.get(cacheKey);
     if (cached) {
       console.debug(
@@ -141,6 +144,9 @@ export class GithubCollection<T extends { slug: string }>
     slug: string,
   ): Promise<ContentLayerItem<T> | null> {
     const cacheKey = `content-layer:${this.collectionId}:${slug}`;
+    console.info(
+      `[GithubCollection-${this.collectionId}] Reaching Redis for entry: ${slug}`,
+    );
     const cached = await redis.get(cacheKey);
     if (cached) {
       console.debug(

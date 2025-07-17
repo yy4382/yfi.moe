@@ -1,6 +1,6 @@
 import rehypeStringify from "rehype-stringify";
 import { rehypeHast } from "./plugins/rehype-hast";
-import { ArticlePreset } from "./preset";
+import { ArticlePreset, ArticlePresetFast } from "./preset";
 import type { MarkdownHeading } from "./plugins/remark-heading-ids";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -8,14 +8,17 @@ import { remarkHeadingIds } from "./plugins/remark-heading-ids";
 import { VFile } from "vfile";
 import type { Root } from "hast";
 
-export const markdownToHast = async (rawContent: string) => {
+export const markdownToHast = async (
+  rawContent: string,
+  { fast = false }: { fast?: boolean } = {},
+) => {
+  const preset = fast ? ArticlePresetFast : ArticlePreset;
+
   const hastVfile = await unified()
     .use(remarkParse)
-    .use(ArticlePreset)
-    .use(rehypeHast, {
-      removePosition: true,
-    })
-    .process(structuredClone(rawContent));
+    .use(preset)
+    .use(rehypeHast, { removePosition: true })
+    .process(rawContent);
 
   return hastVfile.result as Root;
 };

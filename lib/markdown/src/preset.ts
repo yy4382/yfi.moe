@@ -90,3 +90,11 @@ export const ArticlePreset: Preset = {
     rehypeCodeblockCopy,
   ],
 };
+
+export const ArticlePresetFast: Preset = {
+  plugins: [
+    remarkGfm,
+    remarkGithubAlerts,
+    [remarkRehype, { allowDangerousHtml: true }],
+  ],
+};

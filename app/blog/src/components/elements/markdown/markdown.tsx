@@ -12,10 +12,18 @@ import { after } from "next/server";
 
 const redis = Redis.fromEnv();
 
-export async function Markdown({ text }: { text: string }) {
-  const file = await unstable_cache(async (text: string) => {
+export async function Markdown({
+  text,
+  fast = false,
+}: {
+  text: string;
+  fast?: boolean;
+}) {
+  const file = await unstable_cache(async (text: string, fast: boolean) => {
     const perfStart = performance.now();
-    const hast = await getHast(text);
+    const hast = fast
+      ? await markdownToHast(text, { fast })
+      : await getHast(text);
     const perfEnd = performance.now();
     if (perfEnd - perfStart > 50) {
       console.debug(
@@ -25,7 +33,7 @@ export async function Markdown({ text }: { text: string }) {
       );
     }
     return hast;
-  })(text);
+  })(text, fast);
 
   const Comp = toJsxRuntime(file, {
     Fragment,
