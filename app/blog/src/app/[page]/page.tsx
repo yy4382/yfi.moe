@@ -8,6 +8,14 @@ import { cache } from "react";
 
 const getEntry = cache((slug: string) => pageCollection.getEntry(slug));
 
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  const pages = await pageCollection.getCollection();
+  return pages.map((page) => ({ page: page.id }));
+}
+export const dynamic = "force-static";
+
 export async function generateMetadata({
   params,
 }: {

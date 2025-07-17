@@ -14,6 +14,14 @@ import { cache } from "react";
 
 const getEntry = cache((slug: string) => postCollection.getEntry(slug));
 
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  const posts = await postCollection.getCollection();
+  return posts.map((post) => ({ slug: post.id }));
+}
+export const dynamic = "force-static";
+
 export async function generateMetadata({
   params,
 }: {

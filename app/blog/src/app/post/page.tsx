@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 interface PostListPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
+export const revalidate = 86400;
 
 export default async function PostListPage({
   searchParams,

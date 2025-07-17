@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = "force-static";
+export const revalidate = 86400;
+
 export default async function TagsPage() {
   const posts = await postCollection.getCollection();
   const allTags = posts.reduce(

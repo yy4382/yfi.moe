@@ -16,6 +16,10 @@ export const size = {
 
 export const contentType = "image/png";
 
+export const revalidate = 86400;
+
+export const dynamic = "force-static";
+
 const logoDataUrl = `data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`;
 const clickDataUrl = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0xMSAyMUw0IDRsMTcgN2wtNi4yNjUgMi42ODVhMiAyIDAgMCAwLTEuMDUgMS4wNXoiLz48L3N2Zz4=`;
 

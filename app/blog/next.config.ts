@@ -21,7 +21,12 @@ const nextConfig: NextConfig = {
     return config;
   },
   compiler: {
-    removeConsole: false,
+    removeConsole: { exclude: ["error", "warn"] },
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
 };
 

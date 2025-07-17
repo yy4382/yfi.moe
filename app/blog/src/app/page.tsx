@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils/cn";
 import readingTime from "reading-time";
 import Link from "next/link";
 
+export const revalidate = 86400;
+
 export default async function Home() {
   const posts = await postCollection.getCollectionWithBody();
   const firstData = posts[0].data.date;
