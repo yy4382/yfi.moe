@@ -14,10 +14,11 @@ import Sign from "@/assets/signature-yunfi.svg?source";
 import { ClassValue } from "clsx";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { Post } from "@/lib/content-layer/collections";
+import type { PostData } from "@/lib/content-layer/collections";
 import { markdownToHeadings } from "@repo/markdown/parse";
 import Toc from "./toc/Toc";
 import { PrevNextIndicator } from "./prev-next-indicator";
+import type { ContentLayerListItem } from "@/lib/content-layer/define-collection";
 
 type ArticleHeroProps = {
   title: string;
@@ -86,7 +87,13 @@ function CopyrightCard() {
   );
 }
 
-function PrevNext({ prev, next }: { prev?: Post; next?: Post }) {
+function PrevNext({
+  prev,
+  next,
+}: {
+  prev?: ContentLayerListItem<PostData>;
+  next?: ContentLayerListItem<PostData>;
+}) {
   return (
     <div className="border-b border-container">
       <div

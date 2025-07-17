@@ -4,7 +4,7 @@ import { join } from "node:path";
 // @ts-expect-error svg source
 import logo from "@/assets/logo.svg?source";
 import { notFound } from "next/navigation";
-import { getPostCollection } from "@/lib/content-layer/collections";
+import { postCollection } from "@/lib/content-layer/collections";
 import { format } from "date-fns";
 
 // Image metadata
@@ -22,8 +22,7 @@ const clickDataUrl = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53
 // Image generation
 export default async function Image({ params }: { params: { slug: string } }) {
   const { slug } = params;
-  const posts = await getPostCollection({ includeDraft: false });
-  const post = posts.find((p) => p.id === slug);
+  const post = await postCollection.getEntry(slug);
   if (!post) {
     return notFound();
   }

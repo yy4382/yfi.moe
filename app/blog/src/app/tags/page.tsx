@@ -1,6 +1,6 @@
 import { ListHero } from "@/components/elements/list-view/post-list-layout";
 import { Card } from "@/components/ui/card";
-import { getPostCollection } from "@/lib/content-layer/collections";
+import { postCollection } from "@/lib/content-layer/collections";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TagsPage() {
-  const posts = await getPostCollection({ includeDraft: false });
+  const posts = await postCollection.getCollection();
   const allTags = posts.reduce(
     (acc, post) => {
       post.data.tags.forEach((tag) => {

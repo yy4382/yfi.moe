@@ -1,10 +1,11 @@
 import { Card } from "@/components/ui/card";
-import { Post } from "@/lib/content-layer/collections";
+import type { PostData } from "@/lib/content-layer/collections";
 import { EntryListItem } from "./post-list-item";
 import { Pagination } from "./pagination";
+import type { ContentLayerListItem } from "@/lib/content-layer/define-collection";
 
 type ListLayoutProps = ListHeroProps & {
-  posts: Post[];
+  posts: ContentLayerListItem<PostData>[];
   currentPage?: number;
   totalPages?: number;
   baseUrl: string;

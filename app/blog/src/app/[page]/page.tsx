@@ -2,8 +2,11 @@ import {
   ArticleContent,
   ArticleHero,
 } from "@/components/elements/article-view/article";
-import { getPageCollection } from "@/lib/content-layer/collections";
+import { pageCollection } from "@/lib/content-layer/collections";
 import { notFound } from "next/navigation";
+import { cache } from "react";
+
+const getEntry = cache((slug: string) => pageCollection.getEntry(slug));
 
 export async function generateMetadata({
   params,
@@ -11,8 +14,7 @@ export async function generateMetadata({
   params: Promise<{ page: string }>;
 }) {
   const { page: pageParam } = await params;
-  const pages = await getPageCollection();
-  const page = pages.find((p) => p.id === pageParam);
+  const page = await getEntry(pageParam);
   if (!page) {
     return notFound();
   }
@@ -28,8 +30,10 @@ export default async function Page({
 }) {
   const { page: pageParam } = await params;
 
-  const pages = await getPageCollection();
-  const page = pages.find((p) => p.id === pageParam);
+  const prefStart = performance.now();
+  const page = await getEntry(pageParam);
+  const prefEnd = performance.now();
+  console.debug("[Page] page fetch time", pageParam, prefEnd - prefStart, "ms");
   if (!page) {
     return notFound();
   }

@@ -9,13 +9,22 @@
         "VERCEL_ENV",
         "ARTICLE_PAT",
         "POST_GH_INFO",
-        "PAGE_GH_INFO"
+        "PAGE_GH_INFO",
+        "UPSTASH_REDIS_REST_URL",
+        "UPSTASH_REDIS_REST_TOKEN"
       ]
     },
     "dev": {
       "persistent": true,
       "cache": false,
-      "env": ["LOCAL_PREVIEW", "VERCEL_ENV", "POST_GH_INFO", "PAGE_GH_INFO"]
+      "env": [
+        "LOCAL_PREVIEW",
+        "VERCEL_ENV",
+        "POST_GH_INFO",
+        "PAGE_GH_INFO",
+        "UPSTASH_REDIS_REST_TOKEN",
+        "UPSTASH_REDIS_REST_URL"
+      ]
     },
     "check-types": {
       "dependsOn": ["^check-types"],

@@ -1,14 +1,14 @@
 import {
-  getPageCollection,
-  getPostCollection,
+  pageCollection,
+  postCollection,
 } from "@/lib/content-layer/collections";
 import type { MetadataRoute } from "next";
 const origin = "https://yfi.moe";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = await getPostCollection({ includeDraft: false });
+  const posts = await postCollection.getCollection();
   const tags = [...new Set(posts.map((post) => post.data.tags).flat())];
-  const pages = await getPageCollection();
+  const pages = await pageCollection.getCollection();
   return [
     {
       url: origin,

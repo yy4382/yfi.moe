@@ -1,4 +1,4 @@
-import { getPostCollection } from "@/lib/content-layer/collections";
+import { postCollection } from "@/lib/content-layer/collections";
 import { ListLayout } from "@/components/elements/list-view/post-list-layout";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -19,9 +19,7 @@ export default async function PostListPage({
   searchParams,
 }: PostListPageProps) {
   const { page = 1 } = searchParamsCache.parse(await searchParams);
-  const allPosts = (
-    await getPostCollection({ includeDraft: false })
-  ).toReversed();
+  const allPosts = await postCollection.getCollection();
 
   const postsPerPage = 20;
   const totalPosts = allPosts.length;

@@ -3,7 +3,7 @@ import { authorName, contactInfo } from "@/config/author";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
 import { format } from "date-fns";
-import { getPostCollection } from "@/lib/content-layer/collections";
+import { postCollection } from "@/lib/content-layer/collections";
 import { projects } from "@/config/author";
 import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
@@ -11,7 +11,7 @@ import readingTime from "reading-time";
 import Link from "next/link";
 
 export default async function Home() {
-  const posts = await getPostCollection({ includeDraft: false });
+  const posts = await postCollection.getCollectionWithBody();
   const firstData = posts[0].data.date;
   const statistics = {
     articles: posts.length,

@@ -1,6 +1,6 @@
 import {
-  getPageCollection,
-  getPostCollection,
+  pageCollection,
+  postCollection,
 } from "@/lib/content-layer/collections";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -13,8 +13,10 @@ export async function POST(request: NextRequest) {
   }
   revalidateTag(`github-content-getter`);
 
+  await Promise.all([postCollection.clearCache(), pageCollection.clearCache()]);
+
   // warm the cache (don't wait)
-  Promise.all([getPostCollection({ includeDraft: true }), getPageCollection()])
+  Promise.all([postCollection.getCollection(), pageCollection.getCollection()])
     .then(() => {
       console.log("content warmed by revalidate-content");
     })

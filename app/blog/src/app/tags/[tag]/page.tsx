@@ -1,5 +1,5 @@
 import { ListLayout } from "@/components/elements/list-view/post-list-layout";
-import { getPostCollection } from "@/lib/content-layer/collections";
+import { postCollection } from "@/lib/content-layer/collections";
 import { notFound, redirect } from "next/navigation";
 import { searchParamsCache } from "./search-params";
 
@@ -28,7 +28,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
   const tag = decodeURIComponent(tagEncoded);
   const { page = 1 } = searchParamsCache.parse(await searchParams);
 
-  const posts = await getPostCollection({ includeDraft: false });
+  const posts = await postCollection.getCollection();
   const postsWithTag = posts.filter((post) => post.data.tags.includes(tag));
 
   if (postsWithTag.length === 0) {

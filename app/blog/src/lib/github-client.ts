@@ -14,7 +14,6 @@ export type Options = {
 
 const createFetcher = (pat: string) => {
   return async (...args: Parameters<typeof fetch>) => {
-    const perfStart = performance.now();
     const response = await fetch(args[0], {
       ...args[1],
       headers: {
@@ -25,10 +24,6 @@ const createFetcher = (pat: string) => {
       },
     });
     const json = await response.json();
-    const perfEnd = performance.now();
-    if (process.env.NODE_ENV === "development" && perfEnd - perfStart > 50) {
-      console.debug(`${args[0]} took ${perfEnd - perfStart}ms`);
-    }
     return json;
   };
 };

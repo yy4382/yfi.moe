@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
     );
     return config;
   },
+  compiler: {
+    removeConsole: false,
+  },
 };
 
 export default nextConfig;
