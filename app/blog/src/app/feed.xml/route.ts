@@ -2,6 +2,9 @@ import { postCollection } from "@/lib/content-layer/collections";
 import getRssResponse from "@/lib/rss";
 import { markdownToHtml } from "@repo/markdown/parse";
 
+export const dynamic = "error";
+export const revalidate = 86400;
+
 export async function GET() {
   const entries = await postCollection.getCollectionWithBody();
   const items = [];

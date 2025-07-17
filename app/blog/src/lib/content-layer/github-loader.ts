@@ -13,7 +13,7 @@ import {
 import { Redis } from "@upstash/redis";
 import { yellow, blue } from "kleur/colors";
 
-const redis = Redis.fromEnv();
+const redis = Redis.fromEnv({ cache: "force-cache" });
 
 export class GithubCollection<T extends { slug: string }>
   implements ContentCollection<T>

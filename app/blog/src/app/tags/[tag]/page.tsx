@@ -19,6 +19,7 @@ export async function generateMetadata({
 }
 
 export const revalidate = 86400;
+
 interface TagPageProps {
   params: Promise<{ tag: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

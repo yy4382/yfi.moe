@@ -11,6 +11,7 @@ import readingTime from "reading-time";
 import Link from "next/link";
 
 export const revalidate = 86400;
+export const dynamic = "error";
 
 export default async function Home() {
   const posts = await postCollection.getCollectionWithBody();

@@ -20,7 +20,7 @@ export async function generateStaticParams() {
   const posts = await postCollection.getCollection();
   return posts.map((post) => ({ slug: post.id }));
 }
-export const dynamic = "force-static";
+export const dynamic = "error";
 
 export async function generateMetadata({
   params,

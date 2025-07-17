@@ -10,7 +10,7 @@ import { markdownToHast } from "@repo/markdown/parse";
 import { Redis } from "@upstash/redis";
 import { after } from "next/server";
 
-const redis = Redis.fromEnv();
+const redis = Redis.fromEnv({ cache: "force-cache" });
 
 export async function Markdown({
   text,

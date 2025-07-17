@@ -14,7 +14,7 @@ export async function generateStaticParams() {
   const pages = await pageCollection.getCollection();
   return pages.map((page) => ({ page: page.id }));
 }
-export const dynamic = "force-static";
+export const dynamic = "error";
 
 export async function generateMetadata({
   params,

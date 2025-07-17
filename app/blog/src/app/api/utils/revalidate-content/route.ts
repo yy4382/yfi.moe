@@ -2,7 +2,7 @@ import {
   pageCollection,
   postCollection,
 } from "@/lib/content-layer/collections";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -11,7 +11,8 @@ export async function POST(request: NextRequest) {
     console.log(token, process.env.CONTENT_REFRESH_TOKEN);
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-  revalidateTag(`github-content-getter`);
+
+  revalidatePath("/", "layout");
 
   await Promise.all([postCollection.clearCache(), pageCollection.clearCache()]);
 
