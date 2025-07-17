@@ -20,10 +20,16 @@ export function ListLayout({
 }: ListLayoutProps) {
   return (
     <div>
-      <ListHero {...props} />
-      {posts.map((post) => (
-        <EntryListItem key={post.id} post={post} />
-      ))}
+      <div className="border-b border-container">
+        <ListHero {...props} />
+        {posts.map((post, i) => (
+          <EntryListItem
+            key={post.id}
+            post={post}
+            className={i === posts.length - 1 ? "border-b-0" : ""}
+          />
+        ))}
+      </div>
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}

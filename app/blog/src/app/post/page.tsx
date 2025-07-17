@@ -22,6 +22,8 @@ export default async function PostListPage({
   const { page = 1 } = searchParamsCache.parse(await searchParams);
   const allPosts = await postCollection.getCollection();
 
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
+
   const postsPerPage = 20;
   const totalPosts = allPosts.length;
   const totalPages = Math.ceil(totalPosts / postsPerPage);
