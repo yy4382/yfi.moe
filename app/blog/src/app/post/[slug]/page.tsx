@@ -51,7 +51,6 @@ export default async function PostPage({
   if (prefEnd - prefStart > 50) {
     console.warn("[PostPage] post fetch time", slug, prefEnd - prefStart, "ms");
   }
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
   if (!post) {
     return notFound();
   }

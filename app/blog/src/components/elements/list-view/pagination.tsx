@@ -5,7 +5,6 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   baseUrl: string;
-  searchParams?: { [key: string]: string | string[] | undefined };
   className?: string;
 }
 
@@ -13,7 +12,6 @@ export function Pagination({
   currentPage,
   totalPages,
   baseUrl,
-  searchParams = {},
   className = "",
 }: PaginationProps) {
   if (totalPages <= 1) return null;
@@ -55,26 +53,9 @@ export function Pagination({
   if (r < totalPages) pages.push(totalPages);
 
   const buildPageUrl = (page: number) => {
-    const params = new URLSearchParams();
-
-    // Copy existing search params
-    Object.entries(searchParams).forEach(([key, value]) => {
-      if (key !== "page" && value !== undefined) {
-        if (Array.isArray(value)) {
-          value.forEach((v) => params.append(key, v));
-        } else {
-          params.set(key, value);
-        }
-      }
-    });
-
-    // Add page param if not first page
-    if (page > 1) {
-      params.set("page", page.toString());
-    }
-
-    const queryString = params.toString();
-    return `${baseUrl}${queryString ? `?${queryString}` : ""}`;
+    // Page 1: use baseUrl directly (e.g., /posts)
+    // Page 2+: append page number (e.g., /posts/2)
+    return page === 1 ? baseUrl : `${baseUrl}/${page}`;
   };
 
   const prevPage = currentPage > 1 ? currentPage - 1 : undefined;

@@ -1,8 +1,4 @@
 export const siteDomain = "https://yfi.moe";
-export const sitePaths = {
-  postPrefix: "/post",
-  postList: "/post",
-};
 
 export const siteConfig = {
   title: "Yunfi",

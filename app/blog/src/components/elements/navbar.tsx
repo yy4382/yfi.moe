@@ -32,7 +32,7 @@ export default function Navbar() {
           </li>
           <li>
             <LinkActive
-              href="/post"
+              href="/posts"
               className={clsx([
                 "data-[active=true]:text-content-primary",
                 "text-content-50 transition-colors hover:text-content-primary",

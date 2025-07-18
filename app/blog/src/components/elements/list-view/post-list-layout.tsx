@@ -6,15 +6,15 @@ import type { ContentLayerListItem } from "@/lib/content-layer/define-collection
 
 type ListLayoutProps = ListHeroProps & {
   posts: ContentLayerListItem<PostData>[];
-  currentPage?: number;
-  totalPages?: number;
+  currentPage: number;
+  totalPages: number;
   baseUrl: string;
 };
 
 export function ListLayout({
   posts,
-  currentPage = 1,
-  totalPages = 1,
+  currentPage,
+  totalPages,
   baseUrl,
   ...props
 }: ListLayoutProps) {

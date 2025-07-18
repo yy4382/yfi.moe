@@ -133,7 +133,7 @@ function StatisticsSection({
         </div>
         <Link
           className="flex center gap-1 card-btn py-6 font-semibold"
-          href="/post"
+          href="/posts"
         >
           文章列表 <ExternalLink size={20} />
         </Link>
