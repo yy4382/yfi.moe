@@ -38,10 +38,7 @@ export default async function Page({
 }) {
   const { page: pageParam } = await params;
 
-  const prefStart = performance.now();
   const page = await getEntry(pageParam);
-  const prefEnd = performance.now();
-  console.debug("[Page] page fetch time", pageParam, prefEnd - prefStart, "ms");
   if (!page) {
     return notFound();
   }

@@ -8,7 +8,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const token = request.headers.get("Authorization");
   if (token !== `Bearer ${process.env.CONTENT_REFRESH_TOKEN}`) {
-    console.log(token, process.env.CONTENT_REFRESH_TOKEN);
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 

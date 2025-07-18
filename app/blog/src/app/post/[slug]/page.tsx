@@ -44,13 +44,7 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const prefStart = performance.now();
   const post = await getEntry(slug);
-  const prefEnd = performance.now();
-  console.debug("[PostPage] post fetch time", slug, prefEnd - prefStart, "ms");
-  if (prefEnd - prefStart > 50) {
-    console.warn("[PostPage] post fetch time", slug, prefEnd - prefStart, "ms");
-  }
   if (!post) {
     return notFound();
   }
@@ -68,13 +62,7 @@ export default async function PostPage({
 }
 
 async function PrevNextGetter({ id }: { id: string }) {
-  const prefStart = performance.now();
   const posts = await postCollection.getCollection();
-  const prefEnd = performance.now();
-  console.debug("[PrevNextGetter] fetch", id, prefEnd - prefStart, "ms");
-  if (prefEnd - prefStart > 50) {
-    console.warn("[PrevNextGetter] fetch", id, prefEnd - prefStart, "ms");
-  }
   const postIndex = posts.findIndex((p) => p.id === id);
   const prev = postIndex > 0 ? posts[postIndex - 1] : undefined;
   const next = postIndex < posts.length - 1 ? posts[postIndex + 1] : undefined;
