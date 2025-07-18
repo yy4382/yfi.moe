@@ -11,7 +11,9 @@
         "POST_GH_INFO",
         "PAGE_GH_INFO",
         "UPSTASH_REDIS_REST_URL",
-        "UPSTASH_REDIS_REST_TOKEN"
+        "UPSTASH_REDIS_REST_TOKEN",
+        "NEXT_PUBLIC_POSTHOG_KEY",
+        "NEXT_PUBLIC_POSTHOG_HOST"
       ]
     },
     "dev": {
@@ -23,7 +25,9 @@
         "POST_GH_INFO",
         "PAGE_GH_INFO",
         "UPSTASH_REDIS_REST_TOKEN",
-        "UPSTASH_REDIS_REST_URL"
+        "UPSTASH_REDIS_REST_URL",
+        "NEXT_PUBLIC_POSTHOG_KEY",
+        "NEXT_PUBLIC_POSTHOG_HOST"
       ]
     },
     "check-types": {

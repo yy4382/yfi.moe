@@ -3,8 +3,8 @@ import "./globals.css";
 import Navbar from "@/components/elements/navbar";
 import Footer from "@/components/elements/footer/footer";
 import { getOpenGraph } from "./metadata";
-import { umamiConfig, googleMeasurementId } from "@/config/track";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { umamiConfig /*, googleMeasurementId*/ } from "@/config/track";
+// import { GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
 
 export const metadata: Metadata = {
@@ -58,10 +58,10 @@ function TrackingTags() {
         data-website-id={umamiConfig.websiteId}
         data-domains={umamiConfig.domains.join(",")}
       />
-      <GoogleAnalytics
+      {/* <GoogleAnalytics
         gaId={googleMeasurementId}
         debugMode={process.env.VERCEL_ENV !== "production"}
-      />
+      /> */}
       <Script id="microsoft-clarity">
         {`(function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
