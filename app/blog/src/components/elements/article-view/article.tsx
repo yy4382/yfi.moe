@@ -16,7 +16,7 @@ import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { PostData } from "@/lib/content-layer/collections";
 import { markdownToHeadings } from "@repo/markdown/parse";
-import Toc from "./toc/Toc";
+import Toc from "./toc";
 import { PrevNextIndicator } from "./prev-next-indicator";
 import type { ContentLayerListItem } from "@/lib/content-layer/define-collection";
 
