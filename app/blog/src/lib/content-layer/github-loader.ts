@@ -118,8 +118,48 @@ export class GithubCollection<T extends { slug: string }>
         blue("[GithubCollection cache redis] getCollection redis cache hit"),
         this.collectionId,
       );
-      this.listCache = cached as ContentLayerListItem<T>[];
-      return cached as ContentLayerListItem<T>[];
+
+      // Validate cached data using schema
+      try {
+        const cachedList = cached as ContentLayerListItem<T>[];
+        const validationErrors: string[] = [];
+
+        for (const item of cachedList) {
+          const parseResult = this.schema.safeParse(item.data);
+          if (!parseResult.success) {
+            validationErrors.push(
+              `Item ${item.id}: ${z.prettifyError(parseResult.error)}`,
+            );
+          }
+        }
+
+        if (validationErrors.length > 0) {
+          console.warn(
+            yellow(
+              `[GithubCollection-${this.collectionId}] Redis cache validation failed for list:`,
+            ),
+            validationErrors,
+          );
+          // Clear invalid cache and fetch from source
+          await this.clearCache();
+          const [list] = await this.fetchFromSourceAndSetCacheAtomic();
+          return list;
+        }
+
+        this.listCache = cachedList;
+        return cachedList;
+      } catch (error) {
+        console.warn(
+          yellow(
+            `[GithubCollection-${this.collectionId}] Redis cache validation error for list:`,
+          ),
+          error,
+        );
+        // Clear invalid cache and fetch from source
+        await this.clearCache();
+        const [list] = await this.fetchFromSourceAndSetCacheAtomic();
+        return list;
+      }
     }
     console.debug(
       yellow(
@@ -154,11 +194,42 @@ export class GithubCollection<T extends { slug: string }>
         this.collectionId,
         slug,
       );
-      this.entryCache = {
-        ...this.entryCache,
-        [slug]: cached as ContentLayerItem<T>,
-      };
-      return cached as ContentLayerItem<T>;
+
+      // Validate cached data using schema
+      try {
+        const cachedEntry = cached as ContentLayerItem<T>;
+        const parseResult = this.schema.safeParse(cachedEntry.data);
+
+        if (!parseResult.success) {
+          console.warn(
+            yellow(
+              `[GithubCollection-${this.collectionId}] Redis cache validation failed for entry ${slug}:`,
+            ),
+            z.prettifyError(parseResult.error),
+          );
+          // Clear invalid cache entry and fetch from source
+          await redis.del(cacheKey);
+          const [, entry] = await this.fetchFromSourceAndSetCacheAtomic();
+          return entry[slug] ?? null;
+        }
+
+        this.entryCache = {
+          ...this.entryCache,
+          [slug]: cachedEntry,
+        };
+        return cachedEntry;
+      } catch (error) {
+        console.warn(
+          yellow(
+            `[GithubCollection-${this.collectionId}] Redis cache validation error for entry ${slug}:`,
+          ),
+          error,
+        );
+        // Clear invalid cache entry and fetch from source
+        await redis.del(cacheKey);
+        const [, entry] = await this.fetchFromSourceAndSetCacheAtomic();
+        return entry[slug] ?? null;
+      }
     }
 
     const [, entry] = await this.fetchFromSourceAndSetCacheAtomic();

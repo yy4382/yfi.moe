@@ -8,8 +8,8 @@ const baseSchema = z.object({
   description: z.string().default(""),
   slug: z.string(),
 
-  date: z.date(),
-  updated: z.date().optional(),
+  date: z.coerce.date(),
+  updated: z.coerce.date().optional(),
 
   image: z.string().optional(),
   copyright: z.boolean().default(true),
