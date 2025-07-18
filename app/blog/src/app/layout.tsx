@@ -6,6 +6,7 @@ import { getOpenGraph } from "./metadata";
 import { umamiConfig /*, googleMeasurementId*/ } from "@/config/track";
 // import { GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://yfi.moe"),
@@ -38,12 +39,14 @@ export default function RootLayout({
         className="m-0 overflow-x-hidden bg-bg bg-fixed p-0 text-content"
         style={{ textRendering: "optimizeLegibility" }}
       >
-        <div className="grid min-h-[100lvh] grid-rows-[auto_auto_1fr_auto]">
-          <Navbar />
-          <div className="w-full">{children}</div>
-          <section className="h-full min-h-12 bg-grid border-b border-container" />
-          <Footer />
-        </div>
+        <Providers>
+          <div className="grid min-h-[100lvh] grid-rows-[auto_auto_1fr_auto]">
+            <Navbar />
+            <div className="w-full">{children}</div>
+            <section className="h-full min-h-12 bg-grid border-b border-container" />
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );
