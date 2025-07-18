@@ -1,8 +1,9 @@
-// instrumentation-client.js
 import posthog from "posthog-js";
+import { siteDomain } from "./config/site";
 
 if (
-  process.env.VERCEL_ENV === "production" &&
+  typeof window !== "undefined" &&
+  window.location.origin === siteDomain &&
   process.env.NEXT_PUBLIC_POSTHOG_KEY &&
   process.env.NEXT_PUBLIC_POSTHOG_HOST
 ) {
