@@ -5,7 +5,7 @@ import { compareAsc, compareDesc } from "date-fns";
 
 const baseSchema = z.object({
   title: z.string(),
-  description: z.string().default(""),
+  description: z.string().optional(),
   slug: z.string(),
 
   date: z.date(),
@@ -99,15 +99,15 @@ class PostCollection extends GithubCollection<PostData> {
     }
     return result;
   }
-  protected async fetchFromSource(): Promise<ContentLayerItem<PostData>[]> {
-    const parentResult = await super.fetchFromSource();
-    return parentResult.map((item) => {
-      if (item.data.description === "") {
-        item.data.description = getDesc(item.body);
-      }
-      return item;
-    });
-  }
+  // protected async fetchFromSource(): Promise<ContentLayerItem<PostData>[]> {
+  //   const parentResult = await super.fetchFromSource();
+  //   return parentResult.map((item) => {
+  //     if (item.data.description === "") {
+  //       item.data.description = getDesc(item.body);
+  //     }
+  //     return item;
+  //   });
+  // }
 }
 
 export const postCollection = new PostCollection("posts", postSchema, {
@@ -120,38 +120,38 @@ export const pageCollection = new GithubCollection("pages", pageSchema, {
   pat: process.env.ARTICLE_PAT ?? "",
 });
 
-function truncateAtClosestNewline(str: string, targetPosition = 150) {
-  while (str.startsWith("\n")) {
-    str = str.slice(1);
-  }
-  let newPosition = str.lastIndexOf("\n", targetPosition);
+// function truncateAtClosestNewline(str: string, targetPosition = 150) {
+//   while (str.startsWith("\n")) {
+//     str = str.slice(1);
+//   }
+//   let newPosition = str.lastIndexOf("\n", targetPosition);
 
-  if (newPosition === -1) {
-    newPosition = str.indexOf("\n", targetPosition);
-    if (newPosition === -1) {
-      return str;
-    }
-  }
+//   if (newPosition === -1) {
+//     newPosition = str.indexOf("\n", targetPosition);
+//     if (newPosition === -1) {
+//       return str;
+//     }
+//   }
 
-  // 截取字符串到换行符的位置
-  return str.substring(0, newPosition);
-}
+//   // 截取字符串到换行符的位置
+//   return str.substring(0, newPosition);
+// }
 
-function getDesc(
-  content: string,
-  config?: { length?: number; tryMore?: boolean },
-) {
-  const { length = 70, tryMore = true } = config || {};
-  content = content.trim();
-  if (tryMore) {
-    const moreIndex = content.indexOf("<!--more-->");
-    if (moreIndex !== -1) {
-      content = content.substring(0, moreIndex).trim();
-    } else {
-      content = truncateAtClosestNewline(content, length);
-    }
-  } else {
-    content = truncateAtClosestNewline(content, length);
-  }
-  return content;
-}
+// function getDesc(
+//   content: string,
+//   config?: { length?: number; tryMore?: boolean },
+// ) {
+//   const { length = 70, tryMore = true } = config || {};
+//   content = content.trim();
+//   if (tryMore) {
+//     const moreIndex = content.indexOf("<!--more-->");
+//     if (moreIndex !== -1) {
+//       content = content.substring(0, moreIndex).trim();
+//     } else {
+//       content = truncateAtClosestNewline(content, length);
+//     }
+//   } else {
+//     content = truncateAtClosestNewline(content, length);
+//   }
+//   return content;
+// }

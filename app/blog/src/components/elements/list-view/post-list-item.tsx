@@ -1,6 +1,6 @@
 import type { PostData } from "@/lib/content-layer/collections";
 import Link from "next/link";
-import { Markdown } from "../markdown/markdown";
+// import { Markdown } from "../markdown/markdown";
 import { PostAttrTags, PostAttrTime } from "../article-view/article-attr";
 import type { ContentLayerListItem } from "@/lib/content-layer/define-collection";
 import { cn } from "@/lib/utils/cn";
@@ -29,9 +29,11 @@ export function EntryListItem({
           <PostAttrTime date={post.data.date} updated={post.data.updated} />
           <PostAttrTags tags={post.data.tags} />
         </div>
-        <div className="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert">
-          <Markdown text={post.data.description} />
-        </div>
+        {post.data.description && (
+          <div className="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert">
+            {post.data.description}
+          </div>
+        )}
       </div>
     </div>
   );
