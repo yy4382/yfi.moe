@@ -9,11 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/third-parties": "^15.4.1",
+    "@next/third-parties": "15.4.1",
     "@octokit/openapi-types": "^25.1.0",
     "@repo/markdown": "workspace:*",
     "@tailwindcss/typography": "^0.5.16",
-    "@types/js-yaml": "^4.0.9",
     "@upstash/redis": "^1.35.1",
     "@waline/client": "^3.6.0",
     "class-variance-authority": "^0.7.1",
@@ -25,11 +24,11 @@
     "kleur": "^4.1.5",
     "lucide-react": "^0.525.0",
     "motion": "^12.23.5",
-    "next": "15.3.5",
+    "next": "15.4.1",
     "nuqs": "^2.4.3",
     "radix-ui": "^1.4.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-error-boundary": "^6.0.0",
     "reading-time": "^1.5.0",
     "rehype-react": "^8.0.0",
@@ -39,15 +38,16 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@next/eslint-plugin-next": "^15.4.1",
+    "@next/eslint-plugin-next": "15.4.1",
     "@tailwindcss/postcss": "^4",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.3.5",
+    "eslint-config-next": "15.4.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "catalog:"
   }
 }
