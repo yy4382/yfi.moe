@@ -1,4 +1,4 @@
-import { ListHero } from "@/components/elements/list-view/post-list-layout";
+import { ListHero } from "../post-list-layout";
 import { Card } from "@/components/ui/card";
 import { postCollection } from "@/lib/content-layer/collections";
 import { Metadata } from "next";

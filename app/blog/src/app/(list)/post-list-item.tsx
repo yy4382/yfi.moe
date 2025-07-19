@@ -1,7 +1,7 @@
 import type { PostData } from "@/lib/content-layer/collections";
 import Link from "next/link";
-import { Markdown } from "../markdown/markdown";
-import { PostAttrTags, PostAttrTime } from "../article-view/article-attr";
+import { Markdown } from "@/components/elements/markdown/markdown";
+import { PostAttrTags, PostAttrTime } from "../(article)/article-attr";
 import type { ContentLayerListItem } from "@/lib/content-layer/define-collection";
 import { cn } from "@/lib/utils/cn";
 

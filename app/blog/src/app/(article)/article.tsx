@@ -1,14 +1,14 @@
 import "server-only";
 
 import { cn } from "@/lib/utils/cn";
-import { Card } from "../../ui/card";
+import { Card } from "@/components/ui/card";
 import {
   PostAttrTags,
   PostAttrTagsProps,
   PostAttrTime,
   PostAttrTimeProps,
 } from "./article-attr";
-import { Markdown } from "../markdown/markdown";
+import { Markdown } from "@/components/elements/markdown/markdown";
 // @ts-expect-error svg source not added in types
 import Sign from "@/assets/signature-yunfi.svg?source";
 import { ClassValue } from "clsx";
@@ -16,7 +16,7 @@ import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { PostData } from "@/lib/content-layer/collections";
 import { markdownToHeadings } from "@repo/markdown/parse";
-import Toc from "./toc";
+import Toc from "./(toc)";
 import { PrevNextIndicator } from "./prev-next-indicator";
 import type { ContentLayerListItem } from "@/lib/content-layer/define-collection";
 

@@ -1,4 +1,4 @@
-import { ListLayout } from "@/components/elements/list-view/post-list-layout";
+import { ListLayout } from "../../post-list-layout";
 import { postCollection } from "@/lib/content-layer/collections";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";

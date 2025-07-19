@@ -1,7 +1,8 @@
-import { ListLayout } from "@/components/elements/list-view/post-list-layout";
+import { ListLayout } from "../../../post-list-layout";
 import { postCollection } from "@/lib/content-layer/collections";
 import { notFound, redirect } from "next/navigation";
 import { pagination, paginationPageFromParams } from "@/lib/utils/pagination";
+import { Metadata } from "next";
 
 const postsPerPage = 20;
 
@@ -36,7 +37,7 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ tag: string; page?: string[] }>;
-}) {
+}): Promise<Metadata> {
   const { tag: tagEncoded } = await params;
   const tag = decodeURIComponent(tagEncoded);
   return {

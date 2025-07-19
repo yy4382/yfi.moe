@@ -3,7 +3,7 @@ import {
   ArticleHero,
   CopyrightCard,
   PrevNext,
-} from "@/components/elements/article-view/article";
+} from "../../article";
 
 import { postCollection } from "@/lib/content-layer/collections";
 import { Metadata } from "next";

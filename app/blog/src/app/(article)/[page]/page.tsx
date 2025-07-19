@@ -1,10 +1,8 @@
-import {
-  ArticleContent,
-  ArticleHero,
-} from "@/components/elements/article-view/article";
+import { ArticleContent, ArticleHero } from "../article";
 import { pageCollection } from "@/lib/content-layer/collections";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { Metadata } from "next";
 
 const getEntry = cache((slug: string) => pageCollection.getEntry(slug));
 
@@ -20,7 +18,7 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ page: string }>;
-}) {
+}): Promise<Metadata> {
   const { page: pageParam } = await params;
   const page = await getEntry(pageParam);
   if (!page) {
