@@ -17,12 +17,21 @@ import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
 import { CommentBoxEdit, CommentBoxNew } from "./box";
 import { toast } from "sonner";
 import { motion } from "motion/react";
+import { cn } from "@/lib/utils/cn";
 
 const PER_PAGE = 10;
+
+const SORT_BY_OPTIONS = ["insertedAt_desc", "insertedAt_asc"] as const;
+const SORT_BY_LABELS = {
+  insertedAt_desc: "最新",
+  insertedAt_asc: "最早",
+} as const;
 
 export function CommentList() {
   const { serverURL, url, lang } = useContext(YulineContext);
   const userInfo = useAtomValue(userInfoAtom);
+  const [sortBy, setSortBy] =
+    useState<(typeof SORT_BY_OPTIONS)[number]>("insertedAt_desc");
   const {
     data,
     fetchNextPage,
@@ -39,6 +48,7 @@ export function CommentList() {
       { serverURL, lang },
       { token: userInfo?.token },
       url,
+      sortBy,
     ],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
       const resp = await getComment({
@@ -47,7 +57,7 @@ export function CommentList() {
         path: url,
         page: pageParam,
         pageSize: PER_PAGE,
-        sortBy: "insertedAt_desc",
+        sortBy,
         token: userInfo?.token,
       });
       return resp;
@@ -95,6 +105,22 @@ export function CommentList() {
               <Loader2Icon className="size-6 animate-spin" />
             </span>
           )}
+        </div>
+        <div className="flex items-center gap-2">
+          {SORT_BY_OPTIONS.map((sortByOption) => (
+            <motion.button
+              key={sortByOption}
+              onClick={() => setSortBy(sortByOption)}
+              className={cn(
+                "py-1 text-comment text-sm",
+                sortBy === sortByOption && "text-content-primary",
+              )}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {SORT_BY_LABELS[sortByOption]}
+            </motion.button>
+          ))}
         </div>
       </div>
       {data.pages.map((page) => (
