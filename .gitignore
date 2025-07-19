@@ -31,3 +31,5 @@ app/blog/src/content/post
 
 **/.turbo/
 .vercel
+
+data.local/

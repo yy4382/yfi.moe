@@ -15,7 +15,6 @@ services:
   waline:
     container_name: waline
     image: lizheming/waline:latest
-    restart: always
     ports:
       - 8360:8360
     volumes:
@@ -26,6 +25,5 @@ services:
       JWT_TOKEN: "dev token"
       SITE_NAME: "Yunfi blog"
       SITE_URL: "https://yfi.moe"
-      SECURE_DOMAINS: "localhost:3000"
-      AUTHOR_EMAIL: "yunfi4382@gmail.com"
       DISABLE_REGION: true
+      AKISMET_KEY: false
