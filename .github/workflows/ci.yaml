@@ -64,4 +64,4 @@ jobs:
         with:
           run_install: false
 
-      - run: pnpm dlx sherif@1.5.0
+      - run: pnpm dlx sherif@1.5.0 -r unsync-similar-dependencies

@@ -2,4 +2,6 @@
 # src/content/page
 src/components/icons
 **/.vercel
+**/.next
+**/.turbo
 pnpm-lock.yaml
