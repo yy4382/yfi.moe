@@ -16,6 +16,7 @@ import Image from "next/image";
 import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
 import { CommentBoxEdit, CommentBoxNew } from "./box";
 import { toast } from "sonner";
+import { motion } from "motion/react";
 
 const PER_PAGE = 10;
 
@@ -31,6 +32,7 @@ export function CommentList() {
     isFetching,
     isFetchingNextPage,
     hasNextPage,
+    refetch,
   } = useInfiniteQuery({
     queryKey: [
       "comments",
@@ -39,7 +41,6 @@ export function CommentList() {
       url,
     ],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       const resp = await getComment({
         serverURL,
         lang,
@@ -67,8 +68,16 @@ export function CommentList() {
   }
   if (isError) {
     return (
-      <div className="p-4 text-center text-red-500 mt-6">
+      <div className="p-4 text-center text-red-500 mt-6 flex items-center gap-2 justify-center-safe">
         加载评论失败: {error.message}
+        <motion.button
+          onClick={() => refetch()}
+          className="px-2 py-1 rounded-md shadow-md border border-container text-comment"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          重试
+        </motion.button>
       </div>
     );
   }
@@ -104,18 +113,19 @@ export function CommentList() {
           ))}
         </Fragment>
       ))}
-      <div>
-        <button
-          onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetching}
-        >
-          {isFetchingNextPage
-            ? "加载更多..."
-            : hasNextPage
-              ? "加载更多"
-              : "没有更多了"}
-        </button>
-      </div>
+      {hasNextPage && (
+        <div className="flex justify-center">
+          <motion.button
+            onClick={() => fetchNextPage()}
+            disabled={isFetching}
+            className="px-2 py-1 rounded-md shadow-md border border-container text-comment"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {isFetchingNextPage ? "正在加载..." : "加载更多"}
+          </motion.button>
+        </div>
+      )}
       <div>{isFetching && !isFetchingNextPage ? "加载中..." : null}</div>
     </div>
   );

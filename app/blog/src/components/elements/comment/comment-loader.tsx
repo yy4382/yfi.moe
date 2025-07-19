@@ -13,7 +13,7 @@ export default function Comment() {
 
   return (
     <div ref={ref}>
-      <Card padding="article" className="mx-auto max-w-2xl py-12">
+      <Card padding="article" className="mx-auto max-w-2xl py-12 min-h-72">
         {isInView && process.env.NEXT_PUBLIC_WALINE_URL && (
           <CommentYuline serverURL={process.env.NEXT_PUBLIC_WALINE_URL} />
         )}
