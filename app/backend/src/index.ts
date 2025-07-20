@@ -4,9 +4,12 @@ import { factory } from "./factory";
 import { dbPlugin } from "./db/db-plugin";
 import { betterAuthPlugin } from "./auth/auth-plugin";
 import { cors } from "hono/cors";
-import { serve } from "@hono/node-server/.";
+import { serve } from "@hono/node-server";
+import comments from "./modules/comments";
 
-migrate(db, { migrationsFolder: "./drizzle" });
+await migrate(db, { migrationsFolder: "./drizzle" });
+
+console.log("Migration done.");
 
 const app = factory
   .createApp()
@@ -25,7 +28,8 @@ const app = factory
       maxAge: 600,
       credentials: true,
     }),
-  );
+  )
+  .route("/api/v1/comments", comments);
 
 const server = serve(app);
 
@@ -45,3 +49,5 @@ process.on("SIGTERM", () => {
 });
 
 export type App = typeof app;
+
+console.log("Server started...");

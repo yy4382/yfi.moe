@@ -1,4 +1,3 @@
-import { t, type Static } from "elysia";
 import z from "zod";
 
 export const getCommentsBody = z.object({
