@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { comments } from ".";
 import * as getModule from "./services/get";
+import * as addModule from "./services/add";
 import { treaty } from "@elysiajs/eden";
 
 vi.mock("@/auth/auth-plugin", async () => {
@@ -70,5 +71,48 @@ describe("get comments", () => {
     expect(resp.data?.comments).toHaveLength(1);
     expect(resp.data?.comments[0].id).toBe(1);
     expect(resp.data?.comments[0].children).toHaveLength(1);
+  });
+});
+
+describe("add comment", () => {
+  it("should add comment", async () => {
+    let ipReqGot: string | undefined = undefined;
+    let uaReqGot: string | undefined = undefined;
+    vi.spyOn(addModule, "addComment").mockImplementationOnce(
+      async (_, options) => {
+        ipReqGot = options.ip;
+        uaReqGot = options.ua;
+        return { id: 1 };
+      },
+    );
+    const resp = await treaty(comments).comments.add.post(
+      {
+        path: "/",
+        content: "test",
+      },
+      {
+        headers: {
+          "x-forwarded-for": "127.0.0.11",
+          "user-agent": "test-ua",
+        },
+      },
+    );
+    expect(resp.status).toBe(200);
+    expect(resp.data?.id).toBe(1);
+    expect(ipReqGot).toBe("127.0.0.11");
+    expect(uaReqGot).toBe("test-ua");
+  });
+
+  it("should handle error", async () => {
+    vi.spyOn(addModule, "addComment").mockImplementationOnce(async () => {
+      throw new addModule.AddCommentError("test");
+    });
+    const resp = await treaty(comments).comments.add.post({
+      path: "/",
+      content: "test",
+    });
+
+    expect(resp.status).toBe(400);
+    expect(resp.error?.value.message).toBe("test");
   });
 });
