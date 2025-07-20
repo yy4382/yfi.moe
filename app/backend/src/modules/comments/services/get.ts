@@ -1,5 +1,5 @@
-import type { User } from "../../../auth/auth";
-import type { db as dbType } from "../../../db/instance";
+import type { User } from "@/auth/auth-plugin";
+import type { DbClient } from "@/db/db-plugin";
 import type {
   GetCommentsBody,
   CommentDataUser,
@@ -13,7 +13,7 @@ import crypto from "node:crypto";
 
 export async function getComments(
   body: GetCommentsBody,
-  options: { db: typeof dbType; user: User | null },
+  options: { db: DbClient; user: User | null },
 ): Promise<LayeredCommentList> {
   const { path, limit, offset, sortBy } = body;
   const { db, user } = options;
@@ -29,7 +29,7 @@ export async function getComments(
 }
 
 async function getCommentsDb(
-  db: typeof dbType,
+  db: DbClient,
   currentUser: User | null,
   {
     path,

@@ -1,32 +1,11 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "../db/instance";
-import * as schema from "../db/schema";
-import { admin } from "better-auth/plugins";
+/**
+ * Should not import this file in app
+ * this is only for better-auth's cli to find the config
+ */
 
-export const auth = betterAuth({
-  basePath: "/auth",
-  database: drizzleAdapter(db, {
-    provider: "sqlite",
-    schema: {
-      ...schema,
-    },
-  }),
-  emailAndPassword: {
-    enabled: false,
-  },
-  plugins: [admin()],
-  socialProviders: {
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    },
-  },
-});
+console.error("!!!!!This file (auth.ts) should not be imported in app.!!!!!");
 
-type SessionResult = NonNullable<
-  Awaited<ReturnType<typeof auth.api.getSession>>
->;
+import { db } from "@/db/instance";
+import { createAuth } from "./create-auth";
 
-export type User = SessionResult["user"];
-export type Session = SessionResult["session"];
+export const auth = createAuth(db);

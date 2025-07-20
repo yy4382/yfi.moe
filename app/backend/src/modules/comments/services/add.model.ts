@@ -1,17 +1,17 @@
-import { Static, t } from "elysia";
+import { z } from "zod";
 
-export const addCommentBody = t.Object({
-  path: t.String(),
-  content: t.String({ minLength: 1, maxLength: 500 }),
-  parentId: t.Optional(t.Number()),
-  replyToId: t.Optional(t.Number()),
-  anonymousName: t.Optional(t.String({ minLength: 1, maxLength: 100 })),
-  visitorName: t.Optional(t.String({ minLength: 1, maxLength: 100 })),
-  visitorEmail: t.Optional(t.String({ format: "email" })),
+export const addCommentBody = z.object({
+  path: z.string(),
+  content: z.string().min(1).max(500),
+  parentId: z.number().optional(),
+  replyToId: z.number().optional(),
+  anonymousName: z.string().min(1).max(100).optional(),
+  visitorName: z.string().min(1).max(100).optional(),
+  visitorEmail: z.string().email().optional(),
 });
-export type AddCommentBody = Static<typeof addCommentBody>;
+export type AddCommentBody = z.infer<typeof addCommentBody>;
 
-export const addCommentResponse = t.Object({
-  id: t.Number(),
+export const addCommentResponse = z.object({
+  id: z.number(),
 });
-export type AddCommentResponse = Static<typeof addCommentResponse>;
+export type AddCommentResponse = z.infer<typeof addCommentResponse>;

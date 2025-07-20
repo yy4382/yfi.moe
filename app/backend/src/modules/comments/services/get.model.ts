@@ -1,66 +1,63 @@
 import { t, type Static } from "elysia";
+import z from "zod";
 
-export const getCommentsBody = t.Object({
-  path: t.String(),
-  limit: t.Number({ maximum: 25, minimum: 1 }),
-  offset: t.Number(),
-  sortBy: t.Union([t.Literal("created_desc"), t.Literal("created_asc")]),
+export const getCommentsBody = z.object({
+  path: z.string(),
+  limit: z.number().max(25).min(1),
+  offset: z.number(),
+  sortBy: z.enum(["created_desc", "created_asc"]),
 });
 
-export type GetCommentsBody = Static<typeof getCommentsBody>;
+export type GetCommentsBody = z.infer<typeof getCommentsBody>;
 
-export const commentDataUser = t.Object({
-  id: t.Number(),
-  content: t.String(),
-  parentId: t.Nullable(t.Number()),
-  replyToId: t.Nullable(t.Number()),
-  createdAt: t.Date(),
-  updatedAt: t.Date(),
-  userImage: t.String(),
-  displayName: t.String(),
-  path: t.String(),
+export const commentDataUser = z.object({
+  id: z.number(),
+  content: z.string(),
+  parentId: z.number().nullable(),
+  replyToId: z.number().nullable(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+  userImage: z.string(),
+  displayName: z.string(),
+  path: z.string(),
 });
 
-export type CommentDataUser = Static<typeof commentDataUser>;
+export type CommentDataUser = z.infer<typeof commentDataUser>;
 
-const getCommentsResponseAdminExtra = t.Object({
-  userId: t.Nullable(t.String()),
-  userIp: t.Nullable(t.String()),
-  userAgent: t.Nullable(t.String()),
-  userName: t.Nullable(t.String()),
-  userEmail: t.Nullable(t.String({ format: "email" })),
-  anonymousName: t.Nullable(t.String()),
-  visitorName: t.Nullable(t.String()),
-  visitorEmail: t.Nullable(t.String({ format: "email" })),
+export const commentDataAdmin = commentDataUser.extend({
+  userId: z.string().nullable(),
+  userIp: z.string().nullable(),
+  userAgent: z.string().nullable(),
+  userName: z.string().nullable(),
+  userEmail: z.email().nullable(),
+  anonymousName: z.string().nullable(),
+  visitorName: z.string().nullable(),
+  visitorEmail: z.email().nullable(),
+});
+export type CommentDataAdmin = z.infer<typeof commentDataAdmin>;
+
+export const layeredCommentDataUser = commentDataUser.extend({
+  children: z.array(commentDataUser),
 });
 
-export const commentDataAdmin = t.Intersect([
-  commentDataUser,
-  getCommentsResponseAdminExtra,
-]);
-export type CommentDataAdmin = typeof commentDataAdmin.static;
+export const layeredCommentDataAdmin = commentDataAdmin.extend({
+  children: z.array(commentDataAdmin),
+});
 
-export const layeredComment = <
-  T extends typeof commentDataAdmin | typeof commentDataUser,
->(
-  data: T,
-) => {
-  return t.Intersect([data, t.Object({ children: t.Array(data) })]);
-};
+export type LayeredCommentDataUser = z.infer<typeof layeredCommentDataUser>;
+export type LayeredCommentDataAdmin = z.infer<typeof layeredCommentDataAdmin>;
 
 export type LayeredComment<T extends CommentDataAdmin | CommentDataUser> = T & {
   children: T[];
 };
 
-export const layeredCommentDataAdmin = layeredComment(commentDataAdmin);
-export const layeredCommentDataUser = layeredComment(commentDataUser);
+export const layeredCommentList = z.union([
+  z.array(layeredCommentDataAdmin),
+  z.array(layeredCommentDataUser),
+]);
+export type LayeredCommentList = z.infer<typeof layeredCommentList>;
 
-export const layeredCommentList = t.Array(
-  t.Union([layeredCommentDataAdmin, layeredCommentDataUser]),
-);
-export type LayeredCommentList = typeof layeredCommentList.static;
-
-export const getCommentsResponse = t.Object({
+export const getCommentsResponse = z.object({
   comments: layeredCommentList,
 });
-export type GetCommentsResponse = typeof getCommentsResponse.static;
+export type GetCommentsResponse = z.infer<typeof getCommentsResponse>;

@@ -1,35 +1,39 @@
 import { comment, user } from "@/db/schema";
-import { db as dbType } from "@/db/instance";
-import { User } from "@/auth/auth";
+import type { DbClient } from "@/db/db-plugin";
+import type { User } from "@/auth/auth-plugin";
 import { and, sql, or, isNull, eq, inArray } from "drizzle-orm";
+
+type DeleteCommentResult =
+  | {
+      result: "success";
+      deletedIds: number[];
+    }
+  | {
+      result: "not_found" | "forbidden";
+      message: string;
+    };
 
 export async function deleteComment(
   id: number,
-  options: { db: typeof dbType; user: User },
-): Promise<{ result: "success" | "error" }> {
+  options: { db: DbClient; user: User },
+): Promise<DeleteCommentResult> {
   const { db, user: currentUser } = options;
   const now = new Date();
   // delete if comment's user is current user or current user is admin
-  const commentBeingDeleted = db.$with("comment-being-deleted").as(
-    db
-      .select({ id: comment.id })
-      .from(comment)
-      .where(
-        and(
-          eq(comment.id, id),
-          isNull(comment.deletedAt),
-          or(
-            eq(comment.userId, currentUser.id),
-            sql`EXISTS (
-    SELECT 1 FROM ${user} WHERE ${user.id} = ${currentUser.id} AND ${user.role} = 'admin'
-  )`,
-          ),
-        ),
-      ),
-  );
+  const commentBeingDeleted = await db.query.comment.findFirst({
+    where: and(eq(comment.id, id), isNull(comment.deletedAt)),
+  });
+  if (!commentBeingDeleted) {
+    return { result: "not_found", message: "没有找到该评论" };
+  }
+  if (
+    commentBeingDeleted.userId !== currentUser.id &&
+    currentUser.role !== "admin"
+  ) {
+    return { result: "forbidden", message: "没有权限删除该评论" };
+  }
 
   const res = await options.db
-    .with(commentBeingDeleted)
     .update(comment)
     .set({
       deletedAt: now,
@@ -38,15 +42,12 @@ export async function deleteComment(
     .where(
       and(
         or(
-          inArray(comment.id, sql`${commentBeingDeleted}`),
-          inArray(comment.parentId, sql`${commentBeingDeleted}`),
+          eq(comment.id, commentBeingDeleted.id),
+          eq(comment.parentId, commentBeingDeleted.id),
         ),
         isNull(comment.deletedAt),
       ),
     )
     .returning({ id: comment.id });
-  if (res.length === 0) {
-    return { result: "error" };
-  }
-  return { result: "success" };
+  return { result: "success", deletedIds: res.map((r) => r.id) };
 }

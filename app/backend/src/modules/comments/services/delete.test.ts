@@ -89,6 +89,10 @@ describe("admin get comments", () => {
     const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const res = await deleteComment(1, { db, user: admin });
     expect(res.result).toBe("success");
+    if (res.result !== "success") {
+      throw new Error("should not happen");
+    }
+    expect(res.deletedIds).toEqual([1, 4]);
     const comments = await db.select().from(comment).where(eq(comment.id, 1));
     expect(comments[0].deletedAt).not.toBeNull();
     const replies = await db
@@ -100,7 +104,7 @@ describe("admin get comments", () => {
   it("should give error if not found", async () => {
     const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const res = await deleteComment(10000, { db, user: admin });
-    expect(res.result).toBe("error");
+    expect(res.result).toBe("not_found");
   });
 });
 
@@ -119,6 +123,6 @@ describe("user get comments", () => {
       await db.select().from(user).where(eq(user.id, "2"))
     )[0];
     const res = await deleteComment(3, { db, user: normalUser });
-    expect(res.result).toBe("error");
+    expect(res.result).toBe("forbidden");
   });
 });

@@ -1,21 +1,27 @@
-import { Elysia } from "elysia";
-import { auth } from "./auth";
+import { factory } from "@/factory";
+import { AuthClient, createAuth } from "./create-auth";
 
-export const betterAuthPlugin = new Elysia({ name: "better-auth" })
-  .mount("/better-auth", auth.handler)
-  .macro({
-    auth: {
-      async resolve({ request: { headers } }) {
-        const session = await auth.api.getSession({
-          headers,
-        });
+export const betterAuthPlugin = factory.createMiddleware(async (c, next) => {
+  const db = c.get("db");
+  const auth = createAuth(db);
+  c.set("authClient", auth);
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-        if (!session) return { user: null, session: null };
+  if (!session) {
+    c.set("auth", undefined);
+    return next();
+  }
 
-        return {
-          user: session.user,
-          session: session.session,
-        };
-      },
-    },
+  c.set("auth", {
+    user: session.user,
+    session: session.session,
   });
+  return next();
+});
+
+type SessionResult = NonNullable<
+  Awaited<ReturnType<AuthClient["api"]["getSession"]>>
+>;
+
+export type User = SessionResult["user"];
+export type Session = SessionResult["session"];
