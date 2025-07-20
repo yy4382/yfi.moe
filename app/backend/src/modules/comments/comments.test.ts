@@ -1,17 +1,26 @@
 import { describe, expect, it, vi } from "vitest";
-import { comments } from ".";
+import commentApp from ".";
 import * as getModule from "./services/get";
 import * as addModule from "./services/add";
-import { treaty } from "@elysiajs/eden";
+import * as updateModule from "./services/update";
+import { testClient } from "hono/testing";
+import { factory, Variables } from "@/factory";
+import * as deleteModule from "./services/delete";
 
-vi.mock("@/auth/auth-plugin", async () => {
-  const ElysiaInPlugin = await import("elysia");
-  return {
-    betterAuthPlugin: new ElysiaInPlugin.Elysia({ name: "better-auth" }).macro({
-      auth: { resolve: () => ({ user: null, session: null }) },
-    }) as any,
-  };
-});
+const testCommentApp = (
+  auth: Variables["auth"] = undefined,
+  db: Variables["db"] = {} as any,
+  authClient: Variables["authClient"] = {} as any,
+) =>
+  factory
+    .createApp()
+    .use(async (c, next) => {
+      c.set("db", db);
+      c.set("authClient", authClient);
+      c.set("auth", auth);
+      await next();
+    })
+    .route("/", commentApp);
 
 describe("get comments", () => {
   it("should return comments", async () => {
@@ -61,16 +70,19 @@ describe("get comments", () => {
         },
       ];
     });
-    const resp = await treaty(comments).comments.get.post({
-      path: "/",
-      limit: 10,
-      offset: 0,
-      sortBy: "created_desc",
+    const resp = await testClient(testCommentApp()).get.$post({
+      json: {
+        path: "/",
+        limit: 10,
+        offset: 0,
+        sortBy: "created_desc",
+      },
     });
     expect(resp.status).toBe(200);
-    expect(resp.data?.comments).toHaveLength(1);
-    expect(resp.data?.comments[0].id).toBe(1);
-    expect(resp.data?.comments[0].children).toHaveLength(1);
+    const respJson = await resp.json();
+    expect(respJson.comments).toHaveLength(1);
+    expect(respJson.comments[0].id).toBe(1);
+    expect(respJson.comments[0].children).toHaveLength(1);
   });
 });
 
@@ -82,13 +94,15 @@ describe("add comment", () => {
       async (_, options) => {
         ipReqGot = options.ip;
         uaReqGot = options.ua;
-        return { id: 1 };
+        return { result: "success", data: { id: 1 } };
       },
     );
-    const resp = await treaty(comments).comments.add.post(
+    const resp = await testClient(testCommentApp()).add.$post(
       {
-        path: "/",
-        content: "test",
+        json: {
+          path: "/",
+          content: "test",
+        },
       },
       {
         headers: {
@@ -98,21 +112,137 @@ describe("add comment", () => {
       },
     );
     expect(resp.status).toBe(200);
-    expect(resp.data?.id).toBe(1);
+    const respJson = await resp.json();
+    expect(respJson.id).toBe(1);
     expect(ipReqGot).toBe("127.0.0.11");
     expect(uaReqGot).toBe("test-ua");
   });
 
   it("should handle error", async () => {
     vi.spyOn(addModule, "addComment").mockImplementationOnce(async () => {
-      throw new addModule.AddCommentError("test");
+      return { result: "bad_req", data: { message: "test" } };
     });
-    const resp = await treaty(comments).comments.add.post({
-      path: "/",
-      content: "test",
+    const resp = await testClient(testCommentApp()).add.$post({
+      json: {
+        path: "/",
+        content: "test",
+      },
     });
 
     expect(resp.status).toBe(400);
-    expect(resp.error?.value.message).toBe("test");
+    expect(await resp.text()).toBe("test");
+  });
+});
+
+describe("delete comment", () => {
+  it("should delete comment", async () => {
+    vi.spyOn(deleteModule, "deleteComment").mockImplementationOnce(async () => {
+      return { result: "success", deletedIds: [1] };
+    });
+    const resp = await testClient(
+      testCommentApp({
+        user: "something" as any,
+        session: "something" as any,
+      }),
+    ).delete.$post({
+      json: { id: 1 },
+    });
+    expect(resp.status).toBe(200);
+    const respJson = await resp.json();
+    expect(respJson.deletedIds).toEqual([1]);
+  });
+  it("should unauthorized", async () => {
+    const resp = await testClient(testCommentApp()).delete.$post({
+      json: { id: 1 },
+    });
+    expect(resp.status).toBe(401);
+  });
+  it("should forbidden", async () => {
+    vi.spyOn(deleteModule, "deleteComment").mockImplementationOnce(async () => {
+      return { result: "forbidden", message: "forbidden" };
+    });
+    const resp = await testClient(
+      testCommentApp({
+        user: "something" as any,
+        session: "something" as any,
+      }),
+    ).delete.$post({
+      json: { id: 1 },
+    });
+    expect(resp.status).toBe(403);
+    expect(await resp.text()).toBe("forbidden");
+  });
+  it("should not found", async () => {
+    vi.spyOn(deleteModule, "deleteComment").mockImplementationOnce(async () => {
+      return { result: "not_found", message: "not found" };
+    });
+    const resp = await testClient(
+      testCommentApp({
+        user: "something" as any,
+        session: "something" as any,
+      }),
+    ).delete.$post({
+      json: { id: 1 },
+    });
+    expect(resp.status).toBe(404);
+    expect(await resp.text()).toBe("not found");
+  });
+});
+
+describe("update comment", () => {
+  it("should update comment", async () => {
+    vi.spyOn(updateModule, "updateComment").mockImplementationOnce(async () => {
+      return { code: 200, data: { result: "success" } };
+    });
+    const resp = await testClient(
+      testCommentApp({
+        user: "something" as any,
+        session: "something" as any,
+      }),
+    ).update.$post({
+      json: {
+        id: 1,
+        rawContent: "test",
+      },
+    });
+    expect(resp.status).toBe(200);
+    const respJson = await resp.json();
+    expect(respJson.result).toBe("success");
+  });
+  it("should unauthorized", async () => {
+    const resp = await testClient(testCommentApp()).update.$post({
+      json: { id: 1, rawContent: "test" },
+    });
+    expect(resp.status).toBe(401);
+  });
+  it("should forbidden", async () => {
+    vi.spyOn(updateModule, "updateComment").mockImplementationOnce(async () => {
+      return { code: 403, data: "not authorized to update this comment" };
+    });
+    const resp = await testClient(
+      testCommentApp({
+        user: "something" as any,
+        session: "something" as any,
+      }),
+    ).update.$post({
+      json: { id: 1, rawContent: "test" },
+    });
+    expect(resp.status).toBe(403);
+    expect(await resp.text()).toBe("not authorized to update this comment");
+  });
+  it("should not found", async () => {
+    vi.spyOn(updateModule, "updateComment").mockImplementationOnce(async () => {
+      return { code: 404, data: "comment not found" };
+    });
+    const resp = await testClient(
+      testCommentApp({
+        user: "something" as any,
+        session: "something" as any,
+      }),
+    ).update.$post({
+      json: { id: 1, rawContent: "test" },
+    });
+    expect(resp.status).toBe(404);
+    expect(await resp.text()).toBe("comment not found");
   });
 });
