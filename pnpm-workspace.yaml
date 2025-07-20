@@ -5,3 +5,4 @@ packages:
 catalog:
   "vitest": "^3"
   "typescript": "^5"
+  "better-auth": "^1.2.9"
