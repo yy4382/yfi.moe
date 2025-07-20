@@ -1,9 +1,12 @@
 {
-  "name": "backend",
+  "name": "@repo/backend",
   "version": "1.0.50",
+  "type": "module",
   "scripts": {
-    "dev": "dotenvx run -- tsx watch src/index.ts",
-    "build": "tsc src/index.ts --outDir dist"
+    "dev": "pnpm --filter @repo/backend --parallel \"/^dev:.*/\"",
+    "dev:run": "dotenvx run -- tsx watch src/index.ts",
+    "dev:build": "tsdown --watch",
+    "build": "tsdown"
   },
   "dependencies": {
     "@hono/node-server": "^1.17.1",
@@ -21,9 +24,15 @@
     "@types/node": "^20.19.7",
     "@vitest/coverage-v8": "3.2.4",
     "drizzle-kit": "^0.31.1",
+    "tsdown": "^0.12.9",
     "tsx": "^4.20.3",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
-  "module": "src/index.js"
+  "exports": {
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
+    }
+  }
 }
