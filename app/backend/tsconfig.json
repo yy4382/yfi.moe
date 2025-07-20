@@ -14,7 +14,10 @@
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
     "strictNullChecks": true /* When type checking, take into account 'null' and 'undefined'. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "exclude": ["node_modules", "dist"]
 }
