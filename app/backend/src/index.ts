@@ -1,5 +1,3 @@
-import "@dotenvx/dotenvx/config";
-
 import { Elysia } from "elysia";
 import { node } from "@elysiajs/node";
 import { migrate } from "drizzle-orm/libsql/migrator";
