@@ -89,14 +89,14 @@ export function CommentList() {
     );
   }
   if (!data || data.pages.length === 0 || data.pages[0].comments.length === 0) {
-    return <div className="p-4 text-center text-gray-500 mt-6">暂无评论</div>;
+    return <div className="p-4 text-center text-gray-500 mt-6">暂无留言</div>;
   }
 
   return (
     <div className="mt-6">
       <div className="flex items-center gap-2 justify-between mb-2">
         <div className="flex items-center gap-2 text-lg font-semibold">
-          <span>{data.pages[0].total}条评论</span>
+          <span>{data.pages[0].total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
             <span>
               <Loader2Icon className="size-6 animate-spin" />
