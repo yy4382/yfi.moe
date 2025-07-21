@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 export const getCommentsBody = z.object({
   path: z.string(),
@@ -9,9 +9,10 @@ export const getCommentsBody = z.object({
 
 export type GetCommentsBody = z.infer<typeof getCommentsBody>;
 
-export const commentDataUser = z.object({
+export const commentData = z.object({
   id: z.number(),
   content: z.string(),
+  rawContent: z.string(),
   parentId: z.number().nullable(),
   replyToId: z.number().nullable(),
   createdAt: z.coerce.date(),
@@ -19,44 +20,29 @@ export const commentDataUser = z.object({
   userImage: z.string(),
   displayName: z.string(),
   path: z.string(),
+  userId: z.string().nullish(),
+  userIp: z.string().nullish(),
+  userAgent: z.string().nullish(),
+  userName: z.string().nullish(),
+  userEmail: z.email().nullish(),
+  anonymousName: z.string().nullish(),
+  visitorName: z.string().nullish(),
+  visitorEmail: z.email().nullish(),
 });
 
-export type CommentDataUser = z.infer<typeof commentDataUser>;
+export type CommentData = z.infer<typeof commentData>;
 
-export const commentDataAdmin = commentDataUser.extend({
-  userId: z.string().nullable(),
-  userIp: z.string().nullable(),
-  userAgent: z.string().nullable(),
-  userName: z.string().nullable(),
-  userEmail: z.email().nullable(),
-  anonymousName: z.string().nullable(),
-  visitorName: z.string().nullable(),
-  visitorEmail: z.email().nullable(),
-});
-export type CommentDataAdmin = z.infer<typeof commentDataAdmin>;
-
-export const layeredCommentDataUser = commentDataUser.extend({
-  children: z.array(commentDataUser),
+export const layeredCommentData = commentData.extend({
+  children: z.array(commentData),
 });
 
-export const layeredCommentDataAdmin = commentDataAdmin.extend({
-  children: z.array(commentDataAdmin),
-});
+export type LayeredCommentData = z.infer<typeof layeredCommentData>;
 
-export type LayeredCommentDataUser = z.infer<typeof layeredCommentDataUser>;
-export type LayeredCommentDataAdmin = z.infer<typeof layeredCommentDataAdmin>;
-
-export type LayeredComment<T extends CommentDataAdmin | CommentDataUser> = T & {
-  children: T[];
-};
-
-export const layeredCommentList = z.union([
-  z.array(layeredCommentDataAdmin),
-  z.array(layeredCommentDataUser),
-]);
+export const layeredCommentList = z.array(layeredCommentData);
 export type LayeredCommentList = z.infer<typeof layeredCommentList>;
 
 export const getCommentsResponse = z.object({
+  total: z.number(),
   comments: layeredCommentList,
 });
 export type GetCommentsResponse = z.infer<typeof getCommentsResponse>;

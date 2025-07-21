@@ -99,17 +99,18 @@ afterAll(() => {
 describe("admin get comments", () => {
   it("should return comments", async () => {
     const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
-    const comments = await getComments(
+    const { comments, total } = await getComments(
       { path: "/", limit: 10, offset: 0, sortBy: "created_asc" },
       { db, user: admin },
     );
+    expect(total).toBe(4);
     expect(comments.length).toBe(4);
     expect(comments.find((c) => c.id === 1)?.children?.length).toBe(3);
     expect(comments).toMatchSnapshot();
   });
   it("should return comments with limit and offset", async () => {
     const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
-    const comments = await getComments(
+    const { comments } = await getComments(
       { path: "/", limit: 1, offset: 1, sortBy: "created_asc" },
       { db, user: admin },
     );
@@ -118,7 +119,7 @@ describe("admin get comments", () => {
   });
   it("should return comments with sortBy", async () => {
     const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
-    const comments = await getComments(
+    const { comments } = await getComments(
       { path: "/", limit: 2, offset: 2, sortBy: "created_desc" },
       { db, user: admin },
     );

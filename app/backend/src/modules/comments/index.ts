@@ -12,17 +12,17 @@ import { deleteComment } from "./services/delete";
 import { updateComment } from "./services/update";
 import { factory } from "@/factory";
 import { sValidator } from "@hono/standard-validator";
-import z from "zod";
+import { z } from "zod";
 
 const commentApp = factory
   .createApp()
   .post("/get", sValidator("json", getCommentsBody), async (c) => {
     const body = c.req.valid("json");
-    const comments = await getComments(body, {
+    const { comments, total } = await getComments(body, {
       db: c.get("db"),
       user: c.get("auth")?.user ?? null,
     });
-    const resp = getCommentsResponse.parse({ comments });
+    const resp = getCommentsResponse.parse({ comments, total });
     return c.json(resp, 200);
   })
   .post("/add", sValidator("json", addCommentBody), async (c) => {
