@@ -1,5 +1,3 @@
-import type { UserInfo } from "@waline/api";
-import { addComment, login, updateComment } from "@waline/api";
 import {
   createContext,
   useCallback,
@@ -7,27 +5,49 @@ import {
   useEffect,
   useState,
 } from "react";
-import { userInfoAtom, userInfoSchema, YulineContext } from "./utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue, useSetAtom } from "jotai";
+import { sessionOptions } from "./utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { Loader2Icon, SendIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import z from "zod";
 import { toast } from "sonner";
+import { authClient, honoClient, Session } from "@/lib/client";
+import { InferRequestType } from "@repo/backend/client";
+import GithubIcon from "@/assets/icons/MingcuteGithubLine";
+import { usePathname } from "next/navigation";
+import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";
+
+/*
+Hierarchy:
+
+<CommentBoxNew>
+  <UserBox | VisitorBox>
+    <InputBox />
+  </UserBox | VisitorBox>
+</CommentBoxNew>
+
+or:
+
+<CommentBoxEdit>
+  <InputBox />
+</CommentBoxEdit>
+
+*/
 
 type CommentBoxId = {
   parentId?: number;
   replyingTo?: number;
   editId?: number;
-  url: string;
+  path: string;
 };
 
-const CommentBoxIdContext = createContext<CommentBoxId>({ url: "" });
+const CommentBoxIdContext = createContext<CommentBoxId>({ path: "" });
 
 type CommentBoxStatus = {
   isPending: boolean;
   isSuccess: boolean;
+  placeholder?: string;
   reset: () => void;
   cancel?: () => void;
 };
@@ -51,15 +71,14 @@ const commentContentSchema = z
 
 const userAddCommentSchema = z
   .object({
-    userInfo: userInfoSchema,
     content: commentContentSchema,
   })
   .brand("userAddComment");
 const visitorAddCommentSchema = z
   .object({
     content: commentContentSchema,
-    nick: z.string().min(1, "昵称不能为空"),
-    mail: z.email("邮箱格式不正确"),
+    visitorName: z.string().min(1, "昵称不能为空"),
+    visitorEmail: z.email("邮箱格式不正确"),
   })
   .brand("visitorAddComment");
 
@@ -73,46 +92,42 @@ type CommentBoxNewProps = {
   onSuccess?: () => void;
 };
 export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
-  const { serverURL, lang, url, ua } = useContext(YulineContext);
-  const userInfo = useAtomValue(userInfoAtom);
+  const path = usePathname();
   const queryClient = useQueryClient();
+  const { data: session } = useQuery(sessionOptions());
 
   const { isPending, mutate, isSuccess, reset } = useMutation({
-    mutationFn: async (...args: Parameters<typeof addComment>) => {
-      const resp = await addComment(...args);
-      if (resp.errno !== 0 || !resp.data) {
-        toast.error(resp.errmsg);
-        throw new Error(resp.errmsg);
+    mutationFn: async (
+      arg: InferRequestType<typeof honoClient.comments.add.$post>["json"],
+    ) => {
+      // const resp = await addComment(...args);
+      // if (resp.errno !== 0 || !resp.data) {
+      //   toast.error(resp.errmsg);
+      //   throw new Error(resp.errmsg);
+      // }
+      // return resp.data;
+      const resp = await honoClient.comments.add.$post({
+        json: arg,
+      });
+      if (!resp.ok) {
+        throw new Error(await resp.text());
       }
-      return resp.data;
+      return resp.json();
     },
     onSuccess: () => {
       onSuccess?.();
       queryClient.invalidateQueries({
-        queryKey: [
-          "comments",
-          { serverURL, lang },
-          { token: userInfo?.token },
-          url,
-        ],
+        queryKey: ["comments", { session: session?.user.id }, path],
       });
     },
   });
 
   const handleUserSubmit = (data: z.infer<typeof userAddCommentSchema>) => {
     mutate({
-      serverURL,
-      lang,
-      token: data.userInfo.token,
-      comment: {
-        comment: data.content,
-        nick: data.userInfo.display_name,
-        mail: data.userInfo.email,
-        link: data.userInfo.url,
-        ua,
-        url,
-        ...reply,
-      },
+      path,
+      content: data.content,
+      parentId: reply?.pid,
+      replyToId: reply?.rid,
     });
   };
 
@@ -120,28 +135,28 @@ export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
     data: z.infer<typeof visitorAddCommentSchema>,
   ) => {
     mutate({
-      serverURL,
-      lang,
-      comment: {
-        comment: data.content,
-        nick: data.nick,
-        mail: data.mail,
-        ua,
-        url,
-        ...reply,
-      },
+      path,
+      parentId: reply?.pid,
+      replyToId: reply?.rid,
+      ...data,
     });
   };
 
   return (
     <CommentBoxIdContext
-      value={{ parentId: reply?.pid, replyingTo: reply?.rid, url }}
+      value={{ parentId: reply?.pid, replyingTo: reply?.rid, path }}
     >
       <CommentBoxStatusContext
-        value={{ isPending, isSuccess, reset, cancel: reply?.onCancel }}
+        value={{
+          isPending,
+          isSuccess,
+          reset,
+          cancel: reply?.onCancel,
+          placeholder: reply?.at ? `回复 ${reply.at}` : undefined,
+        }}
       >
-        {userInfo ? (
-          <UserBox submit={handleUserSubmit} userInfo={userInfo} />
+        {session ? (
+          <UserBox submit={handleUserSubmit} session={session} />
         ) : (
           <VisitorBox submit={handleVisitorSubmit} />
         )}
@@ -153,41 +168,48 @@ export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
 export function CommentBoxEdit({
   editId,
   initialContent,
-  userInfo,
   onCancel,
   onSuccess,
 }: {
   editId: number;
   initialContent: string;
-  userInfo: UserInfo;
   onCancel: () => void;
   onSuccess?: () => void;
 }) {
-  const { serverURL, lang, url } = useContext(YulineContext);
+  const path = usePathname();
   const queryClient = useQueryClient();
+  const { data: session } = useQuery(sessionOptions());
   const { isPending, isSuccess, mutate, reset } = useMutation({
     mutationFn: async (content: z.infer<typeof commentContentSchema>) => {
-      const resp = await updateComment({
-        serverURL,
-        lang,
-        token: userInfo.token,
-        objectId: editId,
-        comment: { comment: content },
+      // const resp = await updateComment({
+      //   serverURL,
+      //   lang,
+      //   token: userInfo.token,
+      //   objectId: editId,
+      //   comment: { comment: content },
+      // });
+      // if (resp.errno !== 0 || !resp.data) {
+      //   toast.error(resp.errmsg);
+      //   throw new Error(resp.errmsg);
+      // }
+      // return resp.data;
+      const resp = await honoClient.comments.update.$post({
+        json: {
+          id: editId,
+          rawContent: content,
+        },
       });
-      if (resp.errno !== 0 || !resp.data) {
-        toast.error(resp.errmsg);
-        throw new Error(resp.errmsg);
+      if (!resp.ok) {
+        throw new Error(await resp.text());
       }
-      return resp.data;
+      return resp.json();
+    },
+    onError(error) {
+      toast.error(error.message);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [
-          "comments",
-          { serverURL, lang },
-          { token: userInfo.token },
-          url,
-        ],
+        queryKey: ["comments", { session: session?.user.id }, path],
       });
       onSuccess?.();
     },
@@ -204,7 +226,7 @@ export function CommentBoxEdit({
   };
 
   return (
-    <CommentBoxIdContext value={{ editId, url }}>
+    <CommentBoxIdContext value={{ editId, path }}>
       <CommentBoxStatusContext
         value={{ isPending, isSuccess, reset, cancel: onCancel }}
       >
@@ -218,23 +240,17 @@ type VisitorBoxProps = {
   submit: (data: z.infer<typeof visitorAddCommentSchema>) => void;
 };
 function VisitorBox({ submit }: VisitorBoxProps) {
+  const [asVisitor, setAsVisitor] = useState(false);
+
   const [visitorName, setVisitorName] = useState("");
   const [visitorEmail, setVisitorEmail] = useState("");
-  const setUserInfo = useSetAtom(userInfoAtom);
-
-  const config = useContext(YulineContext);
-
-  async function handleSignIn() {
-    const data = await login(config);
-    setUserInfo(data, data.remember);
-  }
 
   const handleSubmit = useCallback(
     (content: string) => {
       const parsed = visitorAddCommentSchema.safeParse({
         content,
-        nick: visitorName,
-        mail: visitorEmail,
+        visitorName,
+        visitorEmail,
       });
       if (!parsed.success) {
         toast.error(parsed.error.issues[0].message);
@@ -245,6 +261,10 @@ function VisitorBox({ submit }: VisitorBoxProps) {
     },
     [visitorName, visitorEmail, submit],
   );
+
+  if (!asVisitor) {
+    return <VisitorBoxLogin setAsVisitor={() => setAsVisitor(true)} />;
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -264,7 +284,7 @@ function VisitorBox({ submit }: VisitorBoxProps) {
           onChange={(e) => setVisitorEmail(e.target.value)}
         />
         <button
-          onClick={handleSignIn}
+          onClick={() => setAsVisitor(false)}
           className="rounded-md border border-container bg-bg px-2 py-1 text-sm shadow"
         >
           登录/注册
@@ -277,15 +297,52 @@ function VisitorBox({ submit }: VisitorBoxProps) {
     </div>
   );
 }
+function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
+  const queryClient = useQueryClient();
+  return (
+    <div className="flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border border-container bg-gray-50 py-4 dark:bg-gray-950">
+      <div className="flex flex-col items-center gap-2">
+        <span className="text-xs text-comment">使用社交账号登录</span>
+        <motion.button
+          onClick={async () => {
+            const { error } = await authClient.signIn.social({
+              provider: "github",
+              callbackURL: `${window.location.href}`,
+            });
+            if (error) {
+              toast.error(error.message);
+              return;
+            }
+            queryClient.invalidateQueries(sessionOptions());
+          }}
+          className="flex items-center gap-1 rounded-full border border-container bg-bg p-2 shadow"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <GithubIcon className="size-4" />
+        </motion.button>
+      </div>
+      <motion.button
+        onClick={setAsVisitor}
+        className="rounded-full border border-container bg-bg px-2 py-1 text-sm shadow"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        以游客身份评论
+      </motion.button>
+    </div>
+  );
+}
 
 type UserBoxProps = {
   submit: (data: z.infer<typeof userAddCommentSchema>) => void;
-  userInfo: UserInfo;
+  session: Session;
 };
-function UserBox({ submit, userInfo }: UserBoxProps) {
+function UserBox({ submit, session }: UserBoxProps) {
+  const queryClient = useQueryClient();
   const handleSubmit = useCallback(
     (content: string) => {
-      const parsed = userAddCommentSchema.safeParse({ content, userInfo });
+      const parsed = userAddCommentSchema.safeParse({ content });
       if (!parsed.success) {
         toast.error(parsed.error.issues[0].message);
         console.warn(parsed.error);
@@ -293,20 +350,37 @@ function UserBox({ submit, userInfo }: UserBoxProps) {
       }
       submit(parsed.data);
     },
-    [userInfo, submit],
+    [submit],
   );
-  const setUserInfo = useSetAtom(userInfoAtom);
 
-  const handleSignOut = useCallback(() => {
-    setUserInfo(null);
-  }, [setUserInfo]);
+  const {
+    data: accounts,
+    isPending: isAccountsPending,
+    isError: isAccountsError,
+  } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: async () => {
+      const accounts = await authClient.listAccounts();
+      return accounts;
+    },
+  });
+
+  const handleSignOut = useCallback(async () => {
+    const { error } = await authClient.signOut();
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    queryClient.invalidateQueries(sessionOptions());
+    queryClient.invalidateQueries({ queryKey: ["comments"] });
+  }, [queryClient]);
 
   return (
     <div className="flex w-full items-end gap-4">
       <div className="group relative mb-2 flex-shrink-0">
         <Image
-          src={userInfo.avatar}
-          alt={userInfo.display_name}
+          src={session.user.image ?? getGravatarUrl(session.user.email)}
+          alt={session.user.name}
           width={56}
           height={56}
           unoptimized
@@ -314,12 +388,19 @@ function UserBox({ submit, userInfo }: UserBoxProps) {
         />
         <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-gray-500/50 p-0.5 group-hover:block">
           <button
-            onClick={handleSignOut} // TODO invalidate queries
+            onClick={handleSignOut}
             className="flex size-full items-center justify-center"
           >
             <XIcon className="size-2.5" />
           </button>
         </div>
+        {!isAccountsError &&
+          !isAccountsPending &&
+          accounts?.data?.find((account) => account.provider === "github") && (
+            <span className="absolute -right-1 -bottom-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
+              <GithubIcon className="size-3.5 text-black" />
+            </span>
+          )}
       </div>
       <InputBox submit={handleSubmit} />
     </div>
@@ -338,6 +419,7 @@ function InputBox({ submit, initialContent, placeholder }: InputBoxProps) {
     isSuccess,
     reset,
     cancel,
+    placeholder: placeholderFromContext,
   } = useContext(CommentBoxStatusContext);
 
   const handleSubmit = useCallback(() => {
@@ -381,7 +463,7 @@ function InputBox({ submit, initialContent, placeholder }: InputBoxProps) {
             }
           }
         }}
-        placeholder={placeholder ?? "留下你的足迹……"}
+        placeholder={placeholder ?? placeholderFromContext ?? "留下你的足迹……"}
         className="field-sizing-content min-h-18 w-full flex-1 resize-none bg-transparent px-1 py-0.5 text-sm outline-none"
         disabled={submitPending}
       />

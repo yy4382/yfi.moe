@@ -17,8 +17,10 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
       "@/*": ["./src/*"]
-    }
-    // "composite": true
+    },
+    "composite": true,
+    "outDir": "./dist/tsc"
   },
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
