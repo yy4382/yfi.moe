@@ -6,6 +6,8 @@ import { betterAuthPlugin } from "./auth/auth-plugin";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
 import comments from "./modules/comments";
+import { logger } from "hono/logger";
+import { config } from "./config";
 
 await migrate(db, { migrationsFolder: "./drizzle" });
 
@@ -13,15 +15,13 @@ console.log("Migration done.");
 
 const app = factory
   .createApp()
+  .use(logger())
   .use(dbPlugin(db))
   .use(betterAuthPlugin)
-  .on(["POST", "GET"], "/api/v1/auth/*", (c) => {
-    return c.get("authClient").handler(c.req.raw);
-  })
   .use(
     "/api/v1/*",
     cors({
-      origin: "http://localhost:3001", //TODO: change to env
+      origin: config.trustedUrls,
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "OPTIONS"],
       exposeHeaders: ["Content-Length"],
@@ -29,9 +29,15 @@ const app = factory
       credentials: true,
     }),
   )
+  .on(["POST", "GET"], "/api/v1/auth/*", (c) => {
+    return c.get("authClient").handler(c.req.raw);
+  })
   .route("/api/v1/comments", comments);
 
-const server = serve(app);
+const server = serve({
+  fetch: app.fetch,
+  port: config.port,
+});
 
 // graceful shutdown
 process.on("SIGINT", () => {
@@ -50,4 +56,10 @@ process.on("SIGTERM", () => {
 
 export type App = typeof app;
 
-console.log("Server started...");
+console.log(
+  `Server started...
+- local port: ${config.port}
+- app url: ${config.appUrl}
+- db file: ${config.dbFileName}
+- trusted urls: ${config.trustedUrls.join(", ")}`,
+);
