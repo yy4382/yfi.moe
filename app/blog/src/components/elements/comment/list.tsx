@@ -1,37 +1,35 @@
-import { Fragment, useContext, useState } from "react";
-import { userInfoAtom, YulineContext } from "./utils";
+import { Fragment, useState } from "react";
+import { sessionOptions } from "./utils";
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import {
-  getComment,
-  WalineChildComment,
-  WalineRootComment,
-  deleteComment as deleteCommentApi,
-} from "@waline/api";
-import { useAtomValue } from "jotai";
+import type { CommentData } from "@repo/backend/models";
+import { getCommentsResponse } from "@repo/backend/models";
 import Image from "next/image";
 import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
 import { CommentBoxEdit, CommentBoxNew } from "./box";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils/cn";
+import { honoClient } from "@/lib/client";
+import { usePathname } from "next/navigation";
 
 const PER_PAGE = 10;
 
-const SORT_BY_OPTIONS = ["insertedAt_desc", "insertedAt_asc"] as const;
+const SORT_BY_OPTIONS = ["created_desc", "created_asc"] as const;
 const SORT_BY_LABELS = {
-  insertedAt_desc: "最新",
-  insertedAt_asc: "最早",
+  created_desc: "最新",
+  created_asc: "最早",
 } as const;
 
 export function CommentList() {
-  const { serverURL, url, lang } = useContext(YulineContext);
-  const userInfo = useAtomValue(userInfoAtom);
+  const path = usePathname();
+  const { data: session } = useQuery(sessionOptions());
   const [sortBy, setSortBy] =
-    useState<(typeof SORT_BY_OPTIONS)[number]>("insertedAt_desc");
+    useState<(typeof SORT_BY_OPTIONS)[number]>("created_desc");
   const {
     data,
     fetchNextPage,
@@ -43,31 +41,30 @@ export function CommentList() {
     hasNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: [
-      "comments",
-      { serverURL, lang },
-      { token: userInfo?.token },
-      url,
-      sortBy,
-    ],
+    queryKey: ["comments", { session: session?.user.id }, path, sortBy],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
-      const resp = await getComment({
-        serverURL,
-        lang,
-        path: url,
-        page: pageParam,
-        pageSize: PER_PAGE,
-        sortBy,
-        token: userInfo?.token,
+      const resp = await honoClient.comments.get.$post({
+        json: {
+          path,
+          limit: PER_PAGE,
+          offset: (pageParam - 1) * PER_PAGE,
+          sortBy,
+        },
       });
-      return resp;
+      if (!resp.ok) {
+        throw new Error("Failed to fetch comments");
+      }
+      return getCommentsResponse.parse(await resp.json());
     },
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (lastPage.page >= lastPage.totalPages) {
+    getNextPageParam: (lastPage, pages) => {
+      if (
+        lastPage.comments.length < PER_PAGE ||
+        pages.length * PER_PAGE >= lastPage.total
+      ) {
         return undefined;
       }
-      return lastPage.page + 1;
+      return pages.length + 1;
     },
   });
 
@@ -91,7 +88,7 @@ export function CommentList() {
       </div>
     );
   }
-  if (!data || data.pages.length === 0 || data.pages[0].data.length === 0) {
+  if (!data || data.pages.length === 0 || data.pages[0].comments.length === 0) {
     return <div className="p-4 text-center text-gray-500 mt-6">暂无评论</div>;
   }
 
@@ -99,7 +96,7 @@ export function CommentList() {
     <div className="mt-6">
       <div className="flex items-center gap-2 justify-between mb-2">
         <div className="flex items-center gap-2 text-lg font-semibold">
-          <span>{data.pages[0].count}条评论</span>
+          <span>{data.pages[0].total}条评论</span>
           {(isFetching || isFetchingNextPage) && (
             <span>
               <Loader2Icon className="size-6 animate-spin" />
@@ -123,22 +120,21 @@ export function CommentList() {
           ))}
         </div>
       </div>
-      {data.pages.map((page) => (
-        <Fragment key={page.page}>
-          {page.data.map((comment) => (
-            <Fragment key={comment.objectId}>
-              <CommentRootItem comment={comment} />
-              {comment.children.length > 0 && (
-                <div className="ml-6 pl-4">
-                  {comment.children.map((children) => (
-                    <CommentItem key={children.objectId} comment={children} />
-                  ))}
-                </div>
-              )}
-            </Fragment>
-          ))}
-        </Fragment>
-      ))}
+      {data.pages
+        .map((page) => page.comments)
+        .flat()
+        .map((comment) => (
+          <Fragment key={comment.id}>
+            <CommentRootItem comment={comment} />
+            {comment.children.length > 0 && (
+              <div className="ml-6 pl-4">
+                {comment.children.map((children) => (
+                  <CommentItem key={children.id} comment={children} />
+                ))}
+              </div>
+            )}
+          </Fragment>
+        ))}
       {hasNextPage && (
         <div className="flex justify-center">
           <motion.button
@@ -158,7 +154,7 @@ export function CommentList() {
 }
 
 type CommentRootItemProps = {
-  comment: WalineRootComment;
+  comment: CommentData;
 };
 function CommentRootItem({ comment }: CommentRootItemProps) {
   return (
@@ -169,44 +165,48 @@ function CommentRootItem({ comment }: CommentRootItemProps) {
 }
 
 type CommentItemProps = {
-  comment: WalineChildComment | WalineRootComment;
+  comment: CommentData;
 };
 function CommentItem({ comment: entry }: CommentItemProps) {
   const [replying, setReplying] = useState(false);
   const [editing, setEditing] = useState(false);
-  const { serverURL, lang, url } = useContext(YulineContext);
-  const userInfo = useAtomValue(userInfoAtom);
+  const path = usePathname();
   const queryClient = useQueryClient();
+  const { data: session } = useQuery(sessionOptions());
 
-  const isMine = userInfo && userInfo.objectId === entry.user_id;
+  const isMine = session && entry.userId && entry.userId === session.user.id;
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: async (id: number) => {
-      if (!userInfo) {
+      if (!session) {
         throw new Error("请先登录");
       }
-      const resp = await deleteCommentApi({
-        serverURL,
-        lang,
-        token: userInfo.token,
-        objectId: id,
+      // const resp = await deleteCommentApi({
+      //   serverURL,
+      //   lang,
+      //   token: userInfo.token,
+      //   objectId: id,
+      // });
+      // if (resp.errmsg) {
+      //   throw new Error(resp.errmsg);
+      // }
+      // return resp.data;
+      const resp = await honoClient.comments.delete.$post({
+        json: {
+          id,
+        },
       });
-      if (resp.errmsg) {
-        throw new Error(resp.errmsg);
+      if (!resp.ok) {
+        throw new Error(await resp.text());
       }
-      return resp.data;
+      return resp.json();
     },
     onError(error) {
       toast.error(error.message);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [
-          "comments",
-          { serverURL, lang },
-          { token: userInfo?.token },
-          url,
-        ],
+        queryKey: ["comments", { session: session?.user.id }, path],
       });
     },
   });
@@ -237,8 +237,8 @@ function CommentItem({ comment: entry }: CommentItemProps) {
         <div className="flex-shrink-0">
           <Image
             unoptimized
-            src={entry.avatar}
-            alt={entry.nick}
+            src={entry.userImage}
+            alt={entry.displayName}
             width={36}
             height={36}
             className="size-9 rounded-full object-cover"
@@ -255,7 +255,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
           {/* 用户信息行 */}
           <div className="mb-1 flex items-center gap-2">
             <span className="text-title text-sm font-semibold">
-              {entry.nick}
+              {entry.displayName}
             </span>
             {isMine && (
               <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-600">
@@ -263,13 +263,13 @@ function CommentItem({ comment: entry }: CommentItemProps) {
               </span>
             )}
             <span className="text-xs text-gray-500">
-              {formatTime(new Date(entry.time))}
+              {formatTime(entry.createdAt)}
             </span>
-            {(isMine || userInfo?.type === "administrator") && (
+            {(isMine || session?.user.role === "admin") && (
               <>
                 <button
                   className="flex items-center gap-1 text-xs text-red-700 transition-colors hover:text-red-500"
-                  onClick={() => deleteComment(entry.objectId)}
+                  onClick={() => deleteComment(entry.id)}
                 >
                   <TrashIcon size={14} />
                 </button>
@@ -283,28 +283,27 @@ function CommentItem({ comment: entry }: CommentItemProps) {
             )}
           </div>
 
-          {editing && userInfo ? (
+          {editing && session ? (
             <CommentBoxEdit
-              editId={entry.objectId}
+              editId={entry.id}
               onCancel={() => setEditing(false)}
               onSuccess={() => setEditing(false)}
-              userInfo={userInfo}
-              initialContent={entry.orig}
+              initialContent={entry.rawContent}
             />
           ) : (
             <div className="relative inline-block rounded-md rounded-bl-none bg-gray-600/5 px-2 py-1 text-sm break-words">
               {/* 评论内容 */}
-              {"reply_user" in entry && entry.reply_user && (
+              {/* {"reply_user" in entry && entry.reply_user && (
                 <div className="text-xs text-gray-500 py-1">
                   <span className="text-gray-500">回复 </span>
                   <span className="text-gray-500">
                     {entry.reply_user.nick}:
                   </span>
                 </div>
-              )}
+              )} */}
               <div
                 className="prose prose-sm dark:prose-invert prose-p:my-1"
-                dangerouslySetInnerHTML={{ __html: entry.comment }}
+                dangerouslySetInnerHTML={{ __html: entry.content }}
               />
               <div className="absolute -right-0 -bottom-0 z-10 cursor-pointer">
                 <button
@@ -322,9 +321,9 @@ function CommentItem({ comment: entry }: CommentItemProps) {
         <div className="mt-2">
           <CommentBoxNew
             reply={{
-              pid: entry.objectId,
-              rid: "rid" in entry && entry.rid ? entry.rid : entry.objectId,
-              at: entry.nick,
+              pid: entry.id,
+              rid: entry.replyToId ? entry.replyToId : entry.id,
+              at: entry.displayName,
               onCancel: () => setReplying(false),
             }}
             onSuccess={() => setReplying(false)}
