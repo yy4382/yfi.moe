@@ -3,9 +3,7 @@
   "version": "1.0.50",
   "type": "module",
   "scripts": {
-    "dev": "pnpm --filter @repo/backend --parallel \"/^dev:.*/\"",
-    "dev:run": "dotenvx run -- tsx watch src/index.ts",
-    "dev:build": "tsdown --watch",
+    "dev": "dotenvx run -- tsx watch src/index.ts",
     "build": "tsdown"
   },
   "dependencies": {
@@ -30,9 +28,9 @@
     "vitest": "catalog:"
   },
   "exports": {
-    "./client": {
-      "types": "./dist/client.d.ts",
-      "default": "./dist/client.js"
-    }
+    "./client": "./src/client.ts",
+    "./models": "./src/models.ts",
+    "./package.json": "./package.json",
+    ".": "./dist/index.js"
   }
 }
