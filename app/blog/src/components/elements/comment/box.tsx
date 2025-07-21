@@ -292,7 +292,7 @@ function VisitorBox({ submit }: VisitorBoxProps) {
       </div>
       <InputBox
         submit={handleSubmit}
-        placeholder="注册后可以编辑、删除评论，并且通过邮件获取回复通知哦"
+        placeholder="注册后可以编辑、删除留言，并且通过邮件获取回复通知哦"
       />
     </div>
   );
@@ -328,7 +328,7 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.95 }}
       >
-        以游客身份评论
+        以游客身份留言
       </motion.button>
     </div>
   );
