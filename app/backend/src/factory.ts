@@ -3,6 +3,7 @@ import type { AuthClient } from "@/auth/create-auth";
 import type { DbClient } from "@/db/db-plugin";
 import { createFactory } from "hono/factory";
 import type { HttpBindings } from "@hono/node-server";
+import { NotificationService } from "./notification/types";
 
 export type Variables = {
   db: DbClient;
@@ -11,6 +12,8 @@ export type Variables = {
     session: Session;
   };
   authClient: AuthClient;
+
+  notification: NotificationService;
 };
 
 export const factory = createFactory<{

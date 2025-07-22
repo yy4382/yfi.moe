@@ -8,6 +8,7 @@ import { serve } from "@hono/node-server";
 import comments from "./modules/comments";
 import { logger } from "hono/logger";
 import { config } from "./config";
+import { notificationPlugin } from "./notification/plugin";
 
 await migrate(db, { migrationsFolder: "./drizzle" });
 
@@ -18,6 +19,7 @@ const app = factory
   .use(logger())
   .use(dbPlugin(db))
   .use(betterAuthPlugin)
+  .use(notificationPlugin())
   .use(
     "/api/v1/*",
     cors({
