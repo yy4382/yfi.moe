@@ -1,21 +1,41 @@
-export interface NotificationPayload {
-  type:
-    | "comment_reply"
-    | "new_comment"
-    | "comment_mention"
-    | "admin_new_comment";
-  recipient: string;
-  data: {
-    commentId?: number;
-    postSlug: string;
-    postTitle: string;
-    commentContent?: string;
-    authorName?: string;
-    authorEmail?: string;
-    replyTo?: string;
-    parentCommentId?: number;
-  };
-}
+export type NotificationPayload =
+  | {
+      type: "comment_reply";
+      recipient: string;
+      data: NotificationNewReply;
+    }
+  | {
+      type: "admin_new_comment";
+      recipient: string;
+      data: NotificationNewComment;
+    };
+
+export type NotificationNewReply = {
+  commentId: number;
+  rawContent: string;
+  renderedContent: string;
+
+  parentCommentId: number;
+  parentCommentRawContent: string;
+  parentCommentRenderedContent: string;
+  parentCommentAuthorName: string;
+  parentCommentAuthorEmail: string;
+
+  path: string;
+
+  authorName: string;
+  authorEmail?: string;
+};
+
+export type NotificationNewComment = {
+  commentId: number;
+  path: string;
+  rawContent: string;
+  renderedContent: string;
+  authorName: string;
+  authorId?: number;
+  isSpam: boolean;
+};
 
 export interface NotificationProvider {
   name: string;

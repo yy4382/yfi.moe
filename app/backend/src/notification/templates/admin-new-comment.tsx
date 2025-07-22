@@ -3,7 +3,6 @@ import { BaseTemplate } from "./base-template";
 
 interface AdminNewCommentEmailProps {
   authorName: string;
-  authorEmail: string;
   postTitle: string;
   postSlug: string;
   commentContent: string;
@@ -11,7 +10,6 @@ interface AdminNewCommentEmailProps {
 
 export const AdminNewCommentEmail = ({
   authorName,
-  authorEmail,
   postTitle,
   postSlug,
   commentContent,
@@ -29,11 +27,7 @@ export const AdminNewCommentEmail = ({
         </Section>
 
         <Text style={text}>
-          <strong>By:</strong> {authorName} (
-          <Link href={`mailto:${authorEmail}`} style={emailLink}>
-            {authorEmail}
-          </Link>
-          )
+          <strong>By:</strong> {authorName}
         </Text>
 
         <Text style={text}>
