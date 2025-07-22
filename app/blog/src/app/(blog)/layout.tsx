@@ -18,7 +18,7 @@ export default function BlogLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="m-0 overflow-x-hidden bg-bg bg-fixed p-0 text-content">
+    <div className="m-0 bg-bg bg-fixed p-0 text-content">
       <div className="grid min-h-[100lvh] grid-rows-[auto_auto_1fr_auto]">
         <Navbar />
         <div className="w-full">{children}</div>
