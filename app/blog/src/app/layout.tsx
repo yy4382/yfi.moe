@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-Hans">
+    <html lang="zh-Hans" suppressHydrationWarning>
       <head>
         <link rel="sitemap" href="/sitemap.xml" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />

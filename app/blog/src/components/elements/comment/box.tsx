@@ -300,7 +300,7 @@ function VisitorBox({ submit }: VisitorBoxProps) {
 function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   const queryClient = useQueryClient();
   return (
-    <div className="flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border border-container bg-gray-50 py-4 dark:bg-gray-950">
+    <div className="flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border border-container py-4 bg-card">
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs text-comment">使用社交账号登录</span>
         <motion.button
@@ -386,7 +386,7 @@ function UserBox({ submit, session }: UserBoxProps) {
           unoptimized
           className="aspect-square size-14 rounded-full ring-2 ring-black dark:ring-white"
         />
-        <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-gray-500/50 p-0.5 group-hover:block">
+        <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
           <button
             onClick={handleSignOut}
             className="flex size-full items-center justify-center"
@@ -438,7 +438,7 @@ function InputBox({ submit, initialContent, placeholder }: InputBoxProps) {
         <div className="absolute -top-3 -right-2">
           <motion.button
             onClick={cancel}
-            className="rounded-full bg-gray-200 p-1"
+            className="rounded-full bg-zinc-200 p-1"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >

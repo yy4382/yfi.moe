@@ -16,7 +16,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       {headings.map((heading, index) => (
         <li
           key={heading.slug}
-          className={`relative min-w-0 py-1 before:absolute before:top-1/2 before:-left-1 before:h-4 before:w-[2px] before:-translate-y-1/2 before:rounded-md before:bg-primary before:opacity-0 before:transition-opacity before:content-[''] ${
+          className={`relative min-w-0 py-1 before:absolute before:top-1/2 before:-left-1 before:h-4 before:w-[2px] before:-translate-y-1/2 before:rounded-md before:bg-primary/80 before:opacity-0 before:transition-opacity before:content-[''] ${
             activeIndex === index ? "before:opacity-100" : ""
           }`}
         >

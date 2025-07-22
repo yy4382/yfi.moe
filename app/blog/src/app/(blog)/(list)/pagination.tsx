@@ -69,7 +69,7 @@ export function Pagination({
           aria-label={prevPage ? "Previous Page" : undefined}
           className={`flex size-12 items-center justify-center overflow-hidden transition-colors rounded-full ${
             prevPage
-              ? "text-content hover:bg-primary/10"
+              ? "text-content hover:bg-accent hover:text-accent-foreground"
               : "text-content/50 cursor-not-allowed"
           }`}
         >
@@ -96,7 +96,7 @@ export function Pagination({
               return (
                 <div
                   key={p}
-                  className="flex size-9 items-center justify-center rounded-full bg-primary/20"
+                  className="flex size-9 items-center justify-center rounded-full bg-primary/90 text-primary-foreground"
                 >
                   {p}
                 </div>
@@ -108,7 +108,7 @@ export function Pagination({
                 key={p}
                 href={buildPageUrl(p)}
                 aria-label={`Page ${p}`}
-                className="flex size-9 items-center justify-center rounded-full hover:bg-primary/10 transition-colors"
+                className="flex size-9 items-center justify-center rounded-full hover:bg-accent hover:text-accent-foreground transition-colors"
               >
                 {p}
               </a>
@@ -121,7 +121,7 @@ export function Pagination({
           aria-label={nextPage ? "Next Page" : undefined}
           className={`flex size-12 items-center justify-center overflow-hidden transition-colors rounded-full ${
             nextPage
-              ? "text-content hover:bg-primary/10"
+              ? "text-content hover:bg-accent hover:text-accent-foreground"
               : "text-content/50 cursor-not-allowed"
           }`}
         >

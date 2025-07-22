@@ -8,6 +8,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import * as React from "react";
 import { Toaster } from "sonner";
+import { ThemeProvider, useTheme } from "./theme-provider";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -35,9 +36,16 @@ export function Providers(props: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {props.children}
-      <ReactQueryDevtools initialIsOpen={false} />
-      <Toaster />
+      <ThemeProvider>
+        {props.children}
+        <ReactQueryDevtools initialIsOpen={false} />
+        <ToasterWithTheme />
+      </ThemeProvider>
     </QueryClientProvider>
   );
+}
+
+function ToasterWithTheme() {
+  const theme = useTheme();
+  return <Toaster theme={theme} />;
 }
