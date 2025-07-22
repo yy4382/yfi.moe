@@ -10,7 +10,11 @@ import {
 } from "vitest";
 import * as nodemailer from "nodemailer";
 import { EmailNotificationProvider, EmailNotificationConfig } from "./email";
-import { NotificationPayload } from "../types";
+import {
+  NotificationPayload,
+  NotificationNewReply,
+  NotificationNewComment,
+} from "../types";
 
 // 创建一个测试子类来使用测试传输器
 class TestableEmailNotificationProvider extends EmailNotificationProvider {
@@ -93,6 +97,30 @@ describe(
     let provider: TestableEmailNotificationProvider;
     let config: EmailNotificationConfig;
 
+    const baseCommentReplyData: NotificationNewReply = {
+      commentId: 1,
+      rawContent: "This is a test comment",
+      renderedContent: "<p>This is a test comment</p>",
+      parentCommentId: 2,
+      parentCommentRawContent: "Original comment",
+      parentCommentRenderedContent: "<p>Original comment</p>",
+      parentCommentAuthorName: "Original Author",
+      parentCommentAuthorEmail: "original@example.com",
+      path: "/post/test-post",
+      authorName: "John Doe",
+      authorEmail: "john@example.com",
+    };
+
+    const baseAdminCommentData: NotificationNewComment = {
+      commentId: 1,
+      path: "/post/test-post",
+      rawContent: "This is a test comment",
+      renderedContent: "<p>This is a test comment</p>",
+      authorName: "John Doe",
+      authorId: 123,
+      isSpam: false,
+    };
+
     beforeAll(async () => {
       config = {
         from: "test@example.com",
@@ -159,19 +187,11 @@ describe(
     });
 
     describe("send", () => {
-      const baseNotificationData = {
-        postSlug: "test-post",
-        postTitle: "Test Post Title",
-        commentContent: "This is a test comment",
-        authorName: "John Doe",
-        authorEmail: "john@example.com",
-      };
-
       it("should send comment reply notification", async () => {
         const notification: NotificationPayload = {
           type: "comment_reply",
           recipient: "recipient@example.com",
-          data: baseNotificationData,
+          data: baseCommentReplyData,
         };
 
         await provider.send(notification);
@@ -181,51 +201,17 @@ describe(
         expect(sentEmail.from).toBe(config.from);
         expect(sentEmail.to).toBe(notification.recipient);
         expect(sentEmail.subject).toContain("New reply to your comment");
-        expect(sentEmail.subject).toContain(baseNotificationData.postTitle);
-        expect(sentEmail.html).toContain(baseNotificationData.authorName);
-        expect(sentEmail.html).toContain(baseNotificationData.commentContent);
+        expect(sentEmail.subject).toContain(baseCommentReplyData.path);
+        expect(sentEmail.html).toContain(baseCommentReplyData.authorName);
+        expect(sentEmail.html).toContain(baseCommentReplyData.rawContent);
         expect(sentEmail.text).toBeTruthy();
-      });
-
-      it("should send new comment notification", async () => {
-        const notification: NotificationPayload = {
-          type: "new_comment",
-          recipient: "recipient@example.com",
-          data: baseNotificationData,
-        };
-
-        await provider.send(notification);
-
-        const sentEmail = provider.getLastSentEmail();
-        expect(sentEmail).toBeDefined();
-        expect(sentEmail.subject).toContain("New comment on");
-        expect(sentEmail.subject).toContain(baseNotificationData.postTitle);
-        expect(sentEmail.html).toContain(baseNotificationData.authorName);
-        expect(sentEmail.html).toContain(baseNotificationData.commentContent);
-      });
-
-      it("should send comment mention notification", async () => {
-        const notification: NotificationPayload = {
-          type: "comment_mention",
-          recipient: "recipient@example.com",
-          data: baseNotificationData,
-        };
-
-        await provider.send(notification);
-
-        const sentEmail = provider.getLastSentEmail();
-        expect(sentEmail).toBeDefined();
-        expect(sentEmail.subject).toContain("You were mentioned in a comment");
-        expect(sentEmail.subject).toContain(baseNotificationData.postTitle);
-        expect(sentEmail.html).toContain(baseNotificationData.authorName);
-        expect(sentEmail.html).toContain(baseNotificationData.commentContent);
       });
 
       it("should send admin new comment notification", async () => {
         const notification: NotificationPayload = {
           type: "admin_new_comment",
           recipient: "admin@example.com",
-          data: baseNotificationData,
+          data: baseAdminCommentData,
         };
 
         await provider.send(notification);
@@ -233,19 +219,18 @@ describe(
         const sentEmail = provider.getLastSentEmail();
         expect(sentEmail).toBeDefined();
         expect(sentEmail.subject).toContain("New comment requires moderation");
-        expect(sentEmail.subject).toContain(baseNotificationData.postTitle);
-        expect(sentEmail.html).toContain(baseNotificationData.authorName);
-        expect(sentEmail.html).toContain(baseNotificationData.authorEmail);
-        expect(sentEmail.html).toContain(baseNotificationData.commentContent);
+        expect(sentEmail.subject).toContain(baseAdminCommentData.path);
+        expect(sentEmail.html).toContain(baseAdminCommentData.authorName);
+        expect(sentEmail.html).toContain(baseAdminCommentData.rawContent);
       });
 
       it("should handle anonymous author names", async () => {
         const notification: NotificationPayload = {
-          type: "new_comment",
+          type: "comment_reply",
           recipient: "recipient@example.com",
           data: {
-            ...baseNotificationData,
-            authorName: undefined,
+            ...baseCommentReplyData,
+            authorName: "",
           },
         };
 
@@ -255,13 +240,14 @@ describe(
         expect(sentEmail.html).toContain("Anonymous");
       });
 
-      it("should handle missing comment content", async () => {
+      it("should handle empty comment content", async () => {
         const notification: NotificationPayload = {
-          type: "new_comment",
+          type: "comment_reply",
           recipient: "recipient@example.com",
           data: {
-            ...baseNotificationData,
-            commentContent: undefined,
+            ...baseCommentReplyData,
+            rawContent: "",
+            renderedContent: "",
           },
         };
 
@@ -276,7 +262,7 @@ describe(
         const notification = {
           type: "unknown_type" as any,
           recipient: "recipient@example.com",
-          data: baseNotificationData,
+          data: baseCommentReplyData,
         };
 
         await expect(provider.send(notification)).rejects.toThrow(
@@ -298,9 +284,9 @@ describe(
         const disabledProvider = new EmailNotificationProvider(disabledConfig);
 
         const notification: NotificationPayload = {
-          type: "new_comment",
+          type: "comment_reply",
           recipient: "recipient@example.com",
-          data: baseNotificationData,
+          data: baseCommentReplyData,
         };
 
         await expect(disabledProvider.send(notification)).rejects.toThrow(
@@ -312,12 +298,12 @@ describe(
     describe("email content generation", () => {
       it("should generate both HTML and text versions", async () => {
         const notification: NotificationPayload = {
-          type: "new_comment",
+          type: "comment_reply",
           recipient: "recipient@example.com",
           data: {
-            postSlug: "test-post",
-            postTitle: "Test Post",
-            commentContent: "Test comment",
+            ...baseCommentReplyData,
+            path: "/post/test-post",
+            rawContent: "Test comment",
             authorName: "Test Author",
           },
         };
@@ -332,12 +318,12 @@ describe(
 
       it("should include post slug in generated content", async () => {
         const notification: NotificationPayload = {
-          type: "new_comment",
+          type: "comment_reply",
           recipient: "recipient@example.com",
           data: {
-            postSlug: "my-awesome-post",
-            postTitle: "My Awesome Post",
-            commentContent: "Great post!",
+            ...baseCommentReplyData,
+            path: "/post/my-awesome-post",
+            rawContent: "Great post!",
             authorName: "Fan",
           },
         };
@@ -346,7 +332,7 @@ describe(
 
         const sentEmail = provider.getLastSentEmail();
         // 检查邮件内容是否包含适当的链接或引用
-        expect(sentEmail.html).toContain("my-awesome-post");
+        expect(sentEmail.html).toContain("/post/my-awesome-post");
       });
     });
 
@@ -354,12 +340,12 @@ describe(
       it("should handle sending multiple emails", async () => {
         const notifications: NotificationPayload[] = [
           {
-            type: "new_comment",
+            type: "comment_reply",
             recipient: "user1@example.com",
             data: {
-              postSlug: "post-1",
-              postTitle: "Post 1",
-              commentContent: "Comment 1",
+              ...baseCommentReplyData,
+              path: "/post/post-1",
+              rawContent: "Comment 1",
               authorName: "Author 1",
             },
           },
@@ -367,9 +353,9 @@ describe(
             type: "comment_reply",
             recipient: "user2@example.com",
             data: {
-              postSlug: "post-2",
-              postTitle: "Post 2",
-              commentContent: "Comment 2",
+              ...baseCommentReplyData,
+              path: "/post/post-2",
+              rawContent: "Comment 2",
               authorName: "Author 2",
             },
           },
@@ -466,10 +452,12 @@ describe(
             type: "comment_reply",
             recipient: testAccount.user,
             data: {
-              postSlug: "test-comment-reply",
-              postTitle: "Amazing Blog Post About React Testing",
-              commentContent:
+              ...baseCommentReplyData,
+              path: "/post/test-comment-reply",
+              rawContent:
                 "This is a test reply comment that demonstrates the comment reply notification email template. It includes rich content with **markdown** support and shows how the actual React Email template renders.",
+              renderedContent:
+                "<p>This is a test reply comment that demonstrates the comment reply notification email template. It includes rich content with <strong>markdown</strong> support and shows how the actual React Email template renders.</p>",
               authorName: "Jane Developer",
               authorEmail: "jane@example.com",
             },
@@ -484,64 +472,19 @@ describe(
           expect(capturedInfos[0].messageId).toBeTruthy();
         });
 
-        it("should send real new comment notification using React Email template", async () => {
-          const notification: NotificationPayload = {
-            type: "new_comment",
-            recipient: testAccount.user,
-            data: {
-              postSlug: "advanced-typescript-patterns",
-              postTitle:
-                "Advanced TypeScript Patterns for Modern Web Development",
-              commentContent:
-                "Great article! I especially loved the section about conditional types. Here's a question: how would you implement a recursive type that can handle deeply nested objects? I've been struggling with this pattern in my current project. Thanks for sharing this comprehensive guide!",
-              authorName: "Alex Chen",
-              authorEmail: "alex.chen@techcorp.com",
-            },
-          };
-
-          console.log(`\n📧 Sending New Comment Notification...`);
-
-          // 使用真实的 provider.send 方法（会使用 React Email 模板）
-          await realProvider.send(notification);
-
-          expect(capturedInfos.length).toBe(1);
-          expect(capturedInfos[0].messageId).toBeTruthy();
-        });
-
-        it("should send real comment mention notification using React Email template", async () => {
-          const notification: NotificationPayload = {
-            type: "comment_mention",
-            recipient: testAccount.user,
-            data: {
-              postSlug: "building-scalable-apis",
-              postTitle: "Building Scalable APIs with Node.js and GraphQL",
-              commentContent:
-                "Hi @testuser! I noticed you had some great insights about GraphQL resolvers in your previous posts. What's your take on implementing real-time subscriptions? I'd love to hear your thoughts on the performance implications when dealing with large datasets. Have you tried using DataLoader patterns?",
-              authorName: "Maria Rodriguez",
-              authorEmail: "maria.rodriguez@startup.io",
-            },
-          };
-
-          console.log(`\n📧 Sending Comment Mention Notification...`);
-
-          // 使用真实的 provider.send 方法（会使用 React Email 模板）
-          await realProvider.send(notification);
-
-          expect(capturedInfos.length).toBe(1);
-          expect(capturedInfos[0].messageId).toBeTruthy();
-        });
-
         it("should send real admin new comment notification using React Email template", async () => {
           const notification: NotificationPayload = {
             type: "admin_new_comment",
             recipient: testAccount.user,
             data: {
-              postSlug: "security-best-practices",
-              postTitle: "Web Security Best Practices for 2024",
-              commentContent:
+              ...baseAdminCommentData,
+              path: "/post/security-best-practices",
+              rawContent:
                 "This comment contains potentially suspicious content that needs admin review. It might include promotional links or inappropriate language that requires moderation before being published publicly. Please review carefully.",
+              renderedContent:
+                "<p>This comment contains potentially suspicious content that needs admin review. It might include promotional links or inappropriate language that requires moderation before being published publicly. Please review carefully.</p>",
               authorName: "Anonymous Commenter",
-              authorEmail: "throwaway123@tempmail.com",
+              isSpam: true,
             },
           };
 
@@ -559,9 +502,9 @@ describe(
             type: "comment_reply",
             recipient: testAccount.user,
             data: {
-              postSlug: "react-performance-optimization",
-              postTitle: "React Performance Optimization: A Complete Guide",
-              commentContent: `Thanks for this comprehensive guide! I have a follow-up question about the useMemo hook:
+              ...baseCommentReplyData,
+              path: "/post/react-performance-optimization",
+              rawContent: `Thanks for this comprehensive guide! I have a follow-up question about the useMemo hook:
 
 **Question:** When dealing with expensive calculations, should we always wrap them in useMemo, or are there cases where it might actually hurt performance?
 
@@ -576,6 +519,15 @@ I've heard that the memoization itself has overhead. What's your recommendation 
 Also, how does this interact with React.memo() for component memoization? Should we use both together?
 
 Looking forward to your insights!`,
+              renderedContent: `<p>Thanks for this comprehensive guide! I have a follow-up question about the useMemo hook:</p>
+<p><strong>Question:</strong> When dealing with expensive calculations, should we always wrap them in useMemo, or are there cases where it might actually hurt performance?</p>
+<pre><code class="language-javascript">const expensiveValue = useMemo(() => {
+  return heavyCalculation(props.data);
+}, [props.data]);
+</code></pre>
+<p>I've heard that the memoization itself has overhead. What's your recommendation for deciding when to use it?</p>
+<p>Also, how does this interact with React.memo() for component memoization? Should we use both together?</p>
+<p>Looking forward to your insights!</p>`,
               authorName: "David Kim",
               authorEmail: "david.kim@webdev.com",
             },

@@ -1,12 +1,7 @@
 import { NotificationProvider, NotificationPayload } from "../types";
 import * as nodemailer from "nodemailer";
 import { render } from "@react-email/render";
-import {
-  CommentReplyEmail,
-  NewCommentEmail,
-  CommentMentionEmail,
-  AdminNewCommentEmail,
-} from "../templates";
+import { CommentReplyEmail, AdminNewCommentEmail } from "../templates";
 
 export interface EmailNotificationConfig {
   from: string;
@@ -64,43 +59,13 @@ export class EmailNotificationProvider implements NotificationProvider {
       case "comment_reply": {
         const emailComponent = CommentReplyEmail({
           authorName: data.authorName || "Anonymous",
-          postTitle: data.postTitle,
-          postSlug: data.postSlug,
-          commentContent: data.commentContent || "",
+          postTitle: data.path, // TODO: get post title
+          postSlug: data.path,
+          commentContent: data.rawContent,
         });
 
         return {
-          subject: `New reply to your comment on "${data.postTitle}"`,
-          html: await render(emailComponent),
-          text: await render(emailComponent, { plainText: true }),
-        };
-      }
-
-      case "new_comment": {
-        const emailComponent = NewCommentEmail({
-          authorName: data.authorName || "Anonymous",
-          postTitle: data.postTitle,
-          postSlug: data.postSlug,
-          commentContent: data.commentContent || "",
-        });
-
-        return {
-          subject: `New comment on "${data.postTitle}"`,
-          html: await render(emailComponent),
-          text: await render(emailComponent, { plainText: true }),
-        };
-      }
-
-      case "comment_mention": {
-        const emailComponent = CommentMentionEmail({
-          authorName: data.authorName || "Anonymous",
-          postTitle: data.postTitle,
-          postSlug: data.postSlug,
-          commentContent: data.commentContent || "",
-        });
-
-        return {
-          subject: `You were mentioned in a comment on "${data.postTitle}"`,
+          subject: `New reply to your comment on "${data.path}"`, // TODO: get post title
           html: await render(emailComponent),
           text: await render(emailComponent, { plainText: true }),
         };
@@ -109,14 +74,13 @@ export class EmailNotificationProvider implements NotificationProvider {
       case "admin_new_comment": {
         const emailComponent = AdminNewCommentEmail({
           authorName: data.authorName || "Anonymous",
-          authorEmail: data.authorEmail || "",
-          postTitle: data.postTitle,
-          postSlug: data.postSlug,
-          commentContent: data.commentContent || "",
+          postTitle: data.path, // TODO: get post title
+          postSlug: data.path,
+          commentContent: data.rawContent,
         });
 
         return {
-          subject: `New comment requires moderation on "${data.postTitle}"`,
+          subject: `New comment requires moderation on "${data.path}"`, // TODO: get post title
           html: await render(emailComponent),
           text: await render(emailComponent, { plainText: true }),
         };
