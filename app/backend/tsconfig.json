@@ -2,6 +2,7 @@
   "compilerOptions": {
     /* Language and Environment */
     "target": "es2022" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "jsx": "react-jsx" /* Specify what JSX code is generated. */,
 
     /* Modules */
     "module": "es2022" /* Specify what module code is generated. */,
@@ -21,6 +22,6 @@
     "composite": true,
     "outDir": "./dist/tsc"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }

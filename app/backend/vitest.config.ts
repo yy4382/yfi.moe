@@ -5,7 +5,8 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     coverage: {
-      include: ["src/modules/**/*.ts"],
+      include: ["src/**/*.ts"],
+      exclude: ["src/auth/**/*.ts", "src/db/**/*.ts"],
     },
   },
 });
