@@ -1,11 +1,13 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import commentApp from ".";
 import * as getModule from "./services/get";
 import * as addModule from "./services/add";
 import * as updateModule from "./services/update";
+import * as notifyModule from "./services/notify";
 import { testClient } from "hono/testing";
 import { factory, Variables } from "@/factory";
 import * as deleteModule from "./services/delete";
+import { NotificationService } from "@/notification/types";
 
 const testCommentApp = (
   auth: Variables["auth"] = undefined,
@@ -18,9 +20,14 @@ const testCommentApp = (
       c.set("db", db);
       c.set("authClient", authClient);
       c.set("auth", auth);
+      c.set("notification", {} as NotificationService);
       await next();
     })
     .route("/", commentApp);
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
 
 describe("get comments", () => {
   it("should return comments", async () => {
@@ -97,7 +104,12 @@ describe("add comment", () => {
       async (_, options) => {
         ipReqGot = options.ip;
         uaReqGot = options.ua;
-        return { result: "success", data: { id: 1 } };
+        return { result: "success", data: { id: 1 } as any };
+      },
+    );
+    vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(
+      async () => {
+        return Promise.resolve();
       },
     );
     const resp = await testClient(testCommentApp()).add.$post(
@@ -125,6 +137,11 @@ describe("add comment", () => {
     vi.spyOn(addModule, "addComment").mockImplementationOnce(async () => {
       return { result: "bad_req", data: { message: "test" } };
     });
+    vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(
+      async () => {
+        return Promise.resolve();
+      },
+    );
     const resp = await testClient(testCommentApp()).add.$post({
       json: {
         path: "/",

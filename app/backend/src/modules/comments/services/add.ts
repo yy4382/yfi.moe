@@ -1,13 +1,21 @@
 import type { User } from "@/auth/auth-plugin";
 import { AddCommentBody, AddCommentResponse } from "./add.model";
-import type { db as dbType } from "@/db/instance";
 import { comment } from "@/db/schema";
 import { parseMarkdown } from "./parse-markdown";
+import { DbClient } from "@/db/db-plugin";
 
 type AddCommentResult =
   | {
       result: "success";
-      data: AddCommentResponse;
+      data: AddCommentResponse & {
+        userId?: string;
+        name: string;
+        email?: string;
+        rawContent: string;
+        renderedContent: string;
+        replyToId?: number;
+        isSpam: boolean;
+      };
     }
   | {
       result: "bad_req";
@@ -16,7 +24,7 @@ type AddCommentResult =
 
 export async function addComment(
   body: AddCommentBody,
-  options: { db: typeof dbType; user: User | null; ip?: string; ua?: string },
+  options: { db: DbClient; user: User | null; ip?: string; ua?: string },
 ): Promise<AddCommentResult> {
   const {
     path,
@@ -57,6 +65,15 @@ export async function addComment(
   const commentId = newComment.id;
   return {
     result: "success",
-    data: { id: commentId },
+    data: {
+      id: commentId,
+      userId: newComment.userId ?? undefined,
+      name: newComment.anonymousName ?? newComment.visitorName ?? "",
+      email: newComment.visitorEmail ?? undefined,
+      rawContent: newComment.rawContent,
+      renderedContent: newComment.renderedContent,
+      replyToId: newComment.replyToId ?? undefined,
+      isSpam: newComment.isSpam,
+    },
   };
 }
