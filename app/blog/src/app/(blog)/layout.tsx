@@ -48,8 +48,8 @@ function Navbar() {
             <LinkActive
               href="/"
               className={clsx([
-                "data-[active=true]:text-content-primary",
-                "text-content-50 transition-colors hover:text-content-primary",
+                "data-[active=true]:text-accent-foreground",
+                "text-muted-foreground transition-colors hover:text-accent-foreground",
               ])}
             >
               Home
@@ -59,8 +59,8 @@ function Navbar() {
             <LinkActive
               href="/posts"
               className={clsx([
-                "data-[active=true]:text-content-primary",
-                "text-content-50 transition-colors hover:text-content-primary",
+                "data-[active=true]:text-accent-foreground",
+                "text-muted-foreground transition-colors hover:text-accent-foreground",
               ])}
             >
               Posts

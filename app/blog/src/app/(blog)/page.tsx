@@ -85,7 +85,7 @@ function StatisticsSkeleton() {
 function LoadingCharacter({ length }: { length: number }) {
   return (
     <span
-      className="inline-block h-[1em] animate-pulse bg-gray-200 dark:bg-gray-800 mx-1 rounded-md"
+      className="inline-block h-[1em] animate-pulse bg-zinc-200 dark:bg-zinc-800 mx-1 rounded-md"
       style={{ width: `${length}ch` }}
     />
   );
@@ -105,7 +105,7 @@ function StatisticsSection({
 }: StatisticsSectionProps) {
   return (
     <Card className="relative pt-20 pb-16 sm:pt-8">
-      <span className={homepageStyles.sectionNumber}>01</span>
+      <span className={homepageStyles["section-number"]}>01</span>
       <h2 className="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
       <p className="mb-12 max-w-[65ch] px-8 sm:px-10 inline-flex items-center">
         从 {firstDateString}
@@ -146,7 +146,7 @@ function StatisticsSection({
 function Projects() {
   return (
     <Card className="relative pt-20 pb-16 sm:pt-8">
-      <span className={homepageStyles.sectionNumber}>02</span>
+      <span className={homepageStyles["section-number"]}>02</span>
       <h2 className="mb-2 px-8 text-3xl font-bold sm:px-10">项目</h2>
       <p className="mb-12 max-w-[65ch] px-8 sm:px-10">
         在{" "}
@@ -209,7 +209,7 @@ function Projects() {
 function ContactInfo() {
   return (
     <Card className="relative pt-18 pb-8 sm:pt-8">
-      <span className={homepageStyles.sectionNumber}>03</span>
+      <span className={homepageStyles["section-number"]}>03</span>
       <div className="relative flex size-full flex-col items-start justify-center gap-6 px-8 sm:flex-row sm:items-center sm:px-10">
         <h2 className="text-3xl font-bold">联系我</h2>
         <div className="flex gap-4">

@@ -15,13 +15,13 @@ export function EntryListItem({
   return (
     <div
       className={cn(
-        "@container main-container h-full border-b border-container",
+        "@container main-container h-full border-b border-container group hover:bg-accent",
         className,
       )}
     >
       <div className="px-6 @xl:px-10 @4xl:px-16 @6xl:px-32 py-8 @4xl:py-12">
         <Link href={`/post/${post.id}`}>
-          <h2 className="mb-2 text-lg font-bold transition-colors hover:text-content-primary @xl:text-xl @4xl:text-3xl">
+          <h2 className="mb-2 text-lg font-bold transition-colors group-hover:text-accent-foreground @xl:text-xl @4xl:text-3xl">
             {post.data.title}
           </h2>
         </Link>

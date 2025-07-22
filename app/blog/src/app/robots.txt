@@ -1,5 +1,6 @@
 User-Agent: *
 Allow: /
 Disallow: /tags/
+Disallow: /admin/
 
 Sitemap: https://yfi.moe/sitemap.xml

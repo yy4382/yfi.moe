@@ -48,7 +48,7 @@ async function TagCloud() {
           <Link
             key={tag}
             href={`/tags/${tag}`}
-            className="transition-colors hover:text-content-primary mr-2"
+            className="transition-colors hover:text-accent-foreground mr-2"
             style={{ fontSize: `${2 - 1 / count}rem` }}
           >
             {tag}{" "}
