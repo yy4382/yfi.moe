@@ -8,6 +8,7 @@ import {
 } from "./model";
 import { getComments } from "./services/get";
 import { addComment } from "./services/add";
+import { sendNotification } from "./services/notify";
 import { deleteComment } from "./services/delete";
 import { updateComment } from "./services/update";
 import { factory } from "@/factory";
@@ -37,6 +38,21 @@ const commentApp = factory
     switch (result.result) {
       case "success": {
         const resp = addCommentResponse.parse(result.data);
+        await sendNotification(
+          {
+            id: result.data.id,
+            userId: result.data.userId,
+            path: body.path,
+            name: result.data.name,
+            email: result.data.email,
+            rawContent: result.data.rawContent,
+            renderedContent: result.data.renderedContent,
+            isSpam: result.data.isSpam,
+            replyToId: result.data.replyToId,
+          },
+          c.get("db"),
+          c.get("notification"),
+        );
         return c.json(resp, 200);
       }
       case "bad_req":
