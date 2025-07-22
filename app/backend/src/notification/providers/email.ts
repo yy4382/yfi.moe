@@ -27,11 +27,14 @@ export class EmailNotificationProvider implements NotificationProvider {
       host: config.smtp.host,
       port: config.smtp.port,
       secure: config.smtp.secure,
-      auth: config.smtp.auth,
+      auth: config.smtp.auth.user ? config.smtp.auth : undefined,
     });
   }
 
   isEnabled(): boolean {
+    if (process.env.NODE_ENV === "development") {
+      return true;
+    }
     return !!this.config.smtp.auth.user && !!this.config.smtp.auth.pass;
   }
 
@@ -43,13 +46,21 @@ export class EmailNotificationProvider implements NotificationProvider {
     const { subject, html, text } =
       await this.generateEmailContent(notification);
 
-    await this.transporter.sendMail({
-      from: this.config.from,
-      to: notification.recipient,
-      subject,
-      text,
-      html,
-    });
+    try {
+      await this.transporter.sendMail({
+        from: this.config.from,
+        to: notification.recipient,
+        subject,
+        text,
+        html,
+      });
+      console.log(
+        `Sent email to ${notification.recipient}, subject: ${subject}`,
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   private async generateEmailContent(notification: NotificationPayload) {

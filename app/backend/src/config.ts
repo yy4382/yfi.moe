@@ -16,7 +16,7 @@ const configSchema = z.object({
 
   emailNotification: z
     .object({
-      enabled: z.stringbool().default(false),
+      enabled: z.boolean().default(false),
       from: z.email(),
       smtp: z.object({
         host: z.string(),
@@ -45,21 +45,20 @@ export const config = configSchema.parse({
   githubClientId: process.env.GITHUB_CLIENT_ID!,
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET!,
 
-  emailNotification: configSchema.shape.emailNotification
-    .unwrap()
-    .shape.enabled.parse(process.env.EMAIL_NOTIFICATION_ENABLED)
-    ? {
-        enabled: process.env.EMAIL_NOTIFICATION_ENABLED,
-        from: process.env.EMAIL_FROM!,
-        smtp: {
-          host: process.env.SMTP_HOST!,
-          port: process.env.SMTP_PORT!,
-          secure: process.env.SMTP_SECURE,
-          auth: {
-            user: process.env.SMTP_USER!,
-            pass: process.env.SMTP_PASS!,
+  emailNotification:
+    process.env.EMAIL_NOTIFICATION_ENABLED === "true"
+      ? {
+          enabled: true,
+          from: process.env.EMAIL_FROM!,
+          smtp: {
+            host: process.env.SMTP_HOST!,
+            port: process.env.SMTP_PORT!,
+            secure: process.env.SMTP_SECURE,
+            auth: {
+              user: process.env.SMTP_USER!,
+              pass: process.env.SMTP_PASS!,
+            },
           },
-        },
-      }
-    : undefined,
+        }
+      : undefined,
 } satisfies ConfigInput);

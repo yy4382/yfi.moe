@@ -3,7 +3,7 @@
   "version": "1.0.50",
   "type": "module",
   "scripts": {
-    "dev": "dotenvx run -- tsx watch src/index.ts",
+    "dev": "NODE_ENV=development dotenvx run -- tsx watch src/index.ts",
     "build": "tsdown"
   },
   "dependencies": {
