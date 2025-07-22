@@ -75,7 +75,7 @@ function Navbar() {
 function Footer() {
   return (
     <div className="main-container flex flex-col-reverse items-center justify-between gap-6 px-6 py-4 md:flex-row">
-      <Link href="/" className="flex gap-4 text-2xl font-bold">
+      <Link href="/" className="flex gap-4 text-2xl font-bold" prefetch={false}>
         <Image
           src={logo}
           alt="logo"
@@ -93,9 +93,15 @@ function Footer() {
               <ChevronRightIcon size={16} />
             </span>
             <span className="inline-flex gap-2">
-              <Link href="/about">关于我</Link>
-              <Link href="/site-history">关于本站</Link>
-              <Link href="https://github.com/yy4382/yfi.moe">本站源码</Link>
+              <Link href="/about" prefetch={false}>
+                关于我
+              </Link>
+              <Link href="/site-history" prefetch={false}>
+                关于本站
+              </Link>
+              <Link href="https://github.com/yy4382/yfi.moe" prefetch={false}>
+                本站源码
+              </Link>
             </span>
           </li>
           <li>
@@ -122,7 +128,11 @@ function Footer() {
               </span>
             </span>
             <span className="opacity-70">|</span>
-            <Link href="/feed.xml" className="inline-flex items-center gap-0.5">
+            <Link
+              href="/feed.xml"
+              className="inline-flex items-center gap-0.5"
+              prefetch={false}
+            >
               <RssIcon size={16} />
               RSS
             </Link>
@@ -130,6 +140,7 @@ function Footer() {
             <Link
               href="/sitemap.xml"
               className="inline-flex items-center gap-0.5"
+              prefetch={false}
             >
               <MapIcon size={16} />
               Site Map
@@ -141,7 +152,7 @@ function Footer() {
               Next.js
             </a>
             . See all{" "}
-            <Link href="/credits" className="underline">
+            <Link href="/credits" className="underline" prefetch={false}>
               Credits
             </Link>
             .

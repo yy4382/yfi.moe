@@ -39,6 +39,8 @@ export function PostAttrTags({ tags }: PostAttrTagsProps) {
             <Link
               href={"/tags/" + tag}
               className="transition hover:text-content-primary"
+              // disable prefetch because it's not likely to be clicked
+              prefetch={false}
             >
               {tag}
             </Link>
