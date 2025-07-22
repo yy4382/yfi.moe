@@ -2,6 +2,7 @@ import type { User } from "@/auth/auth-plugin";
 import { AddCommentBody, AddCommentResponse } from "./add.model";
 import type { db as dbType } from "@/db/instance";
 import { comment } from "@/db/schema";
+import { parseMarkdown } from "./parse-markdown";
 
 type AddCommentResult =
   | {
@@ -58,9 +59,4 @@ export async function addComment(
     result: "success",
     data: { id: commentId },
   };
-}
-
-// TODO impl this
-export async function parseMarkdown(content: string) {
-  return content;
 }
