@@ -112,7 +112,6 @@ async function getCommentsDb(
   const adminCommentData: CommentData[] = comments.map((comment) => {
     let sanitized = {
       ...comment,
-      totalCount: undefined,
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
       displayName:

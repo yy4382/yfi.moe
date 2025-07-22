@@ -25,13 +25,14 @@ const testCommentApp = (
 describe("get comments", () => {
   it("should return comments", async () => {
     vi.spyOn(getModule, "getComments").mockImplementationOnce(async () => {
-      return [
+      const comments = [
         {
           anonymousName: null,
           children: [
             {
               anonymousName: null,
               content: "1 reply to 1",
+              rawContent: "1 reply to 1",
               createdAt: new Date("1970-01-01T00:00:15.000Z"),
               displayName: "user",
               id: 1000,
@@ -51,6 +52,7 @@ describe("get comments", () => {
             },
           ],
           content: "comment 1",
+          rawContent: "comment 1",
           createdAt: new Date("1970-01-01T00:00:10.000Z"),
           displayName: "admin",
           id: 1,
@@ -69,6 +71,7 @@ describe("get comments", () => {
           visitorName: null,
         },
       ];
+      return { comments, total: comments.length };
     });
     const resp = await testClient(testCommentApp()).get.$post({
       json: {
