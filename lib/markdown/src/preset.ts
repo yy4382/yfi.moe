@@ -15,6 +15,7 @@ import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy";
 import remarkDirective from "remark-directive";
 import { remarkGithubRepo } from "./plugins/remark-github-repo";
 import remarkGfm from "remark-gfm";
+import rehypeSanitize from "rehype-sanitize";
 
 export const linkIcons = (): [string, RegExp][] => [
   ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
@@ -84,6 +85,7 @@ export const ArticlePreset: Preset = {
             className: ["i-mingcute-external-link-line"],
           });
         },
+        rel: ["noopener"],
       },
     ],
     [rehypeShiki, { theme: "catppuccin-macchiato" }],
@@ -96,5 +98,14 @@ export const ArticlePresetFast: Preset = {
     remarkGfm,
     remarkGithubAlerts,
     [remarkRehype, { allowDangerousHtml: true }],
+  ],
+};
+
+export const CommentPreset: Preset = {
+  plugins: [
+    remarkGfm,
+    remarkRehype,
+    [rehypeExtendedLinks, { rel: ["nofollow", "noopener", "noreferrer"] }],
+    rehypeSanitize,
   ],
 };

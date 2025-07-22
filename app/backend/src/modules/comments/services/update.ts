@@ -2,7 +2,7 @@ import { comment } from "@/db/schema";
 import { db as dbType } from "@/db/instance";
 import type { User } from "@/auth/auth-plugin";
 import { and, isNull, eq } from "drizzle-orm";
-import { parseMarkdown } from "./add";
+import { parseMarkdown } from "./parse-markdown";
 import { OneOfKeyValuePair } from "./update.model";
 
 export async function updateComment(
