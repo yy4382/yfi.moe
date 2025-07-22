@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils/cn";
 import readingTime from "reading-time";
 import Link from "next/link";
 import { Suspense } from "react";
+import homepageStyles from "./homepage.module.css";
+import clsx from "clsx";
 
 export const dynamic = "error";
 
@@ -103,13 +105,13 @@ function StatisticsSection({
 }: StatisticsSectionProps) {
   return (
     <Card className="relative pt-20 pb-16 sm:pt-8">
-      <span className="section-number">01</span>
+      <span className={homepageStyles.sectionNumber}>01</span>
       <h2 className="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
       <p className="mb-12 max-w-[65ch] px-8 sm:px-10 inline-flex items-center">
         从 {firstDateString}
         的第一篇文章开始，本站已经更新了……
       </p>
-      <div className="dashed flex flex-col">
+      <div className={clsx("flex flex-col", homepageStyles.dashed)}>
         <div className="grid-row-3 sm:grid-row-1 relative grid place-items-stretch border-y border-container sm:grid-cols-3">
           <div className="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0">
             <div className="text-3xl font-bold text-heading inline-flex items-center">
@@ -144,7 +146,7 @@ function StatisticsSection({
 function Projects() {
   return (
     <Card className="relative pt-20 pb-16 sm:pt-8">
-      <span className="section-number">02</span>
+      <span className={homepageStyles.sectionNumber}>02</span>
       <h2 className="mb-2 px-8 text-3xl font-bold sm:px-10">项目</h2>
       <p className="mb-12 max-w-[65ch] px-8 sm:px-10">
         在{" "}
@@ -153,7 +155,7 @@ function Projects() {
         </a>{" "}
         上有更多开源项目，不妨点个 Star 吧。
       </p>
-      <div className="dashed flex flex-col">
+      <div className={clsx("flex flex-col", homepageStyles.dashed)}>
         {projects.map((p) => (
           <div
             className={cn(
@@ -207,7 +209,7 @@ function Projects() {
 function ContactInfo() {
   return (
     <Card className="relative pt-18 pb-8 sm:pt-8">
-      <span className="section-number">03</span>
+      <span className={homepageStyles.sectionNumber}>03</span>
       <div className="relative flex size-full flex-col items-start justify-center gap-6 px-8 sm:flex-row sm:items-center sm:px-10">
         <h2 className="text-3xl font-bold">联系我</h2>
         <div className="flex gap-4">

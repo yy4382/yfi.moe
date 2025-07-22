@@ -11,7 +11,7 @@ import {
 import { Markdown } from "@/components/elements/markdown/markdown";
 // @ts-expect-error svg source not added in types
 import Sign from "@/assets/signature-yunfi.svg?source";
-import { ClassValue } from "clsx";
+import clsx, { ClassValue } from "clsx";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { PostData } from "@/lib/content-layer/collections";
@@ -19,6 +19,7 @@ import { markdownToHeadings } from "@repo/markdown/parse";
 import Toc from "./(toc)";
 import { PrevNextIndicator } from "./prev-next-indicator";
 import type { ContentLayerListItem } from "@/lib/content-layer/define-collection";
+import copyrightStyles from "./copyright.module.css";
 
 type ArticleHeroProps = {
   title: string;
@@ -64,7 +65,7 @@ function CopyrightCard() {
     <Card className="overflow-hidden py-10" padding="article">
       <div className="mx-auto prose max-w-[75ch] !text-sm dark:prose-invert prose-p:text-comment/80 prose-a:!text-content/90">
         <div
-          className="signature-wrapper float-right"
+          className={clsx(copyrightStyles.signatureWrapper, "float-right")}
           dangerouslySetInnerHTML={{ __html: Sign }}
         ></div>
         <p className="!mt-0 !mb-2">
