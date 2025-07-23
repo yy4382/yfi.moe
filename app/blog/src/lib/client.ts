@@ -1,18 +1,16 @@
-import { hc, type BackendAppType } from "@repo/backend/client";
+import type { App } from "@/app/api/[[...route]]/route";
+import { hc } from "hono/client";
 import { createAuthClient } from "better-auth/react";
 import { adminClient } from "better-auth/client/plugins";
 
-export const honoClient = hc<BackendAppType>(
-  process.env.NEXT_PUBLIC_BACKEND_URL!,
-  {
-    fetch: (input: RequestInfo | URL, init?: RequestInit) => {
-      return fetch(input, {
-        ...init,
-        credentials: "include",
-      });
-    },
+export const honoClient = hc<App>("/", {
+  fetch: (input: RequestInfo | URL, init?: RequestInit) => {
+    return fetch(input, {
+      ...init,
+      credentials: "include",
+    });
   },
-).api.v1;
+}).api.v1;
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL!,
