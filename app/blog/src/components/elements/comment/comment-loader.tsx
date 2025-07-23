@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
+import { Section } from "@/components/ui/section";
 import { useInView } from "motion/react";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
@@ -13,10 +13,10 @@ export default function Comment() {
 
   return (
     <div ref={ref}>
-      <Card padding="article" className="mx-auto max-w-2xl py-12 min-h-72">
+      <Section padding="article" className="mx-auto max-w-2xl py-12 min-h-72">
         {/* TODO  check server url to see if it's enabled */}
         {isInView && <CommentYuline />}
-      </Card>
+      </Section>
     </div>
   );
 }

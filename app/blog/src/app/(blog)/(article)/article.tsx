@@ -1,7 +1,7 @@
 import "server-only";
 
 import { cn } from "@/lib/utils/cn";
-import { Card } from "@/components/ui/card";
+import { Section } from "@/components/ui/section";
 import {
   PostAttrTags,
   PostAttrTagsProps,
@@ -27,7 +27,7 @@ type ArticleHeroProps = {
   PostAttrTimeProps;
 function ArticleHero({ title, tags, date, updated }: ArticleHeroProps) {
   return (
-    <Card
+    <Section
       className="mx-auto flex flex-col center gap-6 py-24"
       padding="article"
     >
@@ -36,7 +36,7 @@ function ArticleHero({ title, tags, date, updated }: ArticleHeroProps) {
         <PostAttrTime date={date} updated={updated} />
         {tags && <PostAttrTags tags={tags} />}
       </div>
-    </Card>
+    </Section>
   );
 }
 
@@ -62,7 +62,7 @@ function ArticleContent({ text }: { text: string }) {
 
 function CopyrightCard() {
   return (
-    <Card className="overflow-hidden py-10" padding="article">
+    <Section className="overflow-hidden py-10" padding="article">
       <div className="mx-auto prose max-w-[75ch] !text-sm dark:prose-invert prose-p:text-comment/80 prose-a:!text-content/90">
         <div
           className={clsx(copyrightStyles.signatureWrapper, "float-right")}
@@ -84,7 +84,7 @@ function CopyrightCard() {
           协议分发您贡献的作品。
         </p>
       </div>
-    </Card>
+    </Section>
   );
 }
 

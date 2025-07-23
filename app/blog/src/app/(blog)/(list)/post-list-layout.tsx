@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Section } from "@/components/ui/section";
 import type { PostData } from "@/lib/content-layer/collections";
 import { EntryListItem } from "./post-list-item";
 import { Pagination } from "./pagination";
@@ -47,13 +47,13 @@ type ListHeroProps = {
 };
 export function ListHero({ title, desc }: ListHeroProps) {
   return (
-    <Card
+    <Section
       className="flex h-52 flex-col items-start justify-center lg:h-96"
       padding="postList"
       bg="grid"
     >
       <h1 className="text-5xl font-bold text-heading @3xl:text-6xl">{title}</h1>
       {desc && <p className="mt-4 ml-1 text-lg text-content">{desc}</p>}
-    </Card>
+    </Section>
   );
 }

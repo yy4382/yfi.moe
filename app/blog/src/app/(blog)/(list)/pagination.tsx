@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Section } from "@/components/ui/section";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 interface PaginationProps {
@@ -62,7 +62,7 @@ export function Pagination({
   const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
 
   return (
-    <Card padding="sm">
+    <Section padding="sm">
       <div className={`flex flex-row justify-center gap-3 ${className}`}>
         <a
           href={prevPage ? buildPageUrl(prevPage) : undefined}
@@ -132,6 +132,6 @@ export function Pagination({
           )}
         </a>
       </div>
-    </Card>
+    </Section>
   );
 }
