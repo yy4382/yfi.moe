@@ -16,6 +16,8 @@ import remarkDirective from "remark-directive";
 import { remarkGithubRepo } from "./plugins/remark-github-repo";
 import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
+import remarkBreaks from "remark-breaks";
+import rehypeExternalLinks from "rehype-external-links";
 
 export const linkIcons = (): [string, RegExp][] => [
   ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
@@ -103,9 +105,16 @@ export const ArticlePresetFast: Preset = {
 
 export const CommentPreset: Preset = {
   plugins: [
+    remarkBreaks,
     remarkGfm,
     remarkRehype,
-    [rehypeExtendedLinks, { rel: ["nofollow", "noopener", "noreferrer"] }],
     rehypeSanitize,
+    [
+      rehypeExternalLinks,
+      {
+        rel: ["nofollow", "noopener", "noreferrer", "ugc"],
+        target: ["_blank"],
+      },
+    ],
   ],
 };
