@@ -1,5 +1,6 @@
 import { Text, Link, Section } from "@react-email/components";
 import { BaseTemplate } from "./base-template";
+import * as React from "react";
 
 interface CommentReplyEmailProps {
   authorName: string;
