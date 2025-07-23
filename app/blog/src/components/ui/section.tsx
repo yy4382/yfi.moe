@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 import type { ClassValue } from "clsx";
 import { cn } from "@/lib/utils/cn";
 
-const cardInner = cva("", {
+const sectionInner = cva("", {
   variants: {
     padding: {
       sm: "px-6 py-4",
@@ -15,12 +15,7 @@ const cardInner = cva("", {
   },
 });
 
-/**
- * Card container
- *
- * `@container main-container h-full`
- */
-const cardContainer = (className?: ClassValue) =>
+const sectionContainer = (className?: ClassValue) =>
   cn("@container main-container h-full", className);
 
 /**
@@ -28,10 +23,10 @@ const cardContainer = (className?: ClassValue) =>
  *
  * `border-b border-container`
  */
-const cardOuter = (className?: ClassValue) =>
+const sectionOuter = (className?: ClassValue) =>
   cn("border-b border-container", className);
 
-export function Card({
+export function Section({
   className,
   padding,
   bg,
@@ -47,9 +42,9 @@ export function Card({
   children?: React.ReactNode;
 }) {
   return (
-    <section className={cardOuter(classOuter)}>
-      <div className={cn(cardContainer(classContainer))}>
-        <div className={cn(cardInner({ padding, bg, className }))}>
+    <section className={sectionOuter(classOuter)}>
+      <div className={cn(sectionContainer(classContainer))}>
+        <div className={cn(sectionInner({ padding, bg, className }))}>
           {children}
         </div>
       </div>

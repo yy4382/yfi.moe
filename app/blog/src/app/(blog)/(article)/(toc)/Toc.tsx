@@ -7,7 +7,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/Popover";
+} from "@/components/ui/motion-popover";
 import { motion } from "motion/react";
 import type { MarkdownHeading } from "@repo/markdown/parse";
 import { ListIcon } from "lucide-react";

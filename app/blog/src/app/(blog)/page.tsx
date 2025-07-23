@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Section } from "@/components/ui/section";
 import { authorName, contactInfo } from "@/config/author";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
@@ -18,7 +18,7 @@ export const dynamic = "error";
 export default function Home() {
   return (
     <>
-      <Card
+      <Section
         className="flex min-h-96 flex-col center gap-4 md:min-h-[40rem]"
         bg="grid"
       >
@@ -32,14 +32,14 @@ export default function Home() {
           />
           <h1 className="text-5xl font-bold lg:text-8xl">{authorName}</h1>
         </div>
-      </Card>
-      <Card className="min-h-18" />
+      </Section>
+      <Section className="min-h-18" />
       <Suspense fallback={<StatisticsSkeleton />}>
         <Statistics />
       </Suspense>
-      <Card className="min-h-18" />
+      <Section className="min-h-18" />
       <Projects />
-      <Card className="min-h-18" />
+      <Section className="min-h-18" />
       <ContactInfo />
     </>
   );
@@ -104,7 +104,7 @@ function StatisticsSection({
   statistics,
 }: StatisticsSectionProps) {
   return (
-    <Card className="relative pt-20 pb-16 sm:pt-8">
+    <Section className="relative pt-20 pb-16 sm:pt-8">
       <span className={homepageStyles["section-number"]}>01</span>
       <h2 className="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
       <p className="mb-12 max-w-[65ch] px-8 sm:px-10 inline-flex items-center">
@@ -139,13 +139,13 @@ function StatisticsSection({
           文章列表 <ExternalLink size={20} />
         </Link>
       </div>
-    </Card>
+    </Section>
   );
 }
 
 function Projects() {
   return (
-    <Card className="relative pt-20 pb-16 sm:pt-8">
+    <Section className="relative pt-20 pb-16 sm:pt-8">
       <span className={homepageStyles["section-number"]}>02</span>
       <h2 className="mb-2 px-8 text-3xl font-bold sm:px-10">项目</h2>
       <p className="mb-12 max-w-[65ch] px-8 sm:px-10">
@@ -202,13 +202,13 @@ function Projects() {
           更多 <ExternalLink size={20} />
         </a>
       </div>
-    </Card>
+    </Section>
   );
 }
 
 function ContactInfo() {
   return (
-    <Card className="relative pt-18 pb-8 sm:pt-8">
+    <Section className="relative pt-18 pb-8 sm:pt-8">
       <span className={homepageStyles["section-number"]}>03</span>
       <div className="relative flex size-full flex-col items-start justify-center gap-6 px-8 sm:flex-row sm:items-center sm:px-10">
         <h2 className="text-3xl font-bold">联系我</h2>
@@ -229,6 +229,6 @@ function ContactInfo() {
           })}
         </div>
       </div>
-    </Card>
+    </Section>
   );
 }

@@ -1,5 +1,5 @@
 import { ListHero } from "../post-list-layout";
-import { Card } from "@/components/ui/card";
+import { Section } from "@/components/ui/section";
 import { postCollection } from "@/lib/content-layer/collections";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -18,13 +18,13 @@ export default function TagsPage() {
   return (
     <div>
       <ListHero title="Tags" />
-      <Card className="@container p-0">
+      <Section className="@container p-0">
         <div className="px-6 @xl:px-10 @4xl:px-16 @6xl:px-32 py-10">
           <Suspense fallback={<div>Loading...</div>}>
             <TagCloud />
           </Suspense>
         </div>
-      </Card>
+      </Section>
     </div>
   );
 }
