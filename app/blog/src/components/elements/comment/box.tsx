@@ -13,7 +13,7 @@ import { motion } from "motion/react";
 import z from "zod";
 import { toast } from "sonner";
 import { authClient, honoClient, Session } from "@/lib/client";
-import { InferRequestType } from "@repo/backend/client";
+import type { InferRequestType } from "hono/client";
 import GithubIcon from "@/assets/icons/MingcuteGithubLine";
 import { usePathname } from "next/navigation";
 import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";

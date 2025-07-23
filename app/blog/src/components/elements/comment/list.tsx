@@ -6,8 +6,8 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { CommentData } from "@repo/backend/models";
-import { getCommentsResponse } from "@repo/backend/models";
+import type { CommentData } from "@/lib/hono/modules/comments/services/get.model";
+import { getCommentsResponse } from "@/lib/hono/modules/comments/model";
 import Image from "next/image";
 import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
 import { CommentBoxEdit, CommentBoxNew } from "./box";
