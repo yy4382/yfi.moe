@@ -50,7 +50,7 @@ export const BaseTemplate = ({ children, title }: BaseTemplateProps) => {
               <strong>yfi.moe</strong>
             </Text>
             <Text style={footerMuted}>
-              You're receiving this email because you're subscribed to
+              You&apos;re receiving this email because you&apos;re subscribed to
               notifications on yfi.moe.
             </Text>
           </Section>
