@@ -1,5 +1,6 @@
 import { Text, Link, Section } from "@react-email/components";
 import { BaseTemplate } from "./base-template";
+import * as React from "react";
 
 interface AdminNewCommentEmailProps {
   authorName: string;
@@ -11,19 +12,18 @@ interface AdminNewCommentEmailProps {
 export const AdminNewCommentEmail = ({
   authorName,
   postTitle,
-  postSlug,
   commentContent,
 }: AdminNewCommentEmailProps) => {
   return (
     <BaseTemplate title="New comment requires moderation">
       <>
         <Text style={text}>
-          A new comment has been posted on "{postTitle}" and may require
-          moderation:
+          A new comment has been posted on &quot;{postTitle}&quot; and may
+          require moderation:
         </Text>
 
         <Section style={blockquote}>
-          <Text style={quoteText}>"{commentContent}"</Text>
+          <Text style={quoteText}>&quot;{commentContent}&quot;</Text>
         </Section>
 
         <Text style={text}>
@@ -70,9 +70,4 @@ const button = {
   borderRadius: "6px",
   fontWeight: "600",
   display: "inline-block",
-};
-
-const emailLink = {
-  color: "#0070f3",
-  textDecoration: "underline",
 };
