@@ -313,3 +313,7 @@ body input[data-com-onepassword-filled],
 body input[data-com-onepassword-filled]:focus {
   background-clip: text !important;
 }
+
+input::placeholder {
+  color: var(--color-zinc-400);
+}
