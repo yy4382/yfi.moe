@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hono/standard-validator": "^0.1.4",
-    "@libsql/client": "^0.15.10",
+    "@neondatabase/serverless": "^1.0.1",
     "@next/bundle-analyzer": "15.4.1",
     "@next/third-parties": "15.4.1",
     "@octokit/openapi-types": "^25.1.0",
@@ -28,6 +28,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.0",
     "drizzle-orm": "^0.44.3",
     "fast-xml-parser": "^5.2.5",
     "hast-util-to-jsx-runtime": "^2.3.6",

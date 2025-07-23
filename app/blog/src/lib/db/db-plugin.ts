@@ -1,10 +1,9 @@
 import { factory } from "@/lib/hono/factory";
 import type * as schema from "./schema";
-import type { LibSQLDatabase } from "drizzle-orm/libsql";
-import type { Client } from "@libsql/client";
+import type { NeonHttpClient, NeonHttpDatabase } from "drizzle-orm/neon-http";
 
-export type DbClient = LibSQLDatabase<typeof schema> & {
-  $client: Client;
+export type DbClient = NeonHttpDatabase<typeof schema> & {
+  $client: NeonHttpClient;
 };
 
 export const dbPlugin = (db: DbClient) => {
