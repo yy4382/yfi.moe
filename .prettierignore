@@ -4,4 +4,5 @@ src/components/icons
 **/.vercel
 **/.next
 **/.turbo
+**/coverage
 pnpm-lock.yaml
