@@ -1,42 +1,40 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "VERCEL_ENV",
+    "ARTICLE_PAT",
+    "POST_GH_INFO",
+    "PAGE_GH_INFO",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN",
+    "CONTENT_REFRESH_TOKEN",
+    "DATABASE_URL",
+    "BETTER_AUTH_SECRET",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "EMAIL_NOTIFICATION_ENABLED",
+    "EMAIL_FROM",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_SECURE",
+    "SMTP_USER",
+    "SMTP_PASS"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "cache": false,
-      "env": [
-        "LOCAL_PREVIEW",
-        "VERCEL_ENV",
-        "ARTICLE_PAT",
-        "POST_GH_INFO",
-        "PAGE_GH_INFO",
-        "UPSTASH_REDIS_REST_URL",
-        "UPSTASH_REDIS_REST_TOKEN",
-        "NEXT_PUBLIC_POSTHOG_KEY",
-        "NEXT_PUBLIC_POSTHOG_HOST",
-        "NEXT_PUBLIC_WALINE_URL"
-      ]
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
     "dev": {
       "persistent": true,
-      "cache": false,
-      "env": [
-        "LOCAL_PREVIEW",
-        "VERCEL_ENV",
-        "POST_GH_INFO",
-        "PAGE_GH_INFO",
-        "UPSTASH_REDIS_REST_TOKEN",
-        "UPSTASH_REDIS_REST_URL",
-        "NEXT_PUBLIC_POSTHOG_KEY",
-        "NEXT_PUBLIC_POSTHOG_HOST",
-        "NEXT_PUBLIC_WALINE_URL"
-      ]
+      "cache": false
     },
     "check-types": {
       "dependsOn": ["^check-types"],
       "cache": false,
-      "env": ["ARTICLE_PAT", "POST_GH_INFO", "PAGE_GH_INFO"]
+      "env": ["ARTICLE_PAT"]
     }
   }
 }
