@@ -20,7 +20,7 @@ export function ListLayout({
 }: ListLayoutProps) {
   return (
     <div>
-      <div className="border-b border-container">
+      <div className="border-container border-b">
         <ListHero {...props} />
         {posts.map((post, i) => (
           <EntryListItem
@@ -52,8 +52,8 @@ export function ListHero({ title, desc }: ListHeroProps) {
       padding="postList"
       bg="grid"
     >
-      <h1 className="text-5xl font-bold text-heading @3xl:text-6xl">{title}</h1>
-      {desc && <p className="mt-4 ml-1 text-lg text-content">{desc}</p>}
+      <h1 className="text-heading text-5xl font-bold @3xl:text-6xl">{title}</h1>
+      {desc && <p className="text-content mt-4 ml-1 text-lg">{desc}</p>}
     </Section>
   );
 }

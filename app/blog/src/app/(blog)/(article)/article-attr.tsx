@@ -38,7 +38,7 @@ export function PostAttrTags({ tags }: PostAttrTagsProps) {
             {index !== 0 && <span className="text-comment">|</span>}
             <Link
               href={"/tags/" + tag}
-              className="transition hover:text-accent-foreground"
+              className="hover:text-accent-foreground transition"
               // disable prefetch because it's not likely to be clicked
               prefetch={false}
             >

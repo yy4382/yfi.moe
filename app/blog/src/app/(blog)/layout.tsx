@@ -18,11 +18,11 @@ export default function BlogLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="m-0 bg-bg bg-fixed p-0 text-content">
+    <div className="bg-bg text-content m-0 bg-fixed p-0">
       <div className="grid min-h-[100lvh] grid-rows-[auto_auto_1fr_auto]">
         <Navbar />
         <div className="w-full">{children}</div>
-        <section className="h-full min-h-12 bg-grid border-b border-container" />
+        <section className="bg-grid border-container h-full min-h-12 border-b" />
         <Footer />
       </div>
     </div>
@@ -31,8 +31,8 @@ export default function BlogLayout({
 
 function Navbar() {
   return (
-    <header className="border-b border-container">
-      <section className="main-container flex items-center justify-between px-6 py-4 text-content">
+    <header className="border-container border-b">
+      <section className="main-container text-content flex items-center justify-between px-6 py-4">
         <Link href="/" className="flex gap-4 text-2xl font-bold">
           <Image
             src={logo}
@@ -49,7 +49,7 @@ function Navbar() {
               href="/"
               className={clsx([
                 "data-[active=true]:text-accent-foreground",
-                "text-muted-foreground transition-colors hover:text-accent-foreground",
+                "text-muted-foreground hover:text-accent-foreground transition-colors",
               ])}
             >
               Home
@@ -60,7 +60,7 @@ function Navbar() {
               href="/posts"
               className={clsx([
                 "data-[active=true]:text-accent-foreground",
-                "text-muted-foreground transition-colors hover:text-accent-foreground",
+                "text-muted-foreground hover:text-accent-foreground transition-colors",
               ])}
             >
               Posts
@@ -86,9 +86,9 @@ function Footer() {
         Yunfi
       </Link>
       <div className="flex w-full flex-shrink flex-grow flex-col items-start gap-8 md:w-[unset] md:items-end md:gap-2">
-        <ul className="flex flex-col items-start gap-x-6 gap-y-1 text-comment lg:flex-row lg:items-end">
+        <ul className="text-comment flex flex-col items-start gap-x-6 gap-y-1 lg:flex-row lg:items-end">
           <li>
-            <span className="inline-flex items-center font-medium text-content">
+            <span className="text-content inline-flex items-center font-medium">
               关于
               <ChevronRightIcon size={16} />
             </span>
@@ -105,7 +105,7 @@ function Footer() {
             </span>
           </li>
           <li>
-            <span className="inline-flex items-center font-medium text-content">
+            <span className="text-content inline-flex items-center font-medium">
               联系
               <ChevronRightIcon size={16} />
             </span>
@@ -117,7 +117,7 @@ function Footer() {
           </li>
         </ul>
         <div className="flex flex-col items-center self-center text-sm md:items-end md:self-end">
-          <span className="inline-flex items-center gap-x-1 text-comment">
+          <span className="text-comment inline-flex items-center gap-x-1">
             <span className="inline-flex items-center gap-0.5">
               <CopyrightIcon size={16} /> 2023-2024
               <span>

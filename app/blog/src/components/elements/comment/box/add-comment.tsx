@@ -140,20 +140,20 @@ function VisitorBox({ submit }: VisitorBoxProps) {
         <input
           type="text"
           placeholder="昵称*"
-          className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
+          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:ring focus:outline-none"
           value={visitorName}
           onChange={(e) => setVisitorName(e.target.value)}
         />
         <input
           type="text"
           placeholder="邮箱*"
-          className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
+          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:ring focus:outline-none"
           value={visitorEmail}
           onChange={(e) => setVisitorEmail(e.target.value)}
         />
         <button
           onClick={() => setAsVisitor(false)}
-          className="rounded-md border border-container bg-bg px-2 py-1 text-sm shadow"
+          className="border-container bg-bg rounded-md border px-2 py-1 text-sm shadow"
         >
           登录/注册
         </button>
@@ -177,9 +177,9 @@ function VisitorBox({ submit }: VisitorBoxProps) {
 function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   const queryClient = useQueryClient();
   return (
-    <div className="flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border border-container py-4 bg-card">
+    <div className="border-container bg-card flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border py-4">
       <div className="flex flex-col items-center gap-2">
-        <span className="text-xs text-comment">使用社交账号登录</span>
+        <span className="text-comment text-xs">使用社交账号登录</span>
         <motion.button
           onClick={async () => {
             const { error } = await authClient.signIn.social({
@@ -192,7 +192,7 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
             }
             queryClient.invalidateQueries(sessionOptions());
           }}
-          className="flex items-center gap-1 rounded-full border border-container bg-bg p-2 shadow"
+          className="border-container bg-bg flex items-center gap-1 rounded-full border p-2 shadow"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -201,7 +201,7 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
       </div>
       <motion.button
         onClick={setAsVisitor}
-        className="rounded-full border border-container bg-bg px-2 py-1 text-sm shadow"
+        className="border-container bg-bg rounded-full border px-2 py-1 text-sm shadow"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.95 }}
       >

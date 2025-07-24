@@ -13,7 +13,7 @@ export default function Comment() {
 
   return (
     <div ref={ref}>
-      <Section padding="article" className="mx-auto max-w-2xl py-12 min-h-72">
+      <Section padding="article" className="mx-auto min-h-72 max-w-2xl py-12">
         {/* TODO  check server url to see if it's enabled */}
         {isInView && <CommentYuline />}
       </Section>

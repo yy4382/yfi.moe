@@ -28,11 +28,11 @@ type ArticleHeroProps = {
 function ArticleHero({ title, tags, date, updated }: ArticleHeroProps) {
   return (
     <Section
-      className="mx-auto flex flex-col center gap-6 py-24"
+      className="center mx-auto flex flex-col gap-6 py-24"
       padding="article"
     >
-      <h1 className="text-center text-3xl font-bold text-heading">{title}</h1>
-      <div className="flex gap-2 text-[0.8rem] text-comment lg:gap-3 flex-col md:flex-row items-center">
+      <h1 className="text-heading text-center text-3xl font-bold">{title}</h1>
+      <div className="text-comment flex flex-col items-center gap-2 text-[0.8rem] md:flex-row lg:gap-3">
         <PostAttrTime date={date} updated={updated} />
         {tags && <PostAttrTags tags={tags} />}
       </div>
@@ -43,15 +43,15 @@ function ArticleHero({ title, tags, date, updated }: ArticleHeroProps) {
 function ArticleContent({ text }: { text: string }) {
   const headings = markdownToHeadings(text);
   return (
-    <div className="border-b border-container">
-      <div className="@container main-container h-full relative">
+    <div className="border-container border-b">
+      <div className="main-container @container relative h-full">
         <div className="sticky top-0 z-50">
           <div className="flex justify-end">
             <Toc headings={headings} />
           </div>
         </div>
         <div className="px-4 py-18">
-          <div className="mx-auto prose break-words prose-gray dark:prose-invert prose-headings:scroll-mt-8">
+          <div className="prose prose-gray dark:prose-invert prose-headings:scroll-mt-8 mx-auto break-words">
             <Markdown text={text} />
           </div>
         </div>
@@ -63,7 +63,7 @@ function ArticleContent({ text }: { text: string }) {
 function CopyrightCard() {
   return (
     <Section className="overflow-hidden py-10" padding="article">
-      <div className="mx-auto prose max-w-[75ch] !text-sm dark:prose-invert prose-p:text-comment/80 prose-a:!text-content/90">
+      <div className="prose dark:prose-invert prose-p:text-comment/80 prose-a:!text-content/90 mx-auto max-w-[75ch] !text-sm">
         <div
           className={clsx(copyrightStyles.signatureWrapper, "float-right")}
           dangerouslySetInnerHTML={{ __html: Sign }}
@@ -96,11 +96,11 @@ function PrevNext({
   next?: ContentLayerListItem<PostData>;
 }) {
   return (
-    <div className="border-b border-container">
+    <div className="border-container border-b">
       <div
         className={cn(
           "main-container grid items-stretch",
-          prev && next && "lg:grid-cols-2 grid-cols-1",
+          prev && next && "grid-cols-1 lg:grid-cols-2",
           prev && !next && "grid-cols-1",
           !prev && next && "grid-cols-1",
         )}
@@ -129,7 +129,7 @@ function PrevNextBtn({ postId, title, right, className }: PrevNextBtnProps) {
     <div className={cn("@container", "group")}>
       <Link
         className={cn([
-          "flex items-center h-full",
+          "flex h-full items-center",
           "border-container",
           "card-btn",
           "gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8",
@@ -146,7 +146,7 @@ function PrevNextBtn({ postId, title, right, className }: PrevNextBtnProps) {
         </PrevNextIndicator>
 
         <div className={right ? "flex flex-col items-end" : ""}>
-          <p className="text-sm text-comment">上一篇</p>
+          <p className="text-comment text-sm">上一篇</p>
           <p className="@lg:text-lg">{title}</p>
         </div>
       </Link>

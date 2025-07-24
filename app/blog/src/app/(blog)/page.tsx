@@ -19,10 +19,10 @@ export default function Home() {
   return (
     <>
       <Section
-        className="flex min-h-96 flex-col center gap-4 md:min-h-[40rem]"
+        className="center flex min-h-96 flex-col gap-4 md:min-h-[40rem]"
         bg="grid"
       >
-        <div className="flex center gap-4 md:gap-8">
+        <div className="center flex gap-4 md:gap-8">
           <Image
             src={logo}
             alt="logo"
@@ -85,7 +85,7 @@ function StatisticsSkeleton() {
 function LoadingCharacter({ length }: { length: number }) {
   return (
     <span
-      className="inline-block h-[1em] animate-pulse bg-zinc-200 dark:bg-zinc-800 mx-1 rounded-md"
+      className="mx-1 inline-block h-[1em] animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-800"
       style={{ width: `${length}ch` }}
     />
   );
@@ -107,33 +107,33 @@ function StatisticsSection({
     <Section className="relative pt-20 pb-16 sm:pt-8">
       <span className={homepageStyles["section-number"]}>01</span>
       <h2 className="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
-      <p className="mb-12 max-w-[65ch] px-8 sm:px-10 inline-flex items-center">
+      <p className="mb-12 inline-flex max-w-[65ch] items-center px-8 sm:px-10">
         从 {firstDateString}
         的第一篇文章开始，本站已经更新了……
       </p>
       <div className={clsx("flex flex-col", homepageStyles.dashed)}>
-        <div className="grid-row-3 sm:grid-row-1 relative grid place-items-stretch border-y border-container sm:grid-cols-3">
-          <div className="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0">
-            <div className="text-3xl font-bold text-heading inline-flex items-center">
+        <div className="grid-row-3 sm:grid-row-1 border-container relative grid place-items-stretch border-y sm:grid-cols-3">
+          <div className="center border-container flex flex-col border-b py-8 sm:border-r sm:border-b-0">
+            <div className="text-heading inline-flex items-center text-3xl font-bold">
               {statistics.articles} 篇
             </div>
             <div className="text-comment">文章</div>
           </div>
-          <div className="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0">
-            <div className="text-3xl font-bold text-heading inline-flex items-center">
+          <div className="center border-container flex flex-col border-b py-8 sm:border-r sm:border-b-0">
+            <div className="text-heading inline-flex items-center text-3xl font-bold">
               {statistics.words} 万
             </div>
             <div className="text-comment">字数</div>
           </div>
-          <div className="flex flex-col center border-container py-8">
-            <div className="text-3xl font-bold text-heading inline-flex items-center">
+          <div className="center border-container flex flex-col py-8">
+            <div className="text-heading inline-flex items-center text-3xl font-bold">
               {statistics.tags} 个
             </div>
             <div className="text-comment">标签</div>
           </div>
         </div>
         <Link
-          className="flex center gap-1 card-btn py-6 font-semibold"
+          className="center card-btn flex gap-1 py-6 font-semibold"
           href="/posts"
         >
           文章列表 <ExternalLink size={20} />
@@ -160,29 +160,29 @@ function Projects() {
           <div
             className={cn(
               "group grid min-h-48 grid-cols-[1fr_5rem] grid-rows-1 *:py-8 sm:grid-cols-[1fr_10rem] lg:grid-cols-[12rem_1fr_10rem]",
-              "border-b border-container-light",
+              "border-container-light border-b",
             )}
             key={p.title}
           >
-            <div className="hidden center border-r border-container-light lg:flex">
+            <div className="center border-container-light hidden border-r lg:flex">
               <p.icon className="size-[100px]" />
             </div>
-            <div className="flex flex-col justify-center gap-2 border-r border-container-light px-8 sm:px-12">
+            <div className="border-container-light flex flex-col justify-center gap-2 border-r px-8 sm:px-12">
               <div className="mb-4 flex items-center justify-start lg:hidden">
                 <p.icon className="size-[64px]" />
               </div>
               <p className="text-comment">{p.desc}</p>
               <h3 className="text-xl font-bold">{p.title}</h3>
             </div>
-            <div className="grid grid-cols-1 place-items-stretch !py-0 font-bold text-comment/80 group-hover:text-content">
+            <div className="text-comment/80 group-hover:text-content grid grid-cols-1 place-items-stretch !py-0 font-bold">
               {p.links.map((l, i) => (
                 <a
                   href={l.href}
                   target="_blank"
                   className={cn(
-                    "flex center card-btn",
+                    "center card-btn flex",
                     i !== p.links.length - 1 &&
-                      "border-b border-container-light",
+                      "border-container-light border-b",
                   )}
                   key={l.href}
                 >
@@ -196,7 +196,7 @@ function Projects() {
           </div>
         ))}
         <a
-          className="flex center gap-1 card-btn py-6 font-semibold"
+          className="center card-btn flex gap-1 py-6 font-semibold"
           href="https://github.com/yy4382"
         >
           更多 <ExternalLink size={20} />

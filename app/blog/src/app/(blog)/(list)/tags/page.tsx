@@ -19,7 +19,7 @@ export default function TagsPage() {
     <div>
       <ListHero title="Tags" />
       <Section className="@container p-0">
-        <div className="px-6 @xl:px-10 @4xl:px-16 @6xl:px-32 py-10">
+        <div className="px-6 py-10 @xl:px-10 @4xl:px-16 @6xl:px-32">
           <Suspense fallback={<div>Loading...</div>}>
             <TagCloud />
           </Suspense>
@@ -48,12 +48,12 @@ async function TagCloud() {
           <Link
             key={tag}
             href={`/tags/${tag}`}
-            className="transition-colors hover:text-accent-foreground mr-2"
+            className="hover:text-accent-foreground mr-2 transition-colors"
             style={{ fontSize: `${2 - 1 / count}rem` }}
           >
             {tag}{" "}
             <span
-              className="font-mono -ms-0.5"
+              className="-ms-0.5 font-mono"
               style={{
                 opacity: 0.8,
                 fontSize: `${(2 - 1 / count) * 0.75}rem`,

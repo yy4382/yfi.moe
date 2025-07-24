@@ -198,7 +198,7 @@
 }
 
 @utility main-container {
-  @apply mx-auto box-border w-screen max-w-screen border-container sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
+  @apply border-container mx-auto box-border w-screen max-w-screen sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
 }
 
 @utility bg-grid {
@@ -224,7 +224,7 @@
 
 @utility card-btn {
   /* @apply transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800; */
-  @apply transition-colors hover:bg-accent hover:text-accent-foreground;
+  @apply hover:bg-accent hover:text-accent-foreground transition-colors;
 }
 
 @utility prose {

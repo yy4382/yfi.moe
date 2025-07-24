@@ -121,7 +121,7 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
         href={repoUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="not-prose group relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center text-comment transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+        className="not-prose group text-comment relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
       >
         {errorMessage}
         <br />
@@ -144,11 +144,11 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
     >
       <div className="flex flex-1 flex-col p-4">
         <div className="flex-1 space-y-1">
-          <p className="font-semibold text-heading">{data.full_name}</p>
-          <p className="text-sm text-comment">{data.description}</p>
+          <p className="text-heading font-semibold">{data.full_name}</p>
+          <p className="text-comment text-sm">{data.description}</p>
         </div>
 
-        <div className="mt-4 flex items-center gap-4 text-sm text-comment">
+        <div className="text-comment mt-4 flex items-center gap-4 text-sm">
           {data.language && (
             <div className="flex items-center gap-1.5">
               <span
