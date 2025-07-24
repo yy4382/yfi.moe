@@ -6,8 +6,6 @@ import { Metadata } from "next";
 
 const getEntry = cache((slug: string) => pageCollection.getEntry(slug));
 
-export const revalidate = 86400;
-
 export async function generateStaticParams() {
   const pages = await pageCollection.getCollection();
   return pages.map((page) => ({ page: page.id }));

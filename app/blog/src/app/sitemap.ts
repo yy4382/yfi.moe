@@ -6,7 +6,6 @@ import type { MetadataRoute } from "next";
 const origin = "https://yfi.moe";
 
 export const dynamic = "error";
-export const revalidate = 864000; // 10 days
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await postCollection.getCollection();

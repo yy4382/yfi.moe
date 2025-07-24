@@ -11,7 +11,6 @@ import readingTime from "reading-time";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export const revalidate = 86400;
 export const dynamic = "error";
 
 export default function Home() {

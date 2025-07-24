@@ -12,7 +12,6 @@ export const metadata: Metadata = {
     index: false,
   },
 };
-export const revalidate = 86400;
 export const dynamic = "error";
 export async function generateStaticParams() {
   const posts = await postCollection.getCollection();

@@ -16,8 +16,6 @@ export const size = {
 
 export const contentType = "image/png";
 
-export const revalidate = 86400;
-
 export const dynamic = "error";
 
 const logoDataUrl = `data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`;

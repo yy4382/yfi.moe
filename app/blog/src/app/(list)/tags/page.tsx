@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "error";
-export const revalidate = 86400;
 
 export default function TagsPage() {
   return (

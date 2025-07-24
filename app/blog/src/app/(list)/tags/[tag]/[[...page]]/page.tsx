@@ -6,7 +6,6 @@ import { Metadata } from "next";
 
 const postsPerPage = 20;
 
-export const revalidate = 86400;
 export const dynamic = "error";
 export async function generateStaticParams() {
   const posts = await postCollection.getCollection();
