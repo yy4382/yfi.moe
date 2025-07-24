@@ -70,16 +70,16 @@ export function CommentList() {
 
   if (isPending) {
     return (
-      <div className="p-4 text-center text-zinc-500 mt-6">加载评论中...</div>
+      <div className="mt-6 p-4 text-center text-zinc-500">加载评论中...</div>
     );
   }
   if (isError) {
     return (
-      <div className="p-4 text-center text-red-500 mt-6 flex items-center gap-2 justify-center-safe">
+      <div className="mt-6 flex items-center justify-center-safe gap-2 p-4 text-center text-red-500">
         加载评论失败: {error.message}
         <motion.button
           onClick={() => refetch()}
-          className="px-2 py-1 rounded-md shadow-md border border-container text-comment"
+          className="border-container text-comment rounded-md border px-2 py-1 shadow-md"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -89,12 +89,12 @@ export function CommentList() {
     );
   }
   if (!data || data.pages.length === 0 || data.pages[0].comments.length === 0) {
-    return <div className="p-4 text-center text-zinc-500 mt-6">暂无留言</div>;
+    return <div className="mt-6 p-4 text-center text-zinc-500">暂无留言</div>;
   }
 
   return (
     <div className="mt-6">
-      <div className="flex items-center gap-2 justify-between mb-2">
+      <div className="mb-2 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 text-lg font-semibold">
           <span>{data.pages[0].total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
@@ -140,7 +140,7 @@ export function CommentList() {
           <motion.button
             onClick={() => fetchNextPage()}
             disabled={isFetching}
-            className="px-2 py-1 rounded-md shadow-md border border-container text-comment"
+            className="border-container text-comment rounded-md border px-2 py-1 shadow-md"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -148,7 +148,7 @@ export function CommentList() {
           </motion.button>
         </div>
       )}
-      <div className="text-center text-zinc-500 mt-6">
+      <div className="mt-6 text-center text-zinc-500">
         {isFetching && !isFetchingNextPage ? "加载中..." : null}
       </div>
     </div>
@@ -309,7 +309,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
               />
               <div className="absolute -right-0 -bottom-0 z-10 cursor-pointer">
                 <button
-                  className="flex size-5 translate-x-2/3 translate-y-1/4 items-center justify-center rounded-full border border-container bg-zinc-600/10 p-0.5 text-xs text-comment"
+                  className="border-container text-comment flex size-5 translate-x-2/3 translate-y-1/4 items-center justify-center rounded-full border bg-zinc-600/10 p-0.5 text-xs"
                   onClick={() => setReplying((prev) => !prev)}
                 >
                   <ReplyIcon className="size-3" />

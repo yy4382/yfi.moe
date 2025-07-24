@@ -67,7 +67,7 @@ export function Pagination({
         <a
           href={prevPage ? buildPageUrl(prevPage) : undefined}
           aria-label={prevPage ? "Previous Page" : undefined}
-          className={`flex size-12 items-center justify-center overflow-hidden transition-colors rounded-full ${
+          className={`flex size-12 items-center justify-center overflow-hidden rounded-full transition-colors ${
             prevPage
               ? "text-content hover:bg-accent hover:text-accent-foreground"
               : "text-content/50 cursor-not-allowed"
@@ -80,7 +80,7 @@ export function Pagination({
           )}
         </a>
 
-        <div className="flex flex-row items-center gap-2 bg-none font-bold text-content">
+        <div className="text-content flex flex-row items-center gap-2 bg-none font-bold">
           {pages.map((p, index) => {
             if (p === HIDDEN) {
               return (
@@ -96,7 +96,7 @@ export function Pagination({
               return (
                 <div
                   key={p}
-                  className="flex size-9 items-center justify-center rounded-full bg-primary/90 text-primary-foreground"
+                  className="bg-primary/90 text-primary-foreground flex size-9 items-center justify-center rounded-full"
                 >
                   {p}
                 </div>
@@ -108,7 +108,7 @@ export function Pagination({
                 key={p}
                 href={buildPageUrl(p)}
                 aria-label={`Page ${p}`}
-                className="flex size-9 items-center justify-center rounded-full hover:bg-accent hover:text-accent-foreground transition-colors"
+                className="hover:bg-accent hover:text-accent-foreground flex size-9 items-center justify-center rounded-full transition-colors"
               >
                 {p}
               </a>
@@ -119,7 +119,7 @@ export function Pagination({
         <a
           href={nextPage ? buildPageUrl(nextPage) : undefined}
           aria-label={nextPage ? "Next Page" : undefined}
-          className={`flex size-12 items-center justify-center overflow-hidden transition-colors rounded-full ${
+          className={`flex size-12 items-center justify-center overflow-hidden rounded-full transition-colors ${
             nextPage
               ? "text-content hover:bg-accent hover:text-accent-foreground"
               : "text-content/50 cursor-not-allowed"

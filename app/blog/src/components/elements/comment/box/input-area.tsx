@@ -31,7 +31,7 @@ export function InputBox({
   }, [content, reset, submit]);
 
   return (
-    <div className="group flex min-h-36 w-full flex-col justify-between rounded-sm border border-container p-1 focus-within:ring focus-within:ring-primary relative">
+    <div className="group border-container focus-within:ring-primary relative flex min-h-36 w-full flex-col justify-between rounded-sm border p-1 focus-within:ring">
       {cancel && (
         <div className="absolute -top-3 -right-2">
           <motion.button
@@ -78,8 +78,8 @@ function InputBoxFooter({
   const { status } = useContext(CommentBoxStatusContext);
 
   return (
-    <div className="flex items-center justify-between gap-2 px-1 text-sm text-comment">
-      <div className="flex items-center gap-2 text-xs text-comment/90">
+    <div className="text-comment flex items-center justify-between gap-2 px-1 text-sm">
+      <div className="text-comment/90 flex items-center gap-2 text-xs">
         <div className="flex items-center gap-2">支持 Markdown</div>
       </div>
       <div className="flex items-center gap-2">
