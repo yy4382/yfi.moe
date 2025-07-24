@@ -107,7 +107,7 @@ importers:
         version: 17.2.0
       drizzle-orm:
         specifier: ^0.44.3
-        version: 0.44.3(@electric-sql/pglite@0.3.5)(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3)
+        version: 0.44.3(@electric-sql/pglite@0.3.5)(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3)(postgres@3.4.7)
       fast-xml-parser:
         specifier: ^5.2.5
         version: 5.2.5
@@ -223,6 +223,9 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
         version: 5.2.0(eslint@9.31.0(jiti@2.4.2))
+      postgres:
+        specifier: ^3.4.7
+        version: 3.4.7
       tailwindcss:
         specifier: ^4
         version: 4.1.11
@@ -4176,6 +4179,10 @@ packages:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
 
+  postgres@3.4.7:
+    resolution: {integrity: sha512-Jtc2612XINuBjIl/QTWsV5UvE8UHuNblcO3vVADSrKsrc6RqGX6lOW1cEo3CM2v0XG4Nat8nI+YM7/f26VxXLw==}
+    engines: {node: '>=12'}
+
   posthog-js@1.257.0:
     resolution: {integrity: sha512-Ujg9RGtWVCu+4tmlRpALSy2ZOZI6JtieSYXIDDdgMWm167KYKvTtbMPHdoBaPWcNu0Km+1hAIBnQFygyn30KhA==}
     peerDependencies:
@@ -7446,7 +7453,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.3(@electric-sql/pglite@0.3.5)(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3):
+  drizzle-orm@0.44.3(@electric-sql/pglite@0.3.5)(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3)(postgres@3.4.7):
     optionalDependencies:
       '@electric-sql/pglite': 0.3.5
       '@libsql/client': 0.15.10
@@ -7454,6 +7461,7 @@ snapshots:
       '@types/pg': 8.15.4
       '@upstash/redis': 1.35.1
       kysely: 0.28.3
+      postgres: 3.4.7
 
   dunder-proto@1.0.1:
     dependencies:
@@ -9167,6 +9175,8 @@ snapshots:
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
+
+  postgres@3.4.7: {}
 
   posthog-js@1.257.0:
     dependencies:
