@@ -70,8 +70,8 @@ function useAddComment({ onSuccess }: { onSuccess?: () => void }) {
 
 type CommentBoxNewProps = {
   reply?: {
-    pid: number;
-    rid: number;
+    parentId: number;
+    replyToId: number;
     at?: string;
     onCancel?: () => void;
   };
@@ -86,8 +86,8 @@ export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
     (arg: CommentBoxFillingData, opt: { onSuccess: () => void }) => {
       const { data, error } = commentAddParamsBranded.safeParse({
         path,
-        replyToId: reply?.rid,
-        parentId: reply?.pid,
+        replyToId: reply?.replyToId,
+        parentId: reply?.parentId,
         ...arg,
       });
       if (error) {
@@ -97,12 +97,12 @@ export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
       }
       mutate(data, opt);
     },
-    [mutate, reply?.pid, reply?.rid, path],
+    [mutate, reply?.parentId, reply?.replyToId, path],
   );
 
   return (
     <CommentBoxIdContext
-      value={{ parentId: reply?.pid, replyingTo: reply?.rid, path }}
+      value={{ parentId: reply?.parentId, replyingTo: reply?.replyToId, path }}
     >
       <CommentBoxStatusContext
         value={{

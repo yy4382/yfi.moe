@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils/cn";
 import { honoClient } from "@/lib/client";
 import { usePathname } from "next/navigation";
 import { useAtom } from "jotai";
+import { produce } from "immer";
 
 const PER_PAGE = 10;
 
@@ -65,6 +66,18 @@ export function CommentList() {
         return undefined;
       }
       return pages.length + 1;
+    },
+    placeholderData: (previousData, previousQuery) => {
+      if (previousQuery?.queryKey[3] === sortBy) {
+        return previousData;
+      }
+      if (!previousData) {
+        return previousData;
+      }
+      return produce(previousData, (draft) => {
+        draft.pages.reverse();
+        draft.pages.forEach((page) => page.comments.reverse());
+      });
     },
   });
 
@@ -109,7 +122,7 @@ export function CommentList() {
               key={sortByOption}
               onClick={() => setSortBy(sortByOption)}
               className={cn(
-                "py-1 text-sm",
+                "text-accent-foreground py-1 text-sm",
                 sortBy !== sortByOption && "text-muted-foreground",
               )}
               whileHover={{ scale: 1.05 }}
@@ -183,16 +196,6 @@ function CommentItem({ comment: entry }: CommentItemProps) {
       if (!session) {
         throw new Error("请先登录");
       }
-      // const resp = await deleteCommentApi({
-      //   serverURL,
-      //   lang,
-      //   token: userInfo.token,
-      //   objectId: id,
-      // });
-      // if (resp.errmsg) {
-      //   throw new Error(resp.errmsg);
-      // }
-      // return resp.data;
       const resp = await honoClient.comments.delete.$post({
         json: {
           id,
@@ -323,8 +326,8 @@ function CommentItem({ comment: entry }: CommentItemProps) {
         <div className="mt-2">
           <CommentBoxNew
             reply={{
-              pid: entry.id,
-              rid: entry.replyToId ? entry.replyToId : entry.id,
+              parentId: entry.parentId ? entry.parentId : entry.id,
+              replyToId: entry.id,
               at: entry.displayName,
               onCancel: () => setReplying(false),
             }}
