@@ -1,18 +1,31 @@
 import { describe, it, expect, vi, afterAll, beforeEach } from "vitest";
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle } from "drizzle-orm/pglite";
 import { deleteComment } from "./delete";
 import * as schema from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
-import { migrate } from "drizzle-orm/libsql/migrator";
+import { eq, sql } from "drizzle-orm";
+import { PGlite } from "@electric-sql/pglite";
+import { DbClient } from "@/lib/db/db-plugin";
 
-const db = drizzle(":memory:", { schema });
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const { pushSchema } =
+  require("drizzle-kit/api") as typeof import("drizzle-kit/api");
+
+const client = new PGlite();
+// drizzle 对多种 client 的类型支持不友好，如果一个项目里同时用两种数据库就会报错
+// 这里直接让 TypeScript 认为它是 neon 的 client 类型从而绕过类型检查
+const db = drizzle({ client, schema }) as unknown as DbClient;
 
 const { user, comment } = schema;
 beforeEach(async () => {
-  await migrate(db, { migrationsFolder: "./drizzle" });
+  await db.execute(sql`DROP SCHEMA IF EXISTS public CASCADE;`);
+  await db.execute(sql`CREATE SCHEMA public;`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { apply } = await pushSchema(schema, db as any);
+  await apply();
+
   vi.setSystemTime(new Date("2000-01-01T00:00:00.000Z"));
-  await db.delete(comment);
-  await db.delete(user);
   await db.insert(user).values({
     id: "1",
     name: "admin",
@@ -54,6 +67,7 @@ beforeEach(async () => {
   });
 
   await db.insert(comment).values({
+    id: 4,
     rawContent: "1 reply to 1",
     renderedContent: "1 reply to 1",
     path: "/",

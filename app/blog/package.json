@@ -54,6 +54,7 @@
     "zod": "^4.0.5"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.3.5",
     "@eslint/eslintrc": "^3",
     "@next/eslint-plugin-next": "15.4.1",
     "@tailwindcss/postcss": "^4",

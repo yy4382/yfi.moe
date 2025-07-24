@@ -1,14 +1,14 @@
 import { comment } from "@/lib/db/schema";
-import { db as dbType } from "@/lib/db/instance";
 import type { User } from "@/lib/auth/auth-plugin";
 import { and, isNull, eq } from "drizzle-orm";
 import { parseMarkdown } from "./parse-markdown";
 import { OneOfKeyValuePair } from "./update.model";
+import { DbClient } from "@/lib/db/db-plugin";
 
 export async function updateComment(
   id: number,
   content: { rawContent: string },
-  options: { db: typeof dbType; user: User },
+  options: { db: DbClient; user: User },
 ): Promise<OneOfKeyValuePair> {
   const { db, user: currentUser } = options;
   const now = new Date();

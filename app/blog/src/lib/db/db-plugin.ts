@@ -1,10 +1,8 @@
 import { factory } from "@/lib/hono/factory";
 import type * as schema from "./schema";
-import type { NeonHttpClient, NeonHttpDatabase } from "drizzle-orm/neon-http";
+import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
 
-export type DbClient = NeonHttpDatabase<typeof schema> & {
-  $client: NeonHttpClient;
-};
+export type DbClient = NeonHttpDatabase<typeof schema>;
 
 export const dbPlugin = (db: DbClient) => {
   return factory.createMiddleware((c, next) => {

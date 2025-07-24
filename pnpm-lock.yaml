@@ -107,7 +107,7 @@ importers:
         version: 17.2.0
       drizzle-orm:
         specifier: ^0.44.3
-        version: 0.44.3(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3)
+        version: 0.44.3(@electric-sql/pglite@0.3.5)(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3)
       fast-xml-parser:
         specifier: ^5.2.5
         version: 5.2.5
@@ -175,6 +175,9 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5
     devDependencies:
+      '@electric-sql/pglite':
+        specifier: ^0.3.5
+        version: 0.3.5
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.1
@@ -377,6 +380,9 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@electric-sql/pglite@0.3.5':
+    resolution: {integrity: sha512-fhODErXJjOrnsJj5f1A8sH/Zj0INpLUbqOCiskufIUImUsFOBNHE6/FApY656Q2VSOp46wkXX3rvbBBO8O8Cag==}
 
   '@emnapi/core@1.4.4':
     resolution: {integrity: sha512-A9CnAbC6ARNMKcIcrQwq6HeHCjpcBZ5wSx4U01WXCqEKlrzB9F9315WDNHkrs2xbx7YjjSxbUYxuN6EQzpcY2g==}
@@ -5107,6 +5113,8 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
 
+  '@electric-sql/pglite@0.3.5': {}
+
   '@emnapi/core@1.4.4':
     dependencies:
       '@emnapi/wasi-threads': 1.0.3
@@ -7432,8 +7440,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.3(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3):
+  drizzle-orm@0.44.3(@electric-sql/pglite@0.3.5)(@libsql/client@0.15.10)(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(@upstash/redis@1.35.1)(kysely@0.28.3):
     optionalDependencies:
+      '@electric-sql/pglite': 0.3.5
       '@libsql/client': 0.15.10
       '@neondatabase/serverless': 1.0.1
       '@types/pg': 8.15.4

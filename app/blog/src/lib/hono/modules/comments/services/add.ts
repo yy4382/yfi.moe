@@ -1,21 +1,19 @@
 import type { User } from "@/lib/auth/auth-plugin";
-import { AddCommentBody, AddCommentResponse } from "./add.model";
+import {
+  AddCommentBody,
+  addCommentResponse,
+  AddCommentResponse,
+} from "./add.model";
 import { comment } from "@/lib/db/schema";
 import { parseMarkdown } from "./parse-markdown";
 import { DbClient } from "@/lib/db/db-plugin";
+import z from "zod";
+import { tablesToCommentData } from "./comment-data";
 
 type AddCommentResult =
   | {
       result: "success";
-      data: AddCommentResponse & {
-        userId?: string;
-        name: string;
-        email?: string;
-        rawContent: string;
-        renderedContent: string;
-        replyToId?: number;
-        isSpam: boolean;
-      };
+      data: AddCommentResponse;
     }
   | {
       result: "bad_req";
@@ -62,18 +60,15 @@ export async function addComment(
     .returning();
 
   const newComment = inserted[0];
-  const commentId = newComment.id;
   return {
     result: "success",
     data: {
-      id: commentId,
-      userId: newComment.userId ?? undefined,
-      name: newComment.anonymousName ?? newComment.visitorName ?? "",
-      email: newComment.visitorEmail ?? undefined,
-      rawContent: newComment.rawContent,
-      renderedContent: newComment.renderedContent,
-      replyToId: newComment.replyToId ?? undefined,
+      data: tablesToCommentData(
+        newComment,
+        currentUser,
+        currentUser?.role === "admin",
+      ),
       isSpam: newComment.isSpam,
-    },
+    } satisfies z.input<typeof addCommentResponse>,
   };
 }
