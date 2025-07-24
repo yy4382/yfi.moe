@@ -32,10 +32,7 @@ export class EmailNotificationProvider implements NotificationProvider {
   }
 
   isEnabled(): boolean {
-    if (process.env.NODE_ENV === "development") {
-      return true;
-    }
-    return !!this.config.smtp.auth.user && !!this.config.smtp.auth.pass;
+    return !!this.config.smtp.host && !!this.config.smtp.port;
   }
 
   async send(notification: NotificationPayload): Promise<void> {
