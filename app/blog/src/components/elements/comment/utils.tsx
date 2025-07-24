@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { authClient } from "@/lib/client";
+import { atom } from "jotai";
 
 export function sessionOptions() {
   return queryOptions({
@@ -13,3 +14,11 @@ export function sessionOptions() {
     },
   });
 }
+
+export const SORT_BY_OPTIONS = ["created_desc", "created_asc"] as const;
+export const SORT_BY_LABELS = {
+  created_desc: "最新",
+  created_asc: "最早",
+} as const;
+export const sortByAtom =
+  atom<(typeof SORT_BY_OPTIONS)[number]>("created_desc");

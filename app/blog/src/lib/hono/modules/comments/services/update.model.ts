@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { commentData } from "./comment-data";
 
 export const updateCommentBody = z.object({
   id: z.number(),
@@ -7,6 +8,7 @@ export const updateCommentBody = z.object({
 
 export const updateCommentResponse = z.object({
   result: z.literal("success"),
+  data: commentData,
 });
 
 export const updateCommentResponseStatus = {

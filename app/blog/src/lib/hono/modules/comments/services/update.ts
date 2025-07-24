@@ -4,6 +4,7 @@ import { and, isNull, eq } from "drizzle-orm";
 import { parseMarkdown } from "./parse-markdown";
 import { OneOfKeyValuePair } from "./update.model";
 import { DbClient } from "@/lib/db/db-plugin";
+import { tablesToCommentData } from "./comment-data";
 
 export async function updateComment(
   id: number,
@@ -43,14 +44,21 @@ export async function updateComment(
   }
 
   // Update the comment
-  await db
+  const [updatedComment] = await db
     .update(comment)
     .set({
       rawContent: content.rawContent,
       renderedContent: await parseMarkdown(content.rawContent),
       updatedAt: now,
     })
-    .where(eq(comment.id, id));
+    .where(eq(comment.id, id))
+    .returning();
 
-  return { code: 200, data: { result: "success" } };
+  return {
+    code: 200,
+    data: {
+      result: "success",
+      data: tablesToCommentData(updatedComment, currentUser, isAdmin),
+    },
+  };
 }

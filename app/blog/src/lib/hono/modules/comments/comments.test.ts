@@ -230,7 +230,24 @@ describe("delete comment", () => {
 describe("update comment", () => {
   it("should update comment", async () => {
     vi.spyOn(updateModule, "updateComment").mockImplementationOnce(async () => {
-      return { code: 200, data: { result: "success" } };
+      return {
+        code: 200,
+        data: {
+          result: "success",
+          data: {
+            id: 1,
+            displayName: "user",
+            userImage: "",
+            content: "test",
+            rawContent: "test",
+            parentId: null,
+            path: "/",
+            createdAt: new Date("1970-01-01T00:00:10.000Z"),
+            updatedAt: new Date("2000-01-01T00:00:00.000Z"),
+            replyToId: null,
+          },
+        },
+      };
     });
     const resp = await testClient(
       testCommentApp({
