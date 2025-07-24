@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { commentData } from "./comment-data";
 
 export const addCommentBody = z.object({
   path: z.string(),
@@ -11,7 +12,8 @@ export const addCommentBody = z.object({
 });
 export type AddCommentBody = z.infer<typeof addCommentBody>;
 
-export const addCommentResponse = z.object({
-  id: z.number(),
+export const addCommentResponse = z.strictObject({
+  data: commentData,
+  isSpam: z.boolean(),
 });
 export type AddCommentResponse = z.infer<typeof addCommentResponse>;

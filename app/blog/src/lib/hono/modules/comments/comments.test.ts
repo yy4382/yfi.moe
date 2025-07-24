@@ -105,7 +105,24 @@ describe("add comment", () => {
       async (_, options) => {
         ipReqGot = options.ip;
         uaReqGot = options.ua;
-        return { result: "success", data: { id: 1 } as any };
+        return {
+          result: "success",
+          data: {
+            data: {
+              id: 1,
+              displayName: "user",
+              userImage: "",
+              content: "test",
+              rawContent: "test",
+              parentId: null,
+              path: "/",
+              createdAt: new Date("1970-01-01T00:00:10.000Z"),
+              updatedAt: new Date("2000-01-01T00:00:00.000Z"),
+              replyToId: null,
+            },
+            isSpam: false,
+          },
+        };
       },
     );
     vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(
@@ -129,7 +146,7 @@ describe("add comment", () => {
     );
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
-    expect(respJson.id).toBe(1);
+    expect(respJson.data.id).toBe(1);
     expect(ipReqGot).toBe("127.0.0.11");
     expect(uaReqGot).toBe("test-ua");
   });

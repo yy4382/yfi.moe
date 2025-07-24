@@ -1,15 +1,28 @@
-import { describe, it, beforeAll, expect, vi, afterAll } from "vitest";
-import { drizzle } from "drizzle-orm/libsql";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { drizzle } from "drizzle-orm/pglite";
 import { getComments } from "./get";
 import * as schema from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
-import { migrate } from "drizzle-orm/libsql/migrator";
+import { eq, sql } from "drizzle-orm";
+import { PGlite } from "@electric-sql/pglite";
+import { DbClient } from "@/lib/db/db-plugin";
+import { createRequire } from "node:module";
 
-const db = drizzle(":memory:", { schema });
+const require = createRequire(import.meta.url);
+const { pushSchema } =
+  require("drizzle-kit/api") as typeof import("drizzle-kit/api");
+
+const client = new PGlite();
+// drizzle 对多种 client 的类型支持不友好，如果一个项目里同时用两种数据库就会报错
+// 这里直接让 TypeScript 认为它是 neon 的 client 类型从而绕过类型检查
+const db = drizzle({ client, schema }) as unknown as DbClient;
 
 const { user, comment } = schema;
-beforeAll(async () => {
-  await migrate(db, { migrationsFolder: "./drizzle" });
+beforeEach(async () => {
+  await db.execute(sql`DROP SCHEMA IF EXISTS public CASCADE;`);
+  await db.execute(sql`CREATE SCHEMA public;`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { apply } = await pushSchema(schema, db as any);
+  await apply();
   vi.setSystemTime(new Date("2000-01-01T00:00:00.000Z"));
   await db.insert(user).values({
     id: "1",
@@ -71,6 +84,7 @@ beforeAll(async () => {
     createdAt: new Date(15000),
   });
   await db.insert(comment).values({
+    id: 1001,
     rawContent: "2 reply to 1",
     renderedContent: "2 reply to 1",
     path: "/",
@@ -81,6 +95,7 @@ beforeAll(async () => {
     createdAt: new Date(50000),
   });
   await db.insert(comment).values({
+    id: 1002,
     rawContent: "1 reply to 1 reply to 1",
     renderedContent: "1 reply to 1 reply to 1",
     path: "/",
@@ -92,7 +107,7 @@ beforeAll(async () => {
   });
 });
 
-afterAll(() => {
+afterEach(() => {
   vi.useRealTimers();
 });
 

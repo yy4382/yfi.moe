@@ -2,13 +2,12 @@ import type { User } from "@/lib/auth/auth-plugin";
 import type { DbClient } from "@/lib/db/db-plugin";
 import type {
   GetCommentsBody,
-  CommentData,
   LayeredCommentList,
   LayeredCommentData,
 } from "./get.model";
 import { and, asc, desc, eq, inArray, isNull, or, sql } from "drizzle-orm";
 import { comment, user } from "@/lib/db/schema";
-import crypto from "node:crypto";
+import { CommentData, tablesToCommentData } from "./comment-data";
 
 export async function getComments(
   body: GetCommentsBody,
@@ -73,29 +72,7 @@ async function getCommentsDb(
   );
   const comments = await db
     .with(rootCommentsWith)
-    .select({
-      id: comment.id,
-      content: comment.renderedContent,
-      rawContent: comment.rawContent,
-      path: comment.path,
-
-      parentId: comment.parentId,
-      replyToId: comment.replyToId,
-
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
-
-      userId: comment.userId,
-      userIp: comment.userIp,
-      userAgent: comment.userAgent,
-      userName: user.name,
-      userEmail: user.email,
-      userImage: user.image,
-
-      visitorName: comment.visitorName,
-      visitorEmail: comment.visitorEmail,
-      anonymousName: comment.anonymousName,
-    })
+    .select()
     .from(comment)
     .leftJoin(user, eq(comment.userId, user.id))
     .where(
@@ -109,53 +86,15 @@ async function getCommentsDb(
         ),
       ),
     );
-  const adminCommentData: CommentData[] = comments.map((comment) => {
-    const sanitized = {
-      ...comment,
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
-      displayName:
-        (comment.anonymousName || comment.visitorName || comment.userName) ??
-        "Unknown",
-      userImage: comment.anonymousName
-        ? "https://avatar.vercel.sh/anonymous"
-        : (comment.userImage ??
-          getGravatarUrl(comment.userEmail ?? comment.visitorEmail ?? "")),
-    };
-    return sanitized;
-  });
-
-  const sanitizedComments: CommentData[] =
-    currentUser?.role === "admin"
-      ? adminCommentData
-      : adminCommentData.map((c): CommentData => {
-          const data = {
-            id: c.id,
-            content: c.content,
-            rawContent: c.rawContent,
-            parentId: c.parentId,
-            replyToId: c.replyToId,
-            createdAt: c.createdAt,
-            updatedAt: c.updatedAt,
-            userImage: c.userImage,
-            displayName: c.displayName,
-            path: c.path,
-            userId: c.anonymousName ? null : c.userId,
-          };
-          return data;
-        });
-  return { comments: sanitizedComments };
-}
-
-function getGravatarUrl(
-  email: string,
-  size = 200,
-  defaultImage = "identicon",
-  rating = "g",
-) {
-  const cleanEmail = email.trim().toLowerCase();
-  const hash = crypto.createHash("md5").update(cleanEmail).digest("hex");
-  return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=${defaultImage}&r=${rating}`;
+  return {
+    comments: comments.map((comment) =>
+      tablesToCommentData(
+        comment.comment,
+        comment.user,
+        currentUser?.role === "admin",
+      ),
+    ),
+  };
 }
 
 function layerComments(

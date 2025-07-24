@@ -40,15 +40,18 @@ const commentApp = factory
         const resp = addCommentResponse.parse(result.data);
         await sendNotification(
           {
-            id: result.data.id,
-            userId: result.data.userId,
+            id: result.data.data.id,
+            userId: result.data.data.userId ?? undefined,
             path: body.path,
-            name: result.data.name,
-            email: result.data.email,
-            rawContent: result.data.rawContent,
-            renderedContent: result.data.renderedContent,
+            name: result.data.data.displayName,
+            email:
+              result.data.data.visitorEmail ??
+              result.data.data.userEmail ??
+              undefined,
+            rawContent: result.data.data.rawContent,
+            renderedContent: result.data.data.content,
             isSpam: result.data.isSpam,
-            replyToId: result.data.replyToId,
+            replyToId: result.data.data.replyToId ?? undefined,
           },
           c.get("db"),
           c.get("notification"),

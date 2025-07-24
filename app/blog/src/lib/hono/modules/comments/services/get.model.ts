@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { commentData } from "./comment-data";
 
 export const getCommentsBody = z.object({
   path: z.string(),
@@ -9,30 +10,8 @@ export const getCommentsBody = z.object({
 
 export type GetCommentsBody = z.infer<typeof getCommentsBody>;
 
-export const commentData = z.object({
-  id: z.number(),
-  content: z.string(),
-  rawContent: z.string(),
-  parentId: z.number().nullable(),
-  replyToId: z.number().nullable(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
-  userImage: z.string(),
-  displayName: z.string(),
-  path: z.string(),
-  userId: z.string().nullish(),
-  userIp: z.string().nullish(),
-  userAgent: z.string().nullish(),
-  userName: z.string().nullish(),
-  userEmail: z.email().nullish(),
-  anonymousName: z.string().nullish(),
-  visitorName: z.string().nullish(),
-  visitorEmail: z.email().nullish(),
-});
-
-export type CommentData = z.infer<typeof commentData>;
-
-export const layeredCommentData = commentData.extend({
+export const layeredCommentData = z.object({
+  ...commentData.shape,
   children: z.array(commentData),
 });
 
