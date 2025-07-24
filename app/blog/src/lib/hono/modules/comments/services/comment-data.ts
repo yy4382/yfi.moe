@@ -35,12 +35,12 @@ export const commentDataBase = z.strictObject({
   path: z.string(),
 });
 
-export const commentDataNonAdmin = z.strictObject({
+export const commentDataNonAdmin = z.object({
   ...commentDataBase.shape,
   ...commentDataUser.shape,
 });
 
-export const commentData = z.strictObject({
+export const commentData = z.object({
   ...commentDataBase.shape,
   ...commentDataUserAdmin.shape,
 });
