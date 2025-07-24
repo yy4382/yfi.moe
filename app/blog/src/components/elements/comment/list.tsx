@@ -1,35 +1,35 @@
 import { Fragment, useState } from "react";
-import { sessionOptions } from "./utils";
+import {
+  sessionOptions,
+  SORT_BY_LABELS,
+  SORT_BY_OPTIONS,
+  sortByAtom,
+} from "./utils";
 import {
   useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { CommentData } from "@/lib/hono/modules/comments/services/get.model";
+import type { CommentData } from "@/lib/hono/modules/comments/services/comment-data";
 import { getCommentsResponse } from "@/lib/hono/modules/comments/model";
 import Image from "next/image";
 import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
-import { CommentBoxEdit, CommentBoxNew } from "./box";
+import { CommentBoxNew } from "./box/add-comment";
+import { CommentBoxEdit } from "./box/edit-comment";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils/cn";
 import { honoClient } from "@/lib/client";
 import { usePathname } from "next/navigation";
+import { useAtom } from "jotai";
 
 const PER_PAGE = 10;
-
-const SORT_BY_OPTIONS = ["created_desc", "created_asc"] as const;
-const SORT_BY_LABELS = {
-  created_desc: "最新",
-  created_asc: "最早",
-} as const;
 
 export function CommentList() {
   const path = usePathname();
   const { data: session } = useQuery(sessionOptions());
-  const [sortBy, setSortBy] =
-    useState<(typeof SORT_BY_OPTIONS)[number]>("created_desc");
+  const [sortBy, setSortBy] = useAtom(sortByAtom);
   const {
     data,
     fetchNextPage,
@@ -148,7 +148,9 @@ export function CommentList() {
           </motion.button>
         </div>
       )}
-      <div>{isFetching && !isFetchingNextPage ? "加载中..." : null}</div>
+      <div className="text-center text-zinc-500 mt-6">
+        {isFetching && !isFetchingNextPage ? "加载中..." : null}
+      </div>
     </div>
   );
 }
