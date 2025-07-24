@@ -4,10 +4,11 @@ import {
 } from "@/lib/content-layer/collections";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { env } from "@/env";
 
 export async function POST(request: NextRequest) {
   const token = request.headers.get("Authorization");
-  if (token !== `Bearer ${process.env.CONTENT_REFRESH_TOKEN}`) {
+  if (token !== `Bearer ${env.CONTENT_REFRESH_TOKEN}`) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 

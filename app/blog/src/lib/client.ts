@@ -13,7 +13,6 @@ export const honoClient = hc<App>("/", {
 }).api.v1;
 
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL!,
   basePath: "/api/v1/auth",
   plugins: [adminClient()],
 });
