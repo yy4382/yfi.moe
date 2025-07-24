@@ -138,7 +138,7 @@ export function CommentList() {
         .flat()
         .map((comment) => (
           <Fragment key={comment.id}>
-            <CommentRootItem comment={comment} />
+            <CommentItem comment={comment} />
             {comment.children.length > 0 && (
               <div className="ml-6 pl-4">
                 {comment.children.map((children) => (
@@ -164,17 +164,6 @@ export function CommentList() {
       <div className="mt-6 text-center text-zinc-500">
         {isFetching && !isFetchingNextPage ? "加载中..." : null}
       </div>
-    </div>
-  );
-}
-
-type CommentRootItemProps = {
-  comment: CommentData;
-};
-function CommentRootItem({ comment }: CommentRootItemProps) {
-  return (
-    <div>
-      <CommentItem comment={comment} />
     </div>
   );
 }
@@ -263,7 +252,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
               {entry.displayName}
             </span>
             {isMine && (
-              <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-600">
+              <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-600 dark:bg-blue-800/60 dark:text-blue-100">
                 我
               </span>
             )}
@@ -273,13 +262,13 @@ function CommentItem({ comment: entry }: CommentItemProps) {
             {(isMine || session?.user.role === "admin") && (
               <>
                 <button
-                  className="flex items-center gap-1 text-xs text-red-700 transition-colors hover:text-red-500"
+                  className="flex items-center gap-1 text-xs text-red-700 transition-colors hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
                   onClick={() => deleteComment(entry.id)}
                 >
                   <TrashIcon size={14} />
                 </button>
                 <button
-                  className="flex items-center gap-1 text-xs text-zinc-500 transition-colors hover:text-zinc-700"
+                  className="flex items-center gap-1 text-xs text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"
                   onClick={() => setEditing(true)}
                 >
                   <EditIcon size={14} />
@@ -296,7 +285,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
               initialContent={entry.rawContent}
             />
           ) : (
-            <div className="relative inline-block rounded-md rounded-bl-none bg-zinc-600/5 px-2 py-1 text-sm break-words">
+            <div className="relative inline-block rounded-md rounded-bl-none border bg-zinc-500/10 px-2 py-1 text-sm break-words dark:bg-zinc-700/50">
               {/* 评论内容 */}
               {/* {"reply_user" in entry && entry.reply_user && (
                 <div className="text-xs text-zinc-500 py-1">
@@ -312,7 +301,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
               />
               <div className="absolute -right-0 -bottom-0 z-10 cursor-pointer">
                 <button
-                  className="border-container text-comment flex size-5 translate-x-2/3 translate-y-1/4 items-center justify-center rounded-full border bg-zinc-600/10 p-0.5 text-xs"
+                  className="border-container text-comment bg-accent/80 flex size-5 translate-x-2/3 translate-y-1/4 items-center justify-center rounded-full border p-0.5 text-xs"
                   onClick={() => setReplying((prev) => !prev)}
                 >
                   <ReplyIcon className="size-3" />
@@ -323,7 +312,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
         </div>
       </div>
       {replying && (
-        <div className="mt-2">
+        <div className="mt-2 ml-8">
           <CommentBoxNew
             reply={{
               parentId: entry.parentId ? entry.parentId : entry.id,

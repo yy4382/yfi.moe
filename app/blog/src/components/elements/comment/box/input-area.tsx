@@ -36,7 +36,7 @@ export function InputBox({
         <div className="absolute -top-3 -right-2">
           <motion.button
             onClick={cancel}
-            className="rounded-full bg-zinc-200 p-1"
+            className="rounded-full bg-zinc-200 p-1 dark:bg-zinc-800"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
