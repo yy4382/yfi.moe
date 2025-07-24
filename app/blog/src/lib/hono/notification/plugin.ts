@@ -7,6 +7,7 @@ const createEmailProvider = () => {
   if (!env.EMAIL_NOTIFICATION_ENABLED) {
     return null;
   }
+  console.info(env.SMTP_SECURE);
 
   return new EmailNotificationProvider({
     from: env.EMAIL_FROM,

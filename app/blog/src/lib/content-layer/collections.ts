@@ -2,6 +2,7 @@ import { z } from "zod";
 import { GithubCollection } from "./github-loader";
 import { ContentLayerItem, ContentLayerListItem } from "./define-collection";
 import { compareAsc, compareDesc } from "date-fns";
+import { env } from "@/env";
 
 const baseSchema = z.object({
   title: z.string(),
@@ -50,7 +51,7 @@ function parseGhInfo(info: string | undefined) {
   };
 }
 
-if (process.env.ARTICLE_PAT === undefined) {
+if (env.ARTICLE_PAT === undefined) {
   console.error("[GITHUB COLLECTIONS] ARTICLE_PAT is not set");
   throw new Error("ARTICLE_PAT is not set");
 }
@@ -111,13 +112,13 @@ class PostCollection extends GithubCollection<PostData> {
 }
 
 export const postCollection = new PostCollection("posts", postSchema, {
-  ...parseGhInfo(process.env.POST_GH_INFO),
-  pat: process.env.ARTICLE_PAT ?? "",
+  ...parseGhInfo(env.POST_GH_INFO),
+  pat: env.ARTICLE_PAT ?? "",
 });
 
 export const pageCollection = new GithubCollection("pages", pageSchema, {
-  ...parseGhInfo(process.env.PAGE_GH_INFO),
-  pat: process.env.ARTICLE_PAT ?? "",
+  ...parseGhInfo(env.PAGE_GH_INFO),
+  pat: env.ARTICLE_PAT ?? "",
 });
 
 function truncateAtClosestNewline(str: string, targetPosition = 150) {
