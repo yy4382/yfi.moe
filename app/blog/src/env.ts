@@ -16,11 +16,11 @@ export const env = createEnv({
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
 
-    EMAIL_NOTIFICATION_ENABLED: z.coerce.boolean(),
+    EMAIL_NOTIFICATION_ENABLED: z.stringbool(),
     EMAIL_FROM: z.email(),
     SMTP_HOST: z.string(),
     SMTP_PORT: z.coerce.number(),
-    SMTP_SECURE: z.coerce.boolean(),
+    SMTP_SECURE: z.stringbool(),
     SMTP_USER: z.string(),
     SMTP_PASS: z.string(),
   },
