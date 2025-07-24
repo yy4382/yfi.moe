@@ -15,21 +15,21 @@ export function EntryListItem({
   return (
     <div
       className={cn(
-        "@container main-container h-full border-b border-container group hover:bg-accent",
+        "main-container border-container @container h-full border-b",
         className,
       )}
     >
-      <div className="px-6 @xl:px-10 @4xl:px-16 @6xl:px-32 py-8 @4xl:py-12">
+      <div className="px-6 py-8 @xl:px-10 @4xl:px-16 @4xl:py-12 @6xl:px-32">
         <Link href={`/post/${post.id}`}>
-          <h2 className="mb-2 text-lg font-bold transition-colors group-hover:text-accent-foreground @xl:text-xl @4xl:text-3xl">
+          <h2 className="hover:text-accent-foreground mb-2 text-lg font-bold transition-colors @xl:text-xl @4xl:text-3xl">
             {post.data.title}
           </h2>
         </Link>
-        <div className="flex gap-2 text-[0.8rem] text-comment lg:gap-3 flex-wrap">
+        <div className="text-comment flex flex-wrap gap-2 text-[0.8rem] lg:gap-3">
           <PostAttrTime date={post.data.date} updated={post.data.updated} />
           <PostAttrTags tags={post.data.tags} />
         </div>
-        <div className="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert">
+        <div className="prose dark:prose-invert mt-4 hidden max-w-[90ch] @4xl:block">
           <Markdown text={post.data.description} />
         </div>
       </div>
