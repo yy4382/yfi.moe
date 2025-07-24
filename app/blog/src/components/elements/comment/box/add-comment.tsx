@@ -55,7 +55,7 @@ function useAddComment({ onSuccess }: { onSuccess?: () => void }) {
               if (parentIndex[0] === -1) return old;
               draft.pages[parentIndex[0]].comments[
                 parentIndex[1]
-              ].children.unshift(data.data);
+              ].children.push(data.data);
             });
           }
         },
