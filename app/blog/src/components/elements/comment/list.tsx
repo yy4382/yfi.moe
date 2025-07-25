@@ -6,6 +6,7 @@ import {
   sortByAtom,
 } from "./utils";
 import {
+  infiniteQueryOptions,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -15,6 +16,7 @@ import type { CommentData } from "@/lib/hono/modules/comments/services/comment-d
 import { getCommentsResponse } from "@/lib/hono/modules/comments/model";
 import Image from "next/image";
 import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
+import Link from "next/link";
 import { CommentBoxNew } from "./box/add-comment";
 import { CommentBoxEdit } from "./box/edit-comment";
 import { toast } from "sonner";
@@ -22,27 +24,19 @@ import { motion } from "motion/react";
 import { cn } from "@/lib/utils/cn";
 import { honoClient } from "@/lib/client";
 import { usePathname } from "next/navigation";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { produce } from "immer";
+import type { User } from "@/lib/auth/auth-plugin";
 
 const PER_PAGE = 10;
 
-export function CommentList() {
-  const path = usePathname();
-  const { data: session } = useQuery(sessionOptions());
-  const [sortBy, setSortBy] = useAtom(sortByAtom);
-  const {
-    data,
-    fetchNextPage,
-    isPending,
-    isError,
-    error,
-    isFetching,
-    isFetchingNextPage,
-    hasNextPage,
-    refetch,
-  } = useInfiniteQuery({
-    queryKey: ["comments", { session: session?.user.id }, path, sortBy],
+function listOptions(
+  user: User | undefined,
+  path: string,
+  sortBy: (typeof SORT_BY_OPTIONS)[number],
+) {
+  return infiniteQueryOptions({
+    queryKey: ["comments", { session: user?.id }, path, sortBy],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
       const resp = await honoClient.comments.get.$post({
         json: {
@@ -80,6 +74,23 @@ export function CommentList() {
       });
     },
   });
+}
+
+export function CommentList() {
+  const path = usePathname();
+  const { data: session } = useQuery(sessionOptions());
+  const [sortBy, setSortBy] = useAtom(sortByAtom);
+  const {
+    data,
+    fetchNextPage,
+    isPending,
+    isError,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery(listOptions(session?.user, path, sortBy));
 
   if (isPending) {
     return (
@@ -177,8 +188,16 @@ function CommentItem({ comment: entry }: CommentItemProps) {
   const path = usePathname();
   const queryClient = useQueryClient();
   const { data: session } = useQuery(sessionOptions());
+  const sortBy = useAtomValue(sortByAtom);
 
   const isMine = session && entry.userId && entry.userId === session.user.id;
+
+  const { data: queryData } = useInfiniteQuery(
+    listOptions(session?.user, path, sortBy),
+  );
+  const replyToName = queryData?.pages
+    .flatMap((page) => page.comments.flatMap((c) => [c, ...c.children]))
+    .find((comment) => comment.id === entry.replyToId)?.displayName;
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: async (id: number) => {
@@ -225,7 +244,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
   };
 
   return (
-    <div>
+    <div id={`comment-${entry.id}`}>
       <div className="flex items-end gap-3 border-zinc-100 py-2 last:border-b-0">
         {/* 用户头像 */}
         <div className="flex-shrink-0">
@@ -287,14 +306,15 @@ function CommentItem({ comment: entry }: CommentItemProps) {
           ) : (
             <div className="relative inline-block rounded-md rounded-bl-none border bg-zinc-500/10 px-2 py-1 text-sm break-words dark:bg-zinc-700/50">
               {/* 评论内容 */}
-              {/* {"reply_user" in entry && entry.reply_user && (
-                <div className="text-xs text-zinc-500 py-1">
+              {replyToName && (
+                <Link
+                  className="py-1 text-xs text-zinc-500"
+                  href={`#comment-${entry.replyToId}`}
+                >
                   <span className="text-zinc-500">回复 </span>
-                  <span className="text-zinc-500">
-                    {entry.reply_user.nick}:
-                  </span>
-                </div>
-              )} */}
+                  {replyToName}:
+                </Link>
+              )}
               <div
                 className="prose prose-sm dark:prose-invert prose-p:my-1"
                 dangerouslySetInnerHTML={{ __html: entry.content }}
