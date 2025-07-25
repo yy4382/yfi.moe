@@ -6,6 +6,7 @@ export function sessionOptions() {
   return queryOptions({
     queryKey: ["session"],
     queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await authClient.getSession();
       if (res.error) {
         throw new Error(res.error.message);

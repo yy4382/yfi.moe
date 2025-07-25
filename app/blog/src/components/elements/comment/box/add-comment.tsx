@@ -15,8 +15,10 @@ import { Loader2Icon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { authClient, Session } from "@/lib/client";
 import GithubIcon from "@/assets/icons/MingcuteGithubLine";
+import { MingcuteMailSendLine } from "@/assets/icons/MingcuteMailSendLine";
 import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";
 import { InputBox } from "./input-area";
+import { MagicLinkDialog } from "./magic-link-dialog";
 import { useAtomValue } from "jotai";
 import { produce } from "immer";
 import { LayeredCommentData } from "@/lib/hono/models";
@@ -191,24 +193,36 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
     <div className="border-container bg-card flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border py-4">
       <div className="flex flex-col items-center gap-2">
         <span className="text-comment text-xs">使用社交账号登录</span>
-        <motion.button
-          onClick={async () => {
-            const { error } = await authClient.signIn.social({
-              provider: "github",
-              callbackURL: `${window.location.href}`,
-            });
-            if (error) {
-              toast.error(error.message);
-              return;
-            }
-            queryClient.invalidateQueries(sessionOptions());
-          }}
-          className="border-container bg-bg flex items-center gap-1 rounded-full border p-2 shadow"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <GithubIcon className="size-4" />
-        </motion.button>
+        <div className="flex gap-2">
+          <motion.button
+            onClick={async () => {
+              const { error } = await authClient.signIn.social({
+                provider: "github",
+                callbackURL: `${window.location.href}`,
+              });
+              if (error) {
+                toast.error(error.message);
+                return;
+              }
+              queryClient.invalidateQueries(sessionOptions());
+            }}
+            className="border-container bg-bg flex items-center gap-1 rounded-full border p-2 shadow"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <GithubIcon className="size-4" />
+          </motion.button>
+
+          <MagicLinkDialog>
+            <motion.button
+              className="border-container bg-bg flex items-center gap-1 rounded-full border p-2 shadow"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <MingcuteMailSendLine className="size-4" />
+            </motion.button>
+          </MagicLinkDialog>
+        </div>
       </div>
       <motion.button
         onClick={setAsVisitor}

@@ -8,9 +8,9 @@
   - [ ] 数据库架构
   - [ ] 前端提示
   - [ ] 接口和 unsubscribe 页面
-- [ ] email magic link 注册
+- [x] email magic link 注册
 - [ ] 邮件通知模板优化
-- [ ] 匿名评论x
+- [ ] 匿名评论
 - [ ] Akismet 评论过滤
   - [ ] isSpam 判定真后，前端提示
 - [ ] 匿名评论
