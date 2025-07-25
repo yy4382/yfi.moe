@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { authClient } from "@/lib/client";
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
 export function sessionOptions() {
   return queryOptions({
@@ -23,3 +24,13 @@ export const SORT_BY_LABELS = {
 } as const;
 export const sortByAtom =
   atom<(typeof SORT_BY_OPTIONS)[number]>("created_desc");
+
+export const persistentEmailAtom = atomWithStorage<string>(
+  "persistentEmail",
+  "",
+);
+export const persistentNameAtom = atomWithStorage<string>("persistentName", "");
+export const persistentAsVisitorAtom = atomWithStorage<boolean>(
+  "persistentAsVisitor",
+  false,
+);
