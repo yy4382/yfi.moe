@@ -11,7 +11,7 @@ import {
   WithSuccess,
 } from "./context";
 import Image from "next/image";
-import { XIcon } from "lucide-react";
+import { Loader2Icon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { authClient, Session } from "@/lib/client";
 import GithubIcon from "@/assets/icons/MingcuteGithubLine";
@@ -176,6 +176,17 @@ function VisitorBox({ submit }: VisitorBoxProps) {
 }
 function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   const queryClient = useQueryClient();
+  const state = queryClient.getQueryState(sessionOptions().queryKey);
+  const status = state?.status;
+  if (status === "pending")
+    return (
+      <div className="border-container bg-card text-muted-foreground flex min-h-36 w-full flex-col items-center justify-center gap-2 rounded-sm border py-4">
+        <div className="flex items-center gap-2">
+          <Loader2Icon className="size-8 animate-spin" />
+          <p className="ml-4 text-sm">检查登录状态...</p>
+        </div>
+      </div>
+    );
   return (
     <div className="border-container bg-card flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border py-4">
       <div className="flex flex-col items-center gap-2">
