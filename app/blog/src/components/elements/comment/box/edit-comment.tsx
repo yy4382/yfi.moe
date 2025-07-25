@@ -3,21 +3,22 @@ import { sessionOptions, sortByAtom } from "../utils";
 import z from "zod";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
-import { CommentBoxIdContext, CommentBoxStatusContext } from "./context";
+import { CommentBoxIdContext } from "./context";
 import { InputBox } from "./input-area";
 import {
   commentUpdateParamsBranded,
   updateComment,
 } from "../comment-api/update";
-import { useAtomValue } from "jotai";
+import { atom, PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import { LayeredCommentData } from "@/lib/hono/models";
 import { produce } from "immer";
+import { useRef } from "react";
 
 export function CommentBoxEdit({
   editId,
-  initialContent,
   onCancel,
   onSuccess,
+  initialContent,
 }: {
   editId: number;
   initialContent: string;
@@ -28,7 +29,11 @@ export function CommentBoxEdit({
   const queryClient = useQueryClient();
   const { data: session } = useQuery(sessionOptions());
   const sortBy = useAtomValue(sortByAtom);
-  const { mutate, status, reset } = useMutation({
+  const contentAtomRef = useRef<PrimitiveAtom<string>>(atom(initialContent));
+  const [content, setContent] = useAtom(contentAtomRef.current);
+  const mutationKey = ["editComment", editId];
+  const { mutate } = useMutation({
+    mutationKey,
     mutationFn: updateComment,
     onError(error) {
       toast.error(error.message);
@@ -67,11 +72,12 @@ export function CommentBoxEdit({
       queryClient.invalidateQueries({
         queryKey: ["comments", { session: session?.user.id }, path],
       });
+      setContent("");
       onSuccess?.();
     },
   });
 
-  const handleSubmit = (content: string, opt: { onSuccess: () => void }) => {
+  const handleSubmit = () => {
     const parsed = commentUpdateParamsBranded.safeParse({
       id: editId,
       content,
@@ -80,14 +86,17 @@ export function CommentBoxEdit({
       toast.error(z.prettifyError(parsed.error));
       return;
     }
-    mutate(parsed.data, opt);
+    mutate(parsed.data);
   };
 
   return (
     <CommentBoxIdContext value={{ editId, path }}>
-      <CommentBoxStatusContext value={{ status, reset, cancel: onCancel }}>
-        <InputBox submit={handleSubmit} initialContent={initialContent} />
-      </CommentBoxStatusContext>
+      <InputBox
+        contentAtom={contentAtomRef.current}
+        submit={handleSubmit}
+        onCancel={onCancel}
+        mutationKey={mutationKey}
+      />
     </CommentBoxIdContext>
   );
 }

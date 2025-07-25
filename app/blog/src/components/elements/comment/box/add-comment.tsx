@@ -1,6 +1,11 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { useCallback } from "react";
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import { toast } from "sonner";
 import { addComment, commentAddParamsBranded } from "../comment-api/add";
 import {
@@ -12,9 +17,8 @@ import {
 } from "../utils";
 import {
   CommentBoxFillingData,
+  CommentBoxId,
   CommentBoxIdContext,
-  CommentBoxStatusContext,
-  WithSuccess,
 } from "./context";
 import Image from "next/image";
 import { Loader2Icon, XIcon } from "lucide-react";
@@ -25,17 +29,31 @@ import { MingcuteMailSendLine } from "@/assets/icons/MingcuteMailSendLine";
 import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
-import { useAtom, useAtomValue } from "jotai";
+import {
+  Atom,
+  atom,
+  PrimitiveAtom,
+  useAtom,
+  useAtomValue,
+  useSetAtom,
+} from "jotai";
 import { produce } from "immer";
 import { LayeredCommentData } from "@/lib/hono/models";
 
-function useAddComment({ onSuccess }: { onSuccess?: () => void }) {
+function useAddComment({
+  onSuccess,
+  id,
+}: {
+  onSuccess?: () => void;
+  id: CommentBoxId;
+}) {
   const path = usePathname();
   const queryClient = useQueryClient();
   const { data: session } = useQuery(sessionOptions());
   const sortBy = useAtomValue(sortByAtom);
 
   const mutation = useMutation({
+    mutationKey: ["addComment", id],
     mutationFn: addComment,
     onSuccess: (data) => {
       onSuccess?.();
@@ -85,55 +103,104 @@ type CommentBoxNewProps = {
   };
   onSuccess?: () => void;
 };
+
+const useNewCommentData = () => {
+  const contentAtomRef = useRef<PrimitiveAtom<string>>(atom(""));
+  const isAnonymousAtomRef = useRef<PrimitiveAtom<boolean>>(atom(false));
+  const newCommentDataAtomRef = useRef<Atom<CommentBoxFillingData>>(
+    atom((get) => ({
+      content: get(contentAtomRef.current),
+      isAnonymous: get(isAnonymousAtomRef.current),
+      visitorEmail: get(persistentEmailAtom),
+      visitorName: get(persistentNameAtom),
+    })),
+  );
+  return {
+    contentAtom: contentAtomRef.current,
+    isAnonymousAtom: isAnonymousAtomRef.current,
+    fullDataAtomRef: newCommentDataAtomRef.current,
+  };
+};
+
 export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
   const path = usePathname();
   const { data: session } = useQuery(sessionOptions());
 
-  const { mutate, status, reset } = useAddComment({ onSuccess });
-  const mutateUnchecked = useCallback(
-    (arg: CommentBoxFillingData, opt: { onSuccess: () => void }) => {
-      const { data, error } = commentAddParamsBranded.safeParse({
-        path,
-        replyToId: reply?.replyToId,
-        parentId: reply?.parentId,
-        ...arg,
-      });
-      if (error) {
-        const firstError = error.issues[0];
-        toast.error(`${firstError.path.join(".")}: ${firstError.message}`);
-        return;
-      }
-      mutate(data, opt);
-    },
-    [mutate, reply?.parentId, reply?.replyToId, path],
-  );
+  const setVisitorName = useSetAtom(persistentNameAtom);
+  const setVisitorEmail = useSetAtom(persistentEmailAtom);
+  useEffect(() => {
+    // clear visitor name and email when logged in
+    if (session) {
+      setVisitorName(session.user.name);
+      setVisitorEmail(session.user.email);
+    }
+  }, [session, setVisitorName, setVisitorEmail]);
+
+  const commentBoxId = {
+    parentId: reply?.parentId,
+    replyingTo: reply?.replyToId,
+    path,
+  };
+
+  const atoms = useNewCommentData();
+  const data = useAtomValue(atoms.fullDataAtomRef);
+  const setContent = useSetAtom(atoms.contentAtom);
+
+  const { mutate } = useAddComment({
+    onSuccess,
+    id: commentBoxId,
+  });
+  const mutateUnchecked = useCallback(() => {
+    const { data: parsedData, error } = commentAddParamsBranded.safeParse({
+      path,
+      replyToId: reply?.replyToId,
+      parentId: reply?.parentId,
+      ...data,
+    });
+    if (error) {
+      const firstError = error.issues[0];
+      toast.error(firstError.message);
+      return;
+    }
+    mutate(parsedData, {
+      onSuccess: () => {
+        setContent("");
+      },
+    });
+  }, [mutate, reply?.parentId, reply?.replyToId, path, data, setContent]);
+
+  const replyPlaceholder = reply?.at ? `回复 ${reply.at}` : undefined;
 
   return (
-    <CommentBoxIdContext
-      value={{ parentId: reply?.parentId, replyingTo: reply?.replyToId, path }}
-    >
-      <CommentBoxStatusContext
-        value={{
-          status,
-          reset,
-          cancel: reply?.onCancel,
-          placeholder: reply?.at ? `回复 ${reply.at}` : undefined,
-        }}
-      >
-        {session ? (
-          <UserBox submit={mutateUnchecked} session={session} />
-        ) : (
-          <VisitorBox submit={mutateUnchecked} />
-        )}
-      </CommentBoxStatusContext>
+    <CommentBoxIdContext value={commentBoxId}>
+      {session ? (
+        <UserBox session={session}>
+          <InputBox
+            submit={mutateUnchecked}
+            contentAtom={atoms.contentAtom}
+            isAnonymousAtom={atoms.isAnonymousAtom}
+            mutationKey={["addComment", commentBoxId]}
+            placeholder={replyPlaceholder}
+          />
+        </UserBox>
+      ) : (
+        <VisitorBox>
+          <InputBox
+            submit={mutateUnchecked}
+            contentAtom={atoms.contentAtom}
+            mutationKey={["addComment", commentBoxId]}
+            placeholder={
+              replyPlaceholder ??
+              "注册后可以编辑、删除留言，并且通过邮件获取回复通知哦"
+            }
+          />
+        </VisitorBox>
+      )}
     </CommentBoxIdContext>
   );
 }
 
-type VisitorBoxProps = {
-  submit: WithSuccess<(data: CommentBoxFillingData) => void>;
-};
-function VisitorBox({ submit }: VisitorBoxProps) {
+function VisitorBox({ children }: PropsWithChildren) {
   const [asVisitor, setAsVisitor] = useAtom(persistentAsVisitorAtom);
   const [visitorName, setVisitorName] = useAtom(persistentNameAtom);
   const [visitorEmail, setVisitorEmail] = useAtom(persistentEmailAtom);
@@ -166,22 +233,11 @@ function VisitorBox({ submit }: VisitorBoxProps) {
           登录/注册
         </button>
       </div>
-      <InputBox
-        submit={(content, opt) =>
-          submit(
-            {
-              content,
-              visitorName,
-              visitorEmail,
-            },
-            opt,
-          )
-        }
-        placeholder="注册后可以编辑、删除留言，并且通过邮件获取回复通知哦"
-      />
+      {children}
     </div>
   );
 }
+
 function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   const queryClient = useQueryClient();
   const state = queryClient.getQueryState(sessionOptions().queryKey);
@@ -242,11 +298,11 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   );
 }
 
-type UserBoxProps = {
-  submit: WithSuccess<(data: { content: string }) => void>;
+type UserBoxProps = PropsWithChildren<{
   session: Session;
-};
-function UserBox({ submit, session }: UserBoxProps) {
+}>;
+
+function UserBox({ children, session }: UserBoxProps) {
   const queryClient = useQueryClient();
 
   const {
@@ -298,7 +354,7 @@ function UserBox({ submit, session }: UserBoxProps) {
             </span>
           )}
       </div>
-      <InputBox submit={(c, opt) => submit({ content: c }, opt)} />
+      {children}
     </div>
   );
 }

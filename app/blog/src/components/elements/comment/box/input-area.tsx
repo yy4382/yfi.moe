@@ -1,41 +1,40 @@
-import { useCallback, useContext, useState } from "react";
-import { CommentBoxStatusContext, WithSuccess } from "./context";
 import { motion } from "motion/react";
 import { Loader2Icon, SendIcon, XIcon } from "lucide-react";
+import { atom, useAtom, WritableAtom } from "jotai";
+import { MutationStatus, useMutationState } from "@tanstack/react-query";
 
 type InputBoxProps = {
-  submit: WithSuccess<(data: string) => void>;
-  initialContent?: string;
+  submit: () => void;
+  contentAtom: WritableAtom<string, [string], void>;
+  isAnonymousAtom?: WritableAtom<boolean, [boolean], void>;
   placeholder?: string;
+  mutationKey: unknown[];
+
+  onCancel?: () => void;
 };
+
 export function InputBox({
   submit,
-  initialContent,
+  contentAtom,
+  isAnonymousAtom,
   placeholder,
+  mutationKey,
+  onCancel,
 }: InputBoxProps) {
-  const [content, setContent] = useState(initialContent ?? "");
-  const {
-    status,
-    reset,
-    cancel,
-    placeholder: placeholderFromContext,
-  } = useContext(CommentBoxStatusContext);
+  const [content, setContent] = useAtom(contentAtom);
 
-  const handleSubmit = useCallback(() => {
-    submit(content, {
-      onSuccess: () => {
-        setContent("");
-        reset();
-      },
-    });
-  }, [content, reset, submit]);
+  const status =
+    useMutationState({
+      filters: { mutationKey },
+      select: (m) => m.state.status,
+    }).at(0) ?? "idle";
 
   return (
     <div className="group border-container focus-within:ring-primary relative flex min-h-36 w-full flex-col justify-between rounded-sm border p-1 focus-within:ring">
-      {cancel && (
+      {onCancel && (
         <div className="absolute -top-3 -right-2">
           <motion.button
-            onClick={cancel}
+            onClick={onCancel}
             className="rounded-full bg-zinc-200 p-1 dark:bg-zinc-800"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
@@ -54,28 +53,40 @@ export function InputBox({
           if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
             e.preventDefault();
             if (content.trim() && status !== "pending") {
-              handleSubmit();
+              submit();
             }
           }
         }}
-        placeholder={placeholder ?? placeholderFromContext ?? "留下你的足迹……"}
+        placeholder={placeholder ?? "留下你的足迹……"}
         className="field-sizing-content min-h-18 w-full flex-1 resize-none bg-transparent px-1 py-0.5 text-sm outline-none"
         disabled={status === "pending"}
       />
 
-      <InputBoxFooter content={content} submit={handleSubmit} />
+      <InputBoxFooter
+        content={content}
+        submit={submit}
+        isAnonymousAtom={isAnonymousAtom}
+        status={status}
+      />
     </div>
   );
 }
 
+const notAnonymousAtom = atom(Symbol("notAnonymous"));
 function InputBoxFooter({
   content,
+  isAnonymousAtom,
   submit,
+  status,
 }: {
   content: string;
+  isAnonymousAtom?: WritableAtom<boolean, [boolean], void>;
   submit: () => void;
+  status: MutationStatus;
 }) {
-  const { status } = useContext(CommentBoxStatusContext);
+  const [isAnonymous, setIsAnonymous] = useAtom(
+    isAnonymousAtom ?? notAnonymousAtom,
+  );
 
   return (
     <div className="text-comment flex items-center justify-between gap-2 px-1 text-sm">
@@ -84,6 +95,16 @@ function InputBoxFooter({
       </div>
       <div className="flex items-center gap-2">
         <div>{content.length} / 500</div>
+        {typeof isAnonymous === "boolean" && (
+          <label className="flex items-center gap-1">
+            <input
+              type="checkbox"
+              checked={isAnonymous}
+              onChange={(e) => setIsAnonymous(e.target.checked)}
+            />
+            <span>匿名</span>
+          </label>
+        )}
         <motion.button
           onClick={() => submit()}
           className="flex items-center gap-0.5 disabled:opacity-50"
