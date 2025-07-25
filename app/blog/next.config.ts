@@ -29,6 +29,9 @@ const nextConfig: NextConfig = {
       fullUrl: true,
     },
   },
+  experimental: {
+    reactCompiler: true,
+  },
 };
 
 const withBundleAnalyzer = withBundleAnalyzerFn({

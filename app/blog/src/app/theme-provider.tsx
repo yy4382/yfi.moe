@@ -117,6 +117,7 @@ const InitScript = ({
       const html = document.documentElement;
       html.classList.toggle("dark", dark);
       if (enableCS) {
+        // eslint-disable-next-line react-hooks-rc/react-compiler
         html.style.colorScheme = dark ? "dark" : "light";
       }
     } catch {}
