@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/client";
 import { MingcuteMailSendLine } from "@/assets/icons/MingcuteMailSendLine";
+import { persistentEmailAtom, persistentNameAtom } from "../utils";
+import { useAtom } from "jotai";
 
 interface MagicLinkDialogProps {
   children: React.ReactNode;
@@ -23,9 +25,8 @@ interface MagicLinkDialogProps {
 
 export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   const [open, setOpen] = useState(false);
-  const [loginEmail, setLoginEmail] = useState("");
-  const [signupName, setSignupName] = useState("");
-  const [signupEmail, setSignupEmail] = useState("");
+  const [email, setEmail] = useAtom(persistentEmailAtom);
+  const [signupName, setSignupName] = useAtom(persistentNameAtom);
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
@@ -34,17 +35,17 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!loginEmail) {
+    if (!email) {
       toast.error("请输入邮箱地址");
       return;
     }
 
     setIsLoading(true);
-    setSubmittedEmail(loginEmail);
+    setSubmittedEmail(email);
 
     try {
       const { error } = await authClient.signIn.magicLink({
-        email: loginEmail,
+        email: email,
         callbackURL: `${window.location.href}`,
       });
 
@@ -66,7 +67,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!signupEmail) {
+    if (!email) {
       toast.error("请输入邮箱地址");
       return;
     }
@@ -77,11 +78,11 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
     }
 
     setIsLoading(true);
-    setSubmittedEmail(signupEmail);
+    setSubmittedEmail(email);
 
     try {
       const { error } = await authClient.signIn.magicLink({
-        email: signupEmail,
+        email,
         name: signupName,
         callbackURL: `${window.location.href}`,
       });
@@ -108,9 +109,8 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   };
 
   const resetForm = () => {
-    setLoginEmail("");
+    setEmail("");
     setSignupName("");
-    setSignupEmail("");
     setEmailSent(false);
     setIsLoading(false);
     setSubmittedEmail("");
@@ -190,8 +190,8 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                     id="login-email"
                     type="email"
                     placeholder="请输入您的邮箱地址"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={isLoading}
                     className="w-full"
@@ -201,7 +201,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                 <Button
                   type="submit"
                   className="w-full"
-                  disabled={isLoading || !loginEmail}
+                  disabled={isLoading || !email}
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-2">
@@ -237,8 +237,8 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                     id="signup-email"
                     type="email"
                     placeholder="请输入您的邮箱地址"
-                    value={signupEmail}
-                    onChange={(e) => setSignupEmail(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={isLoading}
                     className="w-full"
@@ -248,7 +248,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                 <Button
                   type="submit"
                   className="w-full"
-                  disabled={isLoading || !signupEmail || !signupName}
+                  disabled={isLoading || !email || !signupName}
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-2">

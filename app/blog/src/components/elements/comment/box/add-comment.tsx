@@ -1,9 +1,15 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { toast } from "sonner";
 import { addComment, commentAddParamsBranded } from "../comment-api/add";
-import { sessionOptions, sortByAtom } from "../utils";
+import {
+  persistentEmailAtom,
+  persistentAsVisitorAtom,
+  persistentNameAtom,
+  sessionOptions,
+  sortByAtom,
+} from "../utils";
 import {
   CommentBoxFillingData,
   CommentBoxIdContext,
@@ -19,7 +25,7 @@ import { MingcuteMailSendLine } from "@/assets/icons/MingcuteMailSendLine";
 import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { produce } from "immer";
 import { LayeredCommentData } from "@/lib/hono/models";
 
@@ -128,9 +134,9 @@ type VisitorBoxProps = {
   submit: WithSuccess<(data: CommentBoxFillingData) => void>;
 };
 function VisitorBox({ submit }: VisitorBoxProps) {
-  const [asVisitor, setAsVisitor] = useState(false);
-  const [visitorName, setVisitorName] = useState("");
-  const [visitorEmail, setVisitorEmail] = useState("");
+  const [asVisitor, setAsVisitor] = useAtom(persistentAsVisitorAtom);
+  const [visitorName, setVisitorName] = useAtom(persistentNameAtom);
+  const [visitorEmail, setVisitorEmail] = useAtom(persistentEmailAtom);
 
   if (!asVisitor) {
     return <VisitorBoxLogin setAsVisitor={() => setAsVisitor(true)} />;
