@@ -150,30 +150,24 @@ describe("EmailNotificationProvider", () => {
         expect(provider.isEnabled()).toBe(true);
       });
 
-      it("should return false when SMTP user is missing", () => {
+      it("should return false when SMTP host is missing", () => {
         const invalidConfig = {
           ...config,
           smtp: {
             ...config.smtp,
-            auth: {
-              user: "",
-              pass: "password",
-            },
+            host: "",
           },
         };
         const invalidProvider = new EmailNotificationProvider(invalidConfig);
         expect(invalidProvider.isEnabled()).toBe(false);
       });
 
-      it("should return false when SMTP password is missing", () => {
+      it("should return false when SMTP port is missing", () => {
         const invalidConfig = {
           ...config,
           smtp: {
             ...config.smtp,
-            auth: {
-              user: "user@example.com",
-              pass: "",
-            },
+            port: 0,
           },
         };
         const invalidProvider = new EmailNotificationProvider(invalidConfig);
@@ -270,10 +264,8 @@ describe("EmailNotificationProvider", () => {
           ...config,
           smtp: {
             ...config.smtp,
-            auth: {
-              user: "",
-              pass: "",
-            },
+            host: "",
+            port: 0,
           },
         };
         const disabledProvider = new EmailNotificationProvider(disabledConfig);
