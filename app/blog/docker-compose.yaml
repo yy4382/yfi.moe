@@ -37,6 +37,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025" # SMTP server port
+      - "8025:8025" # Web UI port
 
 volumes:
   blog_db_data:
