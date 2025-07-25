@@ -14,14 +14,15 @@ export const commentContentSchema = z.preprocess(
 );
 
 export const commentAddParams = z.object({
-  path: z.string(),
+  path: z.string("客户端未获取到路径，请刷新重试"),
   content: commentContentSchema,
 
   parentId: z.number().optional(),
   replyToId: z.number().optional(),
 
-  visitorName: z.string().optional(),
-  visitorEmail: z.email().optional(),
+  isAnonymous: z.boolean().optional(),
+  visitorName: z.string("昵称需要是字符串").optional(),
+  visitorEmail: z.email("邮箱应该符合邮箱格式").optional(),
 });
 export const commentAddParamsBranded =
   commentAddParams.brand("CommentAddParams");
@@ -40,7 +41,10 @@ export type CommentAddResponse = z.infer<typeof commentAddResponse>;
 // while this fn will return validated response
 export async function addComment(params: CommentAddParamsBranded) {
   const resp = await honoClient.comments.add.$post({
-    json: params,
+    json: {
+      ...params,
+      anonymousName: params.isAnonymous ? "匿名" : undefined,
+    },
   });
   if (!resp.ok) {
     throw new Error(await resp.text());
