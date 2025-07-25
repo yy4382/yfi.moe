@@ -8,6 +8,9 @@ export const commentDataUser = z.strictObject({
   displayName: z.string(),
   anonymousName: z.string().nullish(),
   userImage: z.string(),
+  // if user is anonymous (anonymousName is not null), userId is null for non-admin
+  // while being real for admin
+  userId: z.string().nullish(),
 });
 export const commentDataUserAdmin = z.strictObject({
   ...commentDataUser.shape,
@@ -15,7 +18,6 @@ export const commentDataUserAdmin = z.strictObject({
   userAgent: z.string().nullish(),
 
   // get these three if user is logged in
-  userId: z.string().nullish(),
   userName: z.string().nullish(),
   userEmail: z.string().nullish(),
 
@@ -75,12 +77,16 @@ export function tablesToCommentData(
         getGravatarUrl(
           userTableData?.email ?? commentTableData.visitorEmail ?? "",
         )),
+    userId: commentTableData.anonymousName
+      ? isAdmin
+        ? userTableData?.id
+        : null
+      : userTableData?.id,
   };
   const adminData: z.input<typeof commentDataUserAdmin> = {
     ...userBase,
     userIp: commentTableData.userIp,
     userAgent: commentTableData.userAgent,
-    userId: userTableData?.id,
     userName: userTableData?.name,
     userEmail: userTableData?.email,
     visitorName: commentTableData.visitorName,
