@@ -51,9 +51,6 @@ export class EmailNotificationProvider implements NotificationProvider {
         text,
         html,
       });
-      console.log(
-        `Sent email to ${notification.recipient}, subject: ${subject}`,
-      );
     } catch (error) {
       console.error(error);
       throw error;
@@ -97,5 +94,14 @@ export class EmailNotificationProvider implements NotificationProvider {
       default:
         throw new Error(`Unknown notification type: ${type}`);
     }
+  }
+
+  async sendArbitraryEmail(
+    args: Omit<Parameters<typeof this.transporter.sendMail>[0], "from">,
+  ) {
+    await this.transporter.sendMail({
+      from: this.config.from,
+      ...args,
+    });
   }
 }

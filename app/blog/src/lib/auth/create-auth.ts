@@ -2,7 +2,7 @@ import type { DbClient } from "@/lib/db/db-plugin";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import * as schema from "../db/schema";
-import { admin } from "better-auth/plugins";
+import { admin, magicLink } from "better-auth/plugins";
 import { env } from "@/env";
 
 export const createAuth = (db: DbClient) => {
@@ -17,7 +17,30 @@ export const createAuth = (db: DbClient) => {
     emailAndPassword: {
       enabled: true,
     },
-    plugins: [admin()],
+    plugins: [
+      admin(),
+      magicLink({
+        sendMagicLink: async ({ email, url }) => {
+          // Import the email service factory dynamically to avoid circular dependencies
+          const { EmailServiceFactory } = await import(
+            "../hono/notification/providers"
+          );
+
+          const emailConfig = EmailServiceFactory.createConfigFromEnv(env);
+          const authEmailService =
+            EmailServiceFactory.getAuthService(emailConfig);
+
+          if (authEmailService.isEnabled()) {
+            await authEmailService.sendMagicLinkEmail(email, url);
+          } else {
+            console.log("Email provider not configured, magic link URL:", url);
+            throw new Error("Email provider not configured");
+          }
+        },
+        expiresIn: 300, // 5 minutes
+        disableSignUp: false, // Allow new user registration via magic link
+      }),
+    ],
     socialProviders: {
       github: {
         clientId: env.GITHUB_CLIENT_ID,
