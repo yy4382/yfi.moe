@@ -7,15 +7,20 @@ interface AdminNewCommentEmailProps {
   postTitle: string;
   postSlug: string;
   commentContent: string;
+  unsubscribeUrl?: string;
 }
 
 export const AdminNewCommentEmail = ({
   authorName,
   postTitle,
   commentContent,
+  unsubscribeUrl,
 }: AdminNewCommentEmailProps) => {
   return (
-    <BaseTemplate title="New comment requires moderation">
+    <BaseTemplate
+      title="New comment requires moderation"
+      unsubscribeUrl={unsubscribeUrl}
+    >
       <>
         <Text style={text}>
           A new comment has been posted on &quot;{postTitle}&quot; and may

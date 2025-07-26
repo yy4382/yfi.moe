@@ -7,15 +7,21 @@ import {
   Text,
   Hr,
   Font,
+  Link,
 } from "@react-email/components";
 import React from "react";
 
 interface BaseTemplateProps {
   children: React.ReactNode;
   title: string;
+  unsubscribeUrl?: string;
 }
 
-export const BaseTemplate = ({ children, title }: BaseTemplateProps) => {
+export const BaseTemplate = ({
+  children,
+  title,
+  unsubscribeUrl,
+}: BaseTemplateProps) => {
   return (
     <Html>
       <Head>
@@ -52,6 +58,14 @@ export const BaseTemplate = ({ children, title }: BaseTemplateProps) => {
             <Text style={footerMuted}>
               You&apos;re receiving this email because you&apos;re subscribed to
               notifications on yfi.moe.
+              {unsubscribeUrl && (
+                <>
+                  {" "}
+                  <Link href={unsubscribeUrl} style={unsubscribeLink}>
+                    Unsubscribe
+                  </Link>
+                </>
+              )}
             </Text>
           </Section>
         </Container>
@@ -116,4 +130,9 @@ const footerMuted = {
   fontSize: "12px",
   color: "#999999",
   margin: "0",
+};
+
+const unsubscribeLink = {
+  color: "#999999",
+  textDecoration: "underline",
 };

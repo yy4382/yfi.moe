@@ -1,12 +1,6 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import React, { PropsWithChildren, useCallback, useMemo, useRef } from "react";
 import { toast } from "sonner";
 import { addComment, commentAddParamsBranded } from "../comment-api/add";
 import {
@@ -26,7 +20,7 @@ import { MingcuteMailSendLine } from "@/assets/icons/MingcuteMailSendLine";
 import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
-import { atom, PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { atom, PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import { produce } from "immer";
 import { LayeredCommentData } from "@/lib/hono/models";
 
@@ -106,16 +100,6 @@ const useNewCommentData = () => {
 export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
   const path = usePathname();
   const { data: session } = useQuery(sessionOptions());
-
-  const setVisitorName = useSetAtom(persistentNameAtom);
-  const setVisitorEmail = useSetAtom(persistentEmailAtom);
-  useEffect(() => {
-    // clear visitor name and email when logged in
-    if (session) {
-      setVisitorName(session.user.name);
-      setVisitorEmail(session.user.email);
-    }
-  }, [session, setVisitorName, setVisitorEmail]);
 
   const commentBoxId = {
     parentId: reply?.parentId,
