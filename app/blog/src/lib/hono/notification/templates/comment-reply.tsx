@@ -7,6 +7,7 @@ interface CommentReplyEmailProps {
   postTitle: string;
   postSlug: string;
   commentContent: string;
+  unsubscribeUrl?: string;
 }
 
 export const CommentReplyEmail = ({
@@ -14,9 +15,13 @@ export const CommentReplyEmail = ({
   postTitle,
   postSlug,
   commentContent,
+  unsubscribeUrl,
 }: CommentReplyEmailProps) => {
   return (
-    <BaseTemplate title="New reply to your comment">
+    <BaseTemplate
+      title="New reply to your comment"
+      unsubscribeUrl={unsubscribeUrl}
+    >
       <>
         <Text style={text}>
           <strong>{authorName}</strong> has replied to your comment on &quot;

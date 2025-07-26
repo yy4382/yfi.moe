@@ -8,6 +8,13 @@
       "when": 1753284514262,
       "tag": "0000_striped_tyger_tiger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1753544406607,
+      "tag": "0001_keen_wild_pack",
+      "breakpoints": true
     }
   ]
 }

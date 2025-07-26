@@ -1,5 +1,5 @@
 import { DbClient } from "@/lib/db/db-plugin";
-import { user, comment } from "@/lib/db/schema";
+import { user, comment, unsubscribedEmail } from "@/lib/db/schema";
 import { NotificationService } from "../../../notification/types";
 import { eq } from "drizzle-orm";
 
@@ -81,6 +81,14 @@ async function sendCommentReplyNotification(
   const repliedToEmail =
     replyToComment.user?.email || replyToComment.comment.visitorEmail;
   if (!repliedToEmail) {
+    return;
+  }
+  const isUnsubscribed = await db
+    .select()
+    .from(unsubscribedEmail)
+    .where(eq(unsubscribedEmail.email, repliedToEmail));
+  console.info(isUnsubscribed, repliedToEmail);
+  if (isUnsubscribed.length > 0) {
     return;
   }
   return notificationService.send({

@@ -105,3 +105,8 @@ export const comment = pgTable(
     ),
   ],
 );
+
+export const unsubscribedEmail = pgTable("unsubscribed_email", {
+  email: text("email").primaryKey(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

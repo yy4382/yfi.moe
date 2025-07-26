@@ -6,6 +6,7 @@ import { notificationPlugin } from "@/lib/hono/notification/plugin";
 import { db } from "@/lib/db/instance";
 import comments from "@/lib/hono/modules/comments";
 import { handle } from "hono/vercel";
+import { accountApp } from "@/lib/hono/modules/account/account";
 
 const app = factory
   .createApp()
@@ -17,7 +18,8 @@ const app = factory
   .on(["POST", "GET"], "/v1/auth/*", (c) => {
     return c.get("authClient").handler(c.req.raw);
   })
-  .route("/v1/comments", comments);
+  .route("/v1/comments", comments)
+  .route("/v1/account", accountApp);
 
 export type App = typeof app;
 
