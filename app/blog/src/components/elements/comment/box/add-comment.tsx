@@ -4,6 +4,7 @@ import React, {
   PropsWithChildren,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
 } from "react";
 import { toast } from "sonner";
@@ -15,11 +16,7 @@ import {
   sessionOptions,
   sortByAtom,
 } from "../utils";
-import {
-  CommentBoxFillingData,
-  CommentBoxId,
-  CommentBoxIdContext,
-} from "./context";
+import { CommentBoxId, CommentBoxIdContext } from "./context";
 import Image from "next/image";
 import { Loader2Icon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
@@ -29,14 +26,7 @@ import { MingcuteMailSendLine } from "@/assets/icons/MingcuteMailSendLine";
 import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
-import {
-  Atom,
-  atom,
-  PrimitiveAtom,
-  useAtom,
-  useAtomValue,
-  useSetAtom,
-} from "jotai";
+import { atom, PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { produce } from "immer";
 import { LayeredCommentData } from "@/lib/hono/models";
 
@@ -107,18 +97,9 @@ type CommentBoxNewProps = {
 const useNewCommentData = () => {
   const contentAtomRef = useRef<PrimitiveAtom<string>>(atom(""));
   const isAnonymousAtomRef = useRef<PrimitiveAtom<boolean>>(atom(false));
-  const newCommentDataAtomRef = useRef<Atom<CommentBoxFillingData>>(
-    atom((get) => ({
-      content: get(contentAtomRef.current),
-      isAnonymous: get(isAnonymousAtomRef.current),
-      visitorEmail: get(persistentEmailAtom),
-      visitorName: get(persistentNameAtom),
-    })),
-  );
   return {
     contentAtom: contentAtomRef.current,
     isAnonymousAtom: isAnonymousAtomRef.current,
-    fullDataAtomRef: newCommentDataAtomRef.current,
   };
 };
 
@@ -143,8 +124,18 @@ export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
   };
 
   const atoms = useNewCommentData();
-  const data = useAtomValue(atoms.fullDataAtomRef);
-  const setContent = useSetAtom(atoms.contentAtom);
+
+  const [content, setContent] = useAtom(atoms.contentAtom);
+  const isAnonymous = useAtomValue(atoms.isAnonymousAtom);
+  const visitorEmail = useAtomValue(persistentEmailAtom);
+  const visitorName = useAtomValue(persistentNameAtom);
+  const data = useMemo(() => {
+    return {
+      content,
+      isAnonymous,
+      ...(session ? {} : { visitorEmail, visitorName }),
+    };
+  }, [content, isAnonymous, visitorEmail, visitorName, session]);
 
   const { mutate } = useAddComment({
     onSuccess,
