@@ -4,10 +4,10 @@
 
 ## Todo
 
-- [ ] 邮件通知 unsubscribe
-  - [ ] 数据库架构
+- [x] 邮件通知 unsubscribe
+  - [x] 数据库架构
   - [ ] 前端提示
-  - [ ] 接口和 unsubscribe 页面
+  - [x] 接口和 unsubscribe 页面
 - [x] email magic link 注册
 - [ ] 邮件通知模板优化
 - [ ] Akismet 评论过滤
