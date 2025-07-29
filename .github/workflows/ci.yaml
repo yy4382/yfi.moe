@@ -41,6 +41,10 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile]
+
+      - shell: bash
+        run: echo -e '/// <reference types="next" />\n/// <reference types="next/image-types/global" />' > apps/blog/next-env.d.ts
+
       - run: pnpm turbo run check-types
 
   lint:
