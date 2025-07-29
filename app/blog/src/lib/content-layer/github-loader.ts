@@ -82,7 +82,7 @@ export class GithubCollection<T extends { slug: string }>
         this.collectionId,
         slug,
       );
-      return this.entryCache[slug];
+      return this.entryCache[slug]!;
     }
     console.debug(
       yellow("[GithubCollection] getEntry local cache miss"),
@@ -329,7 +329,7 @@ function parseMarkdownFrontmatter(markdown: string) {
   const match = /^---\n([\s\S]+?)\n---\n?/m.exec(markdown);
   if (!match) return { data: {}, content: markdown };
 
-  const yamlStr = match[1];
+  const yamlStr = match[1]!;
   const content = markdown.slice(match[0].length);
 
   const data = yaml.load(yamlStr);

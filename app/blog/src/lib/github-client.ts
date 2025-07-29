@@ -23,7 +23,7 @@ const createFetcher = (pat: string) => {
         "X-GitHub-Api-Version": "2022-11-28",
       },
     });
-    const json = await response.json();
+    const json = (await response.json()) as unknown;
     return json;
   };
 };
@@ -47,7 +47,8 @@ export async function fetchRepoDir(
   if (!Array.isArray(data)) {
     throw new Error("Not a directory");
   }
-  return data.filter((item) => item.type === "file");
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  return data.filter((item) => item.type === "file") as GetRepoContentFile[];
 }
 
 export async function fetchFileContent(

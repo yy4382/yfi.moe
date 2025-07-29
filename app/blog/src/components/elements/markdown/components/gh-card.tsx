@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access */
 import { useEffect, useMemo, useState } from "react";
 import type { components } from "@octokit/openapi-types";
 import { ErrorBoundary } from "react-error-boundary";
@@ -92,7 +93,7 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
         setLoading(false);
       }
     };
-    fetchData();
+    void fetchData();
   }, [user, repo]);
 
   const color = useMemo(() => {

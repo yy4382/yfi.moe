@@ -48,29 +48,29 @@ function useAddComment({
         }) => {
           if (!data.data.parentId)
             return produce(old, (draft) => {
-              draft.pages[0].comments.unshift({ ...data.data, children: [] });
-              draft.pages[0].total++;
+              draft.pages[0]!.comments.unshift({ ...data.data, children: [] });
+              draft.pages[0]!.total++;
             });
           else {
             return produce(old, (draft) => {
               let parentIndex = [-1, -1];
               for (let i = 0; i < old.pages.length; i++) {
-                for (let j = 0; j < old.pages[i].comments.length; j++) {
-                  if (old.pages[i].comments[j].id === data.data.parentId) {
+                for (let j = 0; j < old.pages[i]!.comments.length; j++) {
+                  if (old.pages[i]!.comments[j]!.id === data.data.parentId) {
                     parentIndex = [i, j];
                     break;
                   }
                 }
               }
               if (parentIndex[0] === -1) return old;
-              draft.pages[parentIndex[0]].comments[
-                parentIndex[1]
-              ].children.push(data.data);
+              draft.pages[parentIndex[0]!]!.comments[
+                parentIndex[1]!
+              ]!.children.push(data.data);
             });
           }
         },
       );
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: ["comments", { session: session?.user.id }, path],
       });
     },
@@ -134,7 +134,7 @@ export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
     });
     if (error) {
       const firstError = error.issues[0];
-      toast.error(firstError.message);
+      toast.error(firstError?.message);
       return;
     }
     mutate(parsedData, {
@@ -231,16 +231,19 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
         <span className="text-comment text-xs">使用社交账号登录</span>
         <div className="flex gap-2">
           <motion.button
-            onClick={async () => {
-              const { error } = await authClient.signIn.social({
-                provider: "github",
-                callbackURL: `${window.location.href}`,
-              });
-              if (error) {
-                toast.error(error.message);
-                return;
-              }
-              queryClient.invalidateQueries(sessionOptions());
+            onClick={() => {
+              const fn = async () => {
+                const { error } = await authClient.signIn.social({
+                  provider: "github",
+                  callbackURL: `${window.location.href}`,
+                });
+                if (error) {
+                  toast.error(error.message);
+                  return;
+                }
+                void queryClient.invalidateQueries(sessionOptions());
+              };
+              void fn();
             }}
             className="border-container bg-bg flex items-center gap-1 rounded-full border p-2 shadow"
             whileHover={{ scale: 1.05 }}
@@ -297,8 +300,8 @@ function UserBox({ children, session }: UserBoxProps) {
       toast.error(error.message);
       return;
     }
-    queryClient.invalidateQueries(sessionOptions());
-    queryClient.invalidateQueries({ queryKey: ["comments"] });
+    void queryClient.invalidateQueries(sessionOptions());
+    void queryClient.invalidateQueries({ queryKey: ["comments"] });
   }, [queryClient]);
 
   return (
@@ -314,7 +317,7 @@ function UserBox({ children, session }: UserBoxProps) {
         />
         <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
           <button
-            onClick={handleSignOut}
+            onClick={() => void handleSignOut()}
             className="flex size-full items-center justify-center"
           >
             <XIcon className="size-2.5" />

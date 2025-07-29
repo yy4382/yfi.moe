@@ -9,6 +9,9 @@ export async function GET() {
   const items = [];
   for (let i = 0; i < 8; i++) {
     const entry = entries[i];
+    if (!entry) {
+      continue;
+    }
     items.push({
       title: entry.data.title,
       pubDate: entry.data.date,

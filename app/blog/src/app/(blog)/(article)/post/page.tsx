@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default async function PostListPage() {
+export default function PostListPage() {
   return redirect("/posts");
 }

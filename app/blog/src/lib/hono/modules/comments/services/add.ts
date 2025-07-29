@@ -60,6 +60,12 @@ export async function addComment(
     .returning();
 
   const newComment = inserted[0];
+  if (!newComment) {
+    return {
+      result: "bad_req",
+      data: { message: "failed to add comment" },
+    };
+  }
   return {
     result: "success",
     data: {

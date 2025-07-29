@@ -66,6 +66,7 @@ function CopyrightCard() {
       <div className="prose dark:prose-invert prose-p:text-comment/80 prose-a:!text-content/90 mx-auto max-w-[75ch] !text-sm">
         <div
           className={clsx(copyrightStyles.signatureWrapper, "float-right")}
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           dangerouslySetInnerHTML={{ __html: Sign }}
         ></div>
         <p className="!mt-0 !mb-2">

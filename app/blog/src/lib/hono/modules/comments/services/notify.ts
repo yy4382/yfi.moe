@@ -15,17 +15,17 @@ type SendNotificationCommentData = {
   email?: string;
 };
 
-export async function sendNotification(
+export function sendNotification(
   comment: SendNotificationCommentData,
   db: DbClient,
   notificationService: NotificationService,
 ) {
   // send to admin
-  sendAdminNewCommentNotification(comment, db, notificationService);
+  void sendAdminNewCommentNotification(comment, db, notificationService);
 
   if (comment.replyToId) {
     // send to replied to user
-    sendCommentReplyNotification(
+    void sendCommentReplyNotification(
       comment,
       comment.replyToId,
       db,
@@ -74,10 +74,10 @@ async function sendCommentReplyNotification(
     .from(comment)
     .where(eq(comment.id, replyToId))
     .leftJoin(user, eq(comment.userId, user.id));
-  if (!replyToComments || replyToComments.length === 0) {
+  const replyToComment = replyToComments[0];
+  if (!replyToComment) {
     return;
   }
-  const replyToComment = replyToComments[0];
   const repliedToEmail =
     replyToComment.user?.email || replyToComment.comment.visitorEmail;
   if (!repliedToEmail) {

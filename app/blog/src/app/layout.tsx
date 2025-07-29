@@ -1,5 +1,6 @@
 import { umamiConfig /*, googleMeasurementId*/ } from "@/config/track";
 import type { Metadata } from "next";
+// @ts-expect-error this is a css file
 import "./globals.css";
 import { getOpenGraph } from "./metadata";
 // import { GoogleAnalytics } from "@next/third-parties/google";

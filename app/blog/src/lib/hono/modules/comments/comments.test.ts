@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/require-await  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import commentApp from ".";
 import * as getModule from "./services/get";
@@ -92,8 +92,8 @@ describe("get comments", () => {
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.comments).toHaveLength(1);
-    expect(respJson.comments[0].id).toBe(1);
-    expect(respJson.comments[0].children).toHaveLength(1);
+    expect(respJson.comments[0]!.id).toBe(1);
+    expect(respJson.comments[0]!.children).toHaveLength(1);
   });
 });
 
@@ -125,11 +125,7 @@ describe("add comment", () => {
         };
       },
     );
-    vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(
-      async () => {
-        return Promise.resolve();
-      },
-    );
+    vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(() => {});
     const resp = await testClient(testCommentApp()).add.$post(
       {
         json: {
@@ -155,11 +151,7 @@ describe("add comment", () => {
     vi.spyOn(addModule, "addComment").mockImplementationOnce(async () => {
       return { result: "bad_req", data: { message: "test" } };
     });
-    vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(
-      async () => {
-        return Promise.resolve();
-      },
-    );
+    vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(() => {});
     const resp = await testClient(testCommentApp()).add.$post({
       json: {
         path: "/",

@@ -64,6 +64,7 @@ export const projects: {
 }[] = [
   {
     icon: (props) => (
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       <Image {...props} src={s3ImagePortIcon} alt="S3 Image Port" />
     ),
     title: "S3 Image Port",
@@ -83,6 +84,7 @@ export const projects: {
   },
   {
     icon: (props) => (
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       <Image {...props} src={ttsImporterIcon} alt="TTS Importer" />
     ),
     title: "TTS Importer",
@@ -102,6 +104,7 @@ export const projects: {
   },
   {
     icon: (props) => (
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       <Image {...props} src={obExportIcon} alt="Obsidian Site Exporter" />
     ),
     title: "Obsidian Site Exporter",

@@ -73,7 +73,7 @@ export class CommentNotificationEmailService
       }
 
       default:
-        throw new Error(`Unknown notification type: ${type}`);
+        throw new Error(`Unknown notification type: ${type as string}`);
     }
   }
 }

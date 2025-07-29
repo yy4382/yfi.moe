@@ -7,7 +7,7 @@ type InputBoxProps = {
   submit: () => void;
   contentAtom: WritableAtom<string, [string], void>;
   isAnonymousAtom?: WritableAtom<boolean, [boolean], void>;
-  placeholder?: string;
+  placeholder?: string | undefined;
   mutationKey: unknown[];
 
   onCancel?: () => void;
@@ -80,7 +80,7 @@ function InputBoxFooter({
   status,
 }: {
   content: string;
-  isAnonymousAtom?: WritableAtom<boolean, [boolean], void>;
+  isAnonymousAtom?: WritableAtom<boolean, [boolean], void> | undefined;
   submit: () => void;
   status: MutationStatus;
 }) {
