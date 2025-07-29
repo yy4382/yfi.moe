@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-base-to-string */
+/* eslint-disable @typescript-eslint/require-await */
 import {
   describe,
   expect,
@@ -84,7 +89,7 @@ class MockEmailNotificationProvider extends EmailNotificationProvider {
   }
 
   getLastSentEmail() {
-    return this.sentEmails[this.sentEmails.length - 1];
+    return this.sentEmails[this.sentEmails.length - 1]!;
   }
 }
 
@@ -353,8 +358,8 @@ describe("EmailNotificationProvider", () => {
         }
 
         expect(provider.sentEmails).toHaveLength(2);
-        expect(provider.sentEmails[0].to).toBe("user1@example.com");
-        expect(provider.sentEmails[1].to).toBe("user2@example.com");
+        expect(provider.sentEmails[0]?.to).toBe("user1@example.com");
+        expect(provider.sentEmails[1]?.to).toBe("user2@example.com");
       });
     });
   });

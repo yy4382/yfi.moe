@@ -29,7 +29,7 @@ export async function updateComment(
     return { code: 404, data: "comment not found" };
   }
 
-  const commentData = existingComment[0];
+  const commentData = existingComment[0]!;
 
   if (commentData.deletedAt) {
     return { code: 400, data: "cannot update deleted comment" };
@@ -53,6 +53,10 @@ export async function updateComment(
     })
     .where(eq(comment.id, id))
     .returning();
+
+  if (!updatedComment) {
+    return { code: 400, data: "cannot update deleted comment" };
+  }
 
   return {
     code: 200,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { z } from "zod";
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import { rssSchema } from "./schema";
@@ -83,7 +84,7 @@ export default async function getRssResponse(
 
 export async function getRssString(rssOptions: RSSOptions): Promise<string> {
   const validatedRssOptions = await validateRssOptions(rssOptions);
-  return await generateRSS(validatedRssOptions);
+  return generateRSS(validatedRssOptions);
 }
 
 async function validateRssOptions(rssOptions: RSSOptions) {
@@ -96,7 +97,7 @@ async function validateRssOptions(rssOptions: RSSOptions) {
 }
 
 /** Generate RSS 2.0 feed */
-async function generateRSS(rssOptions: ValidatedRSSOptions): Promise<string> {
+function generateRSS(rssOptions: ValidatedRSSOptions): string {
   const { items, site } = rssOptions;
 
   const xmlOptions = {

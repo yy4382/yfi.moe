@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
 export type CommentBoxId = {
-  parentId?: number;
-  replyingTo?: number;
-  editId?: number;
+  parentId?: number | undefined;
+  replyingTo?: number | undefined;
+  editId?: number | undefined;
   path: string;
 };
 

@@ -38,7 +38,7 @@ const commentApp = factory
     switch (result.result) {
       case "success": {
         const resp = addCommentResponse.parse(result.data);
-        await sendNotification(
+        sendNotification(
           {
             id: result.data.data.id,
             userId: result.data.data.userId ?? undefined,

@@ -183,7 +183,10 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
             </TabsList>
 
             <TabsContent value="login" className="mt-4 space-y-4">
-              <form onSubmit={handleLoginSubmit} className="space-y-4">
+              <form
+                onSubmit={(e) => void handleLoginSubmit(e)}
+                className="space-y-4"
+              >
                 <div className="space-y-2">
                   <Label htmlFor="login-email">邮箱地址</Label>
                   <Input
@@ -216,7 +219,10 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
             </TabsContent>
 
             <TabsContent value="signup" className="mt-4 space-y-4">
-              <form onSubmit={handleSignupSubmit} className="space-y-4">
+              <form
+                onSubmit={(e) => void handleSignupSubmit(e)}
+                className="space-y-4"
+              >
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">昵称</Label>
                   <Input

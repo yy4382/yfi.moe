@@ -1,6 +1,7 @@
 import "server-only";
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { jsxDEV } from "react/jsx-dev-runtime";
+// @ts-expect-error this is a css file
 import "@repo/markdown/style";
 import { CopyButton } from "./components/copy-button";
 import { GhCard } from "./components/gh-card";
@@ -35,6 +36,7 @@ export async function Markdown({
     return hast;
   })(text, fast);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const Comp = toJsxRuntime(file, {
     Fragment,
     jsx,

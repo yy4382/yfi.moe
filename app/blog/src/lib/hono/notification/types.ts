@@ -24,7 +24,7 @@ export type NotificationNewReply = {
   path: string;
 
   authorName: string;
-  authorEmail?: string;
+  authorEmail?: string | undefined;
 };
 
 export type NotificationNewComment = {

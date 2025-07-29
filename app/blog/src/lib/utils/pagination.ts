@@ -27,7 +27,7 @@ export function paginationPageFromParams(
     notFound();
   } else {
     try {
-      page = parseInt(pageParam[0]);
+      page = parseInt(pageParam[0]!);
     } catch {
       notFound();
     }

@@ -42,7 +42,7 @@ function parseGhInfo(info: string | undefined) {
   if (slices.length !== 4) {
     throw new Error(`Invalid GH info format: ${info}`);
   }
-  const [owner, repo, ref, path] = slices;
+  const [owner, repo, ref, path] = slices as [string, string, string, string];
   return {
     owner,
     repo,
@@ -57,7 +57,7 @@ if (env.ARTICLE_PAT === undefined) {
 }
 
 class PostCollection extends GithubCollection<PostData> {
-  public async getCollection({
+  public override async getCollection({
     includeDraft = false,
     order = "desc",
   }: { includeDraft?: boolean; order?: "asc" | "desc" } = {}): Promise<
@@ -73,7 +73,7 @@ class PostCollection extends GithubCollection<PostData> {
       });
   }
 
-  public async getCollectionWithBody({
+  public override async getCollectionWithBody({
     includeDraft = false,
     order = "desc",
   }: { includeDraft?: boolean; order?: "asc" | "desc" } = {}): Promise<
@@ -89,7 +89,7 @@ class PostCollection extends GithubCollection<PostData> {
       });
   }
 
-  public async getEntry(
+  public override async getEntry(
     slug: string,
     { includeDraft = false }: { includeDraft?: boolean } = {},
   ): Promise<ContentLayerItem<PostData> | null> {
@@ -100,7 +100,9 @@ class PostCollection extends GithubCollection<PostData> {
     }
     return result;
   }
-  protected async fetchFromSource(): Promise<ContentLayerItem<PostData>[]> {
+  protected override async fetchFromSource(): Promise<
+    ContentLayerItem<PostData>[]
+  > {
     const parentResult = await super.fetchFromSource();
     return parentResult.map((item) => {
       if (item.data.description === "") {

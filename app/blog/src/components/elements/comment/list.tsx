@@ -102,7 +102,7 @@ export function CommentList() {
       <div className="mt-6 flex items-center justify-center-safe gap-2 p-4 text-center text-red-500">
         加载评论失败: {error.message}
         <motion.button
-          onClick={() => refetch()}
+          onClick={() => void refetch()}
           className="border-container text-comment rounded-md border px-2 py-1 shadow-md"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -112,7 +112,11 @@ export function CommentList() {
       </div>
     );
   }
-  if (!data || data.pages.length === 0 || data.pages[0].comments.length === 0) {
+  if (
+    !data ||
+    data.pages.length === 0 ||
+    data.pages[0]!.comments.length === 0
+  ) {
     return <div className="mt-6 p-4 text-center text-zinc-500">暂无留言</div>;
   }
 
@@ -120,7 +124,7 @@ export function CommentList() {
     <div className="mt-6">
       <div className="mb-2 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 text-lg font-semibold">
-          <span>{data.pages[0].total}条留言</span>
+          <span>{data.pages[0]!.total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
             <span>
               <Loader2Icon className="size-6 animate-spin" />
@@ -162,7 +166,7 @@ export function CommentList() {
       {hasNextPage && (
         <div className="flex justify-center">
           <motion.button
-            onClick={() => fetchNextPage()}
+            onClick={() => void fetchNextPage()}
             disabled={isFetching}
             className="border-container text-comment rounded-md border px-2 py-1 shadow-md"
             whileHover={{ scale: 1.05 }}
@@ -218,7 +222,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
       toast.error(error.message);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: ["comments", { session: session?.user.id }, path],
       });
     },

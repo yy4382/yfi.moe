@@ -48,7 +48,15 @@ export default function Home() {
 
 async function Statistics() {
   const posts = await postCollection.getCollectionWithBody();
-  const firstDate = posts[0].data.date;
+  if (posts.length === 0) {
+    return (
+      <StatisticsSection
+        firstDateString="无"
+        statistics={{ articles: "0", words: "0", tags: "0" }}
+      />
+    );
+  }
+  const firstDate = posts[0]!.data.date;
   const statistics = {
     articles: posts.length,
     words: posts.reduce((acc, post) => {

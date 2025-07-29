@@ -46,21 +46,21 @@ export function CommentBoxEdit({
         }) => {
           return produce(old, (draft) => {
             for (let i = 0; i < old.pages.length; i++) {
-              for (let j = 0; j < old.pages[i].comments.length; j++) {
-                if (old.pages[i].comments[j].id === data.id) {
-                  draft.pages[i].comments[j] = {
+              for (let j = 0; j < old.pages[i]!.comments.length; j++) {
+                if (old.pages[i]!.comments[j]!.id === data.id) {
+                  draft.pages[i]!.comments[j] = {
                     ...data,
-                    children: old.pages[i].comments[j].children,
+                    children: old.pages[i]!.comments[j]!.children,
                   };
                   return;
                 }
                 for (
                   let k = 0;
-                  k < old.pages[i].comments[j].children.length;
+                  k < old.pages[i]!.comments[j]!.children.length;
                   k++
                 ) {
-                  if (old.pages[i].comments[j].children[k].id === data.id) {
-                    draft.pages[i].comments[j].children[k] = data;
+                  if (old.pages[i]!.comments[j]!.children[k]!.id === data.id) {
+                    draft.pages[i]!.comments[j]!.children[k] = data;
                     return;
                   }
                 }
@@ -69,7 +69,7 @@ export function CommentBoxEdit({
           });
         },
       );
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: ["comments", { session: session?.user.id }, path],
       });
       setContent("");
