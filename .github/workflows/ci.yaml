@@ -2,8 +2,6 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
@@ -43,12 +41,25 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile]
-      - run: pnpm turbo run check-types --env-mode=loose
-        env:
-          ARTICLE_PAT: ${{ secrets.ARTICLE_PAT }}
-          POST_GH_INFO: ${{ secrets.POST_GH_INFO }}
-          PAGE_GH_INFO: ${{ secrets.PAGE_GH_INFO }}
+      - run: pnpm turbo run check-types
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Use pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile]
+      - run: pnpm turbo run lint
   sherif-check:
     runs-on: ubuntu-latest
     steps:

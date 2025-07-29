@@ -32,9 +32,10 @@
       "cache": false
     },
     "check-types": {
-      "dependsOn": ["^check-types"],
-      "cache": false,
-      "env": ["ARTICLE_PAT"]
+      "cache": false
+    },
+    "lint": {
+      "cache": false
     }
   }
 }
