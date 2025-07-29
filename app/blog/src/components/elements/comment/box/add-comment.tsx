@@ -215,8 +215,7 @@ function VisitorBox({ children }: PropsWithChildren) {
 
 function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   const queryClient = useQueryClient();
-  const state = queryClient.getQueryState(sessionOptions().queryKey);
-  const status = state?.status;
+  const { status } = useQuery(sessionOptions());
   if (status === "pending")
     return (
       <div className="border-container bg-card text-muted-foreground flex min-h-36 w-full flex-col items-center justify-center gap-2 rounded-sm border py-4">
