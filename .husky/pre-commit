@@ -1,12 +1,1 @@
-# Get git status ignoring submodules
-ignore_submodule_status=$(git status --ignore-submodules=all --porcelain)
-
-# Get full git status including submodules
-full_status=$(git status --porcelain)
-
-# Check if only submodules have been updated
-if [ -z "$ignore_submodule_status" ] && [ -n "$full_status" ]; then
-  echo "The current changes only include submodule updates, skipping lint-staged"
-else
-  pnpm dlx lint-staged
-fi
+pnpm dlx lint-staged
