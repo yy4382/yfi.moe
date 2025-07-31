@@ -1,0 +1,20 @@
+import type { Session, User } from "@/auth/auth-plugin.js";
+import type { AuthClient } from "@/auth/create-auth.js";
+import type { DbClient } from "@/db/db-plugin.js";
+import { createFactory } from "hono/factory";
+import type { NotificationService } from "./notification/types.js";
+
+export type Variables = {
+  db: DbClient;
+  auth?: {
+    user: User;
+    session: Session;
+  };
+  authClient: AuthClient;
+
+  notification: NotificationService;
+};
+
+export const factory = createFactory<{
+  Variables: Variables;
+}>();

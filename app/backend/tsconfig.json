@@ -5,17 +5,13 @@
     // See also https://aka.ms/tsconfig_modules
     "module": "nodenext",
     "target": "es2022",
-    "types": [],
+    "types": ["node"],
 
-    // "noEmit": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    // "declaration": true,
-    // "declarationMap": true,
+    "noEmit": true,
 
     // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    // "noUncheckedIndexedAccess": true,
+    // "exactOptionalPropertyTypes": true,
 
     // Style Options
     // "noImplicitReturns": true,
@@ -24,6 +20,10 @@
     // "noUnusedParameters": true,
     // "noFallthroughCasesInSwitch": true,
     // "noPropertyAccessFromIndexSignature": true,
+
+    "paths": {
+      "@/*": ["./src/*"]
+    },
 
     // Recommended Options
     "strict": true,

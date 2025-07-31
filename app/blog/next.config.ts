@@ -7,6 +7,12 @@ import withBundleAnalyzerFn from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
   webpack: (config) => {
+    config.resolve.extensionAlias = {
+      ".js": [".ts", ".js"],
+      ".mjs": [".mts", ".mjs"],
+      ".cjs": [".cts", ".cjs"],
+      ".jsx": [".tsx", ".jsx"],
+    };
     // @ts-expect-error find rule
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg"),
@@ -28,6 +34,7 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: { exclude: ["error", "warn", "info"] },
   },
+  transpilePackages: ["@repo/markdown", "@repo/api", "@repo/helpers"],
   logging: {
     fetches: {
       fullUrl: true,

@@ -7,11 +7,7 @@
     "target": "es2022",
     "types": [],
 
-    // "noEmit": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    // "declaration": true,
-    // "declarationMap": true,
+    "noEmit": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,

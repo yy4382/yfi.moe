@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { commentContentSchema } from "./add";
-import { honoClient } from "@/lib/client";
-import { commentData } from "@/lib/hono/modules/comments/services/comment-data";
+import { commentData } from "@repo/api/comment/comment-data";
+import { updateComment as updateCommentApi } from "@repo/api/comment/update";
+import { env } from "@/env";
 
 // inputting params
 export const commentUpdateParams = z.object({
@@ -28,14 +29,15 @@ export type CommentUpdateResponse = z.infer<typeof commentUpdateResponse>;
 export async function updateComment(
   params: CommentUpdateParamsBranded,
 ): Promise<CommentUpdateResponse> {
-  const resp = await honoClient.comments.update.$post({
-    json: {
+  const result = await updateCommentApi(
+    {
       id: params.id,
       rawContent: params.content,
     },
-  });
-  if (!resp.ok) {
-    throw new Error(await resp.text());
+    env.NEXT_PUBLIC_BACKEND_URL,
+  );
+  if (result._tag === "err") {
+    throw new Error(result.error);
   }
-  return commentUpdateResponse.parse(await resp.json());
+  return commentUpdateResponse.parse(result.value);
 }

@@ -12,8 +12,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { CommentData } from "@/lib/hono/modules/comments/services/comment-data";
-import { getCommentsResponse } from "@/lib/hono/modules/comments/model";
+import type { CommentData } from "@repo/api/comment/comment-data";
 import Image from "next/image";
 import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
@@ -22,11 +21,13 @@ import { CommentBoxEdit } from "./box/edit-comment";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils/cn";
-import { honoClient } from "@/lib/client";
 import { usePathname } from "next/navigation";
 import { useAtom, useAtomValue } from "jotai";
 import { produce } from "immer";
-import type { User } from "@/lib/auth/auth-plugin";
+import type { User } from "@repo/api/auth/client";
+import { getComments } from "@repo/api/comment/get";
+import { deleteComment } from "@repo/api/comment/delete";
+import { env } from "@/env";
 
 const PER_PAGE = 10;
 
@@ -38,18 +39,19 @@ function listOptions(
   return infiniteQueryOptions({
     queryKey: ["comments", { session: user?.id }, path, sortBy],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
-      const resp = await honoClient.comments.get.$post({
-        json: {
+      const result = await getComments(
+        {
           path,
           limit: PER_PAGE,
           offset: (pageParam - 1) * PER_PAGE,
           sortBy,
         },
-      });
-      if (!resp.ok) {
-        throw new Error("Failed to fetch comments");
+        env.NEXT_PUBLIC_BACKEND_URL,
+      );
+      if (result._tag === "err") {
+        throw new Error(result.error);
       }
-      return getCommentsResponse.parse(await resp.json());
+      return result.value;
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => {
@@ -203,20 +205,16 @@ function CommentItem({ comment: entry }: CommentItemProps) {
     .flatMap((page) => page.comments.flatMap((c) => [c, ...c.children]))
     .find((comment) => comment.id === entry.replyToId)?.displayName;
 
-  const { mutate: deleteComment } = useMutation({
+  const { mutate: deleteCommentMutate } = useMutation({
     mutationFn: async (id: number) => {
       if (!session) {
         throw new Error("请先登录");
       }
-      const resp = await honoClient.comments.delete.$post({
-        json: {
-          id,
-        },
-      });
-      if (!resp.ok) {
-        throw new Error(await resp.text());
+      const result = await deleteComment({ id }, env.NEXT_PUBLIC_BACKEND_URL);
+      if (result._tag === "err") {
+        throw new Error(result.error);
       }
-      return resp.json();
+      return result.value;
     },
     onError(error) {
       toast.error(error.message);
@@ -286,7 +284,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
               <>
                 <button
                   className="flex items-center gap-1 text-xs text-red-700 transition-colors hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
-                  onClick={() => deleteComment(entry.id)}
+                  onClick={() => deleteCommentMutate(entry.id)}
                 >
                   <TrashIcon size={14} />
                 </button>

@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { honoClient } from "@/lib/client";
-import { commentData } from "@/lib/hono/modules/comments/services/comment-data";
+import { commentData } from "@repo/api/comment/comment-data";
+import { env } from "@/env";
+import { addComment as addCommentApi } from "@repo/api/comment/add";
 
 // inputting params
 export const commentContentSchema = z.preprocess(
@@ -40,14 +41,15 @@ export type CommentAddResponse = z.infer<typeof commentAddResponse>;
 // caller needs to pass in the validated (branded) params
 // while this fn will return validated response
 export async function addComment(params: CommentAddParamsBranded) {
-  const resp = await honoClient.comments.add.$post({
-    json: {
+  const result = await addCommentApi(
+    {
       ...params,
       anonymousName: params.isAnonymous ? "匿名" : undefined,
     },
-  });
-  if (!resp.ok) {
-    throw new Error(await resp.text());
+    env.NEXT_PUBLIC_BACKEND_URL,
+  );
+  if (result._tag === "err") {
+    throw new Error(result.error);
   }
-  return commentAddResponse.parse(await resp.json());
+  return result.value;
 }

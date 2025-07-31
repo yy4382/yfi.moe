@@ -1,20 +1,6 @@
-import type { App } from "@/app/api/[[...route]]/route";
-import { hc } from "hono/client";
-import { createAuthClient } from "better-auth/react";
-import { adminClient, magicLinkClient } from "better-auth/client/plugins";
+import { env } from "@/env";
+import { authClient as createAuthClient } from "@repo/api/auth/client";
 
-export const honoClient = hc<App>("/", {
-  fetch: (input: RequestInfo | URL, init?: RequestInit) => {
-    return fetch(input, {
-      ...init,
-      credentials: "include",
-    });
-  },
-}).api.v1;
-
-export const authClient = createAuthClient({
-  basePath: "/api/v1/auth",
-  plugins: [adminClient(), magicLinkClient()],
-});
+export const authClient = createAuthClient(env.NEXT_PUBLIC_BACKEND_URL);
 
 export type Session = typeof authClient.$Infer.Session;

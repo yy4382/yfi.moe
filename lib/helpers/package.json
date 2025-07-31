@@ -1,0 +1,17 @@
+{
+  "name": "@repo/helpers",
+  "type": "module",
+  "private": true,
+  "scripts": {},
+  "exports": {
+    "./result": "./result.ts",
+    "./get-gravatar-url": "./get-gravatar-url.ts"
+  },
+  "devDependencies": {
+    "@types/spark-md5": "^3.0.5",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "spark-md5": "^3.0.2"
+  }
+}

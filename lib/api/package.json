@@ -1,0 +1,17 @@
+{
+  "name": "@repo/api",
+  "type": "module",
+  "private": true,
+  "scripts": {},
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@repo/helpers": "workspace:*",
+    "better-auth": "catalog:",
+    "zod": "catalog:"
+  }
+}

@@ -10,7 +10,7 @@ import {
   updateComment,
 } from "../comment-api/update";
 import { atom, PrimitiveAtom, useAtom, useAtomValue } from "jotai";
-import { LayeredCommentData } from "@/lib/hono/models";
+import type { LayeredCommentData } from "@repo/api/comment/get.model";
 import { produce } from "immer";
 import { useRef } from "react";
 

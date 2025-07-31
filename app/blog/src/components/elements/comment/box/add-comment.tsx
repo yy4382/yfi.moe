@@ -17,12 +17,12 @@ import { motion } from "motion/react";
 import { authClient, Session } from "@/lib/client";
 import GithubIcon from "@/assets/icons/MingcuteGithubLine";
 import { MingcuteMailSendLine } from "@/assets/icons/MingcuteMailSendLine";
-import { getGravatarUrl } from "@/lib/utils/get-gravatar-url";
+import { getGravatarUrl } from "@repo/helpers/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
 import { atom, PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import { produce } from "immer";
-import { LayeredCommentData } from "@/lib/hono/models";
+import { LayeredCommentData } from "@repo/api/comment/get.model";
 
 function useAddComment({
   onSuccess,

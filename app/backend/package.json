@@ -1,0 +1,40 @@
+{
+  "name": "@repo/backend",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "check-types": "tsc --noEmit"
+  },
+  "exports": {},
+  "dependencies": {
+    "@hono/node-server": "^1.17.1",
+    "@hono/standard-validator": "^0.1.4",
+    "@neondatabase/serverless": "^1.0.1",
+    "@react-email/components": "^0.3.3",
+    "@react-email/render": "^1.1.4",
+    "@repo/api": "workspace:*",
+    "@repo/helpers": "workspace:*",
+    "@repo/markdown": "workspace:*",
+    "@vitest/coverage-v8": "^3.2.4",
+    "better-auth": "catalog:",
+    "drizzle-orm": "^0.44.4",
+    "hono": "^4.8.10",
+    "nodemailer": "^6.10.1",
+    "react": "^19.1.1",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.6",
+    "@types/node": "^20.19.9",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19.1.9",
+    "dotenv": "^17.2.1",
+    "drizzle-kit": "^0.31.4",
+    "postgres": "^3.4.7",
+    "tsx": "^4.20.3",
+    "typescript": "catalog:",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "catalog:"
+  }
+}

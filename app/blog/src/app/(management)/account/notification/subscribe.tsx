@@ -1,8 +1,9 @@
 "use client";
 
-import { honoClient } from "@/lib/client";
 import { useMutation } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import { unsubscribe } from "@repo/api/account/unsub";
+import { env } from "@/env";
 
 export function Unsubscribe() {
   const searchParams = useSearchParams();
@@ -14,18 +15,18 @@ export function Unsubscribe() {
       if (!email || !signature || !expiresAtTimestampSec) {
         throw new Error("请求 URL 不完整");
       }
-      const res = await honoClient.account.notification.unsubscribe.$post({
-        json: {
+      const result = await unsubscribe(
+        {
           email,
           credentials: {
             signature,
             expiresAtTimestampSec: parseInt(expiresAtTimestampSec),
           },
         },
-      });
-      const data = await res.json();
-      if (!data.success) {
-        throw new Error("cause" in data ? (data.cause as string) : "未知错误");
+        env.NEXT_PUBLIC_BACKEND_URL,
+      );
+      if (result._tag === "err") {
+        throw new Error(result.error);
       }
       return true;
     },
