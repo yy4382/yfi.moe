@@ -1,29 +1,33 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
+  // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    /* Base Options: */
-    "esModuleInterop": true,
-    "skipLibCheck": true,
+    // Environment Settings
+    // See also https://aka.ms/tsconfig_modules
+    "module": "nodenext",
     "target": "es2022",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-    "moduleResolution": "bundler",
+    "types": [],
 
-    /* Strictness */
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    /* If NOT transpiling with TypeScript: */
-    "module": "preserve",
     "noEmit": true,
 
-    /* If your code doesn't run in the DOM: */
-    "lib": ["es2022"]
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // Recommended Options
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true
   }
 }

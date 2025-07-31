@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { rehypeCodeblockCopy } from "./rehype-codeblock-copy";
+import { rehypeCodeblockCopy } from "./rehype-codeblock-copy.js";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";

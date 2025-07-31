@@ -1,10 +1,10 @@
 import rehypeStringify from "rehype-stringify";
-import { rehypeHast } from "./plugins/rehype-hast";
-import { ArticlePreset, ArticlePresetFast } from "./preset";
-import type { MarkdownHeading } from "./plugins/remark-heading-ids";
+import { rehypeHast } from "./plugins/rehype-hast.js";
+import { ArticlePreset, ArticlePresetFast } from "./preset.js";
+import type { MarkdownHeading } from "./plugins/remark-heading-ids.js";
 import { unified, type Preset } from "unified";
 import remarkParse from "remark-parse";
-import { remarkHeadingIds } from "./plugins/remark-heading-ids";
+import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
 import { VFile } from "vfile";
 import type { Root } from "hast";
 

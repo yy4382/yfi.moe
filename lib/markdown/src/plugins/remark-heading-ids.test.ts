@@ -1,5 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { remarkHeadingIds, type MarkdownHeading } from "./remark-heading-ids";
+import {
+  remarkHeadingIds,
+  type MarkdownHeading,
+} from "./remark-heading-ids.js";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import { VFile } from "vfile";

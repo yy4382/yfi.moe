@@ -6,14 +6,14 @@ import rehypeRemoveComments from "rehype-remove-comments";
 import rehypeImageOptimization, {
   defineOptions as defineOptimizeOptions,
 } from "rehype-image-optim";
-import rehypeExtendedLinks from "./plugins/rehype-extended-links";
+import rehypeExtendedLinks from "./plugins/rehype-extended-links.js";
 import { h } from "hastscript";
 import type { Element } from "hast";
 import rehypeShiki from "@shikijs/rehype";
-import { remarkHeadingIds } from "./plugins/remark-heading-ids";
-import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy";
+import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
+import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy.js";
 import remarkDirective from "remark-directive";
-import { remarkGithubRepo } from "./plugins/remark-github-repo";
+import { remarkGithubRepo } from "./plugins/remark-github-repo.js";
 import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";

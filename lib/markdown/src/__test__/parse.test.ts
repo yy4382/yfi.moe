@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { markdownToHeadings, markdownToHtml } from "../parse";
-import { CommentPreset } from "../preset";
+import { markdownToHeadings, markdownToHtml } from "../parse.js";
+import { CommentPreset } from "../preset.js";
 
 describe("to headings", () => {
   it("should return headings", async () => {
