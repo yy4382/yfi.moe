@@ -41,6 +41,16 @@ export const CommentReplyEmail = ({
   );
 };
 
+CommentReplyEmail.PreviewProps = {
+  authorName: "John Doe",
+  postTitle: "My First Post",
+  postSlug: "my-first-post",
+  commentContent: "This is a test comment",
+  unsubscribeUrl: "https://yfi.moe/unsubscribe",
+} satisfies CommentReplyEmailProps;
+
+export default CommentReplyEmail;
+
 const text = {
   fontSize: "16px",
   color: "#333333",

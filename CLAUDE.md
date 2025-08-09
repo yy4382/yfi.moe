@@ -4,125 +4,140 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-This is a monorepo blog system with three main components:
+Monorepo blog system with four main components:
 
-1. **Blog Frontend** (`app/blog/`) - Next.js 15.4.1 blog with content from GitHub
-2. **Backend API** (`app/backend/`) - Hono/Elysia API server with Drizzle ORM
-3. **Markdown Library** (`lib/markdown/`) - Shared markdown processing utilities
+1. **Blog Frontend** (`app/blog/`) - Next.js 15.4.1 with App Router, Drizzle ORM, custom comment system
+2. **Backend API** (`app/backend/`) - Hono server with Better-auth, PostgreSQL via Drizzle ORM
+3. **Shared API types** (`lib/api/`) - Shared TypeScript types and validation schemas
+4. **Markdown Library** (`lib/markdown/`) - Unified.js-based markdown processing with custom plugins
 
-## Key Architecture Details
+## System Architecture
 
 ### Content Management
 
-- **GitHub-based content**: Articles and pages stored in separate private GitHub repos
-- **ContentLayer pattern**: Uses `GithubCollection` class for fetching content from GitHub via PAT
-- **Content structure**: Posts have metadata (title, description, tags, series, published status) + markdown body
-- **File-based CMS**: Markdown files in GitHub repos with YAML frontmatter
+- **GitHub-based CMS**: Articles/pages stored in private GitHub repos
+- **Runtime fetching**: Content fetched at build-time and runtime with Redis caching
+- **Content structure**: YAML frontmatter + markdown body with tags, series, published status
+- **Cache invalidation**: Webhook-based content refresh via `CONTENT_REFRESH_TOKEN`
 
 ### Backend Services
 
-- **Comments system**: RESTful API for comments with CRUD operations, user auth, and moderation
-- **Authentication**: Better-auth integration for user management
-- **Database**: Drizzle ORM with LibSQL (SQLite-compatible)
-- **API routes**: RESTful endpoints under `/api/v1/comments/*`
+- **Authentication**: Better-auth with GitHub OAuth, magic links
+- **Comments**: Full CRUD API with markdown support, email notifications, moderation
+- **Database**: PostgreSQL (Neon) with Drizzle ORM
+- **Email**: Nodemailer with React Email templates for notifications
+- **API**: RESTful endpoints under `/api/v1/*`
 
 ### Frontend Features
 
-- **Next.js App Router**: Server components and static generation
-- **Content fetching**: Runtime GitHub content fetching with caching
-- **Comments integration**: Custom comment system replacing Waline
-- **RSS feeds**: Automatic RSS generation
-- **SEO optimized**: OpenGraph images, sitemap, metadata
+- **Next.js 15.4.1**: App Router, React 19, server components
+- **Comments**: Custom system with real-time updates, markdown support
+- **SEO**: OpenGraph images, RSS feeds, sitemap.xml
+- **Performance**: Redis caching, bundle analyzer, PostHog analytics
+- **Styling**: Tailwind CSS v4 with custom components
 
 ## Development Commands
 
-### Root Level (Monorepo)
+### Root Commands
 
 ```bash
-pnpm dev          # Start all services in dev mode
-pnpm build        # Build all packages
-pnpm check-types  # Type checking across all packages
+pnpm dev          # Start all services (Next.js + backend API)
+pnpm build        # Build all packages with Turbo
+pnpm check-types  # Type checking across monorepo
 ```
 
-### Individual Services
-
-#### Blog Frontend (`cd app/blog`)
+### Blog Frontend (`app/blog/`)
 
 ```bash
 pnpm dev          # Next.js dev server (port 3000)
-pnpm build        # Build for production
-pnpm start        # Start production server
-pnpm lint         # ESLint check
+pnpm build        # Build + run migrations + static generation
+pnpm start        # Production server
+pnpm lint         # ESLint with Next.js rules
+pnpm check-types  # TypeScript checking
 ```
 
-#### Backend API (`cd app/backend`)
+### Backend API (`app/backend/`)
 
 ```bash
-pnpm dev          # Start API server with hot reload (port 3001)
-pnpm build        # Build for production
-pnpm tsc --noEmit # Type checking
+pnpm dev          # Hono server with hot reload (port 3001)
+pnpm check-types  # TypeScript checking
+pnpm lint         # ESLint
 ```
 
-#### Markdown Library (`cd lib/markdown`)
+### Markdown Library (`lib/markdown/`)
 
 ```bash
-pnpm test         # Run Vitest tests
+pnpm test         # Vitest unit tests
 pnpm check-types  # TypeScript checking
 ```
 
 ## Environment Setup
 
-Required environment variables:
+Copy `.env.example` and configure required variables:
 
-- `ARTICLE_PAT` - GitHub personal access token for content repos
-- `POST_GH_INFO` - Format: `owner__repo__ref__path` for posts
-- `PAGE_GH_INFO` - Format: `owner__repo__ref__path` for pages
-- `NEXT_PUBLIC_WALINE_URL` - Comment system URL (deprecated, moving to custom backend)
+### GitHub Content
 
-## Key Files & Directories
+- `ARTICLE_PAT` - GitHub PAT for private content repos
+- `POST_GH_INFO` - Format: `owner__repo__ref__path` (e.g., `user__blog-posts__main__posts`)
+- `PAGE_GH_INFO` - Same format for pages
 
-### Content Sources
+### Database & Cache
 
-- `app/blog/src/lib/content-layer/collections.ts` - Content fetching logic
-- `app/blog/src/lib/content-layer/github-loader.ts` - GitHub API integration
+- `DATABASE_URL` - PostgreSQL connection string
+- `UPSTASH_REDIS_REST_URL` - Redis for caching
+- `UPSTASH_REDIS_REST_TOKEN` - Redis auth token
 
-### Backend
+### Authentication
 
-- `app/backend/src/index.ts` - Main server entry
-- `app/backend/src/modules/comments/` - Comments API implementation
-- `app/backend/src/db/schema.ts` - Database schema definitions
+- `BETTER_AUTH_SECRET` - Better-auth encryption key
+- `GITHUB_CLIENT_ID` - GitHub OAuth app ID
+- `GITHUB_CLIENT_SECRET` - GitHub OAuth secret
 
-### Frontend
+### Email & Notifications
 
-- `app/blog/src/app/` - Next.js app router pages
-- `app/blog/src/components/elements/comment/` - Comment system UI
-- `app/blog/src/lib/content-layer/` - Content management
+- `EMAIL_NOTIFICATION_ENABLED` - Enable email notifications
+- `EMAIL_FROM` - Sender email address
+- `SMTP_*` - SMTP configuration
+
+### Local Development
+
+Use `docker-compose.yaml` for local services:
+
+```bash
+docker-compose up -d  # PostgreSQL, Redis, MailHog
+```
+
+Local service URLs:
+
+- PostgreSQL: `postgres://postgres:postgres@localhost:5432/main`
+- Redis: `http://localhost:8079` (via serverless-redis-http)
+- MailHog: `http://localhost:8025` (email testing)
+
+## Key Directories
+
+### Blog Frontend (`app/blog/`)
+
+- `src/app/` - App Router pages and API routes
+- `src/lib/content-layer/` - GitHub content fetching and caching
+- `src/components/elements/comment/` - Comment system UI
+- `src/lib/auth/` - Better-auth integration
+- `public/` - Static assets and OG images
+
+### Backend API (`app/backend/`)
+
+- `src/index.ts` - Hono server entry
+- `src/modules/comments/` - Comments API with validation
+- `src/auth/` - Better-auth configuration
+- `src/notification/` - Email notification system
+- `src/db/schema.ts` - Drizzle database schema
 
 ### Shared Libraries
 
-- `lib/markdown/src/` - Markdown processing utilities
-- `@repo/backend` - Shared backend client
-- `@repo/markdown` - Shared markdown processing
-
-## Testing
-
-Backend tests use Vitest:
-
-```bash
-cd app/backend
-pnpm test
-```
-
-Markdown library tests:
-
-```bash
-cd lib/markdown
-pnpm test
-```
+- `lib/api/` - Shared TypeScript types and validation schemas
+- `lib/markdown/` - Unified.js markdown processing pipeline
+- `lib/helpers/` - Utility functions (gravatar, result types)
 
 ## Database Management
-
-Backend uses Drizzle ORM:
 
 ```bash
 cd app/backend
@@ -130,7 +145,21 @@ pnpm drizzle-kit generate  # Generate migrations
 pnpm drizzle-kit migrate   # Run migrations
 ```
 
+## Testing
+
+```bash
+# Backend tests
+cd app/backend && pnpm test
+
+# Markdown library tests
+cd lib/markdown && pnpm test
+
+# Frontend tests
+cd app/blog && pnpm test  # if available
+```
+
 ## Deployment
 
-- **Vercel**: Primary deployment target with `vercel.json`
-- **Turbo**: Monorepo build system with environment variable handling
+- **Primary**: Vercel (configured via `vercel.json`)
+- **Build**: Turbo monorepo with environment variable handling
+- **Database**: Neon PostgreSQL with Drizzle migrations

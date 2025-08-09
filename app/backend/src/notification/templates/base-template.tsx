@@ -133,6 +133,6 @@ const footerMuted = {
 };
 
 const unsubscribeLink = {
-  color: "#999999",
+  color: "#8b5cf6",
   textDecoration: "underline",
 };

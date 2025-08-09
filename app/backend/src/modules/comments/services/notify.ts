@@ -87,7 +87,6 @@ async function sendCommentReplyNotification(
     .select()
     .from(unsubscribedEmail)
     .where(eq(unsubscribedEmail.email, repliedToEmail));
-  console.info(isUnsubscribed, repliedToEmail);
   if (isUnsubscribed.length > 0) {
     return;
   }

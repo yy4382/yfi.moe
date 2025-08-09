@@ -44,6 +44,16 @@ export const AdminNewCommentEmail = ({
   );
 };
 
+AdminNewCommentEmail.PreviewProps = {
+  authorName: "John Doe",
+  postTitle: "My First Post",
+  postSlug: "my-first-post",
+  commentContent: "This is a test comment",
+  unsubscribeUrl: "https://yfi.moe/unsubscribe",
+} satisfies AdminNewCommentEmailProps;
+
+export default AdminNewCommentEmail;
+
 const text = {
   fontSize: "16px",
   color: "#333333",
