@@ -85,14 +85,14 @@ afterAll(() => {
 
 describe("admin get comments", () => {
   it("should return comments", async () => {
-    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0]!;
+    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const res = await deleteComment(2, { db, user: admin });
     expect(res.result).toBe("success");
     const comments = await db.select().from(comment).where(eq(comment.id, 2));
-    expect(comments[0]!.deletedAt).not.toBeNull();
+    expect(comments[0].deletedAt).not.toBeNull();
   });
   it("should also delete reply comments", async () => {
-    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0]!;
+    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const res = await deleteComment(1, { db, user: admin });
     expect(res.result).toBe("success");
     if (res.result !== "success") {
@@ -100,15 +100,15 @@ describe("admin get comments", () => {
     }
     expect(res.deletedIds).toEqual([1, 4]);
     const comments = await db.select().from(comment).where(eq(comment.id, 1));
-    expect(comments[0]!.deletedAt).not.toBeNull();
+    expect(comments[0].deletedAt).not.toBeNull();
     const replies = await db
       .select()
       .from(comment)
       .where(eq(comment.parentId, 1));
-    expect(replies[0]!.deletedAt).not.toBeNull();
+    expect(replies[0].deletedAt).not.toBeNull();
   });
   it("should give error if not found", async () => {
-    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0]!;
+    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const res = await deleteComment(10000, { db, user: admin });
     expect(res.result).toBe("not_found");
   });
@@ -118,16 +118,16 @@ describe("user get comments", () => {
   it("should give error if not found", async () => {
     const normalUser = (
       await db.select().from(user).where(eq(user.id, "2"))
-    )[0]!;
+    )[0];
     const res = await deleteComment(2, { db, user: normalUser });
     expect(res.result).toBe("success");
     const comments = await db.select().from(comment).where(eq(comment.id, 2));
-    expect(comments[0]!.deletedAt).not.toBeNull();
+    expect(comments[0].deletedAt).not.toBeNull();
   });
   it("should give error if not self's comment", async () => {
     const normalUser = (
       await db.select().from(user).where(eq(user.id, "2"))
-    )[0]!;
+    )[0];
     const res = await deleteComment(3, { db, user: normalUser });
     expect(res.result).toBe("forbidden");
   });

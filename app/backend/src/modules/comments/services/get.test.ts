@@ -113,7 +113,7 @@ afterEach(() => {
 
 describe("admin get comments", () => {
   it("should return comments", async () => {
-    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0]!;
+    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const { comments, total } = await getComments(
       { path: "/", limit: 10, offset: 0, sortBy: "created_asc" },
       { db, user: admin },
@@ -124,22 +124,22 @@ describe("admin get comments", () => {
     expect(comments).toMatchSnapshot();
   });
   it("should return comments with limit and offset", async () => {
-    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0]!;
+    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const { comments } = await getComments(
       { path: "/", limit: 1, offset: 1, sortBy: "created_asc" },
       { db, user: admin },
     );
     expect(comments.length).toBe(1);
-    expect(comments[0]!.id).toBe(2);
+    expect(comments[0].id).toBe(2);
   });
   it("should return comments with sortBy", async () => {
-    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0]!;
+    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
     const { comments } = await getComments(
       { path: "/", limit: 2, offset: 2, sortBy: "created_desc" },
       { db, user: admin },
     );
     expect(comments.length).toBe(2);
-    expect(comments[0]!.id).toBe(2);
-    expect(comments[1]!.id).toBe(1);
+    expect(comments[0].id).toBe(2);
+    expect(comments[1].id).toBe(1);
   });
 });

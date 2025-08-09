@@ -92,8 +92,8 @@ describe("get comments", () => {
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.comments).toHaveLength(1);
-    expect(respJson.comments[0]!.id).toBe(1);
-    expect(respJson.comments[0]!.children).toHaveLength(1);
+    expect(respJson.comments[0].id).toBe(1);
+    expect(respJson.comments[0].children).toHaveLength(1);
   });
 });
 

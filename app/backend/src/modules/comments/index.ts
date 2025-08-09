@@ -5,7 +5,6 @@ import { deleteComment } from "./services/delete.js";
 import { updateComment } from "./services/update.js";
 import { factory } from "@/factory.js";
 import { sValidator } from "@hono/standard-validator";
-import { z } from "zod";
 import {
   getCommentsBody,
   getCommentsResponse,

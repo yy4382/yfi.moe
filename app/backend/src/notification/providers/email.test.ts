@@ -92,7 +92,7 @@ class MockEmailNotificationProvider extends EmailNotificationProvider {
   }
 
   getLastSentEmail() {
-    return this.sentEmails[this.sentEmails.length - 1]!;
+    return this.sentEmails[this.sentEmails.length - 1];
   }
 }
 
