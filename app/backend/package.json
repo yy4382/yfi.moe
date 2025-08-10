@@ -12,7 +12,7 @@
   "dependencies": {
     "@hono/node-server": "^1.17.1",
     "@hono/standard-validator": "^0.1.4",
-    "@neondatabase/serverless": "^1.0.1",
+    "@libsql/client": "^0.15.10",
     "@react-email/components": "^0.3.3",
     "@react-email/render": "^1.1.4",
     "@repo/api": "workspace:*",
@@ -27,7 +27,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@electric-sql/pglite": "^0.3.6",
     "@eslint/js": "^9.32.0",
     "@react-email/preview-server": "4.2.8",
     "@types/node": "^20.19.9",
@@ -36,7 +35,6 @@
     "dotenv": "^17.2.1",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9.32.0",
-    "postgres": "^3.4.7",
     "react-email": "4.2.8",
     "tsx": "^4.20.3",
     "typescript": "catalog:",

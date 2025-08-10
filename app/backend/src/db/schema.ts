@@ -1,35 +1,39 @@
 import { sql } from "drizzle-orm";
-import { serial, timestamp } from "drizzle-orm/pg-core";
 import {
   check,
   integer,
-  pgTable,
+  sqliteTable,
   text,
-  boolean,
-  type AnyPgColumn,
-} from "drizzle-orm/pg-core";
+  type AnySQLiteColumn,
+} from "drizzle-orm/sqlite-core";
 
-export const user = pgTable("user", {
+export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified").notNull().default(false),
+  emailVerified: integer("email_verified", { mode: "boolean" })
+    .notNull()
+    .default(false),
   image: text("image"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
   // `admin` plugin fields
   role: text("role"),
-  banned: boolean("banned"),
+  banned: integer("banned", { mode: "boolean" }),
   banReason: text("ban_reason"),
-  banExpires: timestamp("ban_expires"),
+  banExpires: integer("ban_expires", { mode: "timestamp" }),
 });
 
-export const session = pgTable("session", {
+export const session = sqliteTable("session", {
   id: text("id").primaryKey(),
-  expiresAt: timestamp("expires_at").notNull(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
   token: text("token").notNull().unique(),
-  createdAt: timestamp("created_at").notNull(),
-  updatedAt: timestamp("updated_at").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
   userId: text("user_id")
@@ -40,7 +44,7 @@ export const session = pgTable("session", {
   impersonatedBy: text("impersonated_by"),
 });
 
-export const account = pgTable("account", {
+export const account = sqliteTable("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
@@ -50,38 +54,54 @@ export const account = pgTable("account", {
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
   idToken: text("id_token"),
-  accessTokenExpiresAt: timestamp("access_token_expires_at"),
-  refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+  accessTokenExpiresAt: integer("access_token_expires_at", {
+    mode: "timestamp",
+  }),
+  refreshTokenExpiresAt: integer("refresh_token_expires_at", {
+    mode: "timestamp",
+  }),
   scope: text("scope"),
   password: text("password"),
-  createdAt: timestamp("created_at").notNull(),
-  updatedAt: timestamp("updated_at").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
 });
 
-export const verification = pgTable("verification", {
+export const verification = sqliteTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
-  expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
 });
 
-export const comment = pgTable(
+export const comment = sqliteTable(
   "comment",
   {
-    id: serial("id").primaryKey(),
+    id: integer("id").primaryKey(),
 
     rawContent: text("raw_content").notNull(),
     renderedContent: text("rendered_content").notNull(),
 
     path: text("path").notNull(),
-    parentId: integer("parent_id").references((): AnyPgColumn => comment.id),
-    replyToId: integer("reply_to_id").references((): AnyPgColumn => comment.id),
+    parentId: integer("parent_id").references(
+      (): AnySQLiteColumn => comment.id,
+    ),
+    replyToId: integer("reply_to_id").references(
+      (): AnySQLiteColumn => comment.id,
+    ),
 
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow(),
-    deletedAt: timestamp("deleted_at"),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => /* @__PURE__ */ new Date()),
+    updatedAt: integer("updated_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => /* @__PURE__ */ new Date()),
+    deletedAt: integer("deleted_at", { mode: "timestamp" }),
 
     userId: text("user_id").references(() => user.id),
     userIp: text("user_ip"),
@@ -92,7 +112,7 @@ export const comment = pgTable(
 
     anonymousName: text("anonymous_name"),
 
-    isSpam: boolean("is_spam").notNull(),
+    isSpam: integer("is_spam", { mode: "boolean" }).notNull(),
   },
   (table) => [
     check(
@@ -106,7 +126,9 @@ export const comment = pgTable(
   ],
 );
 
-export const unsubscribedEmail = pgTable("unsubscribed_email", {
+export const unsubscribedEmail = sqliteTable("unsubscribed_email", {
   email: text("email").primaryKey(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => /* @__PURE__ */ new Date()),
 });

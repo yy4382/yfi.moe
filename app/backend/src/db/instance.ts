@@ -1,12 +1,8 @@
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema.js";
-import { neon, neonConfig } from "@neondatabase/serverless";
 import { env } from "@/env.js";
+import { createClient } from "@libsql/client";
 
-neonConfig.fetchEndpoint = (host) => {
-  const [protocol, port] =
-    host === "db.localtest.me" ? ["http", 4444] : ["https", 443];
-  return `${protocol}://${host}:${port}/sql`;
-};
-const client = neon(env.DATABASE_URL);
-export const db = drizzle(client, { schema });
+const client = createClient({ url: env.DATABASE_URL });
+
+export const db = drizzle({ client, schema });

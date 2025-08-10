@@ -1,29 +1,22 @@
 import { describe, it, expect, vi, afterAll, beforeEach } from "vitest";
-import { drizzle } from "drizzle-orm/pglite";
+import { drizzle } from "drizzle-orm/libsql";
 import { deleteComment } from "./delete.js";
 import * as schema from "@/db/schema.js";
-import { eq, sql } from "drizzle-orm";
-import { PGlite } from "@electric-sql/pglite";
+import { eq } from "drizzle-orm";
+import { migrate } from "drizzle-orm/libsql/migrator";
+import { createClient, type Client } from "@libsql/client";
 import type { DbClient } from "@/db/db-plugin.js";
 
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const { pushSchema } =
-  require("drizzle-kit/api") as typeof import("drizzle-kit/api");
-
-const client = new PGlite();
-// drizzle 对多种 client 的类型支持不友好，如果一个项目里同时用两种数据库就会报错
-// 这里直接让 TypeScript 认为它是 neon 的 client 类型从而绕过类型检查
-const db = drizzle({ client, schema }) as unknown as DbClient;
+let client: Client;
+let db: DbClient;
 
 const { user, comment } = schema;
+
 beforeEach(async () => {
-  await db.execute(sql`DROP SCHEMA IF EXISTS public CASCADE;`);
-  await db.execute(sql`CREATE SCHEMA public;`);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
-  const { apply } = await pushSchema(schema, db as any);
-  await apply();
+  client = createClient({ url: ":memory:" });
+  db = drizzle({ client, schema });
+
+  await migrate(db, { migrationsFolder: "./drizzle" });
 
   vi.setSystemTime(new Date("2000-01-01T00:00:00.000Z"));
   await db.insert(user).values({
