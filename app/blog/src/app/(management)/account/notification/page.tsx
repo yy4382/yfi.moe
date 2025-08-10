@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function NotificationPage() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mx-auto mt-10 flex max-w-md flex-col gap-4">
       <h1 className="text-2xl font-bold">邮件通知设定</h1>
       <Suspense fallback={<div>Loading...</div>}>
         <Unsubscribe />

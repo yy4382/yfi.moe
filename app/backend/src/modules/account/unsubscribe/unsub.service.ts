@@ -13,7 +13,7 @@ export function generateUnsubscribeUrl(
   email: string,
   secret: string,
   baseUrl: string,
-  expireDays: number = 30,
+  expireDays: number = 120,
 ): string {
   const expiresAtTimestampSec =
     Math.floor(Date.now() / 1000) + expireDays * 24 * 60 * 60;

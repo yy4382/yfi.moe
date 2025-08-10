@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Monorepo blog system with four main components:
 
 1. **Blog Frontend** (`app/blog/`) - Next.js 15.4.1 with App Router, Drizzle ORM, custom comment system
-2. **Backend API** (`app/backend/`) - Hono server with Better-auth, PostgreSQL via Drizzle ORM
+2. **Backend API** (`app/backend/`) - Hono server with Better-auth, SQLite (libsql) via Drizzle ORM
 3. **Shared API types** (`lib/api/`) - Shared TypeScript types and validation schemas
 4. **Markdown Library** (`lib/markdown/`) - Unified.js-based markdown processing with custom plugins
 
@@ -24,7 +24,7 @@ Monorepo blog system with four main components:
 
 - **Authentication**: Better-auth with GitHub OAuth, magic links
 - **Comments**: Full CRUD API with markdown support, email notifications, moderation
-- **Database**: PostgreSQL (Neon) with Drizzle ORM
+- **Database**: SQLite (libsql) with Drizzle ORM
 - **Email**: Nodemailer with React Email templates for notifications
 - **API**: RESTful endpoints under `/api/v1/*`
 
@@ -83,7 +83,7 @@ Copy `.env.example` and configure required variables:
 
 ### Database & Cache
 
-- `DATABASE_URL` - PostgreSQL connection string
+- `DATABASE_URL` - SQLite (libsql) connection string
 - `UPSTASH_REDIS_REST_URL` - Redis for caching
 - `UPSTASH_REDIS_REST_TOKEN` - Redis auth token
 
@@ -104,12 +104,12 @@ Copy `.env.example` and configure required variables:
 Use `docker-compose.yaml` for local services:
 
 ```bash
-docker-compose up -d  # PostgreSQL, Redis, MailHog
+docker-compose up -d  # Redis, MailHog
 ```
 
 Local service URLs:
 
-- PostgreSQL: `postgres://postgres:postgres@localhost:5432/main`
+- SQLite: Local file database (configured via `DATABASE_URL`)
 - Redis: `http://localhost:8079` (via serverless-redis-http)
 - MailHog: `http://localhost:8025` (email testing)
 
@@ -162,4 +162,4 @@ cd app/blog && pnpm test  # if available
 
 - **Primary**: Vercel (configured via `vercel.json`)
 - **Build**: Turbo monorepo with environment variable handling
-- **Database**: Neon PostgreSQL with Drizzle migrations
+- **Database**: SQLite (libsql) with Drizzle migrations
