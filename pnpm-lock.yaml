@@ -274,9 +274,6 @@ importers:
       babel-plugin-react-compiler:
         specifier: 19.1.0-rc.2
         version: 19.1.0-rc.2
-      drizzle-kit:
-        specifier: ^0.31.4
-        version: 0.31.4
       eslint:
         specifier: ^9.32.0
         version: 9.33.0(jiti@2.5.1)
