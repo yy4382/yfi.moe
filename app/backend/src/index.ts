@@ -12,7 +12,7 @@ import { cors } from "hono/cors";
 
 const app = factory
   .createApp()
-  .basePath("/api")
+  .basePath(new URL(env.BACKEND_URL).pathname)
   .use(logger())
   .use(dbPlugin(db))
   .use(betterAuthPlugin)
@@ -34,12 +34,15 @@ const app = factory
   .on(["POST", "GET"], "/v1/auth/*", (c) => {
     return c.get("authClient").handler(c.req.raw);
   })
+  .get("/health", (c) => {
+    return c.json({ status: "ok" });
+  })
   .route("/v1/comments", comments)
   .route("/v1/account", accountApp);
 
 const server = serve({
   fetch: app.fetch,
-  port: 3001,
+  port: Number(new URL(env.BACKEND_URL).port) || 3001,
 });
 
 // graceful shutdown
@@ -56,3 +59,6 @@ process.on("SIGTERM", () => {
     process.exit(0);
   });
 });
+
+console.log(`Server started on ${env.BACKEND_URL}`);
+console.log(`Health check on ${env.BACKEND_URL}/health`);
