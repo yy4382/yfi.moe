@@ -23,7 +23,7 @@
     "drizzle-orm": "^0.44.4",
     "hono": "^4.8.10",
     "nodemailer": "^6.10.1",
-    "react": "^19.1.1",
+    "react": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@react-email/preview-server": "4.2.8",
     "@types/node": "^20.19.9",
     "@types/nodemailer": "^6.4.17",
-    "@types/react": "^19.1.9",
+    "@types/react": "catalog:",
     "dotenv": "^17.2.1",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9.32.0",

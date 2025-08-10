@@ -1,5 +1,6 @@
 import { BaseEmailService, type EmailConfig } from "./base-email-service.js";
 import { NotionMagicLinkEmail } from "../templates/index.js";
+import { render } from "@react-email/render";
 
 export class AuthNotificationEmailService extends BaseEmailService {
   name = "auth-email-service";
@@ -14,7 +15,8 @@ export class AuthNotificationEmailService extends BaseEmailService {
     }
 
     const emailComponent = NotionMagicLinkEmail({ url });
-    const { html, text } = await this.renderEmailComponent(emailComponent);
+    const html = await render(emailComponent);
+    const text = await render(emailComponent, { plainText: true });
 
     await this.sendEmail({
       to: email,
@@ -32,7 +34,8 @@ export class AuthNotificationEmailService extends BaseEmailService {
     // For now, using the magic link template for password reset
     // TODO: Create a dedicated password reset template
     const emailComponent = NotionMagicLinkEmail({ url: resetUrl });
-    const { html, text } = await this.renderEmailComponent(emailComponent);
+    const html = await render(emailComponent);
+    const text = await render(emailComponent, { plainText: true });
 
     await this.sendEmail({
       to: email,

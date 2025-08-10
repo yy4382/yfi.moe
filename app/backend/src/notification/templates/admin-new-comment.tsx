@@ -1,42 +1,46 @@
-import { Text, Link, Section } from "@react-email/components";
+import { Text, Link, Section, CodeInline } from "@react-email/components";
 import { BaseTemplate } from "./base-template.js";
+import type { CSSProperties } from "react";
 
 interface AdminNewCommentEmailProps {
   authorName: string;
-  postTitle: string;
   postSlug: string;
-  commentContent: string;
+  commentContentHtml: string;
+  commentContentText: string;
   unsubscribeUrl?: string;
+  frontendUrl: string;
 }
 
 export const AdminNewCommentEmail = ({
   authorName,
-  postTitle,
-  commentContent,
+  postSlug,
+  commentContentHtml,
+  commentContentText,
   unsubscribeUrl,
+  frontendUrl,
 }: AdminNewCommentEmailProps) => {
   return (
     <BaseTemplate
-      title="New comment requires moderation"
+      title="新评论被发布"
       unsubscribeUrl={unsubscribeUrl}
+      previewText={`在 ${postSlug.split("/").at(-1) ?? postSlug} 有新评论：${commentContentText.slice(0, 50)}`}
     >
       <>
         <Text style={text}>
-          A new comment has been posted on &quot;{postTitle}&quot; and may
-          require moderation:
+          {authorName} 在 <CodeInline style={codeInline}>{postSlug}</CodeInline>{" "}
+          发表了新评论：
         </Text>
 
         <Section style={blockquote}>
-          <Text style={quoteText}>&quot;{commentContent}&quot;</Text>
+          <div
+            style={htmlWrapper}
+            dangerouslySetInnerHTML={{ __html: commentContentHtml }}
+          />
         </Section>
 
         <Text style={text}>
-          <strong>By:</strong> {authorName}
-        </Text>
-
-        <Text style={text}>
-          <Link href="https://yfi.moe/admin/comments" style={button}>
-            Manage Comments
+          <Link href={new URL(postSlug, frontendUrl).toString()} style={button}>
+            查看该评论
           </Link>
         </Text>
       </>
@@ -46,10 +50,12 @@ export const AdminNewCommentEmail = ({
 
 AdminNewCommentEmail.PreviewProps = {
   authorName: "John Doe",
-  postTitle: "My First Post",
-  postSlug: "my-first-post",
-  commentContent: "This is a test comment",
+  postSlug: "/post/test-post",
+  commentContentHtml:
+    "<p>This is a test comment</p><p>This is a test comment</p>",
+  commentContentText: "This is a test comment\nThis is a test comment",
   unsubscribeUrl: "https://yfi.moe/unsubscribe",
+  frontendUrl: "https://example.com",
 } satisfies AdminNewCommentEmailProps;
 
 export default AdminNewCommentEmail;
@@ -69,7 +75,7 @@ const blockquote = {
   borderRadius: "4px",
 };
 
-const quoteText = {
+const htmlWrapper = {
   fontSize: "15px",
   fontStyle: "italic",
   color: "#555555",
@@ -77,11 +83,20 @@ const quoteText = {
 };
 
 const button = {
-  backgroundColor: "#f59e0b",
+  backgroundColor: "#8b5cf6",
   color: "#ffffff",
   padding: "12px 24px",
   textDecoration: "none",
   borderRadius: "6px",
   fontWeight: "600",
   display: "inline-block",
+};
+
+const codeInline: CSSProperties = {
+  backgroundColor: "rgb(209,213,219)",
+  borderRadius: 6,
+  paddingLeft: 4,
+  paddingRight: 4,
+  paddingTop: 2,
+  paddingBottom: 2,
 };

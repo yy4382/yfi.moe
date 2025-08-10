@@ -9,7 +9,7 @@
   - [ ] 前端提示
   - [x] 接口和 unsubscribe 页面
 - [x] email magic link 注册
-- [ ] 邮件通知模板优化
+- [x] 邮件通知模板优化
 - [ ] Akismet 评论过滤
   - [ ] isSpam 判定真后，前端提示
 - [x] 匿名评论

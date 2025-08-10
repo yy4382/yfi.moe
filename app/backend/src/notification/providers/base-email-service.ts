@@ -1,5 +1,4 @@
 import * as nodemailer from "nodemailer";
-import { render } from "@react-email/render";
 
 export interface EmailConfig {
   from: string;
@@ -45,19 +44,6 @@ export abstract class BaseEmailService {
     return !!this.config.smtp.host && !!this.config.smtp.port;
   }
 
-  protected async renderEmailComponent(
-    component: React.ReactElement,
-  ): Promise<EmailContent> {
-    const html = await render(component);
-    const text = await render(component, { plainText: true });
-
-    return {
-      subject: "", // Will be set by subclasses
-      html,
-      text,
-    };
-  }
-
   async sendEmail(options: SendEmailOptions): Promise<void> {
     if (!this.isEnabled()) {
       throw new Error("Email service is not configured");
@@ -76,18 +62,5 @@ export abstract class BaseEmailService {
       console.error("Failed to send email:", error);
       throw error;
     }
-  }
-
-  async sendArbitraryEmail(
-    args: Omit<Parameters<typeof this.transporter.sendMail>[0], "from">,
-  ): Promise<void> {
-    if (!this.isEnabled()) {
-      throw new Error("Email service is not configured");
-    }
-
-    await this.transporter.sendMail({
-      from: this.config.from,
-      ...args,
-    });
   }
 }

@@ -8,18 +8,24 @@ import {
   Hr,
   Font,
   Link,
+  Preview,
+  Column,
+  Row,
+  Img,
 } from "@react-email/components";
 import React from "react";
 
 interface BaseTemplateProps {
   children: React.ReactNode;
   title: string;
+  previewText: string;
   unsubscribeUrl?: string;
 }
 
 export const BaseTemplate = ({
   children,
   title,
+  previewText,
   unsubscribeUrl,
 }: BaseTemplateProps) => {
   return (
@@ -37,9 +43,38 @@ export const BaseTemplate = ({
         />
       </Head>
       <Body style={main}>
+        <Preview>{previewText}</Preview>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>yfi.moe</Text>
+            <Row>
+              <Column style={{ width: "80%" }}>
+                <Section width="fit-content" align="left">
+                  <Row>
+                    <Column>
+                      <Img
+                        alt="Yunfi"
+                        height="42"
+                        style={{
+                          borderRadius: "4px",
+                        }}
+                        src="https://yfi.moe/icon.png"
+                      />
+                    </Column>
+                    <Column>
+                      <Text
+                        style={{
+                          fontSize: "24px",
+                          fontWeight: 600,
+                          marginLeft: 10,
+                        }}
+                      >
+                        Yunfi
+                      </Text>
+                    </Column>
+                  </Row>
+                </Section>
+              </Column>
+            </Row>
           </Section>
 
           <Section style={content}>
@@ -47,23 +82,24 @@ export const BaseTemplate = ({
             {children}
           </Section>
 
-          <Hr style={hr} />
-
           <Section style={footer}>
             <Text style={footerText}>
-              Best regards,
+              祝好，
               <br />
-              <strong>yfi.moe</strong>
+              <strong>Yunfi</strong>
             </Text>
+
+            <Hr style={hr} />
+
             <Text style={footerMuted}>
-              You&apos;re receiving this email because you&apos;re subscribed to
-              notifications on yfi.moe.
+              您收到这封邮件是因为您在 yfi.moe
+              上注册了账号。如果不想被打扰，您可以
               {unsubscribeUrl && (
                 <>
-                  {" "}
                   <Link href={unsubscribeUrl} style={unsubscribeLink}>
-                    Unsubscribe
+                    取消邮件通知
                   </Link>
+                  。
                 </>
               )}
             </Text>
@@ -83,20 +119,15 @@ const main = {
 
 const container = {
   margin: "0 auto",
-  padding: "20px 0 48px",
+  padding: "24px 0 48px",
   maxWidth: "600px",
 };
 
 const header = {
-  marginBottom: "32px",
-  textAlign: "center" as const,
-};
-
-const logo = {
-  fontSize: "24px",
-  fontWeight: "700",
-  color: "#0070f3",
-  margin: "0",
+  paddingTop: 40,
+  paddingBottom: 40,
+  paddingLeft: 24,
+  paddingRight: 24,
 };
 
 const content = {
