@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import { logger } from "hono/logger";
 import { factory } from "@/factory.js";
 import { dbPlugin } from "@/db/db-plugin.js";

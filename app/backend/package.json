@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file=.env src/index.ts",
     "check-types": "tsc --noEmit",
     "lint": "eslint .",
     "email:dev": "email dev --dir src/notification/templates"
