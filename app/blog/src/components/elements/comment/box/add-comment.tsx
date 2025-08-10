@@ -41,6 +41,30 @@ function useAddComment({
     mutationFn: addComment,
     onSuccess: (data) => {
       onSuccess?.();
+
+      // Check if this email has commented before and show toast
+      const userEmail = data.data.visitorEmail ?? data.data.userEmail;
+      if (userEmail) {
+        const commentedEmailsStr = localStorage.getItem("commented-emails");
+        const commentedEmails: string[] = commentedEmailsStr
+          ? (JSON.parse(commentedEmailsStr) as string[])
+          : [];
+
+        if (!commentedEmails.includes(userEmail)) {
+          commentedEmails.push(userEmail);
+          localStorage.setItem(
+            "commented-emails",
+            JSON.stringify(commentedEmails),
+          );
+          toast.info(
+            "当有人回复您的评论时，您将收到邮件通知。如需取消订阅，可点击邮件中的退订链接。",
+            {
+              duration: 8000,
+            },
+          );
+        }
+      }
+
       queryClient.setQueryData(
         ["comments", { session: session?.user.id }, path, sortBy],
         (old: {
