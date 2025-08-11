@@ -52,11 +52,11 @@ export async function addComment(
   const renderedContent = await parseMarkdown(content);
 
   let isSpam = false;
-  if (akismet && options.ip && options.ua) {
+  if (akismet) {
     const permalink = new URL(path, env.FRONTEND_URL).toString();
     isSpam = await akismet.checkSpam({
       content,
-      userIp: options.ip,
+      userIp: options.ip ?? "",
       userAgent: options.ua,
       author: currentUser?.name || visitorName || anonymousName,
       authorEmail: currentUser?.email || visitorEmail,

@@ -17,6 +17,8 @@ export const akismetPlugin = factory.createMiddleware(async (c, next) => {
       blog: env.AKISMET_BLOG,
       isTest,
     });
+  } else {
+    console.warn("Akismet is not enabled");
   }
 
   c.set("akismet", akismetService);

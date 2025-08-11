@@ -68,6 +68,7 @@ export class CommentNotificationEmailService
           commentContentText: data.rawContent,
           frontendUrl: env.FRONTEND_URL,
           unsubscribeUrl,
+          isSpam: data.isSpam,
         });
 
         const html = await render(emailComponent);

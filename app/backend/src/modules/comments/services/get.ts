@@ -27,7 +27,7 @@ export async function getComments(
     comment,
     and(
       isNull(comment.deletedAt),
-      eq(comment.isSpam, false),
+      user?.role === "admin" ? sql`1=1` : eq(comment.isSpam, false),
       path === null ? sql`1=1` : eq(comment.path, path),
       isNull(comment.parentId),
     ),
@@ -60,7 +60,7 @@ async function getCommentsDb(
           path === null ? sql`1=1` : eq(comment.path, path),
           isNull(comment.parentId),
           isNull(comment.deletedAt),
-          eq(comment.isSpam, false),
+          currentUser?.role === "admin" ? sql`1=1` : eq(comment.isSpam, false),
         ),
       )
       .orderBy(
@@ -82,7 +82,7 @@ async function getCommentsDb(
         and(
           inArray(comment.parentId, sql`(SELECT id FROM ${rootCommentsWith})`),
           isNull(comment.deletedAt),
-          eq(comment.isSpam, false),
+          currentUser?.role === "admin" ? sql`1=1` : eq(comment.isSpam, false),
           path === null ? sql`1=1` : eq(comment.path, path),
         ),
       ),

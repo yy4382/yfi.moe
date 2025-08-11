@@ -54,6 +54,7 @@ export function tablesToCommentData(
     userEmail: userTableData?.email,
     visitorName: commentTableData.visitorName,
     visitorEmail: commentTableData.visitorEmail,
+    isSpam: commentTableData.isSpam,
   };
   const fullData = {
     ...baseData,

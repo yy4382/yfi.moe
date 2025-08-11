@@ -3,7 +3,7 @@ import { AkismetClient } from "akismet-api";
 export interface AkismetComment {
   content: string;
   userIp: string;
-  userAgent: string;
+  userAgent?: string;
   author?: string;
   authorEmail?: string;
   permalink: string;

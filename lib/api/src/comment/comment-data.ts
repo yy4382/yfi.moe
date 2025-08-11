@@ -20,6 +20,8 @@ export const commentDataUserAdmin = z.strictObject({
   // get these two if user is not logged in
   visitorName: z.string().nullish(),
   visitorEmail: z.email().nullish(),
+
+  isSpam: z.boolean().nullish(),
 });
 
 export const commentDataBase = z.strictObject({

@@ -9,6 +9,7 @@ interface AdminNewCommentEmailProps {
   commentContentText: string;
   unsubscribeUrl?: string;
   frontendUrl: string;
+  isSpam: boolean;
 }
 
 export const AdminNewCommentEmail = ({
@@ -18,6 +19,7 @@ export const AdminNewCommentEmail = ({
   commentContentText,
   unsubscribeUrl,
   frontendUrl,
+  isSpam,
 }: AdminNewCommentEmailProps) => {
   return (
     <BaseTemplate
@@ -28,7 +30,7 @@ export const AdminNewCommentEmail = ({
       <>
         <Text style={text}>
           {authorName} 在 <CodeInline style={codeInline}>{postSlug}</CodeInline>{" "}
-          发表了新评论：
+          发表了新评论{isSpam && <span style={spamBadge}>【垃圾评论】</span>}：
         </Text>
 
         <Section style={blockquote}>
@@ -56,6 +58,7 @@ AdminNewCommentEmail.PreviewProps = {
   commentContentText: "This is a test comment\nThis is a test comment",
   unsubscribeUrl: "https://yfi.moe/unsubscribe",
   frontendUrl: "https://example.com",
+  isSpam: true,
 } satisfies AdminNewCommentEmailProps;
 
 export default AdminNewCommentEmail;
@@ -99,4 +102,14 @@ const codeInline: CSSProperties = {
   paddingRight: 4,
   paddingTop: 2,
   paddingBottom: 2,
+};
+
+const spamBadge: CSSProperties = {
+  backgroundColor: "#fef2f2",
+  color: "#dc2626",
+  padding: "2px 8px",
+  borderRadius: "4px",
+  fontSize: "12px",
+  fontWeight: "600",
+  marginLeft: "8px",
 };

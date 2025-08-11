@@ -14,7 +14,13 @@ import {
 } from "@tanstack/react-query";
 import type { CommentData } from "@repo/api/comment/comment-data";
 import Image from "next/image";
-import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
+import {
+  EditIcon,
+  Loader2Icon,
+  ReplyIcon,
+  ShieldIcon,
+  TrashIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { CommentBoxNew } from "./box/add-comment";
 import { CommentBoxEdit } from "./box/edit-comment";
@@ -27,6 +33,7 @@ import { produce } from "immer";
 import type { User } from "@repo/api/auth/client";
 import { getComments } from "@repo/api/comment/get";
 import { deleteComment } from "@repo/api/comment/delete";
+import { toggleCommentSpam } from "@repo/api/comment/toggle-spam";
 import { env } from "@/env";
 
 const PER_PAGE = 10;
@@ -226,6 +233,30 @@ function CommentItem({ comment: entry }: CommentItemProps) {
     },
   });
 
+  const { mutate: toggleSpamMutate } = useMutation({
+    mutationFn: async ({ id, isSpam }: { id: number; isSpam: boolean }) => {
+      if (!session) {
+        throw new Error("请先登录");
+      }
+      const result = await toggleCommentSpam(
+        { id, isSpam },
+        env.NEXT_PUBLIC_BACKEND_URL,
+      );
+      if (result._tag === "err") {
+        throw new Error(result.error);
+      }
+      return result.value;
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["comments", { session: session?.user.id }, path],
+      });
+    },
+  });
+
   const formatTime = (date: Date) => {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
@@ -277,6 +308,11 @@ function CommentItem({ comment: entry }: CommentItemProps) {
                 我
               </span>
             )}
+            {session?.user.role === "admin" && entry.isSpam === true && (
+              <span className="rounded bg-red-100 px-1.5 py-0.5 text-xs text-red-600 dark:bg-red-800/60 dark:text-red-100">
+                垃圾评论
+              </span>
+            )}
             <span className="text-xs text-zinc-500">
               {formatTime(entry.createdAt)}
             </span>
@@ -296,6 +332,22 @@ function CommentItem({ comment: entry }: CommentItemProps) {
                 </button>
               </>
             )}
+            {session?.user.role === "admin" &&
+              typeof entry.isSpam === "boolean" && (
+                <button
+                  className={`flex items-center gap-1 text-xs transition-colors ${
+                    entry.isSpam
+                      ? "text-green-700 hover:text-green-500 dark:text-green-400 dark:hover:text-green-300"
+                      : "text-orange-700 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300"
+                  }`}
+                  onClick={() =>
+                    toggleSpamMutate({ id: entry.id, isSpam: !entry.isSpam })
+                  }
+                  title={entry.isSpam ? "标记为正常评论" : "标记为垃圾评论"}
+                >
+                  <ShieldIcon size={14} />
+                </button>
+              )}
           </div>
 
           {editing && session ? (
