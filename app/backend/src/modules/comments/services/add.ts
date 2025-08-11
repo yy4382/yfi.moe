@@ -7,6 +7,8 @@ import {
 import { comment } from "@/db/schema.js";
 import { parseMarkdown } from "./parse-markdown.js";
 import type { DbClient } from "@/db/db-plugin.js";
+import type { AkismetService } from "@/services/akismet.js";
+import { env } from "@/env.js";
 import z from "zod";
 import { tablesToCommentData } from "./comment-data.js";
 
@@ -22,7 +24,13 @@ type AddCommentResult =
 
 export async function addComment(
   body: AddCommentBody,
-  options: { db: DbClient; user: User | null; ip?: string; ua?: string },
+  options: {
+    db: DbClient;
+    user: User | null;
+    ip?: string;
+    ua?: string;
+    akismet?: AkismetService | null;
+  },
 ): Promise<AddCommentResult> {
   const {
     path,
@@ -33,14 +41,28 @@ export async function addComment(
     visitorEmail,
     visitorName,
   } = body;
-  const { db, user: currentUser } = options;
+  const { db, user: currentUser, akismet } = options;
   if (!currentUser && (!visitorName || !visitorEmail)) {
     return {
       result: "bad_req",
       data: { message: "昵称和邮箱不能为空" },
     };
   }
+
   const renderedContent = await parseMarkdown(content);
+
+  let isSpam = false;
+  if (akismet && options.ip && options.ua) {
+    const permalink = new URL(path, env.FRONTEND_URL).toString();
+    isSpam = await akismet.checkSpam({
+      content,
+      userIp: options.ip,
+      userAgent: options.ua,
+      author: currentUser?.name || visitorName || anonymousName,
+      authorEmail: currentUser?.email || visitorEmail,
+      permalink,
+    });
+  }
   const inserted = await db
     .insert(comment)
     .values({
@@ -52,7 +74,7 @@ export async function addComment(
       anonymousName,
       visitorEmail: currentUser ? undefined : visitorEmail,
       visitorName: currentUser ? undefined : (visitorName ?? "Anonymous"),
-      isSpam: false,
+      isSpam,
       userId: currentUser?.id,
       userIp: options.ip,
       userAgent: options.ua,

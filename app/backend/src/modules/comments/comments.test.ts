@@ -10,6 +10,12 @@ import { factory, type Variables } from "@/factory.js";
 import * as deleteModule from "./services/delete.js";
 import type { NotificationService } from "@/notification/types.js";
 
+vi.mock(import("@/env.js"), () => ({
+  env: {
+    FRONTEND_URL: "http://localhost:3000",
+  } as any,
+}));
+
 const testCommentApp = (
   auth: Variables["auth"] = undefined,
   db: Variables["db"] = {} as any,

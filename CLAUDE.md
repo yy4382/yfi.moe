@@ -163,3 +163,15 @@ cd app/blog && pnpm test  # if available
 - **Primary**: Vercel (configured via `vercel.json`)
 - **Build**: Turbo monorepo with environment variable handling
 - **Database**: SQLite (libsql) with Drizzle migrations
+
+## TypeScript Development Guidelines
+
+- **Strict Type Safety**:
+  - Do not use `any` to bypass TypeScript type checking
+  - Always prefer explicit type annotations and interfaces
+  - Use type narrowing and type guards instead of type assertions
+
+## Workspace Dependency Management
+
+- When `injectWorkspacePackages` is set to true in pnpm (required for pnpm deploy), always run `pnpm i -r` to sync workspace dependencies when changes occur
+- If encountering strange errors, try running `pnpm i -r` to resynchronize dependencies across packages

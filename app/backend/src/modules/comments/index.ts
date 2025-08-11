@@ -3,6 +3,7 @@ import { addComment } from "./services/add.js";
 import { sendNotification } from "./services/notify.js";
 import { deleteComment } from "./services/delete.js";
 import { updateComment } from "./services/update.js";
+import { toggleCommentSpam } from "./services/toggle-spam.js";
 import { factory } from "@/factory.js";
 import { sValidator } from "@hono/standard-validator";
 import {
@@ -21,6 +22,10 @@ import {
   deleteCommentRequest,
   deleteCommentResponse,
 } from "@repo/api/comment/delete.model";
+import {
+  toggleSpamRequest,
+  toggleSpamResponse,
+} from "@repo/api/comment/toggle-spam.model";
 
 const commentApp = factory
   .createApp()
@@ -41,6 +46,7 @@ const commentApp = factory
       user: c.get("auth")?.user ?? null,
       ip: c.req.header("x-forwarded-for"),
       ua: c.req.header("user-agent"),
+      akismet: c.get("akismet"),
     });
     switch (result.result) {
       case "success": {
@@ -116,6 +122,29 @@ const commentApp = factory
         return c.json(updateCommentResponse.parse(result.data), 200);
       case 400:
         return c.text(result.data, 400);
+      case 403:
+        return c.text(result.data, 403);
+      case 404:
+        return c.text(result.data, 404);
+      default:
+        throw new Error("should not happen");
+    }
+  })
+  .post("/toggle-spam", sValidator("json", toggleSpamRequest), async (c) => {
+    const body = c.req.valid("json");
+    const user = c.get("auth")?.user;
+
+    const result = await toggleCommentSpam(body.id, body.isSpam, {
+      db: c.get("db"),
+      user: user ?? null,
+      akismet: c.get("akismet"),
+    });
+
+    switch (result.code) {
+      case 200:
+        return c.json(toggleSpamResponse.parse(result.data), 200);
+      case 401:
+        return c.text(result.data, 401);
       case 403:
         return c.text(result.data, 403);
       case 404:

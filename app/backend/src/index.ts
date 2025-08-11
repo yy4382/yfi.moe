@@ -3,6 +3,7 @@ import { factory } from "@/factory.js";
 import { dbPlugin } from "@/db/db-plugin.js";
 import { betterAuthPlugin } from "@/auth/auth-plugin.js";
 import { notificationPlugin } from "@/notification/plugin.js";
+import { akismetPlugin } from "@/services/akismet-plugin.js";
 import { db } from "@/db/instance.js";
 import comments from "@/modules/comments/index.js";
 import { accountApp } from "@/modules/account/account.js";
@@ -20,6 +21,7 @@ const app = factory
   .use(dbPlugin(db))
   .use(betterAuthPlugin)
   .use(notificationPlugin())
+  .use(akismetPlugin)
   .use(
     "/v1/*",
     cors({

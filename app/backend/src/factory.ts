@@ -3,6 +3,7 @@ import type { AuthClient } from "@/auth/create-auth.js";
 import type { DbClient } from "@/db/db-plugin.js";
 import { createFactory } from "hono/factory";
 import type { NotificationService } from "./notification/types.js";
+import type { AkismetService } from "./services/akismet.js";
 
 export type Variables = {
   db: DbClient;
@@ -13,6 +14,7 @@ export type Variables = {
   authClient: AuthClient;
 
   notification: NotificationService;
+  akismet: AkismetService | null;
 };
 
 export const factory = createFactory<{

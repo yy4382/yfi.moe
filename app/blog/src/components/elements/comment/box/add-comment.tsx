@@ -42,9 +42,20 @@ function useAddComment({
     onSuccess: (data) => {
       onSuccess?.();
 
+      // Handle spam detection feedback
+      if (data.isSpam) {
+        toast.warning(
+          "您的评论已被标记为可能的垃圾内容。管理员会对此进行二次审核，通过后会正常显示。",
+          {
+            duration: 10000,
+            description: "如果您认为这是误判，请联系管理员。",
+          },
+        );
+      }
+
       // Check if this email has commented before and show toast
       const userEmail = data.data.visitorEmail ?? data.data.userEmail;
-      if (userEmail) {
+      if (userEmail && !data.isSpam) {
         const commentedEmailsStr = localStorage.getItem("commented-emails");
         const commentedEmails: string[] = commentedEmailsStr
           ? (JSON.parse(commentedEmailsStr) as string[])
@@ -65,35 +76,41 @@ function useAddComment({
         }
       }
 
-      queryClient.setQueryData(
-        ["comments", { session: session?.user.id }, path, sortBy],
-        (old: {
-          pages: { comments: LayeredCommentData[]; total: number }[];
-        }) => {
-          if (!data.data.parentId)
-            return produce(old, (draft) => {
-              draft.pages[0]!.comments.unshift({ ...data.data, children: [] });
-              draft.pages[0]!.total++;
-            });
-          else {
-            return produce(old, (draft) => {
-              let parentIndex = [-1, -1];
-              for (let i = 0; i < old.pages.length; i++) {
-                for (let j = 0; j < old.pages[i]!.comments.length; j++) {
-                  if (old.pages[i]!.comments[j]!.id === data.data.parentId) {
-                    parentIndex = [i, j];
-                    break;
+      // Only add to comment list if it's not spam (spam comments need admin approval)
+      if (!data.isSpam) {
+        queryClient.setQueryData(
+          ["comments", { session: session?.user.id }, path, sortBy],
+          (old: {
+            pages: { comments: LayeredCommentData[]; total: number }[];
+          }) => {
+            if (!data.data.parentId)
+              return produce(old, (draft) => {
+                draft.pages[0]!.comments.unshift({
+                  ...data.data,
+                  children: [],
+                });
+                draft.pages[0]!.total++;
+              });
+            else {
+              return produce(old, (draft) => {
+                let parentIndex = [-1, -1];
+                for (let i = 0; i < old.pages.length; i++) {
+                  for (let j = 0; j < old.pages[i]!.comments.length; j++) {
+                    if (old.pages[i]!.comments[j]!.id === data.data.parentId) {
+                      parentIndex = [i, j];
+                      break;
+                    }
                   }
                 }
-              }
-              if (parentIndex[0] === -1) return old;
-              draft.pages[parentIndex[0]!]!.comments[
-                parentIndex[1]!
-              ]!.children.push(data.data);
-            });
-          }
-        },
-      );
+                if (parentIndex[0] === -1) return old;
+                draft.pages[parentIndex[0]!]!.comments[
+                  parentIndex[1]!
+                ]!.children.push(data.data);
+              });
+            }
+          },
+        );
+      }
       void queryClient.invalidateQueries({
         queryKey: ["comments", { session: session?.user.id }, path],
       });

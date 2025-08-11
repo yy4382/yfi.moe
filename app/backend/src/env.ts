@@ -21,6 +21,9 @@ const envSchema = z.object({
   SMTP_SECURE: z.stringbool(),
   SMTP_USER: z.string(),
   SMTP_PASS: z.string(),
+
+  AKISMET_KEY: z.string().optional(),
+  AKISMET_BLOG: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);
