@@ -8,7 +8,6 @@ export const env = createEnv({
     PAGE_GH_INFO: z.string(),
 
     CONTENT_REFRESH_TOKEN: z.string(),
-    UNSUBSCRIBE_SECRET: z.string(),
 
     UPSTASH_REDIS_REST_URL: z.url(),
     UPSTASH_REDIS_REST_TOKEN: z.string(),
@@ -37,7 +36,6 @@ export const env = createEnv({
     POST_GH_INFO: process.env.POST_GH_INFO,
     PAGE_GH_INFO: process.env.PAGE_GH_INFO,
     CONTENT_REFRESH_TOKEN: process.env.CONTENT_REFRESH_TOKEN,
-    UNSUBSCRIBE_SECRET: process.env.UNSUBSCRIBE_SECRET,
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
