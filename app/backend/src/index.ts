@@ -9,6 +9,9 @@ import { accountApp } from "@/modules/account/account.js";
 import { serve } from "@hono/node-server";
 import { env } from "./env.js";
 import { cors } from "hono/cors";
+import { migrate } from "drizzle-orm/libsql/migrator";
+
+await migrate(db, { migrationsFolder: "./drizzle" });
 
 const app = factory
   .createApp()
