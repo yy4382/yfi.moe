@@ -28,13 +28,14 @@ import { toast } from "sonner";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils/cn";
 import { usePathname } from "next/navigation";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { produce } from "immer";
 import type { User } from "@repo/api/auth/client";
 import { getComments } from "@repo/api/comment/get";
 import { deleteComment } from "@repo/api/comment/delete";
 import { toggleCommentSpam } from "@repo/api/comment/toggle-spam";
 import { env } from "@/env";
+import z, { ZodError } from "zod";
 
 const PER_PAGE = 10;
 
@@ -109,7 +110,8 @@ export function CommentList() {
   if (isError) {
     return (
       <div className="mt-6 flex items-center justify-center-safe gap-2 p-4 text-center text-red-500">
-        加载评论失败: {error.message}
+        加载评论失败:{" "}
+        {error instanceof ZodError ? z.prettifyError(error) : error.message}
         <motion.button
           onClick={() => void refetch()}
           className="border-container text-comment rounded-md border px-2 py-1 shadow-md"
@@ -165,9 +167,21 @@ export function CommentList() {
             <CommentItem comment={comment} />
             {comment.children.length > 0 && (
               <div className="ml-6 pl-4">
-                {comment.children.map((children) => (
-                  <CommentItem key={children.id} comment={children} />
-                ))}
+                {comment.children.map((children) => {
+                  const replyToName =
+                    children.replyToId === comment.id
+                      ? comment.displayName
+                      : comment.children.find(
+                          (c) => c.id === children.replyToId,
+                        )?.displayName;
+                  return (
+                    <CommentItem
+                      key={children.id}
+                      comment={children}
+                      replyToName={replyToName}
+                    />
+                  );
+                })}
               </div>
             )}
           </Fragment>
@@ -194,23 +208,16 @@ export function CommentList() {
 
 type CommentItemProps = {
   comment: CommentData;
+  replyToName?: string;
 };
-function CommentItem({ comment: entry }: CommentItemProps) {
+export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
   const [replying, setReplying] = useState(false);
   const [editing, setEditing] = useState(false);
   const path = usePathname();
   const queryClient = useQueryClient();
   const { data: session } = useQuery(sessionOptions());
-  const sortBy = useAtomValue(sortByAtom);
 
   const isMine = session && entry.userId && entry.userId === session.user.id;
-
-  const { data: queryData } = useInfiniteQuery(
-    listOptions(session?.user, path, sortBy),
-  );
-  const replyToName = queryData?.pages
-    .flatMap((page) => page.comments.flatMap((c) => [c, ...c.children]))
-    .find((comment) => comment.id === entry.replyToId)?.displayName;
 
   const { mutate: deleteCommentMutate } = useMutation({
     mutationFn: async (id: number) => {
@@ -256,25 +263,6 @@ function CommentItem({ comment: entry }: CommentItemProps) {
       });
     },
   });
-
-  const formatTime = (date: Date) => {
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    if (minutes < 1) return "刚刚";
-    if (minutes < 60) return `${minutes}分钟前`;
-    if (hours < 24) return `${hours}小时前`;
-    if (days < 7) return `${days}天前`;
-
-    return date.toLocaleDateString("zh-CN", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   return (
     <div id={`comment-${entry.id}`}>
@@ -401,3 +389,22 @@ function CommentItem({ comment: entry }: CommentItemProps) {
     </div>
   );
 }
+
+const formatTime = (date: Date) => {
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const minutes = Math.floor(diff / (1000 * 60));
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  if (minutes < 1) return "刚刚";
+  if (minutes < 60) return `${minutes}分钟前`;
+  if (hours < 24) return `${hours}小时前`;
+  if (days < 7) return `${days}天前`;
+
+  return date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
