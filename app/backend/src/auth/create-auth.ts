@@ -4,6 +4,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import * as schema from "@/db/schema.js";
 import { admin, magicLink } from "better-auth/plugins";
 import { env } from "@/env.js";
+import { EmailServiceFactory } from "@/notification/providers/index.js";
 
 export const createAuth = (db: DbClient) => {
   return betterAuth({
@@ -25,11 +26,6 @@ export const createAuth = (db: DbClient) => {
       admin(),
       magicLink({
         sendMagicLink: async ({ email, url }) => {
-          // Import the email service factory dynamically to avoid circular dependencies
-          const { EmailServiceFactory } = await import(
-            "../notification/providers/index.js"
-          );
-
           const emailConfig = EmailServiceFactory.createConfigFromEnv(env);
           const authEmailService =
             EmailServiceFactory.getAuthService(emailConfig);
