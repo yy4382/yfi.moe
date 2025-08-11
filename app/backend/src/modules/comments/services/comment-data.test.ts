@@ -1,0 +1,376 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { tablesToCommentData } from "./comment-data.js";
+import type { InferSelectModel } from "drizzle-orm";
+import type { comment, user } from "@/db/schema.js";
+import type { User } from "@/auth/auth-plugin.js";
+
+vi.mock("@repo/helpers/get-gravatar-url", () => ({
+  getGravatarUrl: vi.fn(
+    (email: string) => `https://gravatar.com/avatar/${email}`,
+  ),
+}));
+
+describe("tablesToCommentData", () => {
+  const mockCommentTableData: InferSelectModel<typeof comment> = {
+    id: 1,
+    createdAt: new Date("2024-01-01T10:00:00Z"),
+    updatedAt: new Date("2024-01-01T11:00:00Z"),
+    rawContent: "This is a test comment",
+    renderedContent: "<p>This is a test comment</p>",
+    path: "/blog/test-post",
+    parentId: null,
+    replyToId: null,
+    deletedAt: null,
+    userId: "user123",
+    userIp: "192.168.1.1",
+    userAgent: "Mozilla/5.0",
+    visitorName: null,
+    visitorEmail: null,
+    anonymousName: null,
+    isSpam: false,
+  };
+
+  const mockUserTableData: InferSelectModel<typeof user> = {
+    id: "user123",
+    email: "test@example.com",
+    emailVerified: true,
+    name: "Test User",
+    createdAt: new Date("2024-01-01T09:00:00Z"),
+    updatedAt: new Date("2024-01-01T09:30:00Z"),
+    image: "https://example.com/avatar.jpg",
+    banned: false,
+    role: "user",
+    banReason: null,
+    banExpires: null,
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe("admin context", () => {
+    it("should return full comment data for admin with logged in user", () => {
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        mockUserTableData,
+        true,
+      );
+
+      expect(result).toEqual({
+        id: 1,
+        content: "<p>This is a test comment</p>",
+        rawContent: "This is a test comment",
+        path: "/blog/test-post",
+        parentId: null,
+        replyToId: null,
+        createdAt: new Date("2024-01-01T10:00:00Z"),
+        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        displayName: "Test User",
+        anonymousName: null,
+        userImage: "https://example.com/avatar.jpg",
+        userId: "user123",
+        userIp: "192.168.1.1",
+        userAgent: "Mozilla/5.0",
+        userName: "Test User",
+        userEmail: "test@example.com",
+        visitorName: null,
+        visitorEmail: null,
+        isSpam: false,
+      });
+    });
+
+    it("should return admin data for anonymous comment", () => {
+      const anonymousComment = {
+        ...mockCommentTableData,
+        userId: null,
+        anonymousName: "Anonymous User",
+      };
+
+      const result = tablesToCommentData(anonymousComment, null, true);
+
+      expect(result).toEqual({
+        id: 1,
+        content: "<p>This is a test comment</p>",
+        rawContent: "This is a test comment",
+        path: "/blog/test-post",
+        parentId: null,
+        replyToId: null,
+        createdAt: new Date("2024-01-01T10:00:00Z"),
+        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        displayName: "Anonymous User",
+        anonymousName: "Anonymous User",
+        userImage: "https://avatar.vercel.sh/anonymous",
+        userId: undefined,
+        userIp: "192.168.1.1",
+        userAgent: "Mozilla/5.0",
+        userName: undefined,
+        userEmail: undefined,
+        visitorName: null,
+        visitorEmail: null,
+        isSpam: false,
+      });
+    });
+
+    it("should return admin data for visitor comment", () => {
+      const visitorComment = {
+        ...mockCommentTableData,
+        userId: null,
+        visitorName: "Visitor Name",
+        visitorEmail: "visitor@example.com",
+      };
+
+      const result = tablesToCommentData(visitorComment, null, true);
+
+      expect(result).toEqual({
+        id: 1,
+        content: "<p>This is a test comment</p>",
+        rawContent: "This is a test comment",
+        path: "/blog/test-post",
+        parentId: null,
+        replyToId: null,
+        createdAt: new Date("2024-01-01T10:00:00Z"),
+        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        displayName: "Visitor Name",
+        anonymousName: null,
+        userImage: "https://gravatar.com/avatar/visitor@example.com",
+        userId: undefined,
+        userIp: "192.168.1.1",
+        userAgent: "Mozilla/5.0",
+        userName: undefined,
+        userEmail: undefined,
+        visitorName: "Visitor Name",
+        visitorEmail: "visitor@example.com",
+        isSpam: false,
+      });
+    });
+
+    it("should handle User type from auth plugin", () => {
+      const authUser: User = {
+        id: "auth-user-123",
+        email: "auth@example.com",
+        name: "Auth User",
+        image: "https://auth.example.com/avatar.jpg",
+        emailVerified: true,
+        createdAt: new Date("2024-01-01T08:00:00Z"),
+        updatedAt: new Date("2024-01-01T08:30:00Z"),
+        banned: false,
+      };
+
+      const result = tablesToCommentData(mockCommentTableData, authUser, true);
+
+      expect(result).toEqual({
+        id: 1,
+        content: "<p>This is a test comment</p>",
+        rawContent: "This is a test comment",
+        path: "/blog/test-post",
+        parentId: null,
+        replyToId: null,
+        createdAt: new Date("2024-01-01T10:00:00Z"),
+        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        displayName: "Auth User",
+        anonymousName: null,
+        userImage: "https://auth.example.com/avatar.jpg",
+        userId: "auth-user-123",
+        userIp: "192.168.1.1",
+        userAgent: "Mozilla/5.0",
+        userName: "Auth User",
+        userEmail: "auth@example.com",
+        visitorName: null,
+        visitorEmail: null,
+        isSpam: false,
+      });
+    });
+  });
+
+  describe("non-admin context", () => {
+    it("should return limited comment data for non-admin with logged in user", () => {
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        mockUserTableData,
+        false,
+      );
+
+      expect(result).toEqual({
+        id: 1,
+        content: "<p>This is a test comment</p>",
+        rawContent: "This is a test comment",
+        path: "/blog/test-post",
+        parentId: null,
+        replyToId: null,
+        createdAt: new Date("2024-01-01T10:00:00Z"),
+        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        displayName: "Test User",
+        anonymousName: null,
+        userImage: "https://example.com/avatar.jpg",
+        userId: "user123",
+      });
+    });
+
+    it("should hide userId for anonymous comments in non-admin context", () => {
+      const anonymousComment = {
+        ...mockCommentTableData,
+        userId: null,
+        anonymousName: "Anonymous User",
+      };
+
+      const result = tablesToCommentData(
+        anonymousComment,
+        mockUserTableData,
+        false,
+      );
+
+      expect(result).toEqual({
+        id: 1,
+        content: "<p>This is a test comment</p>",
+        rawContent: "This is a test comment",
+        path: "/blog/test-post",
+        parentId: null,
+        replyToId: null,
+        createdAt: new Date("2024-01-01T10:00:00Z"),
+        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        displayName: "Anonymous User",
+        anonymousName: "Anonymous User",
+        userImage: "https://avatar.vercel.sh/anonymous",
+        userId: null,
+      });
+    });
+
+    it("should return non-admin data for visitor comment", () => {
+      const visitorComment = {
+        ...mockCommentTableData,
+        userId: null,
+        visitorName: "Visitor Name",
+        visitorEmail: "visitor@example.com",
+      };
+
+      const result = tablesToCommentData(visitorComment, null, false);
+
+      expect(result).toEqual({
+        id: 1,
+        content: "<p>This is a test comment</p>",
+        rawContent: "This is a test comment",
+        path: "/blog/test-post",
+        parentId: null,
+        replyToId: null,
+        createdAt: new Date("2024-01-01T10:00:00Z"),
+        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        displayName: "Visitor Name",
+        anonymousName: null,
+        userImage: "https://gravatar.com/avatar/visitor@example.com",
+        userId: undefined,
+      });
+    });
+  });
+
+  describe("edge cases", () => {
+    it("should handle null user data", () => {
+      const result = tablesToCommentData(mockCommentTableData, null, true);
+
+      expect(result.displayName).toBe("Unknown");
+      expect(result.userId).toBeUndefined();
+      expect(result.userName).toBeUndefined();
+      expect(result.userEmail).toBeUndefined();
+    });
+
+    it("should prioritize display name sources correctly", () => {
+      const commentWithMultipleNames = {
+        ...mockCommentTableData,
+        anonymousName: "Anonymous",
+        visitorName: "Visitor",
+      };
+
+      const result = tablesToCommentData(
+        commentWithMultipleNames,
+        mockUserTableData,
+        true,
+      );
+
+      expect(result.displayName).toBe("Anonymous");
+    });
+
+    it("should fall back to Unknown when no names available", () => {
+      const commentNoNames = {
+        ...mockCommentTableData,
+        anonymousName: null,
+        visitorName: null,
+      };
+
+      const result = tablesToCommentData(commentNoNames, null, true);
+
+      expect(result.displayName).toBe("Unknown");
+    });
+
+    it("should handle nested comments with parentId and replyToId", () => {
+      const nestedComment = {
+        ...mockCommentTableData,
+        parentId: 5,
+        replyToId: 3,
+      };
+
+      const result = tablesToCommentData(
+        nestedComment,
+        mockUserTableData,
+        true,
+      );
+
+      expect(result.parentId).toBe(5);
+      expect(result.replyToId).toBe(3);
+    });
+
+    it("should handle spam comments", () => {
+      const spamComment = {
+        ...mockCommentTableData,
+        isSpam: true,
+      };
+
+      const result = tablesToCommentData(spamComment, mockUserTableData, true);
+
+      expect(result.isSpam).toBe(true);
+    });
+
+    it("should handle user with no image", () => {
+      const userNoImage = {
+        ...mockUserTableData,
+        image: null,
+      };
+
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        userNoImage,
+        true,
+      );
+
+      expect(result.userImage).toBe(
+        "https://gravatar.com/avatar/test@example.com",
+      );
+    });
+
+    it("should handle anonymous user image for admin when userTableData exists", () => {
+      const anonymousComment = {
+        ...mockCommentTableData,
+        anonymousName: "Anonymous",
+        userId: null,
+      };
+
+      const result = tablesToCommentData(
+        anonymousComment,
+        mockUserTableData,
+        true,
+      );
+
+      expect(result.userImage).toBe("https://avatar.vercel.sh/anonymous");
+      expect(result.userId).toBe("user123");
+    });
+
+    it("should handle date coercion correctly", () => {
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        mockUserTableData,
+        true,
+      );
+
+      expect(result.createdAt).toBeInstanceOf(Date);
+      expect(result.updatedAt).toBeInstanceOf(Date);
+    });
+  });
+});
