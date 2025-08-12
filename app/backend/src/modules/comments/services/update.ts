@@ -1,10 +1,10 @@
 import { comment } from "@/db/schema.js";
 import type { User } from "@/auth/auth-plugin.js";
 import { and, isNull, eq } from "drizzle-orm";
-import { parseMarkdown } from "./parse-markdown.js";
+import { parseMarkdown } from "./shared/parse-markdown.js";
 import type { OneOfKeyValuePair } from "@repo/api/comment/update.model";
 import type { DbClient } from "@/db/db-plugin.js";
-import { tablesToCommentData } from "./comment-data.js";
+import { tablesToCommentData } from "./shared/comment-data.js";
 
 export async function updateComment(
   id: number,

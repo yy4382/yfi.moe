@@ -1,4 +1,6 @@
 import * as nodemailer from "nodemailer";
+import type { Env } from "@/env.js";
+import { render } from "@react-email/render";
 
 export interface EmailConfig {
   from: string;
@@ -13,12 +15,6 @@ export interface EmailConfig {
   };
 }
 
-export interface EmailContent {
-  subject: string;
-  html: string;
-  text: string;
-}
-
 export interface SendEmailOptions {
   to: string;
   subject: string;
@@ -26,7 +22,7 @@ export interface SendEmailOptions {
   text: string;
 }
 
-export abstract class BaseEmailService {
+export class EmailNotifier {
   protected transporter: nodemailer.Transporter;
   protected config: EmailConfig;
 
@@ -62,5 +58,38 @@ export abstract class BaseEmailService {
       console.error("Failed to send email:", error);
       throw error;
     }
+  }
+
+  static createFromEnv(env: Env): EmailNotifier | null {
+    if (!env.EMAIL_NOTIFICATION_ENABLED) {
+      return null;
+    }
+    const config = {
+      from: env.EMAIL_FROM,
+      smtp: {
+        host: env.SMTP_HOST,
+        port: env.SMTP_PORT,
+        secure: env.SMTP_SECURE,
+        auth: {
+          user: env.SMTP_USER,
+          pass: env.SMTP_PASS,
+        },
+      },
+    };
+    return new EmailNotifier(config);
+  }
+
+  static async renderEmailTemplate<T>(
+    component: React.FunctionComponent<T>,
+    props: T,
+  ): Promise<{
+    html: string;
+    text: string;
+  }> {
+    const emailComponent = await component(props);
+    return {
+      html: await render(emailComponent),
+      text: await render(emailComponent, { plainText: true }),
+    };
   }
 }

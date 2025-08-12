@@ -2,9 +2,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import commentApp from "./index.js";
 import * as getModule from "./services/get.js";
-import * as addModule from "./services/add.js";
+import * as addModule from "./services/add/add.js";
 import * as updateModule from "./services/update.js";
-import * as notifyModule from "./services/notify.js";
+import * as notifyModule from "./services/add/notify.js";
 import { testClient } from "hono/testing";
 import { factory, type Variables } from "@/factory.js";
 import * as deleteModule from "./services/delete.js";

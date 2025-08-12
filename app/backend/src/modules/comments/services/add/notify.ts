@@ -2,6 +2,11 @@ import type { DbClient } from "@/db/db-plugin.js";
 import { user, comment, unsubscribedEmail } from "@/db/schema.js";
 import type { NotificationService } from "@/notification/types.js";
 import { eq } from "drizzle-orm";
+import AdminNewCommentEmail from "./notify/templates/admin-new-comment.js";
+import { env } from "@/env.js";
+import { EmailNotifier } from "@/notification/providers/email.js";
+import CommentReplyEmail from "./notify/templates/comment-reply.js";
+import { generateUnsubscribeUrl } from "@/modules/account/unsubscribe/unsub.service.js";
 
 type SendNotificationCommentData = {
   id: number;
@@ -43,22 +48,25 @@ async function sendAdminNewCommentNotification(
     .select()
     .from(user)
     .where(eq(user.role, "admin"));
-  return notificationService.sendBatch(
-    adminEmails.map((user) => {
-      return {
-        type: "admin_new_comment",
-        recipient: user.email,
-        data: {
-          commentId: comment.id,
-          path: comment.path,
-          rawContent: comment.rawContent,
-          renderedContent: comment.renderedContent,
-          userId: comment.userId,
-          isSpam: comment.isSpam,
-          replyToId: comment.replyToId,
+  return Promise.allSettled(
+    adminEmails.map(async (adminEmail) => {
+      const { html, text } = await EmailNotifier.renderEmailTemplate(
+        AdminNewCommentEmail,
+        {
           authorName: comment.name,
+          postSlug: comment.path,
+          commentContentHtml: comment.rawContent,
+          commentContentText: comment.rawContent,
+          frontendUrl: env.FRONTEND_URL,
+          isSpam: comment.isSpam,
         },
-      };
+      );
+      return notificationService.email?.sendEmail({
+        to: adminEmail.email,
+        subject: `新评论被发布在 "${comment.path}" 上${comment.isSpam ? "（需要审核）" : ""}`,
+        html,
+        text,
+      });
     }),
   );
 }
@@ -90,26 +98,27 @@ async function sendCommentReplyNotification(
   if (isUnsubscribed.length > 0) {
     return;
   }
-  return notificationService.send({
-    type: "comment_reply",
-    recipient: repliedToEmail,
-    data: {
-      commentId: commentData.id,
-      rawContent: commentData.rawContent,
-      renderedContent: commentData.renderedContent,
-      parentCommentId: replyToId,
-      parentCommentRawContent: replyToComment.comment.rawContent,
-      parentCommentRenderedContent: replyToComment.comment.renderedContent,
-      parentCommentAuthorName:
-        replyToComment.comment.anonymousName ||
-        replyToComment.user?.name ||
-        replyToComment.comment.visitorName ||
-        "",
-      parentCommentAuthorEmail: repliedToEmail,
-
-      path: commentData.path,
+  const unsubscribeUrl = generateUnsubscribeUrl(
+    repliedToEmail,
+    env.UNSUBSCRIBE_SECRET,
+    env.FRONTEND_URL,
+  );
+  const { html, text } = await EmailNotifier.renderEmailTemplate(
+    CommentReplyEmail,
+    {
       authorName: commentData.name,
-      authorEmail: commentData.email,
+      postSlug: commentData.path,
+      newCommentHtml: commentData.rawContent,
+      newCommentText: commentData.rawContent,
+      parentCommentHtml: replyToComment.comment.rawContent,
+      frontendUrl: env.FRONTEND_URL,
+      unsubscribeUrl,
     },
+  );
+  return notificationService.email?.sendEmail({
+    to: repliedToEmail,
+    subject: `您的评论被回复了：${commentData.rawContent.slice(0, 10)}...`,
+    html,
+    text,
   });
 }

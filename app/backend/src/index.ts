@@ -20,7 +20,7 @@ const app = factory
   .use(logger())
   .use(dbPlugin(db))
   .use(betterAuthPlugin)
-  .use(notificationPlugin())
+  .use(notificationPlugin(env))
   .use(akismetPlugin)
   .use(
     "/v1/*",

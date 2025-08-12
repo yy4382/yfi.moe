@@ -1,6 +1,5 @@
 import { getComments } from "./services/get.js";
-import { addComment } from "./services/add.js";
-import { sendNotification } from "./services/notify.js";
+import { addComment } from "./services/add/add.js";
 import { deleteComment } from "./services/delete.js";
 import { updateComment } from "./services/update.js";
 import { toggleCommentSpam } from "./services/toggle-spam.js";
@@ -47,28 +46,11 @@ const commentApp = factory
       ip: c.req.header("x-forwarded-for"),
       ua: c.req.header("user-agent"),
       akismet: c.get("akismet"),
+      notificationService: c.get("notification"),
     });
     switch (result.result) {
       case "success": {
         const resp = addCommentResponse.parse(result.data);
-        sendNotification(
-          {
-            id: result.data.data.id,
-            userId: result.data.data.userId ?? undefined,
-            path: body.path,
-            name: result.data.data.displayName,
-            email:
-              result.data.data.visitorEmail ??
-              result.data.data.userEmail ??
-              undefined,
-            rawContent: result.data.data.rawContent,
-            renderedContent: result.data.data.content,
-            isSpam: result.data.isSpam,
-            replyToId: result.data.data.replyToId ?? undefined,
-          },
-          c.get("db"),
-          c.get("notification"),
-        );
         return c.json(resp, 200);
       }
       case "bad_req":

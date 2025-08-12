@@ -1,3 +1,5 @@
+import type { EmailNotifier } from "./providers/email.js";
+
 export type NotificationPayload =
   | {
       type: "comment_reply";
@@ -38,14 +40,9 @@ export type NotificationNewComment = {
 };
 
 export interface NotificationProvider {
-  name: string;
   send(notification: NotificationPayload): Promise<void>;
-  isEnabled(): boolean;
 }
 
 export interface NotificationService {
-  addProvider(provider: NotificationProvider): void;
-  removeProvider(name: string): void;
-  send(notification: NotificationPayload): Promise<void>;
-  sendBatch(notifications: NotificationPayload[]): Promise<void>;
+  email: EmailNotifier | null;
 }

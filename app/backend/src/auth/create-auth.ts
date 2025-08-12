@@ -4,7 +4,8 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import * as schema from "@/db/schema.js";
 import { admin, magicLink } from "better-auth/plugins";
 import { env } from "@/env.js";
-import { EmailServiceFactory } from "@/notification/providers/index.js";
+import { EmailNotifier } from "@/notification/providers/email.js";
+import NotionMagicLinkEmail from "./magic-link.js";
 
 export const createAuth = (db: DbClient) => {
   return betterAuth({
@@ -26,12 +27,19 @@ export const createAuth = (db: DbClient) => {
       admin(),
       magicLink({
         sendMagicLink: async ({ email, url }) => {
-          const emailConfig = EmailServiceFactory.createConfigFromEnv(env);
-          const authEmailService =
-            EmailServiceFactory.getAuthService(emailConfig);
+          const emailService = EmailNotifier.createFromEnv(env);
 
-          if (authEmailService.isEnabled()) {
-            await authEmailService.sendMagicLinkEmail(email, url);
+          if (emailService) {
+            const { html, text } = await EmailNotifier.renderEmailTemplate(
+              NotionMagicLinkEmail,
+              { url },
+            );
+            await emailService.sendEmail({
+              to: email,
+              subject: "登录链接 - Yunfi",
+              html,
+              text,
+            });
           } else {
             console.log("Email provider not configured, magic link URL:", url);
             throw new Error("Email provider not configured");

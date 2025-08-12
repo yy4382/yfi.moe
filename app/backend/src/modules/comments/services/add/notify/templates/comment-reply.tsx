@@ -1,5 +1,5 @@
 import { Text, Link, Section } from "@react-email/components";
-import { BaseTemplate } from "./base-template.js";
+import { BaseTemplate } from "@/notification/templates/base-template.js";
 import type { CSSProperties } from "react";
 
 interface CommentReplyEmailProps {
@@ -8,7 +8,7 @@ interface CommentReplyEmailProps {
   newCommentHtml: string;
   newCommentText: string;
   parentCommentHtml: string;
-  unsubscribeUrl?: string;
+  unsubscribeUrl: string;
   frontendUrl: string;
 }
 

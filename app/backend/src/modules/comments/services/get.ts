@@ -7,7 +7,7 @@ import type {
 } from "@repo/api/comment/get.model";
 import { and, asc, desc, eq, inArray, isNull, or, sql } from "drizzle-orm";
 import { comment, user } from "@/db/schema.js";
-import { tablesToCommentData } from "./comment-data.js";
+import { tablesToCommentData } from "./shared/comment-data.js";
 import type { CommentData } from "@repo/api/comment/comment-data";
 
 export async function getComments(
