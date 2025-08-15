@@ -30,6 +30,7 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
     NEXT_PUBLIC_POSTHOG_HOST: z.url(),
     NEXT_PUBLIC_BACKEND_URL: z.url(),
+    NEXT_PUBLIC_WALINE_URL: z.url(),
   },
   runtimeEnv: {
     ARTICLE_PAT: process.env.ARTICLE_PAT,
@@ -52,5 +53,6 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
+    NEXT_PUBLIC_WALINE_URL: process.env.NEXT_PUBLIC_WALINE_URL,
   },
 });

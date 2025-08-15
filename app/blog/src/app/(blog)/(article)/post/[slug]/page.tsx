@@ -8,7 +8,7 @@ import {
 import { postCollection } from "@/lib/content-layer/collections";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Comment from "@/components/elements/comment/comment-loader";
+import Comment from "@/components/elements/comment-waline/comment-loader";
 import { Suspense } from "react";
 import { cache } from "react";
 
