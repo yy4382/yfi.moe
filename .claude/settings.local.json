@@ -3,7 +3,8 @@
     "allow": [
       "Bash(pnpm check-types:*)",
       "Bash(pnpm lint:*)",
-      "Bash(pnpm vitest run:*)"
+      "Bash(pnpm vitest run:*)",
+      "Bash(pnpm astro check:*)"
     ],
     "deny": []
   }

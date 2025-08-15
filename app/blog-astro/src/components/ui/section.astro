@@ -1,5 +1,6 @@
 ---
 import { cva } from "class-variance-authority";
+import type { ClassValue } from "clsx";
 import { cn } from "@/lib/utils/cn";
 
 interface Props {
@@ -31,10 +32,15 @@ const sectionInner = cva("", {
   },
 });
 
-const sectionContainer = (className?: string) =>
+const sectionContainer = (className?: ClassValue) =>
   cn("@container main-container h-full", className);
 
-const sectionOuter = (className?: string) =>
+/**
+ * Card outer container
+ *
+ * `border-b border-container`
+ */
+const sectionOuter = (className?: ClassValue) =>
   cn("border-b border-container", className);
 ---
 
