@@ -6,8 +6,6 @@ const envSchema = z.object({
 
   UNSUBSCRIBE_SECRET: z.string(),
 
-  UPSTASH_REDIS_REST_URL: z.url(),
-  UPSTASH_REDIS_REST_TOKEN: z.string(),
   BETTER_AUTH_SECRET: z.string(),
   DATABASE_URL: z.string(),
 
