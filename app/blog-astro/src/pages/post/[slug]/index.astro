@@ -1,0 +1,52 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import NavLayout from "@/components/layouts/NavLayout.astro";
+import ArticleHero from "@/components/modules/article/article-hero.astro";
+import ArticleContent from "@/components/modules/article/article-content.astro";
+import CopyrightCard from "@/components/modules/article/copyright-card.astro";
+import PrevNext from "@/components/modules/article/prev-next.astro";
+import { getSeo } from "@/lib/utils/SEO";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("post");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+  }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  throw new Error("Slug is required");
+}
+
+const post = await getEntry("post", slug);
+
+if (!post) {
+  return Astro.redirect("/404");
+}
+
+const { data, body } = post;
+
+const seoConfig = getSeo({
+  title: post.data.title,
+  description: post.data.description,
+  image: post.data.image
+    ? new URL(post.data.image, Astro.url).toString()
+    : `${Astro.url.toString().endsWith("/") ? Astro.url.toString().slice(0, -1) : Astro.url.toString()}/og.png`,
+  type: "article",
+});
+---
+
+<NavLayout seoConfig={seoConfig}>
+  <ArticleHero
+    title={data.title}
+    date={data.date}
+    updated={data.updated}
+    tags={data.tags}
+  />
+  <ArticleContent text={body || ""} />
+  {data.copyright && <CopyrightCard />}
+  <PrevNext currentSlug={slug} />
+</NavLayout>

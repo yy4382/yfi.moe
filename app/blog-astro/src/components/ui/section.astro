@@ -1,0 +1,53 @@
+---
+import { cva } from "class-variance-authority";
+import type { ClassValue } from "clsx";
+import { cn } from "@/lib/utils/cn";
+
+interface Props {
+  class?: string;
+  padding?: "sm" | "article" | "postList";
+  bg?: "grid";
+  classOuter?: string;
+  classContainer?: string;
+}
+
+const {
+  class: className,
+  padding,
+  bg,
+  classOuter,
+  classContainer,
+} = Astro.props;
+
+const sectionInner = cva("", {
+  variants: {
+    padding: {
+      sm: "px-6 py-4",
+      article: "px-4 py-18",
+      postList: "px-6 @xl:px-10 @4xl:px-16 @6xl:px-32",
+    },
+    bg: {
+      grid: "bg-grid",
+    },
+  },
+});
+
+const sectionContainer = (className?: ClassValue) =>
+  cn("@container main-container h-full", className);
+
+/**
+ * Card outer container
+ *
+ * `border-b border-container`
+ */
+const sectionOuter = (className?: ClassValue) =>
+  cn("border-b border-container", className);
+---
+
+<section class={sectionOuter(classOuter)}>
+  <div class={sectionContainer(classContainer)}>
+    <div class={cn(sectionInner({ padding, bg, className }))}>
+      <slot />
+    </div>
+  </div>
+</section>

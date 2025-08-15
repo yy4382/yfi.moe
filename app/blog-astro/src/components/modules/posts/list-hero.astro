@@ -1,0 +1,19 @@
+---
+import Section from "@/components/ui/section.astro";
+
+interface Props {
+  title: string;
+  desc?: string;
+}
+
+const { title, desc } = Astro.props;
+---
+
+<Section
+  class="flex h-52 flex-col items-start justify-center lg:h-96"
+  padding="postList"
+  bg="grid"
+>
+  <h1 class="text-heading text-5xl font-bold @3xl:text-6xl">{title}</h1>
+  {desc && <p class="text-content mt-4 ml-1 text-lg">{desc}</p>}
+</Section>

@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+// import { getDesc } from "@utils/markdown";
+import { getSeo } from "@/lib/utils/SEO";
+import NavLayout from "@/components/layouts/NavLayout.astro";
+import ArticleHero from "@/components/modules/article/article-hero.astro";
+import ArticleContent from "@/components/modules/article/article-content.astro";
+
+export async function getStaticPaths() {
+  const pages = await getCollection("page");
+  return pages.map((page) => ({
+    params: { page: page.id },
+    props: { page },
+  }));
+}
+const { page } = Astro.props;
+
+const seoConfig = getSeo({
+  title: page.data.title,
+  description: page.data.description,
+  image: page.data.image
+    ? new URL(page.data.image, Astro.url).toString()
+    : undefined,
+  type: "article",
+});
+---
+
+<NavLayout seoConfig={seoConfig}>
+  <ArticleHero
+    title={page.data.title}
+    date={page.data.date}
+    updated={page.data.updated}
+  />
+  <ArticleContent text={page.body || ""} />
+</NavLayout>

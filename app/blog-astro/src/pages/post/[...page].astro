@@ -1,0 +1,30 @@
+---
+import { getSortedPosts } from "@/lib/utils/content";
+import NavLayout from "@/components/layouts/NavLayout.astro";
+import PostListLayout from "@/components/modules/posts/post-list-layout.astro";
+import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
+import { getSeo } from "@/lib/utils/SEO";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getSortedPosts();
+  return paginate(allPosts, { pageSize: 15 });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props;
+
+// Build pagination URLs: /post for page 1, /post/2 for page 2, etc.
+const baseUrl = "/post";
+
+const seoConfig = getSeo({ title: "文章列表", noindex: true });
+---
+
+<NavLayout seoConfig={seoConfig}>
+  <PostListLayout
+    paginationPage={page}
+    baseUrl={baseUrl}
+    title="文章列表"
+    desc={`共 ${page.total} 篇。${page.lastPage !== 1 ? `第 ${page.currentPage} / ${page.lastPage} 页。` : ""}`}
+  />
+</NavLayout>

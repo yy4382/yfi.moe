@@ -1,0 +1,46 @@
+---
+import NavLayout from "@/components/layouts/NavLayout.astro";
+import PostListLayout from "@/components/modules/posts/post-list-layout.astro";
+import { getSortedPosts } from "@/lib/utils/content";
+import { getSeo } from "@/lib/utils/SEO";
+import type {
+  GetStaticPaths,
+  // InferGetStaticParamsType,
+  InferGetStaticPropsType,
+} from "astro";
+import type { CollectionEntry } from "astro:content";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getSortedPosts();
+
+  const uniqueTags = allPosts.reduce(
+    (acc, post) => {
+      post.data.tags.forEach((tag) => {
+        tag in acc ? acc[tag].push(post) : (acc[tag] = [post]);
+      });
+      return acc;
+    },
+    {} as Record<string, CollectionEntry<"post">[]>
+  );
+
+  return Object.entries(uniqueTags).flatMap(([tag, posts]) => {
+    return paginate(posts, { pageSize: 15, params: { tag } });
+  });
+}) satisfies GetStaticPaths;
+
+// type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props;
+const { tag } = Astro.params;
+
+const seoConfig = getSeo({ title: `Tag: ${tag}`, noindex: true });
+---
+
+<NavLayout seoConfig={seoConfig}>
+  <PostListLayout
+    title={`Tag: ${tag}`}
+    paginationPage={page}
+    baseUrl={`/tags/${tag}`}
+  />
+</NavLayout>

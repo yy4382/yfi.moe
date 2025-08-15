@@ -1,0 +1,29 @@
+---
+import { markdownToHeadings } from "@repo/markdown/parse";
+import MarkdownArticle from "@/components/markdown/markdown-article.astro";
+import Toc from "./toc/Toc";
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const headings = markdownToHeadings(text);
+---
+
+<div class="border-container border-b">
+  <div class="main-container @container relative h-full">
+    <div class="sticky top-0 z-50">
+      <div class="flex justify-end">
+        <Toc headings={headings} client:load />
+      </div>
+    </div>
+    <div class="px-4 py-18">
+      <div
+        class="prose prose-gray dark:prose-invert prose-headings:scroll-mt-8 mx-auto break-words"
+      >
+        <MarkdownArticle content={text} />
+      </div>
+    </div>
+  </div>
+</div>
