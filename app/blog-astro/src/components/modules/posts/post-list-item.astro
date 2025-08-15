@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostAttrTime from "./post-attr-time.astro";
+import PostAttrTags from "./post-attr-tags.astro";
+import { cn } from "@/lib/utils/cn";
+
+interface Props {
+  post: CollectionEntry<"post">;
+  class?: string;
+}
+
+const { post, class: className } = Astro.props;
+---
+
+<div
+  class={cn(
+    "main-container border-container @container h-full border-b",
+    className,
+  )}
+>
+  <div class="px-6 py-8 @xl:px-10 @4xl:px-16 @4xl:py-12 @6xl:px-32">
+    <a href={`/post/${post.id}`}>
+      <h2 class="hover:text-accent-foreground mb-2 text-lg font-bold transition-colors @xl:text-xl @4xl:text-3xl">
+        {post.data.title}
+      </h2>
+    </a>
+    <div class="text-comment flex flex-wrap gap-2 text-[0.8rem] lg:gap-3">
+      <PostAttrTime date={post.data.date} updated={post.data.updated} />
+      <PostAttrTags tags={post.data.tags} />
+    </div>
+    <div class="prose dark:prose-invert mt-4 hidden max-w-[90ch] @4xl:block">
+      <p>{post.data.description}</p>
+    </div>
+  </div>
+</div>

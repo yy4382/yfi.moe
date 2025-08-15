@@ -1,0 +1,22 @@
+---
+import "@/styles/global.css";
+import "@repo/markdown/style";
+import MarkdownArticle from "@/components/markdown/markdown-article.astro";
+import BaseLayout from "@/components/layouts/BaseLayout.astro";
+
+const content = `
+# 你好 markdown
+\`\`\`tsx
+const a = 1;
+\`\`\`
+
+<!-- ::github-repo{user="yy4382" repo="StupidGo"} -->
+
+[link](/test-md2)
+
+`;
+---
+
+<BaseLayout>
+  <MarkdownArticle content={content} />
+</BaseLayout>

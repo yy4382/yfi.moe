@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ListHero from "./list-hero.astro";
+import PostListItem from "./post-list-item.astro";
+import Pagination from "./pagination.astro";
+
+interface Props {
+  posts: CollectionEntry<"post">[];
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  title: string;
+  desc?: string;
+}
+
+const { posts, currentPage, totalPages, baseUrl, title, desc } = Astro.props;
+---
+
+<div>
+  <div class="border-container border-b">
+    <ListHero title={title} desc={desc} />
+    {posts.map((post, i) => (
+      <PostListItem
+        post={post}
+        class={i === posts.length - 1 ? "border-b-0" : ""}
+      />
+    ))}
+  </div>
+  {totalPages > 1 && (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      baseUrl={baseUrl}
+    />
+  )}
+</div>

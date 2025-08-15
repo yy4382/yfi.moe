@@ -170,3 +170,5 @@ cd app/blog && pnpm test  # if available
   - Do not use `any` to bypass TypeScript type checking
   - Always prefer explicit type annotations and interfaces
   - Use type narrowing and type guards instead of type assertions
+
+- astro components should be this-kind-of-name.astro, not ThisKindOfName.astro

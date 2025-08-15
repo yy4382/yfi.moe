@@ -1,0 +1,95 @@
+---
+import { markdownToHtml } from "@repo/markdown/parse";
+import { ArticlePreset } from "@repo/markdown/preset";
+import rehypeReplaceCustomElements, {
+  type Options,
+} from "@repo/markdown/plugins/rehype-replace-item";
+
+import "@/styles/global.css";
+import "@repo/markdown/style";
+import { CopyButton } from "@/components/markdown/components/copy-button";
+import { renderToString } from "react-dom/server";
+import { createElement } from "react";
+import { GhCard } from "@/components/markdown/components/gh-card";
+
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+
+const preset = {
+  plugins: [...ArticlePreset.plugins!],
+  settings: ArticlePreset.settings,
+};
+preset.plugins.push([
+  rehypeReplaceCustomElements,
+  {
+    map: {
+      "copy-button": renderToString(
+        createElement("div", {
+          "data-react-component": "CopyButton",
+          children: createElement(CopyButton),
+        })
+      ),
+      "github-repo": (_, props) =>
+        renderToString(
+          createElement("div", {
+            "data-react-component": "GhCard",
+            "data-props": JSON.stringify(props),
+            children: createElement(GhCard, {
+              user: props.user as string,
+              repo: props.repo as string,
+            }),
+          })
+        ),
+    } satisfies Options["map"],
+  },
+]);
+
+const html = await markdownToHtml(content, { preset });
+---
+
+<div
+  set:html={html}
+  class="prose prose-gray dark:prose-invert prose-headings:scroll-mt-8 mx-auto break-words"
+/>
+
+<script>
+  import { hydrateRoot, type Root } from "react-dom/client";
+  import { CopyButton } from "@/components/markdown/components/copy-button";
+  import { createElement } from "react";
+  import { GhCard } from "@/components/markdown/components/gh-card";
+
+  const roots: Root[] = [];
+
+  function hydrate() {
+    const CopyButtons = document.querySelectorAll(
+      "[data-react-component='CopyButton']"
+    );
+    CopyButtons.forEach((button) => {
+      const root = hydrateRoot(button, createElement(CopyButton));
+      roots.push(root);
+    });
+    const GhCards = document.querySelectorAll(
+      "[data-react-component='GhCard']"
+    );
+    GhCards.forEach((card) => {
+      const root = hydrateRoot(
+        card,
+        createElement(GhCard, JSON.parse(card.getAttribute("data-props")!))
+      );
+      roots.push(root);
+    });
+  }
+
+  function unmount() {
+    roots.forEach((root) => {
+      root.unmount();
+    });
+    roots.length = 0;
+  }
+
+  document.addEventListener("astro:page-load", hydrate);
+  document.addEventListener("astro:after-swap", unmount);
+</script>

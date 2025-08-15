@@ -1,0 +1,99 @@
+---
+import { siteConfig, siteDomain } from "@/config/site";
+import { Image } from "astro:assets";
+import logo from "@/assets/logo.png";
+import { Icon } from "astro-icon/components";
+---
+
+<div
+  class="main-container flex flex-col-reverse items-center justify-between gap-6 px-6 py-4 md:flex-row"
+>
+  <a href="/" class="flex gap-4 text-2xl font-bold">
+    <Image
+      src={logo}
+      alt="logo"
+      class="h-8 w-8 rounded-lg"
+      width="32"
+      height="32"
+    />
+    Yunfi
+  </a>
+  <div
+    class="flex w-full flex-shrink flex-grow flex-col items-start gap-8 md:w-[unset] md:items-end md:gap-2"
+  >
+    <ul
+      class="text-comment flex flex-col items-start self-center md:self-end gap-x-6 gap-y-1 lg:flex-row lg:items-end"
+    >
+      <li>
+        <span class="text-content inline-flex items-center font-medium">
+          关于
+          <Icon name="lucide:chevron-right" size={16} />
+        </span>
+        <span class="inline-flex gap-2">
+          <a href="/about">关于我</a>
+          <a href="/site-history">关于本站</a>
+          <a href="https://github.com/yy4382/yfi.moe">本站源码</a>
+        </span>
+      </li>
+      <li>
+        <span class="text-content inline-flex items-center font-medium">
+          联系
+          <Icon name="lucide:chevron-right" size={16} />
+        </span>
+        <span class="inline-flex gap-2">
+          <button class="copy-email" data-email="yy4382@gmail.com"
+            >发邮件</button
+          >
+          <a href="https://t.me/YunfiDiscuz">Telegram</a>
+          <a href="https://github.com/yy4382">GitHub</a>
+        </span>
+      </li>
+    </ul>
+    <div
+      class="flex flex-col items-center self-center text-sm md:items-end md:self-end"
+    >
+      <span class="text-comment inline-flex items-center gap-x-1">
+        <span class="inline-flex items-center gap-0.5">
+          <Icon name="lucide:copyright" size={16} />
+          2023-2024
+          <span>
+            <a href={siteDomain} class="underline"> {siteConfig.title}</a>.
+          </span>
+        </span>
+        <span class="opacity-70">|</span>
+        <a href="/feed.xml" class="inline-flex items-center gap-0.5">
+          <Icon name="lucide:rss" size={16} />
+          RSS
+        </a>
+        <span class="opacity-70">|</span>
+        <a href="/sitemap.xml" class="inline-flex items-center gap-0.5">
+          <Icon name="lucide:map" size={16} />
+          Site Map
+        </a>
+      </span>
+      <span class="text-comment">
+        Powered by{" "}
+        <a href="https://astro.build" class="underline"> Astro</a>. See all{" "}
+        <a href="/credits" class="underline"> Credits</a>.
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initCopyEmail() {
+    document.querySelectorAll(".copy-email").forEach((button) => {
+      button.addEventListener("click", () => {
+        const email = button.getAttribute("data-email");
+        if (email) {
+          navigator.clipboard.writeText(email).catch(() => {
+            alert("复制失败，可能您没有使用 HTTPS 访问");
+          });
+        }
+      });
+    });
+  }
+
+  initCopyEmail();
+  document.addEventListener("astro:page-load", initCopyEmail);
+</script>
