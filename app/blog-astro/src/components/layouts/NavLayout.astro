@@ -3,12 +3,10 @@ import BaseLayout from "./BaseLayout.astro";
 import Navbar from "@/components/modules/nav/navbar.astro";
 import Footer from "@/components/modules/nav/footer.astro";
 
-interface Props {
-  title?: string;
-}
+type Props = Parameters<typeof BaseLayout>[0];
 ---
 
-<BaseLayout>
+<BaseLayout {...Astro.props}>
   <div class="bg-bg text-content m-0 bg-fixed p-0">
     <div class="grid min-h-[100lvh] grid-rows-[auto_auto_1fr_auto]">
       <Navbar />

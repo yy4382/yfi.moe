@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { Icon } from "astro-icon/components";
 import { cn } from "@/lib/utils/cn";
 import readingTime from "reading-time";
+import { getSeo } from "@/lib/utils/SEO";
 
 const posts = await getSortedPosts();
 const firstDate = posts[0]!.data.date;
@@ -20,9 +21,14 @@ const statistics = {
   }, 0),
   tags: [...new Set(posts.map((post) => post.data.tags).flat())].length,
 };
+
+const seoConfig = getSeo({
+  title: "首页",
+  description: "笔记与分享，代码和生活",
+});
 ---
 
-<NavLayout>
+<NavLayout seoConfig={seoConfig}>
   <Section
     class="flex min-h-96 flex-col center gap-4 md:min-h-[40rem]"
     bg="grid"

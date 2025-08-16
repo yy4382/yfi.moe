@@ -10,7 +10,7 @@ export default defineConfig({
   integrations: [react(), icon()],
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), fileSystemPath()],
   },
 
   env: {
@@ -21,3 +21,18 @@ export default defineConfig({
     },
   },
 });
+
+function fileSystemPath() {
+  return {
+    name: "vite-plugin-file-system-path",
+
+    transform(_: unknown, id: string) {
+      if (id.endsWith("?filepath")) {
+        return {
+          code: `export default ${JSON.stringify(id.slice(0, -9))}`,
+          map: null,
+        };
+      }
+    },
+  };
+}

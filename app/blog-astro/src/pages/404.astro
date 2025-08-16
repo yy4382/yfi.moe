@@ -1,0 +1,65 @@
+---
+import Section from "@/components/ui/section.astro";
+import { getSeo } from "@/lib/utils/SEO";
+import NavLayout from "@/components/layouts/NavLayout.astro";
+import { contactInfo } from "@/config/author";
+const seoConfig = getSeo({ title: "404" });
+const mailToLink = contactInfo.find((info) =>
+  info.link.startsWith("mailto:")
+)?.link;
+---
+
+<NavLayout seoConfig={seoConfig} stopTrack>
+  <Section class="mx-auto my-8 max-w-xl text-heading">
+    <div class="flex flex-col gap-6">
+      <h1 class="text-5xl font-semibold">哎呀！网页走丢啦</h1>
+      <div class="flex gap-4">
+        <a class="block rounded-md bg-primary/80 p-2 text-black" href="/"
+          >返回首页</a
+        >
+        <button class="rounded-md bg-primary/80 p-2 text-black" id="contact-me"
+          >联系我（邮件）</button
+        >
+      </div>
+      <div class="prose dark:prose-invert">
+        <p>您遇到了一个 404 错误。</p>
+        <h2>为什么会遇到这个错误？</h2>
+        <p>这可能是因为：</p>
+        <ul>
+          <li>您输入的网址有误</li>
+          <li>您访问的页面已被删除或移动</li>
+          <li>其他地方给出的本站网址有误</li>
+        </ul>
+      </div>
+    </div>
+  </Section>
+</NavLayout>
+
+<script is:inline define:vars={{ mailToLink }}>
+  function constructMailToLink() {
+    if (!mailToLink) {
+      alert("站长未设置联系邮箱");
+      throw new Error(
+        "Email not set: to solve, add a new entry to the contactInfo array in `configs/author.ts` with a link property that starts with `mailto:`"
+      );
+    }
+    const subject = `404 问题反馈：${window.location.href}`;
+    const body =
+      `在该 URL 中遇到了 404 问题：${window.location.href}\n\n` +
+      `可以告诉我们您在哪里发现了这个 404 的 URL 吗？\n\n\n` +
+      `有其他需要反馈的相关信息吗？\n\n\n` +
+      `自动生成的诊断信息：\n` +
+      `UA: ${navigator.userAgent}\n` +
+      `上一个页面：${document.referrer}\n` +
+      `*如果您不愿意与我们分享该信息，可以自行删除\n`;
+    return (
+      `${mailToLink}` +
+      `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    );
+  }
+  const contactMeBtn = document.getElementById("contact-me");
+  // open in new tab
+  contactMeBtn.addEventListener("click", () => {
+    window.open(constructMailToLink(), "_blank");
+  });
+</script>

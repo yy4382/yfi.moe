@@ -1,22 +1,22 @@
 ---
-// import { type SEOProps, SEO } from "astro-seo";
+import { type SEOProps, SEO } from "astro-seo";
 // import runtimeEnv from "@utils/runtimeEnv";
-// import { siteConfig } from "@configs/site";
+import { siteConfig } from "@/config/site";
 
 import "@repo/markdown/style";
 import "@/styles/global.css";
 
 import { ClientRouter } from "astro:transitions";
 import Favicon from "@/components/html-head/Favicon.astro";
-// import LoadingIndicator from "astro-loading-indicator/component";
+import LoadingIndicator from "astro-loading-indicator/component";
 // import TagManagers from "@comp/modules/head/TagManagers.astro";
 
 interface Props {
-  // seoConfig: SEOProps;
-  // stopTrack?: boolean;
+  seoConfig: SEOProps;
+  stopTrack?: boolean;
 }
 
-// const { seoConfig, stopTrack } = Astro.props;
+const { seoConfig, stopTrack } = Astro.props;
 ---
 
 <html lang="zh-Hans">
@@ -26,16 +26,16 @@ interface Props {
     <link rel="sitemap" href="/sitemap-index.xml" />
     <!-- <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> -->
     <!-- {runtimeEnv() === "production" && !stopTrack && <TagManagers />} -->
-    <!-- <SEO
+    <SEO
       {...seoConfig}
       titleTemplate={"%s - " + siteConfig.title}
       titleDefault={siteConfig.title}
       canonical={Astro.url.href.replace(/\/$/, "")}
-    /> -->
+    />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter fallback="swap" />
-    <!-- <LoadingIndicator color="hsl(236, 100%, 81%)" /> -->
+    <LoadingIndicator color="hsl(236, 100%, 81%)" />
   </head>
   <body
     class="m-0 overflow-x-hidden bg-bg bg-fixed p-0 text-content"

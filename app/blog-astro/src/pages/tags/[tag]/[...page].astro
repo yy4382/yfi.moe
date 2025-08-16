@@ -2,7 +2,7 @@
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import PostListLayout from "@/components/modules/posts/post-list-layout.astro";
 import { getSortedPosts } from "@/lib/utils/content";
-// import { getSeo } from "@utils/SEO";
+import { getSeo } from "@/lib/utils/SEO";
 import type {
   GetStaticPaths,
   // InferGetStaticParamsType,
@@ -34,10 +34,10 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { page } = Astro.props;
 const { tag } = Astro.params;
 
-// const seoConfig = getSeo({ title: `Tag: ${tag}`, noindex: true });
+const seoConfig = getSeo({ title: `Tag: ${tag}`, noindex: true });
 ---
 
-<NavLayout>
+<NavLayout seoConfig={seoConfig}>
   <PostListLayout
     title={`Tag: ${tag}`}
     paginationPage={page}
