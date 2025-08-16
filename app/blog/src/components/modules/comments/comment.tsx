@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 
 export function Comment({ pathname }: { pathname: string }) {
-  console.log("Comment", pathname);
   const [show, setShow] = useState(false);
   useEffect(() => {
     setShow(true);
