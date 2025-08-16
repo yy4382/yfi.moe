@@ -4,10 +4,16 @@ import { defineConfig, envField } from "astro/config";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
+import { siteDomain } from "./src/config/site";
+
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), icon()],
+  integrations: [react(), icon(), sitemap()],
+  output: "static",
+
+  site: siteDomain,
 
   vite: {
     plugins: [tailwindcss(), fileSystemPath()],
