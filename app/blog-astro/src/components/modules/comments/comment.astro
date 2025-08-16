@@ -1,0 +1,8 @@
+---
+import Section from "@/components/ui/section.astro";
+import { Comment as CommentComponent } from "./comment";
+---
+
+<Section padding="article" class="mx-auto min-h-72 max-w-2xl py-12">
+  <CommentComponent pathname={Astro.url.pathname} client:visible />
+</Section>

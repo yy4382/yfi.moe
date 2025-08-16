@@ -1,0 +1,30 @@
+{
+  "name": "@repo/comment-waline",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/section.tsx"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "packageManager": "pnpm@10.13.1",
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "catalog:",
+    "@types/react": "catalog:",
+    "@waline/api": "^1.0.0",
+    "clsx": "^2.1.1",
+    "jotai": "^2.13.0",
+    "lucide-react": "^0.525.0",
+    "motion": "^12.23.12",
+    "react": "catalog:",
+    "sonner": "catalog:",
+    "tailwind-merge": "^3.3.1",
+    "zod": "catalog:"
+  }
+}

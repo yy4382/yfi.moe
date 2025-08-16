@@ -5,6 +5,8 @@
 
 @import "./icons.css";
 
+@source "../../../../lib/comment-waline/src";
+
 /* @custom-variant dark (&:is(.dark *)); */
 
 @theme {

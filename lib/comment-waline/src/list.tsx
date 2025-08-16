@@ -7,17 +7,16 @@ import {
 } from "@tanstack/react-query";
 import {
   getComment,
-  WalineChildComment,
-  WalineRootComment,
+  type WalineChildComment,
+  type WalineRootComment,
   deleteComment as deleteCommentApi,
 } from "@waline/api";
 import { useAtomValue } from "jotai";
-import Image from "next/image";
 import { EditIcon, Loader2Icon, ReplyIcon, TrashIcon } from "lucide-react";
 import { CommentBoxEdit, CommentBoxNew } from "./box";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { cn } from "@/lib/utils/cn";
+import clsx from "clsx";
 
 const PER_PAGE = 10;
 
@@ -111,9 +110,11 @@ export function CommentList() {
             <motion.button
               key={sortByOption}
               onClick={() => setSortBy(sortByOption)}
-              className={cn(
-                "text-comment py-1 text-sm",
-                sortBy === sortByOption && "text-content-primary",
+              className={clsx(
+                "py-1 text-sm",
+                sortBy === sortByOption
+                  ? "text-content-primary"
+                  : "text-comment",
               )}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -235,8 +236,7 @@ function CommentItem({ comment: entry }: CommentItemProps) {
       <div className="flex items-end gap-3 border-gray-100 py-2 last:border-b-0">
         {/* 用户头像 */}
         <div className="flex-shrink-0">
-          <Image
-            unoptimized
+          <img
             src={entry.avatar}
             alt={entry.nick}
             width={36}
