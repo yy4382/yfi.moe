@@ -15,16 +15,17 @@
     "typescript": "catalog:"
   },
   "dependencies": {
-    "@tanstack/react-query": "catalog:",
-    "@types/react": "catalog:",
     "@waline/api": "^1.0.0",
     "clsx": "^2.1.1",
     "jotai": "^2.13.0",
     "lucide-react": "^0.525.0",
     "motion": "^12.23.12",
-    "react": "catalog:",
-    "sonner": "catalog:",
-    "tailwind-merge": "^3.3.1",
     "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "@types/react": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "sonner": "catalog:"
   }
 }
