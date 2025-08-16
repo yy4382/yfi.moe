@@ -8,6 +8,7 @@ import CopyrightCard from "@/components/modules/article/copyright-card.astro";
 import PrevNext from "@/components/modules/article/prev-next.astro";
 import { getSeo } from "@/lib/utils/SEO";
 import { getDesc } from "@/lib/content/get-description";
+import Comment from "@/components/modules/comments/comment.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("post");
@@ -50,4 +51,5 @@ const seoConfig = getSeo({
   <ArticleContent text={body || ""} />
   {data.copyright && <CopyrightCard />}
   <PrevNext currentSlug={slug} />
+  <Comment />
 </NavLayout>

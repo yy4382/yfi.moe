@@ -10,7 +10,6 @@ import {
 import { userInfoAtom, userInfoSchema, YulineContext } from "./utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue, useSetAtom } from "jotai";
-import Image from "next/image";
 import { Loader2Icon, SendIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import z from "zod";
@@ -304,12 +303,11 @@ function UserBox({ submit, userInfo }: UserBoxProps) {
   return (
     <div className="flex w-full items-end gap-4">
       <div className="group relative mb-2 flex-shrink-0">
-        <Image
+        <img
           src={userInfo.avatar}
           alt={userInfo.display_name}
           width={56}
           height={56}
-          unoptimized
           className="aspect-square size-14 rounded-full ring-2 ring-black dark:ring-white"
         />
         <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-gray-500/50 p-0.5 group-hover:block">
