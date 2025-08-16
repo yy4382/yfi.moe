@@ -49,49 +49,6 @@ function parseGhInfo(info: string | undefined) {
   };
 }
 
-// const baseSchema = z.object({
-//   title: z.string(),
-//   description: z.string().optional(),
-
-//   date: z.date(),
-//   updated: z.date().optional(),
-
-//   image: z.string().optional(),
-//   copyright: z.boolean().default(true),
-
-//   hastString: z.string(),
-//   headings: z.array(
-//     z.object({
-//       slug: z.string(),
-//       text: z.string(),
-//       depth: z.number(),
-//     }),
-//   ),
-//   readingTime: z.object({
-//     text: z.string(),
-//     minutes: z.number(),
-//     time: z.number(),
-//     words: z.number(),
-//   }),
-// });
-
-// function parseGhInfo(info: string | undefined) {
-//   if (!info) {
-//     throw new Error("GH info is not set");
-//   }
-//   const slices = info.split("__");
-//   if (slices.length !== 4) {
-//     throw new Error(`Invalid GH info format: ${info}`);
-//   }
-//   const [owner, repo, ref, path] = slices;
-//   return {
-//     owner,
-//     repo,
-//     ref,
-//     path,
-//   };
-// }
-
 const post = defineCollection({
   loader: githubLoader({
     ...parseGhInfo(POST_GH_INFO),

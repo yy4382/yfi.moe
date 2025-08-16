@@ -3,34 +3,37 @@ import type { CollectionEntry } from "astro:content";
 import ListHero from "./list-hero.astro";
 import PostListItem from "./post-list-item.astro";
 import Pagination from "./pagination.astro";
+import type { Page as PaginationPage } from "astro";
 
 interface Props {
-  posts: CollectionEntry<"post">[];
-  currentPage: number;
-  totalPages: number;
+  paginationPage: PaginationPage<CollectionEntry<"post">>;
   baseUrl: string;
   title: string;
   desc?: string;
 }
 
-const { posts, currentPage, totalPages, baseUrl, title, desc } = Astro.props;
+const { paginationPage, baseUrl, title, desc } = Astro.props;
 ---
 
 <div>
   <div class="border-container border-b">
     <ListHero title={title} desc={desc} />
-    {posts.map((post, i) => (
-      <PostListItem
-        post={post}
-        class={i === posts.length - 1 ? "border-b-0" : ""}
-      />
-    ))}
+    {
+      paginationPage.data.map((post, i) => (
+        <PostListItem
+          post={post}
+          class={i === paginationPage.data.length - 1 ? "border-b-0" : ""}
+        />
+      ))
+    }
   </div>
-  {totalPages > 1 && (
-    <Pagination
-      currentPage={currentPage}
-      totalPages={totalPages}
-      baseUrl={baseUrl}
-    />
-  )}
+  {
+    paginationPage.lastPage > 1 && (
+      <Pagination
+        currentPage={paginationPage.currentPage}
+        totalPages={paginationPage.lastPage}
+        baseUrl={baseUrl}
+      />
+    )
+  }
 </div>

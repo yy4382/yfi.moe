@@ -2,10 +2,7 @@
 import { getSortedPosts } from "@/lib/utils/content";
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import PostListLayout from "@/components/modules/posts/post-list-layout.astro";
-import type {
-  InferGetStaticPropsType,
-  GetStaticPaths,
-} from "astro";
+import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await getSortedPosts();
@@ -22,9 +19,7 @@ const baseUrl = "/post";
 
 <NavLayout>
   <PostListLayout
-    posts={page.data}
-    currentPage={page.currentPage}
-    totalPages={page.lastPage}
+    paginationPage={page}
     baseUrl={baseUrl}
     title="文章列表"
     desc={`共 ${page.total} 篇。${page.lastPage !== 1 ? `第 ${page.currentPage} / ${page.lastPage} 页。` : ""}`}
