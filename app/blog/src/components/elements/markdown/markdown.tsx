@@ -10,6 +10,8 @@ import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { markdownToHast } from "@repo/markdown/parse";
 import { Redis } from "@upstash/redis";
 import { after } from "next/server";
+import { ComponentProps } from "react";
+const { renderToString } = await import("react-dom/server");
 
 const redis = Redis.fromEnv({ cache: "force-cache" });
 
@@ -45,6 +47,12 @@ export async function Markdown({
     components: {
       "copy-button": CopyButton,
       "github-repo": GhCard,
+      // since code highlight will make the children big (thus the RSC payload will be big),
+      // inline as html can reduce the payload size
+      code: function DirectCode(props: ComponentProps<"code">) {
+        const children = renderToString(<>{props.children}</>);
+        return <code dangerouslySetInnerHTML={{ __html: children }} />;
+      },
     },
   });
 
