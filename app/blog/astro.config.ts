@@ -25,6 +25,16 @@ export default defineConfig({
       POST_GH_INFO: envField.string({ context: "server", access: "secret" }),
       PAGE_GH_INFO: envField.string({ context: "server", access: "secret" }),
       WALINE_URL: envField.string({ context: "client", access: "public" }),
+      POSTHOG_KEY: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
+      POSTHOG_HOST: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
     },
   },
 });
