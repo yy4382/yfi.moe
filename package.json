@@ -8,7 +8,7 @@
   "author": "",
   "type": "module",
   "scripts": {
-    "build": "turbo run build",
+    "build:frontend": "turbo run build --filter=blog-astro",
     "check-types": "turbo run check-types",
     "dev": "turbo run dev",
     "prepare": "husky"
