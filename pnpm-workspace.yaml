@@ -11,5 +11,5 @@ catalog:
   react-dom: 19.1.1
   sonner: 2.0.7
   typescript: 5.9.2
-  vitest: ^3.2.4
+  vitest: 3.2.4
   zod: 4.0.14

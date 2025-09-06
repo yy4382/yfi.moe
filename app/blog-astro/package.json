@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "d": "turbo run dev --filter=blog-astro...",
+    "d": "turbo run dev --filter=@repo/backend --filter=blog-astro",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -16,6 +16,7 @@
     "@astrojs/sitemap": "^3.5.0",
     "@octokit/openapi-types": "^25.1.0",
     "@repo/comment-waline": "workspace:*",
+    "@repo/comment": "workspace:*",
     "@repo/markdown": "workspace:*",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.12",

@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/query-client";
-import CommentYuline from "@repo/comment-waline";
+import CommentYuline from "@repo/comment";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { WALINE_URL } from "astro:env/client";
 import { useEffect, useState } from "react";

@@ -1,0 +1,63 @@
+/// <reference types="vitest" />
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import dts from "vite-plugin-dts";
+import Icons from "unplugin-icons/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
+
+let analyzer;
+if (process.env.ANALYZE === "true") {
+  analyzer = (await import("vite-bundle-analyzer")).analyzer;
+}
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    tsconfigPaths(),
+    react(),
+    dts({ tsconfigPath: "./tsconfig.app.json", rollupTypes: true }),
+    Icons({ compiler: "jsx", jsx: "react" }),
+    tailwindcss(),
+    ...((process.env.ANALYZE === "true" && analyzer
+      ? [analyzer()].flat()
+      : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        []) as any[]),
+  ],
+  build: {
+    sourcemap: true,
+    lib: {
+      entry: resolve(__dirname, "src/comment/index.tsx"),
+      name: "Yuline",
+      fileName: "yuline",
+      formats: ["es"],
+    },
+    rollupOptions: {
+      external: [
+        "react",
+        "react-dom",
+        "tailwind-merge",
+        "sonner",
+        "@tanstack/react-query",
+      ],
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+        },
+      },
+    },
+  },
+  server: {
+    port: 3000,
+  },
+  test: {
+    setupFiles: ["./test/vitest-cleanup-after-each.ts"],
+    environment: "jsdom",
+  },
+});
