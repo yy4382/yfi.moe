@@ -9,7 +9,7 @@ import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import Favicon from "@/components/html-head/Favicon.astro";
 import LoadingIndicator from "astro-loading-indicator/component";
-// import TagManagers from "@comp/modules/head/TagManagers.astro";
+import TagManagers from "@/components/html-head/TagManager.astro";
 
 interface Props {
   seoConfig: SEOProps;
@@ -26,7 +26,7 @@ const { seoConfig, stopTrack } = Astro.props;
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
     <!-- <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> -->
-    <!-- {runtimeEnv() === "production" && !stopTrack && <TagManagers />} -->
+    {import.meta.env.PROD && !stopTrack && <TagManagers />}
     <SEO
       {...seoConfig}
       titleTemplate={"%s - " + siteConfig.title}
