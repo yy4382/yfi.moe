@@ -3,7 +3,9 @@
   "type": "module",
   "scripts": {
     "test": "vitest --run",
-    "check-types": "tsc"
+    "check-types": "tsc --noEmit",
+    "build": "tsc",
+    "dev": "tsc --watch"
   },
   "dependencies": {
     "@shikijs/rehype": "^3.8.1",
@@ -41,9 +43,9 @@
     "vitest": "catalog:"
   },
   "exports": {
-    "./parse": "./src/parse.ts",
-    "./preset": "./src/preset.ts",
-    "./plugins/*": "./src/plugins/*.ts",
+    "./parse": "./dist/parse.js",
+    "./preset": "./dist/preset.js",
+    "./plugins/*": "./dist/plugins/*.js",
     "./style": "./src/style/index.css"
   }
 }

@@ -2,9 +2,13 @@
   "name": "@repo/api",
   "type": "module",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "dev": "tsc --watch"
+  },
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./dist/*.js"
   },
   "devDependencies": {
     "typescript": "catalog:"

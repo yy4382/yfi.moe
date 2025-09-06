@@ -9,6 +9,7 @@
   "type": "module",
   "scripts": {
     "build:frontend": "turbo run build --filter=blog-astro",
+    "build:backend": "turbo run build --filter=@repo/backend",
     "check-types": "turbo run check-types",
     "dev": "turbo run dev",
     "prepare": "husky"

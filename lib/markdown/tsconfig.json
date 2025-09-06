@@ -10,8 +10,8 @@
     // "noEmit": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    // "declaration": true,
-    // "declarationMap": true,
+    "declaration": true,
+    "declarationMap": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
@@ -33,5 +33,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"]
 }
