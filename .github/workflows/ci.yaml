@@ -43,7 +43,7 @@ jobs:
               args: [--frozen-lockfile]
 
       - shell: bash
-        run: echo -e '/// <reference types="next" />\n/// <reference types="next/image-types/global" />' > app/blog/next-env.d.ts
+        run: echo -e '/// <reference types="next" />\n/// <reference types="next/image-types/global" />' > app/blog-next/next-env.d.ts
 
       - run: pnpm turbo run check-types
 

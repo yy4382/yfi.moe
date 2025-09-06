@@ -1,6 +1,10 @@
 import { env } from "@/env";
-import { authClient as createAuthClient } from "@repo/api/auth/client";
+import { createAuthClient } from "better-auth/react";
+import { adminClient, magicLinkClient } from "better-auth/client/plugins";
 
-export const authClient = createAuthClient(env.NEXT_PUBLIC_BACKEND_URL);
+export const authClient = createAuthClient({
+  baseURL: new URL("v1/auth", env.NEXT_PUBLIC_BACKEND_URL).href,
+  plugins: [adminClient(), magicLinkClient()],
+});
 
 export type Session = typeof authClient.$Infer.Session;

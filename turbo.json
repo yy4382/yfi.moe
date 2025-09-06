@@ -16,7 +16,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "cache": false,
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
     "dev": {
@@ -24,10 +24,12 @@
       "cache": false
     },
     "check-types": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["^build"]
     },
     "lint": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["^build"]
     }
   }
 }
