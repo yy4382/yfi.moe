@@ -1,0 +1,27 @@
+{
+  "cSpell.words": [
+    "Akismet",
+    "astrojs",
+    "Elysia",
+    "errmsg",
+    "optim",
+    "POSTHOG",
+    "srcset",
+    "stringbool",
+    "waline",
+    "Yuline"
+  ],
+
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.experimental.configFile": {
+    "app/blog-astro/src/styles/global.css": [
+      "lib/comment*/**/*",
+      "app/blog-astro/**/*"
+    ],
+    "app/blog-next/src/app/globals.css": ["app/blog-next/**/*"]
+  }
+}

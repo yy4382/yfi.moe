@@ -22,7 +22,6 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-.vscode
 .idea
 
 app/blog/src/content/post

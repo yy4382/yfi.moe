@@ -7,7 +7,6 @@ import { fileURLToPath } from "node:url";
 import dts from "vite-plugin-dts";
 import Icons from "unplugin-icons/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import tailwindcss from "@tailwindcss/vite";
 
 let analyzer;
 if (process.env.ANALYZE === "true") {
@@ -23,7 +22,6 @@ export default defineConfig({
     react(),
     dts({ tsconfigPath: "./tsconfig.app.json", rollupTypes: true }),
     Icons({ compiler: "jsx", jsx: "react" }),
-    tailwindcss(),
     ...((process.env.ANALYZE === "true" && analyzer
       ? [analyzer()].flat()
       : // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,6 +29,7 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true,
+    minify: false,
     lib: {
       entry: resolve(__dirname, "src/comment/index.tsx"),
       name: "Yuline",
@@ -44,13 +43,8 @@ export default defineConfig({
         "tailwind-merge",
         "sonner",
         "@tanstack/react-query",
+        "zod",
       ],
-      output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-        },
-      },
     },
   },
   server: {

@@ -8,7 +8,6 @@ import {
   type AuthClient,
 } from "./context";
 import { CommentList } from "./list";
-import "./global.css";
 
 export type CommentYulineProps = {
   serverURL: string;
