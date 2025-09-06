@@ -15,8 +15,6 @@
     "./css": "./dist/yuline.css"
   },
   "peerDependencies": {
-    "@repo/api": "workspace:*",
-    "@repo/helpers": "workspace:*",
     "@tanstack/react-query": "catalog:",
     "@types/react": "catalog:",
     "better-auth": "catalog:",
@@ -25,6 +23,8 @@
     "tailwind-merge": "^3.3.1"
   },
   "dependencies": {
+    "@repo/api": "workspace:*",
+    "@repo/helpers": "workspace:*",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
     "jotai": "^2.13.0",
