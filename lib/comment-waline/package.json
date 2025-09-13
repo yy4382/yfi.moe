@@ -23,9 +23,9 @@
     "zod": "catalog:"
   },
   "peerDependencies": {
-    "react": "catalog:",
-    "@types/react": "catalog:",
     "@tanstack/react-query": "catalog:",
+    "@types/react": "catalog:",
+    "react": "catalog:",
     "sonner": "catalog:"
   }
 }
