@@ -12,6 +12,17 @@ vi.mock("akismet-api", () => ({
   AkismetClient: vi.fn().mockImplementation(() => mockAkismetInstance),
 }));
 
+vi.mock("@/logger.js", async () => {
+  const { pino } = await import("pino");
+  return {
+    logger: pino({
+      transport: {
+        targets: [],
+      },
+    }),
+  };
+});
+
 describe("AkismetService", () => {
   let akismetService: AkismetService;
 

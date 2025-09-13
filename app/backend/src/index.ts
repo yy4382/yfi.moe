@@ -1,4 +1,3 @@
-import { logger } from "hono/logger";
 import { factory } from "@/factory.js";
 import { dbPlugin } from "@/db/db-plugin.js";
 import { betterAuthPlugin } from "@/auth/auth-plugin.js";
@@ -11,13 +10,17 @@ import { serve } from "@hono/node-server";
 import { env } from "./env.js";
 import { cors } from "hono/cors";
 import { migrate } from "drizzle-orm/libsql/migrator";
+import { requestId } from "hono/request-id";
+import { pinoMiddleware, logger } from "./logger.js";
+import { HTTPException } from "hono/http-exception";
 
 await migrate(db, { migrationsFolder: "./drizzle" });
 
 const app = factory
   .createApp()
   .basePath(new URL(env.BACKEND_URL).pathname)
-  .use(logger())
+  .use(requestId())
+  .use(pinoMiddleware)
   .use(dbPlugin(db))
   .use(betterAuthPlugin)
   .use(notificationPlugin(env))
@@ -45,6 +48,14 @@ const app = factory
   .route("/v1/comments", comments)
   .route("/v1/account", accountApp);
 
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+  c.get("logger").error({ error: err }, "Unhandled error");
+  return c.json({ error: "Internal Server Error" }, 500);
+});
+
 const server = serve({
   fetch: app.fetch,
   port: Number(new URL(env.BACKEND_URL).port) || 3001,
@@ -58,12 +69,12 @@ process.on("SIGINT", () => {
 process.on("SIGTERM", () => {
   server.close((err) => {
     if (err) {
-      console.error(err);
+      logger.error(err);
       process.exit(1);
     }
     process.exit(0);
   });
 });
 
-console.log(`Server started on ${env.BACKEND_URL}`);
-console.log(`Health check on ${env.BACKEND_URL}/health`);
+logger.info(`Server started on ${env.BACKEND_URL}`);
+logger.info(`Health check on ${new URL("health", env.BACKEND_URL)}`);

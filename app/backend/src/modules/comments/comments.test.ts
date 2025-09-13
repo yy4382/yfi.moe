@@ -9,6 +9,7 @@ import { testClient } from "hono/testing";
 import { factory, type Variables } from "@/factory.js";
 import * as deleteModule from "./services/delete.js";
 import type { NotificationService } from "@/notification/types.js";
+import pino from "pino";
 
 vi.mock(import("@/env.js"), () => ({
   env: {
@@ -28,6 +29,14 @@ const testCommentApp = (
       c.set("authClient", authClient);
       c.set("auth", auth);
       c.set("notification", {} as NotificationService);
+      c.set(
+        "logger",
+        pino({
+          transport: {
+            targets: [],
+          },
+        }),
+      );
       await next();
     })
     .route("/", commentApp);

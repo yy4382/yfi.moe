@@ -12,10 +12,14 @@ import type { CommentData } from "@repo/api/comment/comment-data";
 
 export async function getComments(
   body: GetCommentsBody,
-  options: { db: DbClient; user: User | null },
+  options: { db: DbClient; user: User | null; logger?: import("pino").Logger },
 ): Promise<{ comments: LayeredCommentList; total: number }> {
   const { path, limit, offset, sortBy } = body;
-  const { db, user } = options;
+  const { db, user, logger } = options;
+  logger?.debug(
+    { path, limit, offset, sortBy, userId: user?.id },
+    "getComments:db query start",
+  );
   const { comments } = await getCommentsDb(db, user, {
     path,
     limit,
@@ -32,7 +36,10 @@ export async function getComments(
       isNull(comment.parentId),
     ),
   );
-
+  logger?.debug(
+    { total: totalCount, returned: layeredComments.length },
+    "getComments:db query done",
+  );
   return { comments: layeredComments, total: totalCount };
 }
 

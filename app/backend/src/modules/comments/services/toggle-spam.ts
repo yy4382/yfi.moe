@@ -23,11 +23,14 @@ export async function toggleCommentSpam(
     db: DbClient;
     user: User | null;
     akismet: AkismetService | null;
+    logger?: import("pino").Logger;
   },
 ): Promise<ToggleSpamResult> {
-  const { db, user, akismet } = options;
+  const { db, user, akismet, logger } = options;
+  logger?.debug({ commentId, isSpam, userId: user?.id }, "toggleSpam:start");
 
   if (!user) {
+    logger?.warn({ commentId }, "toggleSpam:unauthenticated");
     return {
       code: 401,
       data: "Authentication required",
@@ -35,6 +38,7 @@ export async function toggleCommentSpam(
   }
 
   if (user.role !== "admin") {
+    logger?.warn({ commentId, userId: user.id }, "toggleSpam:not admin");
     return {
       code: 403,
       data: "Only admins can toggle spam status",
@@ -50,6 +54,7 @@ export async function toggleCommentSpam(
 
   const targetComment = comments[0];
   if (!targetComment) {
+    logger?.warn({ commentId }, "toggleSpam:not found");
     return {
       code: 404,
       data: "Comment not found",
@@ -77,11 +82,14 @@ export async function toggleCommentSpam(
 
     if (isSpam) {
       await akismet.submitSpam(akismetComment);
+      logger?.info({ commentId }, "toggleSpam:submit spam to akismet");
     } else {
       await akismet.submitHam(akismetComment);
+      logger?.info({ commentId }, "toggleSpam:submit ham to akismet");
     }
   }
 
+  logger?.info({ commentId, isSpam }, "toggleSpam:success");
   return {
     code: 200,
     data: { success: true },

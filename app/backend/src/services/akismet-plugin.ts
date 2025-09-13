@@ -1,6 +1,11 @@
 import { factory } from "@/factory.js";
 import { AkismetService } from "./akismet.js";
 import { env } from "@/env.js";
+import { logger as rawLogger } from "@/logger.js";
+
+const logger = rawLogger.child({
+  module: "akismet",
+});
 
 export const akismetPlugin = factory.createMiddleware(async (c, next) => {
   let akismetService: AkismetService | null = null;
@@ -18,7 +23,7 @@ export const akismetPlugin = factory.createMiddleware(async (c, next) => {
       isTest,
     });
   } else {
-    console.warn("Akismet is not enabled");
+    logger.warn("Akismet is not enabled");
   }
 
   c.set("akismet", akismetService);

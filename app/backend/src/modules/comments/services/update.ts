@@ -9,9 +9,13 @@ import { tablesToCommentData } from "./shared/comment-data.js";
 export async function updateComment(
   id: number,
   content: { rawContent: string },
-  options: { db: DbClient; user: User },
+  options: { db: DbClient; user: User; logger?: import("pino").Logger },
 ): Promise<OneOfKeyValuePair> {
-  const { db, user: currentUser } = options;
+  const { db, user: currentUser, logger } = options;
+  logger?.debug(
+    { commentId: id, userId: currentUser.id },
+    "updateComment:start",
+  );
   const now = new Date();
 
   // Check if comment exists and user has permission to update
@@ -26,12 +30,14 @@ export async function updateComment(
     .limit(1);
 
   if (existingComment.length === 0) {
+    logger?.warn({ commentId: id }, "updateComment:not found");
     return { code: 404, data: "comment not found" };
   }
 
   const commentData = existingComment[0];
 
   if (commentData.deletedAt) {
+    logger?.warn({ commentId: id }, "updateComment:already deleted");
     return { code: 400, data: "cannot update deleted comment" };
   }
 
@@ -40,6 +46,10 @@ export async function updateComment(
   const isAdmin = currentUser.role === "admin";
 
   if (!isOwner && !isAdmin) {
+    logger?.warn(
+      { commentId: id, userId: currentUser.id },
+      "updateComment:forbidden",
+    );
     return { code: 403, data: "not authorized to update this comment" };
   }
 
@@ -55,9 +65,11 @@ export async function updateComment(
     .returning();
 
   if (!updatedComment) {
+    logger?.warn({ commentId: id }, "updateComment:update returned empty");
     return { code: 400, data: "cannot update deleted comment" };
   }
 
+  logger?.info({ commentId: id }, "updateComment:success");
   return {
     code: 200,
     data: {

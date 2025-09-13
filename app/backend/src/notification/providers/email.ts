@@ -1,6 +1,11 @@
 import * as nodemailer from "nodemailer";
 import type { Env } from "@/env.js";
 import { render } from "@react-email/render";
+import { logger as rawLogger } from "@/logger.js";
+
+const logger = rawLogger.child({
+  module: "email-notifier",
+});
 
 export interface EmailConfig {
   from: string;
@@ -26,7 +31,7 @@ export class EmailNotifier {
   protected transporter: nodemailer.Transporter;
   protected config: EmailConfig;
 
-  constructor(config: EmailConfig) {
+  private constructor(config: EmailConfig) {
     this.config = config;
     this.transporter = nodemailer.createTransport({
       host: config.smtp.host,
@@ -36,15 +41,13 @@ export class EmailNotifier {
     });
   }
 
-  isEnabled(): boolean {
-    return !!this.config.smtp.host && !!this.config.smtp.port;
-  }
-
-  async sendEmail(options: SendEmailOptions): Promise<void> {
-    if (!this.isEnabled()) {
-      throw new Error("Email service is not configured");
-    }
-
+  /**
+   * Send an email
+   *
+   * Will not throw.
+   * @returns true if email is sent successfully, false otherwise
+   */
+  async sendEmail(options: SendEmailOptions): Promise<boolean> {
     try {
       await this.transporter.sendMail({
         from: this.config.from,
@@ -53,10 +56,28 @@ export class EmailNotifier {
         text: options.text,
         html: options.html,
       });
-      console.log(`Email sent to ${options.to}, subject: ${options.subject}`);
+      logger.info(
+        {
+          emailOptions: {
+            to: options.to,
+            subject: options.subject,
+          },
+        },
+        "Sent email",
+      );
+      return true;
     } catch (error) {
-      console.error("Failed to send email:", error);
-      throw error;
+      logger.error(
+        {
+          err: error,
+          emailOptions: {
+            to: options.to,
+            subject: options.subject,
+          },
+        },
+        "Failed to send email",
+      );
+      return false;
     }
   }
 

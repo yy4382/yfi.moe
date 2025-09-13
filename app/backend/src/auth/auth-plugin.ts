@@ -19,9 +19,5 @@ export const betterAuthPlugin = factory.createMiddleware(async (c, next) => {
   return next();
 });
 
-type SessionResult = NonNullable<
-  Awaited<ReturnType<AuthClient["api"]["getSession"]>>
->;
-
-export type User = SessionResult["user"];
-export type Session = SessionResult["session"];
+export type User = AuthClient["$Infer"]["Session"]["user"];
+export type Session = AuthClient["$Infer"]["Session"]["session"];

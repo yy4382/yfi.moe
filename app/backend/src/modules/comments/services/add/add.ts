@@ -35,10 +35,21 @@ export async function addComment(
     ua?: string;
     akismet?: AkismetService | null;
     notificationService: NotificationService;
+    logger?: import("pino").Logger;
   },
 ): Promise<AddCommentResult> {
-  const { db, akismet, user: currentUser } = options;
+  const { db, akismet, user: currentUser, logger } = options;
+  logger?.debug(
+    {
+      path: body.path,
+      parentId: body.parentId,
+      replyToId: body.replyToId,
+      userId: currentUser?.id,
+    },
+    "addComment:start",
+  );
   if (!currentUser && (!body.visitorName || !body.visitorEmail)) {
+    logger?.warn({ path: body.path }, "addComment:missing visitor info");
     return {
       result: "bad_req",
       data: { message: "昵称和邮箱不能为空" },
@@ -56,6 +67,7 @@ export async function addComment(
     ...options,
   });
   if (newCommentResult._tag === "err") {
+    logger?.error({ path: body.path }, "addComment:insert failed");
     return {
       result: "bad_req",
       data: { message: "failed to add comment" },
@@ -83,6 +95,10 @@ export async function addComment(
     db,
     options.notificationService,
   );
+  logger?.info(
+    { commentId: newComment.id, isSpam: newComment.isSpam },
+    "addComment:success",
+  );
   return {
     result: "success",
     data: {
@@ -101,6 +117,7 @@ async function insertToDb(
     user: User | null;
     ip?: string;
     ua?: string;
+    logger?: import("pino").Logger;
   },
 ): Promise<Result<InferSelectModel<typeof comment>, null>> {
   const { body, user: currentUser } = data;
@@ -127,12 +144,12 @@ async function insertToDb(
 
     const newComment = inserted[0];
     if (!newComment) {
-      console.error("failed to insert comment: returning empty");
+      data.logger?.error({ path: body.path }, "addComment:insert empty");
       return err(null);
     }
     return ok(newComment);
   } catch (error) {
-    console.error(error);
+    data.logger?.error({ error }, "addComment:insert error");
     return err(null);
   }
 }

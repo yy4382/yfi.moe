@@ -1,4 +1,9 @@
 import { AkismetClient } from "akismet-api";
+import { logger as rawLogger } from "@/logger.js";
+
+const logger = rawLogger.child({
+  module: "akismet",
+});
 
 export interface AkismetComment {
   content: string;
@@ -7,6 +12,13 @@ export interface AkismetComment {
   author?: string;
   authorEmail?: string;
   permalink: string;
+}
+
+function getLogComment(comment: AkismetComment) {
+  return {
+    content: comment.content,
+    authorEmail: comment.authorEmail,
+  };
 }
 
 export interface AkismetConfig {
@@ -38,9 +50,22 @@ export class AkismetService {
         permalink: comment.permalink,
         is_test: this.isTest,
       });
+      logger.info(
+        {
+          result,
+          comment: getLogComment(comment),
+        },
+        "Called Akismet checkSpam",
+      );
       return result;
     } catch (error) {
-      console.error("Akismet checkSpam error:", error);
+      logger.error(
+        {
+          err: error,
+          comment: getLogComment(comment),
+        },
+        "Akismet checkSpam error",
+      );
       return false;
     }
   }
@@ -56,8 +81,18 @@ export class AkismetService {
         permalink: comment.permalink,
         is_test: this.isTest,
       });
+      logger.info(
+        { comment: getLogComment(comment) },
+        "Called Akismet submitSpam",
+      );
     } catch (error) {
-      console.error("Akismet submitSpam error:", error);
+      logger.error(
+        {
+          err: error,
+          comment: getLogComment(comment),
+        },
+        "Akismet submitSpam error",
+      );
     }
   }
 
@@ -72,8 +107,19 @@ export class AkismetService {
         permalink: comment.permalink,
         is_test: this.isTest,
       });
+
+      logger.info(
+        { comment: getLogComment(comment) },
+        "Called Akismet submitHam",
+      );
     } catch (error) {
-      console.error("Akismet submitHam error:", error);
+      logger.error(
+        {
+          err: error,
+          comment: getLogComment(comment),
+        },
+        "Akismet submitHam error",
+      );
     }
   }
 }

@@ -6,6 +6,7 @@ import { admin, magicLink } from "better-auth/plugins";
 import { env } from "@/env.js";
 import { EmailNotifier } from "@/notification/providers/email.js";
 import NotionMagicLinkEmail from "./magic-link.js";
+import { logger } from "@/logger.js";
 
 export const createAuth = (db: DbClient) => {
   return betterAuth({
@@ -28,22 +29,24 @@ export const createAuth = (db: DbClient) => {
       magicLink({
         sendMagicLink: async ({ email, url }) => {
           const emailService = EmailNotifier.createFromEnv(env);
-
-          if (emailService) {
-            const { html, text } = await EmailNotifier.renderEmailTemplate(
-              NotionMagicLinkEmail,
-              { url },
+          if (!emailService) {
+            logger.error(
+              "Email provider not configured, magic link URL: %s",
+              url,
             );
-            await emailService.sendEmail({
-              to: email,
-              subject: "登录链接 - Yunfi",
-              html,
-              text,
-            });
-          } else {
-            console.log("Email provider not configured, magic link URL:", url);
-            throw new Error("Email provider not configured");
+            return;
           }
+
+          const { html, text } = await EmailNotifier.renderEmailTemplate(
+            NotionMagicLinkEmail,
+            { url },
+          );
+          await emailService.sendEmail({
+            to: email,
+            subject: "登录链接 - Yunfi",
+            html,
+            text,
+          });
         },
         expiresIn: 300, // 5 minutes
         disableSignUp: false, // Allow new user registration via magic link

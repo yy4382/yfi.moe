@@ -15,21 +15,30 @@ type DeleteCommentResult =
 
 export async function deleteComment(
   id: number,
-  options: { db: DbClient; user: User },
+  options: { db: DbClient; user: User; logger?: import("pino").Logger },
 ): Promise<DeleteCommentResult> {
-  const { db, user: currentUser } = options;
+  const { db, user: currentUser, logger } = options;
+  logger?.debug(
+    { commentId: id, userId: currentUser.id },
+    "deleteComment:start",
+  );
   const now = new Date();
   // delete if comment's user is current user or current user is admin
   const commentBeingDeleted = await db.query.comment.findFirst({
     where: and(eq(comment.id, id), isNull(comment.deletedAt)),
   });
   if (!commentBeingDeleted) {
+    logger?.warn({ commentId: id }, "deleteComment:not found");
     return { result: "not_found", message: "没有找到该评论" };
   }
   if (
     commentBeingDeleted.userId !== currentUser.id &&
     currentUser.role !== "admin"
   ) {
+    logger?.warn(
+      { commentId: id, userId: currentUser.id },
+      "deleteComment:forbidden",
+    );
     return { result: "forbidden", message: "没有权限删除该评论" };
   }
 
@@ -49,5 +58,7 @@ export async function deleteComment(
       ),
     )
     .returning({ id: comment.id });
-  return { result: "success", deletedIds: res.map((r) => r.id) };
+  const deletedIds = res.map((r) => r.id);
+  logger?.info({ commentId: id, deletedIds }, "deleteComment:success");
+  return { result: "success", deletedIds };
 }
