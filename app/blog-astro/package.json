@@ -15,6 +15,7 @@
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.0",
     "@octokit/openapi-types": "^25.1.0",
+    "@repo/api": "workspace:*",
     "@repo/comment-waline": "workspace:*",
     "@repo/comment": "workspace:*",
     "@repo/markdown": "workspace:*",

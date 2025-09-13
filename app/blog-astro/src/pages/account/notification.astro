@@ -1,0 +1,18 @@
+---
+import NavLayout from "@/components/layouts/NavLayout.astro";
+import { Unsubscribe } from "@/components/modules/management/subscribe";
+import { getSeo } from "@/lib/utils/SEO";
+
+const seoConfig = getSeo({
+  title: "邮件通知设定",
+  description: "邮件通知设定",
+  noindex: true,
+});
+---
+
+<NavLayout seoConfig={seoConfig} stopTrack>
+  <div class="mx-auto mt-10 flex max-w-md flex-col gap-4 min-h-[80lvh]">
+    <h1 class="text-2xl font-bold">邮件通知设定</h1>
+    <Unsubscribe client:only />
+  </div>
+</NavLayout>
