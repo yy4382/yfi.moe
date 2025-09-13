@@ -32,19 +32,19 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@eslint/js": "^9.32.0",
+    "@eslint/js": "catalog:",
     "@react-email/preview-server": "4.2.8",
     "@types/node": "^20.19.9",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "catalog:",
     "dotenv": "^17.2.1",
     "drizzle-kit": "^0.31.4",
-    "eslint": "^9.32.0",
+    "eslint": "catalog:",
     "react-email": "4.2.8",
     "tsdown": "^0.14.0",
     "tsx": "^4.20.3",
     "typescript": "catalog:",
-    "typescript-eslint": "^8.38.0",
+    "typescript-eslint": "catalog:",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "catalog:"
   }
