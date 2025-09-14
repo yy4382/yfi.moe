@@ -53,6 +53,7 @@ export class AkismetService {
       logger.info(
         {
           result,
+          isTest: this.isTest,
           comment: getLogComment(comment),
         },
         "Called Akismet checkSpam",
@@ -62,6 +63,7 @@ export class AkismetService {
       logger.error(
         {
           err: error,
+          isTest: this.isTest,
           comment: getLogComment(comment),
         },
         "Akismet checkSpam error",
@@ -82,7 +84,7 @@ export class AkismetService {
         is_test: this.isTest,
       });
       logger.info(
-        { comment: getLogComment(comment) },
+        { comment: getLogComment(comment), isTest: this.isTest },
         "Called Akismet submitSpam",
       );
     } catch (error) {
@@ -90,6 +92,7 @@ export class AkismetService {
         {
           err: error,
           comment: getLogComment(comment),
+          isTest: this.isTest,
         },
         "Akismet submitSpam error",
       );
@@ -109,7 +112,7 @@ export class AkismetService {
       });
 
       logger.info(
-        { comment: getLogComment(comment) },
+        { comment: getLogComment(comment), isTest: this.isTest },
         "Called Akismet submitHam",
       );
     } catch (error) {
@@ -117,6 +120,7 @@ export class AkismetService {
         {
           err: error,
           comment: getLogComment(comment),
+          isTest: this.isTest,
         },
         "Akismet submitHam error",
       );
