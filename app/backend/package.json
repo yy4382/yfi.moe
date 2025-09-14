@@ -11,8 +11,8 @@
     "email:dev": "email dev --dir src/notification/templates"
   },
   "dependencies": {
-    "@hono/node-server": "^1.17.1",
-    "@hono/standard-validator": "^0.1.4",
+    "@hono/node-server": "^1.19.2",
+    "@hono/standard-validator": "^0.1.5",
     "@libsql/client": "^0.15.10",
     "@react-email/components": "^0.3.3",
     "@react-email/render": "^1.1.4",
@@ -23,7 +23,7 @@
     "akismet-api": "^6.0.0",
     "better-auth": "catalog:",
     "drizzle-orm": "^0.44.4",
-    "hono": "^4.8.10",
+    "hono": "^4.9.7",
     "hono-pino": "^0.10.2",
     "nodemailer": "^6.10.1",
     "pino": "^9.9.5",
