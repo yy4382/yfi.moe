@@ -91,18 +91,26 @@ export const BaseTemplate = ({
 
             <Hr style={hr} />
 
-            <Text style={footerMuted}>
-              您收到这封邮件是因为您在 yfi.moe
-              上注册了账号。如果不想被打扰，您可以
-              {unsubscribeUrl && (
+            {unsubscribeUrl ? (
+              <Text style={footerMuted}>
+                您收到这封邮件是因为您在 yfi.moe
+                上注册了账号。如果不想被打扰，您可以
                 <>
                   <Link href={unsubscribeUrl} style={unsubscribeLink}>
                     取消邮件通知
                   </Link>
                   。
                 </>
-              )}
-            </Text>
+              </Text>
+            ) : (
+              <Text style={footerMuted}>
+                这封邮件并未随信附上取消订阅链接。如果由于某些意外导致您收到并需要取消订阅，请发邮件给{" "}
+                <Link href="mailto:i@yfi.moe" style={unsubscribeLink}>
+                  i@yfi.moe
+                </Link>{" "}
+                来取消订阅。
+              </Text>
+            )}
           </Section>
         </Container>
       </Body>
