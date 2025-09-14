@@ -3,7 +3,7 @@ import { factory } from "./factory.js";
 import { env } from "./env.js";
 
 export const logger = pino({
-  level: env.LOG_LEVEL,
+  level: env.LOG_LEVEL ?? "info",
 });
 
 export const pinoMiddleware = factory.createMiddleware(async (c, next) => {
