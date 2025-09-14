@@ -52,7 +52,7 @@ app.onError((err, c) => {
   if (err instanceof HTTPException) {
     return err.getResponse();
   }
-  c.get("logger").error({ error: err }, "Unhandled error");
+  c.get("logger").error({ err }, "Unhandled error");
   return c.json({ error: "Internal Server Error" }, 500);
 });
 
