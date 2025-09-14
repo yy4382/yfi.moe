@@ -22,6 +22,9 @@ const envSchema = z.object({
 
   AKISMET_KEY: z.string().optional(),
   AKISMET_BLOG: z.string().optional(),
+  LOG_LEVEL: z
+    .enum(["fatal", "error", "warn", "info", "debug", "trace"])
+    .optional(),
 });
 
 export const env = envSchema.parse(process.env);

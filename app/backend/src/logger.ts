@@ -1,8 +1,9 @@
 import { pino } from "pino";
 import { factory } from "./factory.js";
+import { env } from "./env.js";
 
 export const logger = pino({
-  level: "info",
+  level: env.LOG_LEVEL,
 });
 
 export const pinoMiddleware = factory.createMiddleware(async (c, next) => {
