@@ -1,8 +1,13 @@
 ---
 import Section from "@/components/ui/section.astro";
 import { Comment as CommentComponent } from "./comment";
+
+let normalizedPathname = Astro.url.pathname;
+if (normalizedPathname.endsWith("/") && normalizedPathname !== "/") {
+  normalizedPathname = normalizedPathname.slice(0, -1);
+}
 ---
 
 <Section padding="article" class="mx-auto min-h-72 max-w-2xl py-12">
-  <CommentComponent pathname={Astro.url.pathname} client:visible />
+  <CommentComponent pathname={normalizedPathname} client:visible />
 </Section>
