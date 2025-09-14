@@ -24,6 +24,9 @@ catalogs:
     eslint:
       specifier: 9.33.0
       version: 9.33.0
+    radix-ui:
+      specifier: 1.4.2
+      version: 1.4.2
     react:
       specifier: 19.1.1
       version: 19.1.1
@@ -250,7 +253,7 @@ importers:
         specifier: ^1.4.1
         version: 1.4.1
       radix-ui:
-        specifier: ^1.4.2
+        specifier: 'catalog:'
         version: 1.4.2(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
         specifier: 'catalog:'
@@ -342,7 +345,7 @@ importers:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.1)
       radix-ui:
-        specifier: ^1.4.2
+        specifier: 'catalog:'
         version: 1.4.2(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
         specifier: 'catalog:'
