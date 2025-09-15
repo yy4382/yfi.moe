@@ -48,6 +48,7 @@ export default defineConfig({
         "radix-ui",
         "immer",
         "jotai",
+        "@repo/api",
       ],
     },
   },
