@@ -7,7 +7,8 @@
     "d": "turbo run dev --filter=@repo/backend --filter=blog-astro",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "postinstall": "cn-font-split i default@7.6.7"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
