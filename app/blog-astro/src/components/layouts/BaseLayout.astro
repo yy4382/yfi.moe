@@ -10,6 +10,8 @@ import { ClientRouter } from "astro:transitions";
 import Favicon from "@/components/html-head/Favicon.astro";
 import LoadingIndicator from "astro-loading-indicator/component";
 import TagManagers from "@/components/html-head/TagManager.astro";
+// @ts-expect-error fontFamilyFallback is not correctly typed
+import { css, fontFamilyFallback } from "@/assets/fonts/MiSansVF.ttf";
 
 interface Props {
   seoConfig: SEOProps;
@@ -40,7 +42,7 @@ const { seoConfig, stopTrack } = Astro.props;
   </head>
   <body
     class="m-0 overflow-x-hidden bg-bg bg-fixed p-0 text-content"
-    style="text-rendering: optimizeLegibility;"
+    style={`text-rendering: optimizeLegibility; font-family: "${css.family}", "SF Pro", ${fontFamilyFallback}; font-kerning: auto;`}
   >
     <slot />
   </body>

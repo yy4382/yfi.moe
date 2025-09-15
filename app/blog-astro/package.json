@@ -51,6 +51,8 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.62",
     "@iconify-json/mingcute": "^1.2.5",
-    "@types/js-yaml": "^4.0.9"
+    "@types/js-yaml": "^4.0.9",
+    "cn-font-split": "^7.2.9",
+    "vite-plugin-font": "^5.1.2"
   }
 }

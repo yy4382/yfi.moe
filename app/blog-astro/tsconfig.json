@@ -6,6 +6,8 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
 
+    "types": ["vite-plugin-font/src/font"],
+
     "paths": {
       "@/*": ["./src/*"]
     }

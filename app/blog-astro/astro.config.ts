@@ -1,12 +1,11 @@
 // @ts-check
 import { defineConfig, envField } from "astro/config";
-
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import { siteDomain } from "./src/config/site";
-
 import sitemap from "@astrojs/sitemap";
+import font from "vite-plugin-font";
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,7 +15,7 @@ export default defineConfig({
   site: siteDomain,
 
   vite: {
-    plugins: [tailwindcss(), fileSystemPath()],
+    plugins: [tailwindcss(), fileSystemPath(), font.vite()],
   },
 
   env: {
