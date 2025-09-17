@@ -17,10 +17,10 @@
     "@tanstack/react-query": "catalog:",
     "@types/react": "catalog:",
     "better-auth": "catalog:",
+    "radix-ui": "catalog:",
     "react": "catalog:",
     "sonner": "catalog:",
-    "tailwind-merge": "^3.3.1",
-    "radix-ui": "catalog:"
+    "tailwind-merge": "^3.3.1"
   },
   "dependencies": {
     "@repo/api": "workspace:*",
