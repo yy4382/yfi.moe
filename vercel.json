@@ -1,6 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "headers": [],
+  "headers": [
+    {
+      "source": "/_astro/(.*).woff2",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, s-maxage=604800"
+        }
+      ]
+    }
+  ],
   "framework": null,
   "buildCommand": "pnpm build:frontend",
   "outputDirectory": "app/blog-astro/dist"
