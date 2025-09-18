@@ -4,8 +4,8 @@ import sharp from "sharp";
 
 import { postOgImage } from "./og-image-template";
 
-import fontRegularUrl from "@/assets/fonts/SarasaUiSC-Regular.ttf?filepath";
-import fontBoldUrl from "@/assets/fonts/SarasaUiSC-Bold.ttf?filepath";
+import fontRegularUrl from "@/assets/fonts/MiSans-Regular.ttf?filepath";
+import fontBoldUrl from "@/assets/fonts/MiSans-Bold.ttf?filepath";
 
 const fetchFonts = async () => {
   // Use Promise.all with async readFile
