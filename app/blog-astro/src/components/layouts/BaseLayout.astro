@@ -40,10 +40,19 @@ const { seoConfig, stopTrack } = Astro.props;
     <ClientRouter fallback="swap" />
     <LoadingIndicator color="hsl(236, 100%, 81%)" />
   </head>
-  <body
-    class="m-0 overflow-x-hidden bg-bg bg-fixed p-0 text-content"
-    style={`text-rendering: optimizeLegibility; font-family: "${css.family}", "SF Pro", ${fontFamilyFallback}; font-kerning: auto;`}
-  >
+  <body class="m-0 overflow-x-hidden bg-bg bg-fixed p-0 text-content">
     <slot />
   </body>
 </html>
+
+<style
+  define:vars={{
+    "font-family": css.family,
+    "font-family-fallback": fontFamilyFallback,
+  }}
+>
+  body {
+    text-rendering: optimizeLegibility;
+    font-family: var(--font-family), "SF Pro", var(--font-family-fallback);
+  }
+</style>
