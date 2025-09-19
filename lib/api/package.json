@@ -14,7 +14,9 @@
     "typescript": "catalog:"
   },
   "peerDependencies": {
-    "@repo/helpers": "workspace:*",
     "zod": "catalog:"
+  },
+  "dependencies": {
+    "@repo/helpers": "workspace:*"
   }
 }
