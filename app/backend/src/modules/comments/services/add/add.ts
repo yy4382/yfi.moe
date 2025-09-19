@@ -89,6 +89,7 @@ export async function addComment(
       email: data.visitorEmail ?? data.userEmail ?? undefined,
       rawContent: newComment.rawContent,
       renderedContent: newComment.renderedContent,
+      createdAt: newComment.createdAt,
       isSpam: newComment.isSpam,
       replyToId: newComment.replyToId ?? undefined,
     },

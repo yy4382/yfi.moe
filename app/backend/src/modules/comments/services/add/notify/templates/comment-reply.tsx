@@ -10,6 +10,7 @@ interface CommentReplyEmailProps {
   parentCommentHtml: string;
   unsubscribeUrl: string;
   frontendUrl: string;
+  replyCreatedAt: string;
 }
 
 export const CommentReplyEmail = ({
@@ -20,6 +21,7 @@ export const CommentReplyEmail = ({
   parentCommentHtml,
   unsubscribeUrl,
   frontendUrl,
+  replyCreatedAt,
 }: CommentReplyEmailProps) => {
   return (
     <BaseTemplate
@@ -31,6 +33,8 @@ export const CommentReplyEmail = ({
         <Text style={text}>
           <strong>{authorName}</strong> 回复了您的评论:
         </Text>
+
+        <Text style={metaText}>回复时间：{replyCreatedAt}</Text>
 
         <Text style={sectionTitle}>新回复</Text>
         <Section style={blockquoteReply}>
@@ -66,6 +70,7 @@ CommentReplyEmail.PreviewProps = {
   parentCommentHtml: "<p>This is the <em>original comment</em> content.</p>",
   unsubscribeUrl: "https://example.com/unsubscribe",
   frontendUrl: "https://example.com",
+  replyCreatedAt: "2024-07-21 20:34 UTC+8",
 } satisfies CommentReplyEmailProps;
 
 export default CommentReplyEmail;
@@ -101,6 +106,12 @@ const sectionTitle = {
   margin: "0 0 8px 0",
   fontWeight: 600,
 };
+
+const metaText = {
+  fontSize: "14px",
+  color: "#475569",
+  margin: "0 0 16px 0",
+} as const;
 
 const htmlWrapper = {
   fontSize: "15px",

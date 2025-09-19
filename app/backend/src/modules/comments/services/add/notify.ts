@@ -13,6 +13,7 @@ type SendNotificationCommentData = {
   path: string;
   rawContent: string;
   renderedContent: string;
+  createdAt: Date;
   userId?: string;
   isSpam: boolean;
   replyToId?: number;
@@ -113,6 +114,7 @@ async function sendCommentReplyNotification(
       parentCommentHtml: replyToComment.comment.rawContent,
       frontendUrl: env.FRONTEND_URL,
       unsubscribeUrl,
+      replyCreatedAt: formatReplyCreatedAt(commentData.createdAt),
     },
   );
   return notificationService.email?.sendEmail({
@@ -121,4 +123,17 @@ async function sendCommentReplyNotification(
     html,
     text,
   });
+}
+
+function formatReplyCreatedAt(createdAt: Date): string {
+  const offsetMs = 8 * 60 * 60 * 1000;
+  const zoned = new Date(createdAt.getTime() + offsetMs);
+
+  const year = zoned.getUTCFullYear();
+  const month = String(zoned.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(zoned.getUTCDate()).padStart(2, "0");
+  const hours = String(zoned.getUTCHours()).padStart(2, "0");
+  const minutes = String(zoned.getUTCMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes} UTC+8`;
 }
