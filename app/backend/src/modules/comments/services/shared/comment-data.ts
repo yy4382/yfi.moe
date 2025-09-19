@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { InferSelectModel } from "drizzle-orm";
 import { comment, user } from "@/db/schema.js";
-import { getGravatarUrl } from "@repo/helpers/get-gravatar-url";
+import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import type { User } from "@/auth/auth-plugin.js";
 import {
   commentDataBase,
@@ -27,6 +27,21 @@ export function tablesToCommentData(
     createdAt: commentTableData.createdAt.toISOString(),
     updatedAt: commentTableData.updatedAt.toISOString(),
   };
+
+  function getAvatar() {
+    if (commentTableData.anonymousName) {
+      return "https://avatar.vercel.sh/anonymous";
+    }
+    if (userTableData?.image) {
+      return userTableData.image;
+    }
+    if (userTableData) {
+      return getDiceBearUrl(userTableData.id);
+    }
+    return getDiceBearUrl(commentTableData.visitorEmail ?? "", {
+      hashBeforeUse: true,
+    });
+  }
   const userBase: z.input<typeof commentDataUser> = {
     anonymousName: commentTableData.anonymousName,
     displayName:
@@ -34,12 +49,7 @@ export function tablesToCommentData(
         commentTableData.visitorName ||
         userTableData?.name) ??
       "Unknown",
-    userImage: commentTableData.anonymousName
-      ? "https://avatar.vercel.sh/anonymous"
-      : (userTableData?.image ??
-        getGravatarUrl(
-          userTableData?.email ?? commentTableData.visitorEmail ?? "",
-        )),
+    userImage: getAvatar(),
     userId: commentTableData.anonymousName
       ? isAdmin
         ? userTableData?.id

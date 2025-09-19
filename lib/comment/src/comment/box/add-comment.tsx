@@ -21,7 +21,7 @@ import {
 } from "../utils";
 import { type CommentBoxId, CommentBoxIdContext } from "./context";
 import { Loader2Icon, XIcon } from "lucide-react";
-import { getGravatarUrl } from "@repo/helpers/get-gravatar-url";
+import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
 import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
@@ -359,7 +359,7 @@ function UserBox({ children, session }: UserBoxProps) {
     <div className="flex w-full items-end gap-4">
       <div className="group relative mb-2 flex-shrink-0">
         <img
-          src={session.user.image ?? getGravatarUrl(session.user.email)}
+          src={session.user.image ?? getDiceBearUrl(session.user.email)}
           alt={session.user.name}
           width={56}
           height={56}

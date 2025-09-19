@@ -10,3 +10,11 @@ export function getGravatarUrl(
   const hash = SparkMD5.hash(cleanEmail);
   return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=${defaultImage}&r=${rating}`;
 }
+
+export function getDiceBearUrl(seed: string, { hashBeforeUse = false } = {}) {
+  let cleanSeed = encodeURIComponent(seed.trim());
+  if (hashBeforeUse) {
+    cleanSeed = SparkMD5.hash(cleanSeed);
+  }
+  return `https://api.dicebear.com/9.x/notionists-neutral/svg?seed=${cleanSeed}`;
+}

@@ -9,6 +9,9 @@ vi.mock("@repo/helpers/get-gravatar-url", () => ({
   getGravatarUrl: vi.fn(
     (email: string) => `https://gravatar.com/avatar/${email}`,
   ),
+  getDiceBearUrl: vi.fn(
+    (seed: string) => `https://gravatar.com/avatar/${seed}`,
+  ),
 }));
 
 describe("tablesToCommentData", () => {
@@ -341,9 +344,7 @@ describe("tablesToCommentData", () => {
         true,
       );
 
-      expect(result.userImage).toBe(
-        "https://gravatar.com/avatar/test@example.com",
-      );
+      expect(result.userImage).toBe("https://gravatar.com/avatar/user123");
     });
 
     it("should handle anonymous user image for admin when userTableData exists", () => {

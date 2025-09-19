@@ -17,7 +17,7 @@ exports[`admin get comments > should return comments 1`] = `
   "userAgent": null,
   "userEmail": "admin@example.com",
   "userId": "1",
-  "userImage": "https://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=200&d=identicon&r=g",
+  "userImage": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=1",
   "userIp": null,
   "userName": "admin",
   "visitorEmail": null,
@@ -39,6 +39,6 @@ exports[`non-admin get comments > should return comments 1`] = `
   "replyToId": null,
   "updatedAt": "2000-01-01T00:00:00.000Z",
   "userId": "1",
-  "userImage": "https://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=200&d=identicon&r=g",
+  "userImage": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=1",
 }
 `;
