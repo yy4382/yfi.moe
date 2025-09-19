@@ -29,7 +29,7 @@ export function InputBox({
     }).at(0) ?? "idle";
 
   return (
-    <div className="group border-container focus-within:ring-primary relative flex min-h-36 w-full flex-col justify-between rounded-sm border p-1 focus-within:ring">
+    <div className="group @container border-container focus-within:ring-primary relative flex min-h-36 w-full flex-col justify-between rounded-sm border p-1 focus-within:ring">
       {onCancel && (
         <div className="absolute -top-3 -right-2">
           <button
@@ -88,7 +88,9 @@ function InputBoxFooter({
   return (
     <div className="text-comment flex items-center justify-between gap-2 px-1 text-sm">
       <div className="text-comment/90 flex items-center gap-2 text-xs">
-        <div className="flex items-center gap-2">支持 Markdown</div>
+        <div className="flex items-center gap-2 @max-2xs:hidden">
+          支持 Markdown
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <div>{content.length} / 500</div>

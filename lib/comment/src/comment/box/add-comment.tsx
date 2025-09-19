@@ -201,7 +201,7 @@ export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
     });
   }, [mutate, reply?.parentId, reply?.replyToId, path, data, setContent]);
 
-  const replyPlaceholder = reply?.at ? `回复 ${reply.at}` : undefined;
+  const replyPlaceholder = reply?.at ? `回复 @${reply.at}：` : undefined;
 
   return (
     <CommentBoxIdContext value={commentBoxId}>
