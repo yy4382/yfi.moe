@@ -297,7 +297,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
               </span>
             )}
             <span className="text-xs text-zinc-500">
-              {formatTime(entry.createdAt)}
+              {formatTime(new Date(entry.createdAt))}
             </span>
             {(isMine || session?.user.role === "admin") && (
               <>

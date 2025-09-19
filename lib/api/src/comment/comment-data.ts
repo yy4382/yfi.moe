@@ -30,8 +30,8 @@ export const commentDataBase = z.strictObject({
   rawContent: z.string(),
   parentId: z.number().nullable(),
   replyToId: z.number().nullable(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
   path: z.string(),
 });
 
@@ -40,9 +40,11 @@ export const commentDataNonAdmin = z.object({
   ...commentDataUser.shape,
 });
 
-export const commentData = z.object({
-  ...commentDataBase.shape,
-  ...commentDataUserAdmin.shape,
-});
+export const commentData = z
+  .object({
+    ...commentDataBase.shape,
+    ...commentDataUserAdmin.shape,
+  })
+  .meta({ ref: "CommentData", description: "Comment data structure" });
 
 export type CommentData = z.infer<typeof commentData>;

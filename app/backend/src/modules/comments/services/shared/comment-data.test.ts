@@ -3,6 +3,7 @@ import { tablesToCommentData } from "./comment-data.js";
 import type { InferSelectModel } from "drizzle-orm";
 import type { comment, user } from "@/db/schema.js";
 import type { User } from "@/auth/auth-plugin.js";
+import { z } from "zod";
 
 vi.mock("@repo/helpers/get-gravatar-url", () => ({
   getGravatarUrl: vi.fn(
@@ -63,8 +64,8 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
-        createdAt: new Date("2024-01-01T10:00:00Z"),
-        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
+        updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Test User",
         anonymousName: null,
         userImage: "https://example.com/avatar.jpg",
@@ -95,8 +96,8 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
-        createdAt: new Date("2024-01-01T10:00:00Z"),
-        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
+        updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Anonymous User",
         anonymousName: "Anonymous User",
         userImage: "https://avatar.vercel.sh/anonymous",
@@ -128,8 +129,8 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
-        createdAt: new Date("2024-01-01T10:00:00Z"),
-        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
+        updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Visitor Name",
         anonymousName: null,
         userImage: "https://gravatar.com/avatar/visitor@example.com",
@@ -165,8 +166,8 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
-        createdAt: new Date("2024-01-01T10:00:00Z"),
-        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
+        updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Auth User",
         anonymousName: null,
         userImage: "https://auth.example.com/avatar.jpg",
@@ -197,8 +198,8 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
-        createdAt: new Date("2024-01-01T10:00:00Z"),
-        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
+        updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Test User",
         anonymousName: null,
         userImage: "https://example.com/avatar.jpg",
@@ -226,8 +227,8 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
-        createdAt: new Date("2024-01-01T10:00:00Z"),
-        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
+        updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Anonymous User",
         anonymousName: "Anonymous User",
         userImage: "https://avatar.vercel.sh/anonymous",
@@ -252,8 +253,8 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
-        createdAt: new Date("2024-01-01T10:00:00Z"),
-        updatedAt: new Date("2024-01-01T11:00:00Z"),
+        createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
+        updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Visitor Name",
         anonymousName: null,
         userImage: "https://gravatar.com/avatar/visitor@example.com",
@@ -369,8 +370,8 @@ describe("tablesToCommentData", () => {
         true,
       );
 
-      expect(result.createdAt).toBeInstanceOf(Date);
-      expect(result.updatedAt).toBeInstanceOf(Date);
+      expect(() => z.iso.datetime().parse(result.createdAt)).not.toThrow();
+      expect(() => z.iso.datetime().parse(result.updatedAt)).not.toThrow();
     });
   });
 });

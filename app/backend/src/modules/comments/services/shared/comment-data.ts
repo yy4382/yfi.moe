@@ -24,8 +24,8 @@ export function tablesToCommentData(
     path: commentTableData.path,
     parentId: commentTableData.parentId,
     replyToId: commentTableData.replyToId,
-    createdAt: commentTableData.createdAt,
-    updatedAt: commentTableData.updatedAt,
+    createdAt: commentTableData.createdAt.toISOString(),
+    updatedAt: commentTableData.updatedAt.toISOString(),
   };
   const userBase: z.input<typeof commentDataUser> = {
     anonymousName: commentTableData.anonymousName,

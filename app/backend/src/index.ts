@@ -13,6 +13,8 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import { requestId } from "hono/request-id";
 import { pinoMiddleware, logger } from "./logger.js";
 import { HTTPException } from "hono/http-exception";
+import { Scalar } from "@scalar/hono-api-reference";
+import { describeRoute, openAPIRouteHandler } from "hono-openapi";
 
 await migrate(db, { migrationsFolder: "./drizzle" });
 
@@ -42,11 +44,60 @@ const app = factory
   .on(["POST", "GET"], "/v1/auth/*", (c) => {
     return c.get("authClient").handler(c.req.raw);
   })
-  .get("/health", (c) => {
-    return c.json({ status: "ok" });
-  })
   .route("/v1/comments", comments)
-  .route("/v1/account", accountApp);
+  .route("/v1/account", accountApp)
+  .get(
+    "/health",
+    describeRoute({
+      description: "Health check endpoint",
+      responses: {
+        200: {
+          description: "OK",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: { status: { type: "string" } },
+              },
+            },
+          },
+        },
+      },
+    }),
+    (c) => {
+      return c.json({ status: "ok" });
+    },
+  );
+
+app.get(
+  "/openapi.json",
+  openAPIRouteHandler(app, {
+    documentation: {
+      info: {
+        title: "yfi.moe API",
+        version: "1.0.0",
+      },
+      servers: [{ url: "http://localhost:3001", description: "Local Server" }],
+    },
+  }),
+);
+
+app.get(
+  "/docs",
+  Scalar({
+    pageTitle: "yfi.moe API Reference",
+    sources: [
+      {
+        url: "/api/openapi.json",
+        title: "Main API",
+      },
+      {
+        url: "/api/v1/auth/open-api/generate-schema",
+        title: "Better auth API",
+      },
+    ],
+  }),
+);
 
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
