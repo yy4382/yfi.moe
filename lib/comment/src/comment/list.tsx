@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import MoreIcon from "~icons/mingcute/more-1-line";
 import CommentIcon from "~icons/mingcute/comment-line";
+import { CommentReactions } from "./reactions";
 
 const PER_PAGE = 10;
 
@@ -289,10 +290,14 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
               />
             </div>
           )}
-          <div className="mt-1 flex items-center gap-2">
+          <div className="mt-1 flex items-center gap-4">
+            <CommentReactions
+              commentId={entry.id}
+              reactions={entry.reactions}
+            />
             <button
               onClick={() => setReplying(!replying)}
-              className="text-sm inline-flex items-center gap-1 text-comment"
+              className="text-sm inline-flex items-center gap-1 text-comment h-7 rounded-full border px-2 py-0.5"
             >
               <CommentIcon /> 回复
             </button>

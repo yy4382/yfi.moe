@@ -38,7 +38,7 @@ const app = factory
       ],
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "OPTIONS"],
-      exposeHeaders: ["Content-Length"],
+      exposeHeaders: ["Content-Length", "X-Request-ID", "x-anonymous-key"],
       maxAge: 600,
       credentials: true,
     }),

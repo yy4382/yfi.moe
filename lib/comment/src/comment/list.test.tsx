@@ -41,6 +41,7 @@ describe("CommentItem", () => {
       rawContent: "Visitor says",
       parentId: null,
       replyToId: null,
+      reactions: [],
       createdAt: "2025-08-10T11:30:59.000Z",
       updatedAt: "2025-08-10T11:30:59.000Z",
       path: "/post/test-post",
@@ -57,5 +58,6 @@ describe("CommentItem", () => {
 
     expect(screen.getByText("Visitor says")).toBeInTheDocument();
     expect(screen.getByText("Visitor1")).toBeInTheDocument();
+    expect(screen.getByLabelText("添加表情")).toBeInTheDocument();
   });
 });
