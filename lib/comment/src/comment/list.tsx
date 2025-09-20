@@ -297,7 +297,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
             />
             <button
               onClick={() => setReplying(!replying)}
-              className="text-sm inline-flex items-center gap-1 text-comment h-7 rounded-full border px-2 py-0.5"
+              className="text-sm inline-flex shrink-0 items-center gap-1 text-comment h-7 rounded-md border px-2 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-700 border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 transition"
             >
               <CommentIcon /> 回复
             </button>

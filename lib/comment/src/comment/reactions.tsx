@@ -41,8 +41,8 @@ type ReactionGroup = {
 
 // from GitHub's quick reaction set
 const QUICK_ACTION_EMOJIS = [
-  { label: "+1", emoji: "👍" },
-  { label: "-1", emoji: "👎" },
+  { label: "thumbs up", emoji: "👍" },
+  { label: "thumbs down", emoji: "👎" },
   { label: "laugh", emoji: "😄" },
   { label: "confused", emoji: "😕" },
   { label: "heart", emoji: "❤️" },
@@ -170,10 +170,10 @@ function ReactionChip(
     <button
       type="button"
       className={clsx(
-        "flex items-center gap-1 h-7 rounded-full border px-2 py-0.5 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+        "flex items-center gap-1 h-7 rounded-md border px-2 py-0.5 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
         active
-          ? "border-blue-200 bg-blue-100 text-blue-700"
-          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:bg-zinc-100",
+          ? "border-blue-200 bg-blue-100 text-blue-70 dark:border-blue-200/50 dark:bg-blue-100/30 dark:text-blue-300"
+          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700",
         className,
       )}
       aria-pressed={active}
@@ -340,7 +340,7 @@ export function CommentReactions({
           <button
             type="button"
             className={clsx(
-              "text-sm inline-flex items-center gap-0.5 text-comment border rounded-full px-2 py-0.5 h-7",
+              "text-sm inline-flex items-center gap-0.5 text-comment border rounded-md px-2 py-0.5 h-7 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-700 border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 transition",
               isBusy && "pointer-events-none opacity-60",
             )}
             aria-label="添加表情"
@@ -353,12 +353,12 @@ export function CommentReactions({
           <Popover.Content
             align="start"
             sideOffset={6}
-            className="rounded-lg border border-neutral-200 bg-white p-0 shadow-xl dark:border-neutral-800 dark:bg-neutral-950"
+            className="bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md"
             collisionPadding={12}
           >
             <EmojiPicker.Root
               onEmojiSelect={({ emoji }) => handleEmojiSelect(emoji)}
-              className="isolate flex h-[368px] w-fit flex-col bg-white dark:bg-neutral-900 rounded-md"
+              className="isolate flex h-[368px] w-fit flex-col bg-popover rounded-md"
             >
               <div className="flex flex-wrap gap-1 px-2 pt-2">
                 {QUICK_ACTION_EMOJIS.map(({ label, emoji }) => (
@@ -366,7 +366,7 @@ export function CommentReactions({
                     key={label}
                     type="button"
                     onClick={() => handleEmojiSelect(emoji)}
-                    className="flex size-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-lg transition hover:border-neutral-300 hover:bg-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800"
+                    className="flex size-8 items-center justify-center rounded-md text-lg transition hover:bg-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:hover:bg-neutral-700"
                     aria-label={label}
                     title={label}
                   >
@@ -375,7 +375,7 @@ export function CommentReactions({
                   </button>
                 ))}
               </div>
-              <EmojiPicker.Search className="z-10 mx-2 mt-2 appearance-none rounded-md bg-neutral-100 px-2.5 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:bg-neutral-800" />
+              <EmojiPicker.Search className="z-10 mx-2 mt-2 appearance-none rounded-md bg-neutral-200 px-2.5 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:bg-neutral-700" />
               <EmojiPicker.Viewport className="relative flex-1 outline-hidden">
                 <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400 dark:text-neutral-500">
                   Loading…
@@ -388,7 +388,7 @@ export function CommentReactions({
                   components={{
                     CategoryHeader: ({ category, ...props }) => (
                       <div
-                        className="bg-white px-3 pb-1.5 pt-3 text-xs font-medium text-neutral-600 dark:bg-neutral-900 dark:text-neutral-400"
+                        className="bg-popover px-3 pb-1.5 pt-3 text-xs font-medium text-neutral-600 dark:text-neutral-400"
                         {...props}
                       >
                         {category.label}
@@ -401,7 +401,7 @@ export function CommentReactions({
                     ),
                     Emoji: ({ emoji, ...props }) => (
                       <button
-                        className="flex size-8 items-center justify-center rounded-md text-lg data-[active]:bg-neutral-100 dark:data-[active]:bg-neutral-800"
+                        className="flex size-8 items-center justify-center rounded-md text-lg data-[active]:bg-neutral-200 dark:data-[active]:bg-neutral-700"
                         {...props}
                       >
                         {emoji.emoji}
