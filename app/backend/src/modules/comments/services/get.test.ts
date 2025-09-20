@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /**
  * This test file aims to test the `getComments` func in get-comment service.
  *

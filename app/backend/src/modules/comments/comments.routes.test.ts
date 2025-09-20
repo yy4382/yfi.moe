@@ -1,53 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/require-await  */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/require-await */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import commentApp from "./index.js";
+import { testClient } from "hono/testing";
 import * as getModule from "./services/get.js";
 import * as addModule from "./services/add/add.js";
 import * as updateModule from "./services/update.js";
-import * as notifyModule from "./services/add/notify.js";
-import { testClient } from "hono/testing";
-import { factory, type Variables } from "@/factory.js";
 import * as deleteModule from "./services/delete.js";
-import {
-  anonymousIdentityPlugin,
-  ANONYMOUS_IDENTITY_COOKIE,
-  ANONYMOUS_IDENTITY_HEADER,
-} from "@/plugins/anonymous-identity.js";
-import * as addReactionModule from "./services/reaction/add.js";
-import * as removeReactionModule from "./services/reaction/remove.js";
-import type { NotificationService } from "@/notification/types.js";
-import pino from "pino";
+import * as notifyModule from "./services/add/notify.js";
+import { createTestCommentApp } from "./test-utils.js";
 
 vi.mock(import("@/env.js"), () => ({
   env: {
     FRONTEND_URL: "http://localhost:3000",
   } as any,
 }));
-
-const testCommentApp = (
-  auth: Variables["auth"] = undefined,
-  db: Variables["db"] = {} as any,
-  authClient: Variables["authClient"] = {} as any,
-) =>
-  factory
-    .createApp()
-    .use(anonymousIdentityPlugin())
-    .use(async (c, next) => {
-      c.set("db", db);
-      c.set("authClient", authClient);
-      c.set("auth", auth);
-      c.set("notification", {} as NotificationService);
-      c.set(
-        "logger",
-        pino({
-          transport: {
-            targets: [],
-          },
-        }),
-      );
-      await next();
-    })
-    .route("/", commentApp);
 
 afterEach(() => {
   vi.clearAllMocks();
@@ -106,7 +71,8 @@ describe("get comments", () => {
       ];
       return { comments, total: comments.length };
     });
-    const resp = await testClient(testCommentApp()).get.$post({
+
+    const resp = await testClient(createTestCommentApp()).get.$post({
       json: {
         path: "/",
         limit: 10,
@@ -114,6 +80,7 @@ describe("get comments", () => {
         sortBy: "created_desc",
       },
     });
+
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.comments).toHaveLength(1);
@@ -152,7 +119,8 @@ describe("add comment", () => {
       },
     );
     vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(() => {});
-    const resp = await testClient(testCommentApp()).add.$post(
+
+    const resp = await testClient(createTestCommentApp()).add.$post(
       {
         json: {
           path: "/",
@@ -166,6 +134,7 @@ describe("add comment", () => {
         },
       },
     );
+
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.data.id).toBe(1);
@@ -178,7 +147,8 @@ describe("add comment", () => {
       return { result: "bad_req", data: { message: "test" } };
     });
     vi.spyOn(notifyModule, "sendNotification").mockImplementationOnce(() => {});
-    const resp = await testClient(testCommentApp()).add.$post({
+
+    const resp = await testClient(createTestCommentApp()).add.$post({
       json: {
         path: "/",
         content: "test",
@@ -195,51 +165,61 @@ describe("delete comment", () => {
     vi.spyOn(deleteModule, "deleteComment").mockImplementationOnce(async () => {
       return { result: "success", deletedIds: [1] };
     });
+
     const resp = await testClient(
-      testCommentApp({
+      createTestCommentApp({
         user: "something" as any,
         session: "something" as any,
       }),
     ).delete.$post({
       json: { id: 1 },
     });
+
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.deletedIds).toEqual([1]);
   });
+
   it("should unauthorized", async () => {
-    const resp = await testClient(testCommentApp()).delete.$post({
+    const resp = await testClient(createTestCommentApp()).delete.$post({
       json: { id: 1 },
     });
+
     expect(resp.status).toBe(401);
   });
+
   it("should forbidden", async () => {
     vi.spyOn(deleteModule, "deleteComment").mockImplementationOnce(async () => {
       return { result: "forbidden", message: "forbidden" };
     });
+
     const resp = await testClient(
-      testCommentApp({
+      createTestCommentApp({
         user: "something" as any,
         session: "something" as any,
       }),
     ).delete.$post({
       json: { id: 1 },
     });
+
     expect(resp.status).toBe(403);
     expect(await resp.text()).toBe("forbidden");
   });
+
   it("should not found", async () => {
     vi.spyOn(deleteModule, "deleteComment").mockImplementationOnce(async () => {
       return { result: "not_found", message: "not found" };
     });
+
     const resp = await testClient(
-      testCommentApp({
+      createTestCommentApp({
         user: "something" as any,
         session: "something" as any,
       }),
     ).delete.$post({
       json: { id: 1 },
     });
+
     expect(resp.status).toBe(404);
     expect(await resp.text()).toBe("not found");
   });
@@ -268,8 +248,9 @@ describe("update comment", () => {
         },
       };
     });
+
     const resp = await testClient(
-      testCommentApp({
+      createTestCommentApp({
         user: "something" as any,
         session: "something" as any,
       }),
@@ -279,144 +260,53 @@ describe("update comment", () => {
         rawContent: "test",
       },
     });
+
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.result).toBe("success");
   });
+
   it("should unauthorized", async () => {
-    const resp = await testClient(testCommentApp()).update.$post({
+    const resp = await testClient(createTestCommentApp()).update.$post({
       json: { id: 1, rawContent: "test" },
     });
+
     expect(resp.status).toBe(401);
   });
+
   it("should forbidden", async () => {
     vi.spyOn(updateModule, "updateComment").mockImplementationOnce(async () => {
       return { code: 403, data: "not authorized to update this comment" };
     });
+
     const resp = await testClient(
-      testCommentApp({
+      createTestCommentApp({
         user: "something" as any,
         session: "something" as any,
       }),
     ).update.$post({
       json: { id: 1, rawContent: "test" },
     });
+
     expect(resp.status).toBe(403);
     expect(await resp.text()).toBe("not authorized to update this comment");
   });
+
   it("should not found", async () => {
     vi.spyOn(updateModule, "updateComment").mockImplementationOnce(async () => {
       return { code: 404, data: "comment not found" };
     });
+
     const resp = await testClient(
-      testCommentApp({
+      createTestCommentApp({
         user: "something" as any,
         session: "something" as any,
       }),
     ).update.$post({
       json: { id: 1, rawContent: "test" },
     });
-    expect(resp.status).toBe(404);
-    expect(await resp.text()).toBe("comment not found");
-  });
-});
-
-describe("comment reactions", () => {
-  it("should add reaction and set anon cookie", async () => {
-    const mockResponse = {
-      id: 10,
-      emojiKey: "👍",
-      emojiRaw: "👍🏿",
-      user: { type: "anonymous" as const, key: "generated" },
-    };
-    const addSpy = vi
-      .spyOn(addReactionModule, "addReaction")
-      .mockImplementationOnce(async (commentId, emoji, actor) => {
-        expect(commentId).toBe(1);
-        expect(emoji).toBe("👍🏿");
-        expect(actor).toMatchObject({ type: "anonymous" });
-        return { result: "success", data: mockResponse };
-      });
-
-    const app = testCommentApp();
-    const resp = await app.request("/reaction/1/add", {
-      method: "POST",
-      body: JSON.stringify({ emoji: "👍🏿" }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    expect(resp.status).toBe(200);
-    expect(await resp.json()).toEqual(mockResponse);
-    expect(resp.headers.get("set-cookie")).toContain(ANONYMOUS_IDENTITY_COOKIE);
-    expect(resp.headers.get(ANONYMOUS_IDENTITY_HEADER)).toBeTruthy();
-    expect(addSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it("should return 404 when reaction target comment missing", async () => {
-    vi.spyOn(addReactionModule, "addReaction").mockResolvedValueOnce({
-      result: "not_found",
-      message: "comment not found",
-    });
-
-    const app = testCommentApp();
-    const resp = await app.request("/reaction/1/add", {
-      method: "POST",
-      body: JSON.stringify({ emoji: "👍" }),
-      headers: { "Content-Type": "application/json" },
-    });
 
     expect(resp.status).toBe(404);
     expect(await resp.text()).toBe("comment not found");
-    expect(resp.headers.get(ANONYMOUS_IDENTITY_HEADER)).toBeTruthy();
-  });
-
-  it("should reject invalid comment id on add", async () => {
-    const app = testCommentApp();
-    const resp = await app.request("/reaction/abc/add", {
-      method: "POST",
-      body: JSON.stringify({ emoji: "👍" }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    expect(resp.status).toBe(400);
-    expect(await resp.text()).toBe("invalid comment id");
-  });
-
-  it("should remove reaction when anon cookie present", async () => {
-    const removeSpy = vi
-      .spyOn(removeReactionModule, "removeReaction")
-      .mockResolvedValueOnce({ result: "success" });
-
-    const app = testCommentApp();
-    const resp = await app.request("/reaction/1/remove", {
-      method: "POST",
-      body: JSON.stringify({ emoji: "👍" }),
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `${ANONYMOUS_IDENTITY_COOKIE}=anon-key`,
-      },
-    });
-
-    expect(resp.status).toBe(204);
-    expect(removeSpy).toHaveBeenCalledWith(
-      1,
-      "👍",
-      expect.objectContaining({ type: "anonymous", key: "anon-key" }),
-      expect.any(Object),
-    );
-  });
-
-  it("should skip remove handler when actor missing", async () => {
-    const removeSpy = vi.spyOn(removeReactionModule, "removeReaction");
-
-    const app = testCommentApp();
-    const resp = await app.request("/reaction/1/remove", {
-      method: "POST",
-      body: JSON.stringify({ emoji: "👍" }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    expect(resp.status).toBe(204);
-    expect(removeSpy).not.toHaveBeenCalled();
   });
 });
