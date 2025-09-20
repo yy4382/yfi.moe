@@ -7,19 +7,21 @@ export const commentReactionReqBody = z.object({
 export type CommentReactionReqBody = z.infer<typeof commentReactionReqBody>;
 
 /**
- * Remove only Fitzpatrick skin-tone modifiers from an emoji string.
- * Preserves ZWJ sequences, Variation Selector-16 (U+FE0F), gender signs, flags… everything else.
+ * Remove Fitzpatrick skin-tone modifiers and Variation Selector-16 (U+FE0F) from an emoji string.
+ * Preserves ZWJ sequences, gender signs, flags… everything else.
  *
  * Examples:
  *  "👍🏽"  -> "👍"
  *  "👋🏻"  -> "👋"
  *  "👨🏾‍💻"  -> "👨‍💻"
  *  "🧑🏿‍🤝‍🧑🏻"  -> "🧑‍🤝‍🧑"
- *  "☺️"  -> "☺️"      (unchanged)
  */
-export function canonicalizeEmoji(emojiRaw: string): string {
-  // U+1F3FB..U+1F3FF = light..dark skin tones.
-  // The /u flag makes the regex operate on code points (not UTF-16 code units).
-  const SKIN_TONES = /[\u{1F3FB}-\u{1F3FF}]/gu;
-  return emojiRaw.replace(SKIN_TONES, "");
+export function canonicalizeEmoji(input: string): string {
+  const SKIN_TONES = /\p{Emoji_Modifier}/gu; // U+1F3FB–U+1F3FF
+  const VS16 = /\uFE0F/gu;
+
+  return input
+    .normalize("NFC") // canonical normalization
+    .replace(VS16, "") // strip VS16
+    .replace(SKIN_TONES, ""); // strip skin-tone modifiers
 }
