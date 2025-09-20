@@ -83,12 +83,7 @@ const Toc: React.FC<{
   return (
     <Popover modal={false}>
       <PopoverTrigger asChild>
-        <button
-          className="center border-container bg-bg flex size-10 border-b border-l"
-          onClick={() => {
-            console.log("abc");
-          }}
-        >
+        <button className="center border-container bg-bg flex size-10 border-b border-l">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <ListIcon className="text-heading size-6" />
           </motion.span>

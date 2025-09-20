@@ -9,7 +9,6 @@ export function CopyButton() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isCopied, setIsCopied] = useState<"idle" | "copied" | "error">("idle");
   const handleClick = () => {
-    console.log("handleClick");
     if (!buttonRef.current) return;
     const code = buttonRef.current.closest("pre")?.querySelector("code");
     if (!code) return;
