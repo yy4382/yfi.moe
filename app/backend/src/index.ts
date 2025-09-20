@@ -15,6 +15,7 @@ import { pinoMiddleware, logger } from "./logger.js";
 import { HTTPException } from "hono/http-exception";
 import { Scalar } from "@scalar/hono-api-reference";
 import { describeRoute, openAPIRouteHandler } from "hono-openapi";
+import { anonymousIdentityPlugin } from "./plugins/anonymous-identity.js";
 
 await migrate(db, { migrationsFolder: "./drizzle" });
 
@@ -27,6 +28,7 @@ const app = factory
   .use(betterAuthPlugin)
   .use(notificationPlugin(env))
   .use(akismetPlugin)
+  .use(anonymousIdentityPlugin())
   .use(
     "/v1/*",
     cors({

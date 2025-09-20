@@ -8,6 +8,13 @@ import * as notifyModule from "./services/add/notify.js";
 import { testClient } from "hono/testing";
 import { factory, type Variables } from "@/factory.js";
 import * as deleteModule from "./services/delete.js";
+import {
+  anonymousIdentityPlugin,
+  ANONYMOUS_IDENTITY_COOKIE,
+  ANONYMOUS_IDENTITY_HEADER,
+} from "@/plugins/anonymous-identity.js";
+import * as addReactionModule from "./services/reaction/add.js";
+import * as removeReactionModule from "./services/reaction/remove.js";
 import type { NotificationService } from "@/notification/types.js";
 import pino from "pino";
 
@@ -24,6 +31,7 @@ const testCommentApp = (
 ) =>
   factory
     .createApp()
+    .use(anonymousIdentityPlugin())
     .use(async (c, next) => {
       c.set("db", db);
       c.set("authClient", authClient);
@@ -310,5 +318,105 @@ describe("update comment", () => {
     });
     expect(resp.status).toBe(404);
     expect(await resp.text()).toBe("comment not found");
+  });
+});
+
+describe("comment reactions", () => {
+  it("should add reaction and set anon cookie", async () => {
+    const mockResponse = {
+      id: 10,
+      emojiKey: "👍",
+      emojiRaw: "👍🏿",
+      user: { type: "anonymous" as const, key: "generated" },
+    };
+    const addSpy = vi
+      .spyOn(addReactionModule, "addReaction")
+      .mockImplementationOnce(async (commentId, emoji, actor) => {
+        expect(commentId).toBe(1);
+        expect(emoji).toBe("👍🏿");
+        expect(actor).toMatchObject({ type: "anonymous" });
+        return { result: "success", data: mockResponse };
+      });
+
+    const app = testCommentApp();
+    const resp = await app.request("/reaction/1/add", {
+      method: "POST",
+      body: JSON.stringify({ emoji: "👍🏿" }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    expect(resp.status).toBe(200);
+    expect(await resp.json()).toEqual(mockResponse);
+    expect(resp.headers.get("set-cookie")).toContain(ANONYMOUS_IDENTITY_COOKIE);
+    expect(resp.headers.get(ANONYMOUS_IDENTITY_HEADER)).toBeTruthy();
+    expect(addSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("should return 404 when reaction target comment missing", async () => {
+    vi.spyOn(addReactionModule, "addReaction").mockResolvedValueOnce({
+      result: "not_found",
+      message: "comment not found",
+    });
+
+    const app = testCommentApp();
+    const resp = await app.request("/reaction/1/add", {
+      method: "POST",
+      body: JSON.stringify({ emoji: "👍" }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    expect(resp.status).toBe(404);
+    expect(await resp.text()).toBe("comment not found");
+    expect(resp.headers.get(ANONYMOUS_IDENTITY_HEADER)).toBeTruthy();
+  });
+
+  it("should reject invalid comment id on add", async () => {
+    const app = testCommentApp();
+    const resp = await app.request("/reaction/abc/add", {
+      method: "POST",
+      body: JSON.stringify({ emoji: "👍" }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    expect(resp.status).toBe(400);
+    expect(await resp.text()).toBe("invalid comment id");
+  });
+
+  it("should remove reaction when anon cookie present", async () => {
+    const removeSpy = vi
+      .spyOn(removeReactionModule, "removeReaction")
+      .mockResolvedValueOnce({ result: "success" });
+
+    const app = testCommentApp();
+    const resp = await app.request("/reaction/1/remove", {
+      method: "POST",
+      body: JSON.stringify({ emoji: "👍" }),
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `${ANONYMOUS_IDENTITY_COOKIE}=anon-key`,
+      },
+    });
+
+    expect(resp.status).toBe(204);
+    expect(removeSpy).toHaveBeenCalledWith(
+      1,
+      "👍",
+      expect.objectContaining({ type: "anonymous", key: "anon-key" }),
+      expect.any(Object),
+    );
+  });
+
+  it("should skip remove handler when actor missing", async () => {
+    const removeSpy = vi.spyOn(removeReactionModule, "removeReaction");
+
+    const app = testCommentApp();
+    const resp = await app.request("/reaction/1/remove", {
+      method: "POST",
+      body: JSON.stringify({ emoji: "👍" }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    expect(resp.status).toBe(204);
+    expect(removeSpy).not.toHaveBeenCalled();
   });
 });

@@ -6,6 +6,7 @@ import type { NotificationService } from "./notification/types.js";
 import type { AkismetService } from "./services/akismet.js";
 import type { RequestIdVariables } from "hono/request-id";
 import type * as pino from "pino";
+import type { AnonymousIdentity } from "./plugins/anonymous-identity.js";
 
 export type Variables = {
   db: DbClient;
@@ -19,6 +20,7 @@ export type Variables = {
   akismet: AkismetService | null;
 
   logger: pino.Logger;
+  anonymousIdentity: AnonymousIdentity;
 } & RequestIdVariables;
 
 export const factory = createFactory<{
