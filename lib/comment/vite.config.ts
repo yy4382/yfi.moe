@@ -19,7 +19,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [
     tsconfigPaths(),
-    react(),
+    react({
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
     dts({ tsconfigPath: "./tsconfig.app.json", rollupTypes: true }),
     Icons({ compiler: "jsx", jsx: "react" }),
     ...((process.env.ANALYZE === "true" && analyzer

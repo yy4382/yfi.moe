@@ -199,10 +199,7 @@ export function CommentReactions({
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const currentUser = session?.user;
-  const reactionGroups = useMemo(
-    () => groupReactions(reactions, currentUser, anonymousKey),
-    [reactions, currentUser, anonymousKey],
-  );
+  const reactionGroups = groupReactions(reactions, currentUser, anonymousKey);
 
   const queryKey = useMemo(
     () => ["comments", { session: currentUser?.id }, path, sortBy] as const,

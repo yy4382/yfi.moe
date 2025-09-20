@@ -12,7 +12,7 @@ import {
 import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import type { LayeredCommentData } from "@repo/api/comment/get.model";
 import { produce } from "immer";
-import { useContext, useRef } from "react";
+import { useContext, useState } from "react";
 import {
   AuthClientRefContext,
   PathnameContext,
@@ -34,8 +34,10 @@ export function CommentBoxEdit({
   const authClient = useContext(AuthClientRefContext).current;
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
-  const contentAtomRef = useRef<PrimitiveAtom<string>>(atom(initialContent));
-  const [content, setContent] = useAtom(contentAtomRef.current);
+  const [contentAtom] = useState<PrimitiveAtom<string>>(() =>
+    atom(initialContent),
+  );
+  const [content, setContent] = useAtom(contentAtom);
   const mutationKey = ["editComment", editId];
   const serverURL = useContext(ServerURLContext);
   const { mutate } = useMutation({
@@ -99,7 +101,7 @@ export function CommentBoxEdit({
   return (
     <CommentBoxIdContext value={{ editId, path }}>
       <InputBox
-        contentAtom={contentAtomRef.current}
+        contentAtom={contentAtom}
         submit={handleSubmit}
         onCancel={onCancel}
         mutationKey={mutationKey}

@@ -4,7 +4,7 @@ import {
   useCallback,
   useContext,
   useMemo,
-  useRef,
+  useState,
 } from "react";
 import { toast } from "sonner";
 import {
@@ -145,11 +145,11 @@ type CommentBoxNewProps = {
 };
 
 const useNewCommentData = () => {
-  const contentAtomRef = useRef<PrimitiveAtom<string>>(atom(""));
-  const isAnonymousAtomRef = useRef<PrimitiveAtom<boolean>>(atom(false));
+  const [contentAtom] = useState<PrimitiveAtom<string>>(() => atom(""));
+  const [isAnonymousAtom] = useState<PrimitiveAtom<boolean>>(() => atom(false));
   return {
-    contentAtom: contentAtomRef.current,
-    isAnonymousAtom: isAnonymousAtomRef.current,
+    contentAtom: contentAtom,
+    isAnonymousAtom: isAnonymousAtom,
   };
 };
 
