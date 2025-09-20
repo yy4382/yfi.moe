@@ -12,6 +12,28 @@ exports[`admin get comments > should return comments 1`] = `
   "parentId": null,
   "path": "/",
   "rawContent": "comment 2 from "admin" role "admin" isSpam "false" anonymous "false"",
+  "reactions": [
+    {
+      "emojiKey": "heart",
+      "emojiRaw": "❤️",
+      "id": 2,
+      "user": {
+        "key": "anon-key",
+        "type": "anonymous",
+      },
+    },
+    {
+      "emojiKey": "thumbs_up",
+      "emojiRaw": "👍",
+      "id": 1,
+      "user": {
+        "id": "2",
+        "image": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=2",
+        "name": "user1",
+        "type": "user",
+      },
+    },
+  ],
   "replyToId": null,
   "updatedAt": "2000-01-01T00:00:00.000Z",
   "userAgent": null,
@@ -36,6 +58,28 @@ exports[`non-admin get comments > should return comments 1`] = `
   "parentId": null,
   "path": "/",
   "rawContent": "comment 2 from "admin" role "admin" isSpam "false" anonymous "false"",
+  "reactions": [
+    {
+      "emojiKey": "heart",
+      "emojiRaw": "❤️",
+      "id": 2,
+      "user": {
+        "key": "anon-key",
+        "type": "anonymous",
+      },
+    },
+    {
+      "emojiKey": "thumbs_up",
+      "emojiRaw": "👍",
+      "id": 1,
+      "user": {
+        "id": "2",
+        "image": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=2",
+        "name": "user1",
+        "type": "user",
+      },
+    },
+  ],
   "replyToId": null,
   "updatedAt": "2000-01-01T00:00:00.000Z",
   "userId": "1",

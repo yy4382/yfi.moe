@@ -1,5 +1,20 @@
 import { z } from "zod";
 
+export const commentReaction = z.object({
+  id: z.number(),
+  emojiKey: z.string(),
+  emojiRaw: z.string(),
+  user: z.discriminatedUnion("type", [
+    z.object({
+      type: z.literal("user"),
+      id: z.string(),
+      name: z.string(),
+      image: z.string(),
+    }),
+    z.object({ type: z.literal("anonymous"), key: z.string() }),
+  ]),
+});
+
 export const commentDataUser = z.strictObject({
   displayName: z.string(),
   anonymousName: z.string().nullish(),
@@ -30,6 +45,7 @@ export const commentDataBase = z.strictObject({
   rawContent: z.string(),
   parentId: z.number().nullable(),
   replyToId: z.number().nullable(),
+  reactions: z.array(commentReaction),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
   path: z.string(),

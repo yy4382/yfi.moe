@@ -78,6 +78,7 @@ export async function addComment(
   const data = tablesToCommentData(
     newComment,
     currentUser,
+    [],
     currentUser?.role === "admin",
   );
   sendNotification(

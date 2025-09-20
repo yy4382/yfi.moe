@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { InferSelectModel } from "drizzle-orm";
-import { comment, user } from "@/db/schema.js";
+import { comment, reaction, user } from "@/db/schema.js";
 import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import type { User } from "@/auth/auth-plugin.js";
 import {
@@ -10,13 +10,37 @@ import {
   commentData,
   commentDataNonAdmin,
   type CommentData,
+  commentReaction,
 } from "@repo/api/comment/comment-data";
 
 export function tablesToCommentData(
   commentTableData: InferSelectModel<typeof comment>,
   userTableData: InferSelectModel<typeof user> | User | null,
+  reactionTableData: {
+    reaction: InferSelectModel<typeof reaction>;
+    user: InferSelectModel<typeof user> | null;
+  }[],
   isAdmin: boolean,
 ): CommentData {
+  const reactions: z.infer<typeof commentReaction>[] = reactionTableData.map(
+    (r) => {
+      const user: z.infer<typeof commentReaction.shape.user> = r.user
+        ? {
+            type: "user",
+            id: r.user.id,
+            name: r.user.name,
+            image: r.user.image ?? getDiceBearUrl(r.user.id),
+          }
+        : { type: "anonymous", key: r.reaction.actorAnonKey! };
+      return {
+        id: r.reaction.id,
+        emojiKey: r.reaction.emojiKey,
+        emojiRaw: r.reaction.emojiRaw,
+        user: user,
+      };
+    },
+  );
+
   const baseData: z.input<typeof commentDataBase> = {
     id: commentTableData.id,
     content: commentTableData.renderedContent,
@@ -24,6 +48,7 @@ export function tablesToCommentData(
     path: commentTableData.path,
     parentId: commentTableData.parentId,
     replyToId: commentTableData.replyToId,
+    reactions,
     createdAt: commentTableData.createdAt.toISOString(),
     updatedAt: commentTableData.updatedAt.toISOString(),
   };

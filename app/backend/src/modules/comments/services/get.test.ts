@@ -28,7 +28,7 @@ import type { Client } from "@libsql/client";
 let client: Client;
 let db: DbClient;
 
-const { user, comment } = schema;
+const { user, comment, reaction } = schema;
 
 const mockUser: (typeof user.$inferInsert)[] = [
   {
@@ -144,6 +144,27 @@ const makeMockComment = () => {
 };
 
 const mockComment: (typeof comment.$inferInsert)[] = makeMockComment();
+const targetCommentId = mockComment[0]?.id ?? 1;
+const reactionFixtures: (typeof reaction.$inferInsert)[] = [
+  {
+    id: 1,
+    commentId: targetCommentId,
+    actorId: "2",
+    actorAnonKey: null,
+    emojiKey: "thumbs_up",
+    emojiRaw: "👍",
+    createdAt: new Date("2024-01-02T12:00:00Z"),
+  },
+  {
+    id: 2,
+    commentId: targetCommentId,
+    actorId: null,
+    actorAnonKey: "anon-key",
+    emojiKey: "heart",
+    emojiRaw: "❤️",
+    createdAt: new Date("2024-01-02T12:05:00Z"),
+  },
+];
 
 beforeEach(async () => {
   client = createClient({ url: ":memory:" });
@@ -153,6 +174,7 @@ beforeEach(async () => {
 
   await db.insert(user).values(mockUser);
   await db.insert(comment).values(mockComment);
+  await db.insert(reaction).values(reactionFixtures);
 });
 
 afterEach(() => {
@@ -176,6 +198,38 @@ describe("admin get comments", () => {
       comments.at(0),
       "admin comment should include all info",
     ).toMatchSnapshot();
+  });
+  it("should include reactions metadata for admin", async () => {
+    const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
+    const { comments } = await getComments(
+      { path: "/", limit: 1000, offset: 0, sortBy: "created_asc" },
+      { db, user: admin },
+    );
+
+    const commentWithReactions = comments.find((c) => c.id === targetCommentId);
+    expect(commentWithReactions).toBeDefined();
+    expect(commentWithReactions!.reactions).toHaveLength(2);
+    expect(commentWithReactions!.reactions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 1,
+          emojiKey: "thumbs_up",
+          emojiRaw: "👍",
+          user: expect.objectContaining({
+            type: "user",
+            id: "2",
+            name: "user1",
+            image: expect.stringContaining("seed=2"),
+          }),
+        }),
+        expect.objectContaining({
+          id: 2,
+          emojiKey: "heart",
+          emojiRaw: "❤️",
+          user: { type: "anonymous", key: "anon-key" },
+        }),
+      ]),
+    );
   });
   it("should include spam comments", async () => {
     const admin = (await db.select().from(user).where(eq(user.id, "1")))[0];
@@ -223,6 +277,38 @@ describe("non-admin get comments", () => {
       comments.at(0),
       "non-admin comment should include partial info",
     ).toMatchSnapshot();
+  });
+  it("should include reactions metadata for non-admin", async () => {
+    const user1 = (await db.select().from(user).where(eq(user.id, "2")))[0];
+    const { comments } = await getComments(
+      { path: "/", limit: 1000, offset: 0, sortBy: "created_asc" },
+      { db, user: user1 },
+    );
+
+    const commentWithReactions = comments.find((c) => c.id === targetCommentId);
+    expect(commentWithReactions).toBeDefined();
+    expect(commentWithReactions!.reactions).toHaveLength(2);
+    expect(commentWithReactions!.reactions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 1,
+          emojiKey: "thumbs_up",
+          emojiRaw: "👍",
+          user: expect.objectContaining({
+            type: "user",
+            id: "2",
+            name: "user1",
+            image: expect.stringContaining("seed=2"),
+          }),
+        }),
+        expect.objectContaining({
+          id: 2,
+          emojiKey: "heart",
+          emojiRaw: "❤️",
+          user: { type: "anonymous", key: "anon-key" },
+        }),
+      ]),
+    );
   });
   it("should not include spam comments", async () => {
     const user1 = (await db.select().from(user).where(eq(user.id, "2")))[0];

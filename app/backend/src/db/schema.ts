@@ -1,9 +1,11 @@
 import { sql } from "drizzle-orm";
 import {
   check,
+  index,
   integer,
   sqliteTable,
   text,
+  uniqueIndex,
   type AnySQLiteColumn,
 } from "drizzle-orm/sqlite-core";
 
@@ -132,3 +134,39 @@ export const unsubscribedEmail = sqliteTable("unsubscribed_email", {
     .notNull()
     .$defaultFn(() => /* @__PURE__ */ new Date()),
 });
+
+export const reaction = sqliteTable(
+  "reaction",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    commentId: integer("comment_id")
+      .notNull()
+      .references(() => comment.id, { onDelete: "cascade" }),
+    actorId: text("actor_id").references(() => user.id, {
+      onDelete: "cascade",
+    }),
+    actorAnonKey: text("actor_anon_key"),
+
+    // raw emoji, includes skin tone modifiers, etc.
+    emojiRaw: text("emoji_raw").notNull(),
+    // normalized emoji key, no skin tone modifiers, etc.
+    emojiKey: text("emoji_key").notNull(),
+
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => /* @__PURE__ */ new Date()),
+  },
+  (t) => [
+    uniqueIndex("unique_user_reaction")
+      .on(t.commentId, t.emojiKey, t.actorId)
+      .where(sql`${t.actorId} IS NOT NULL AND ${t.actorAnonKey} IS NULL`),
+    uniqueIndex("unique_anon_reaction")
+      .on(t.commentId, t.emojiKey, t.actorAnonKey)
+      .where(sql`${t.actorId} IS NULL AND ${t.actorAnonKey} IS NOT NULL`),
+    index("idx_reactions_comment_emoji").on(t.commentId, t.emojiKey),
+    check(
+      "either_actor_id_or_actor_anon_key",
+      sql`(${t.actorId} IS NULL AND ${t.actorAnonKey} IS NOT NULL) OR (${t.actorId} IS NOT NULL AND ${t.actorAnonKey} IS NULL)`,
+    ),
+  ],
+);

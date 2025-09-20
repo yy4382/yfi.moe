@@ -48,6 +48,8 @@ describe("tablesToCommentData", () => {
     banExpires: null,
   };
 
+  const noReactions: Parameters<typeof tablesToCommentData>[2] = [];
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -57,6 +59,7 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         mockCommentTableData,
         mockUserTableData,
+        noReactions,
         true,
       );
 
@@ -67,6 +70,7 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
+        reactions: [],
         createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
         updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Test User",
@@ -90,7 +94,12 @@ describe("tablesToCommentData", () => {
         anonymousName: "Anonymous User",
       };
 
-      const result = tablesToCommentData(anonymousComment, null, true);
+      const result = tablesToCommentData(
+        anonymousComment,
+        null,
+        noReactions,
+        true,
+      );
 
       expect(result).toEqual({
         id: 1,
@@ -99,6 +108,7 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
+        reactions: [],
         createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
         updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Anonymous User",
@@ -123,7 +133,12 @@ describe("tablesToCommentData", () => {
         visitorEmail: "visitor@example.com",
       };
 
-      const result = tablesToCommentData(visitorComment, null, true);
+      const result = tablesToCommentData(
+        visitorComment,
+        null,
+        noReactions,
+        true,
+      );
 
       expect(result).toEqual({
         id: 1,
@@ -132,6 +147,7 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
+        reactions: [],
         createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
         updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Visitor Name",
@@ -160,7 +176,12 @@ describe("tablesToCommentData", () => {
         banned: false,
       };
 
-      const result = tablesToCommentData(mockCommentTableData, authUser, true);
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        authUser,
+        noReactions,
+        true,
+      );
 
       expect(result).toEqual({
         id: 1,
@@ -169,6 +190,7 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
+        reactions: [],
         createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
         updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Auth User",
@@ -191,6 +213,7 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         mockCommentTableData,
         mockUserTableData,
+        noReactions,
         false,
       );
 
@@ -201,6 +224,7 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
+        reactions: [],
         createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
         updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Test User",
@@ -220,6 +244,7 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         anonymousComment,
         mockUserTableData,
+        noReactions,
         false,
       );
 
@@ -230,6 +255,7 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
+        reactions: [],
         createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
         updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Anonymous User",
@@ -247,7 +273,12 @@ describe("tablesToCommentData", () => {
         visitorEmail: "visitor@example.com",
       };
 
-      const result = tablesToCommentData(visitorComment, null, false);
+      const result = tablesToCommentData(
+        visitorComment,
+        null,
+        noReactions,
+        false,
+      );
 
       expect(result).toEqual({
         id: 1,
@@ -256,6 +287,7 @@ describe("tablesToCommentData", () => {
         path: "/blog/test-post",
         parentId: null,
         replyToId: null,
+        reactions: [],
         createdAt: new Date("2024-01-01T10:00:00Z").toISOString(),
         updatedAt: new Date("2024-01-01T11:00:00Z").toISOString(),
         displayName: "Visitor Name",
@@ -268,7 +300,12 @@ describe("tablesToCommentData", () => {
 
   describe("edge cases", () => {
     it("should handle null user data", () => {
-      const result = tablesToCommentData(mockCommentTableData, null, true);
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        null,
+        noReactions,
+        true,
+      );
 
       expect(result.displayName).toBe("Unknown");
       expect(result.userId).toBeUndefined();
@@ -286,6 +323,7 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         commentWithMultipleNames,
         mockUserTableData,
+        noReactions,
         true,
       );
 
@@ -299,7 +337,12 @@ describe("tablesToCommentData", () => {
         visitorName: null,
       };
 
-      const result = tablesToCommentData(commentNoNames, null, true);
+      const result = tablesToCommentData(
+        commentNoNames,
+        null,
+        noReactions,
+        true,
+      );
 
       expect(result.displayName).toBe("Unknown");
     });
@@ -314,6 +357,7 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         nestedComment,
         mockUserTableData,
+        noReactions,
         true,
       );
 
@@ -327,7 +371,12 @@ describe("tablesToCommentData", () => {
         isSpam: true,
       };
 
-      const result = tablesToCommentData(spamComment, mockUserTableData, true);
+      const result = tablesToCommentData(
+        spamComment,
+        mockUserTableData,
+        noReactions,
+        true,
+      );
 
       expect(result.isSpam).toBe(true);
     });
@@ -341,6 +390,7 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         mockCommentTableData,
         userNoImage,
+        noReactions,
         true,
       );
 
@@ -357,6 +407,7 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         anonymousComment,
         mockUserTableData,
+        noReactions,
         true,
       );
 
@@ -368,11 +419,131 @@ describe("tablesToCommentData", () => {
       const result = tablesToCommentData(
         mockCommentTableData,
         mockUserTableData,
+        noReactions,
         true,
       );
 
       expect(() => z.iso.datetime().parse(result.createdAt)).not.toThrow();
       expect(() => z.iso.datetime().parse(result.updatedAt)).not.toThrow();
+    });
+  });
+
+  describe("reactions", () => {
+    it("should map user and anonymous reactions", () => {
+      const reactionUser: InferSelectModel<typeof user> = {
+        ...mockUserTableData,
+        id: "reactor-user",
+        email: "reactor@example.com",
+        name: "Reactor User",
+        image: "https://example.com/reactor.png",
+        createdAt: new Date("2024-01-02T09:00:00Z"),
+        updatedAt: new Date("2024-01-02T09:30:00Z"),
+      };
+
+      const reactionData: Parameters<typeof tablesToCommentData>[2] = [
+        {
+          reaction: {
+            id: 10,
+            commentId: mockCommentTableData.id,
+            actorId: "reactor-user",
+            actorAnonKey: null,
+            emojiKey: "thumbs_up",
+            emojiRaw: "👍",
+            createdAt: new Date("2024-01-02T12:00:00Z"),
+          },
+          user: reactionUser,
+        },
+        {
+          reaction: {
+            id: 11,
+            commentId: mockCommentTableData.id,
+            actorId: null,
+            actorAnonKey: "anon-key",
+            emojiKey: "heart",
+            emojiRaw: "❤️",
+            createdAt: new Date("2024-01-02T12:05:00Z"),
+          },
+          user: null,
+        },
+      ];
+
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        mockUserTableData,
+        reactionData,
+        true,
+      );
+
+      expect(result.reactions).toEqual([
+        {
+          id: 10,
+          emojiKey: "thumbs_up",
+          emojiRaw: "👍",
+          user: {
+            type: "user",
+            id: "reactor-user",
+            name: "Reactor User",
+            image: "https://example.com/reactor.png",
+          },
+        },
+        {
+          id: 11,
+          emojiKey: "heart",
+          emojiRaw: "❤️",
+          user: {
+            type: "anonymous",
+            key: "anon-key",
+          },
+        },
+      ]);
+    });
+
+    it("should fall back to generated avatar when reaction user has no image", () => {
+      const reactionUserWithoutImage: InferSelectModel<typeof user> = {
+        ...mockUserTableData,
+        id: "reactor-no-image",
+        email: "reactor-no-image@example.com",
+        name: "Reactor No Image",
+        image: null,
+        createdAt: new Date("2024-01-02T10:00:00Z"),
+        updatedAt: new Date("2024-01-02T10:30:00Z"),
+      };
+
+      const reactionData: Parameters<typeof tablesToCommentData>[2] = [
+        {
+          reaction: {
+            id: 12,
+            commentId: mockCommentTableData.id,
+            actorId: "reactor-no-image",
+            actorAnonKey: null,
+            emojiKey: "sparkles",
+            emojiRaw: "✨",
+            createdAt: new Date("2024-01-02T12:10:00Z"),
+          },
+          user: reactionUserWithoutImage,
+        },
+      ];
+
+      const result = tablesToCommentData(
+        mockCommentTableData,
+        mockUserTableData,
+        reactionData,
+        true,
+      );
+
+      expect(result.reactions).toEqual([
+        {
+          id: 12,
+          emojiKey: "sparkles",
+          emojiRaw: "✨",
+          user: {
+            type: "user",
+            id: "reactor-no-image",
+            name: "Reactor No Image",
+            image: "https://gravatar.com/avatar/reactor-no-image",
+          },
+        },
+      ]);
     });
   });
 });

@@ -74,7 +74,8 @@ export async function updateComment(
     code: 200,
     data: {
       result: "success",
-      data: tablesToCommentData(updatedComment, currentUser, isAdmin),
+      // TODO: maybe need to fetch reactions again, or add documentation that reactions are not included in update response
+      data: tablesToCommentData(updatedComment, currentUser, [], isAdmin),
     },
   };
 }

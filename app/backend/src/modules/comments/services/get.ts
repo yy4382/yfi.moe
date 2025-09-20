@@ -6,7 +6,7 @@ import type {
   LayeredCommentData,
 } from "@repo/api/comment/get.model";
 import { and, asc, desc, eq, inArray, isNull, or, sql } from "drizzle-orm";
-import { comment, user } from "@/db/schema.js";
+import { comment, reaction, user } from "@/db/schema.js";
 import { tablesToCommentData } from "./shared/comment-data.js";
 import type { CommentData } from "@repo/api/comment/comment-data";
 
@@ -94,14 +94,26 @@ async function getCommentsDb(
         ),
       ),
     );
+  const commentsWithReactions = await Promise.all(
+    comments.map(async (c) => {
+      const reactions = await db
+        .select()
+        .from(reaction)
+        .leftJoin(user, eq(reaction.actorId, user.id))
+        .where(eq(reaction.commentId, c.comment.id));
+      return { ...c, reactions };
+    }),
+  );
+
   return {
-    comments: comments.map((comment) =>
-      tablesToCommentData(
+    comments: commentsWithReactions.map((comment) => {
+      return tablesToCommentData(
         comment.comment,
         comment.user,
+        comment.reactions,
         currentUser?.role === "admin",
-      ),
-    ),
+      );
+    }),
   };
 }
 
