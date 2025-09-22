@@ -60,11 +60,25 @@ export async function toggleCommentSpam(
       data: "Comment not found",
     };
   }
+  if (targetComment.deletedAt !== null) {
+    logger?.warn({ commentId }, "toggleSpam:deleted comment");
+    return {
+      code: 404,
+      data: "Comment not found",
+    };
+  }
+  if (targetComment.isSpam === isSpam) {
+    logger?.info({ commentId, isSpam }, "toggleSpam:no change needed");
+    return {
+      code: 200,
+      data: { success: true },
+    };
+  }
 
   // Update the spam status
   await db
     .update(comment)
-    .set({ isSpam })
+    .set({ isSpam, updatedAt: new Date() })
     .where(eq(comment.id, commentId))
     .returning();
 
