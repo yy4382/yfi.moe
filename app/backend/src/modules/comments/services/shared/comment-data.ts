@@ -12,6 +12,7 @@ import {
   type CommentData,
   commentReaction,
 } from "@repo/api/comment/comment-data";
+import SparkMD5 from "spark-md5";
 
 export function tablesToCommentData(
   commentTableData: InferSelectModel<typeof comment>,
@@ -31,7 +32,7 @@ export function tablesToCommentData(
             name: r.user.name,
             image: r.user.image ?? getDiceBearUrl(r.user.id),
           }
-        : { type: "anonymous", key: r.reaction.actorAnonKey! };
+        : { type: "anonymous", key: SparkMD5.hash(r.reaction.actorAnonKey!) };
       return {
         id: r.reaction.id,
         emojiKey: r.reaction.emojiKey,

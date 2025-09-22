@@ -1,6 +1,7 @@
 import { factory } from "@/factory.js";
 import { getCookie, setCookie } from "hono/cookie";
 import { randomUUID } from "node:crypto";
+import SparkMd5 from "spark-md5";
 
 const DEFAULT_COOKIE_NAME = "anon_key";
 const DEFAULT_HEADER_NAME = "x-anonymous-key";
@@ -38,7 +39,7 @@ export const anonymousIdentityPlugin = (
       const existing = getKey();
       if (existing) {
         if (exposeHeader) {
-          c.header(headerName, existing, { append: false });
+          c.header(headerName, SparkMd5.hash(existing), { append: false });
         }
         return { key: existing, created: false };
       }
@@ -51,7 +52,7 @@ export const anonymousIdentityPlugin = (
         maxAge,
       });
       if (exposeHeader) {
-        c.header(headerName, key, { append: false });
+        c.header(headerName, SparkMd5.hash(key), { append: false });
       }
       return { key, created: true };
     };

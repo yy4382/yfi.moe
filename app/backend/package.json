@@ -31,6 +31,7 @@
     "pino": "^9.9.5",
     "pino-pretty": "^13.1.1",
     "react": "catalog:",
+    "spark-md5": "^3.0.2",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -39,6 +40,7 @@
     "@types/node": "^20.19.9",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "catalog:",
+    "@types/spark-md5": "^3.0.5",
     "dotenv": "^17.2.1",
     "drizzle-kit": "^0.31.4",
     "eslint": "catalog:",
