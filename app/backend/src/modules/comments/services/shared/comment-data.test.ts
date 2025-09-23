@@ -4,6 +4,7 @@ import type { InferSelectModel } from "drizzle-orm";
 import type { comment, user } from "@/db/schema.js";
 import type { User } from "@/auth/auth-plugin.js";
 import { z } from "zod";
+import SparkMD5 from "spark-md5";
 
 vi.mock("@repo/helpers/get-gravatar-url", () => ({
   getGravatarUrl: vi.fn(
@@ -492,7 +493,7 @@ describe("tablesToCommentData", () => {
           emojiRaw: "❤️",
           user: {
             type: "anonymous",
-            key: "anon-key",
+            key: SparkMD5.hash("anon-key"),
           },
         },
       ]);
