@@ -1,88 +1,200 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`admin get comments > should return comments 1`] = `
+exports[`cursor style pagination > should return first page correctly 1`] = `
 {
-  "anonymousName": null,
-  "children": [],
-  "content": "comment 2 from "admin" role "admin" isSpam "false" anonymous "false"",
-  "createdAt": "1970-01-01T00:00:20.000Z",
-  "displayName": "admin",
-  "id": 1,
-  "isSpam": false,
-  "parentId": null,
-  "path": "/",
-  "rawContent": "comment 2 from "admin" role "admin" isSpam "false" anonymous "false"",
-  "reactions": [
+  "comments": [
     {
-      "emojiKey": "heart",
-      "emojiRaw": "❤️",
-      "id": 2,
-      "user": {
-        "key": "anon-key",
-        "type": "anonymous",
+      "children": {
+        "cursor": 41,
+        "data": [
+          {
+            "id": 41,
+          },
+        ],
+        "hasMore": false,
+        "total": 1,
+      },
+      "data": {
+        "id": 4,
       },
     },
     {
-      "emojiKey": "thumbs_up",
-      "emojiRaw": "👍",
-      "id": 1,
-      "user": {
-        "id": "2",
-        "image": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=2",
-        "name": "user1",
-        "type": "user",
+      "children": {
+        "cursor": 0,
+        "data": [],
+        "hasMore": false,
+        "total": 0,
+      },
+      "data": {
+        "id": 3,
       },
     },
   ],
-  "replyToId": null,
-  "updatedAt": "2000-01-01T00:00:00.000Z",
-  "userAgent": null,
-  "userEmail": "admin@example.com",
-  "userId": "1",
-  "userImage": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=1",
-  "userIp": null,
-  "userName": "admin",
-  "visitorEmail": null,
-  "visitorName": null,
+  "cursor": 3,
+  "hasMore": true,
+  "total": 12,
 }
 `;
 
-exports[`non-admin get comments > should return comments 1`] = `
+exports[`cursor style pagination > should return second page correctly 1`] = `
 {
-  "anonymousName": null,
-  "children": [],
-  "content": "comment 2 from "admin" role "admin" isSpam "false" anonymous "false"",
-  "createdAt": "1970-01-01T00:00:20.000Z",
-  "displayName": "admin",
-  "id": 1,
-  "parentId": null,
-  "path": "/",
-  "rawContent": "comment 2 from "admin" role "admin" isSpam "false" anonymous "false"",
-  "reactions": [
+  "comments": [
     {
-      "emojiKey": "heart",
-      "emojiRaw": "❤️",
-      "id": 2,
-      "user": {
-        "key": "anon-key",
-        "type": "anonymous",
+      "children": {
+        "cursor": 23,
+        "data": [
+          {
+            "id": 21,
+          },
+          {
+            "id": 22,
+          },
+          {
+            "id": 23,
+          },
+        ],
+        "hasMore": false,
+        "total": 3,
+      },
+      "data": {
+        "id": 2,
       },
     },
     {
-      "emojiKey": "thumbs_up",
-      "emojiRaw": "👍",
-      "id": 1,
-      "user": {
-        "id": "2",
-        "image": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=2",
-        "name": "user1",
-        "type": "user",
+      "children": {
+        "cursor": 13,
+        "data": [
+          {
+            "id": 11,
+          },
+          {
+            "id": 12,
+          },
+          {
+            "id": 13,
+          },
+        ],
+        "hasMore": true,
+        "total": 4,
+      },
+      "data": {
+        "id": 1,
       },
     },
   ],
-  "replyToId": null,
-  "updatedAt": "2000-01-01T00:00:00.000Z",
-  "userId": "1",
-  "userImage": "https://api.dicebear.com/9.x/notionists-neutral/svg?seed=1",
+  "cursor": 1,
+  "hasMore": false,
+  "total": 12,
+}
+`;
+
+exports[`cursor style pagination > should work with created_asc 1`] = `
+{
+  "comments": [
+    {
+      "children": {
+        "cursor": 13,
+        "data": [
+          {
+            "id": 11,
+          },
+          {
+            "id": 12,
+          },
+          {
+            "id": 13,
+          },
+        ],
+        "hasMore": true,
+        "total": 4,
+      },
+      "data": {
+        "id": 1,
+      },
+    },
+    {
+      "children": {
+        "cursor": 23,
+        "data": [
+          {
+            "id": 21,
+          },
+          {
+            "id": 22,
+          },
+          {
+            "id": 23,
+          },
+        ],
+        "hasMore": false,
+        "total": 3,
+      },
+      "data": {
+        "id": 2,
+      },
+    },
+    {
+      "children": {
+        "cursor": 0,
+        "data": [],
+        "hasMore": false,
+        "total": 0,
+      },
+      "data": {
+        "id": 3,
+      },
+    },
+  ],
+  "cursor": 3,
+  "hasMore": true,
+  "total": 12,
+}
+`;
+
+exports[`get more children with cursor > should return first page correctly 1`] = `
+{
+  "cursor": 16,
+  "data": [
+    {
+      "id": 17,
+    },
+    {
+      "id": 16,
+    },
+  ],
+  "hasMore": true,
+}
+`;
+
+exports[`get more children with cursor > should return second page correctly 1`] = `
+{
+  "cursor": 14,
+  "data": [
+    {
+      "id": 15,
+    },
+    {
+      "id": 14,
+    },
+  ],
+  "hasMore": true,
+}
+`;
+
+exports[`get more children with cursor > should work with created_asc 1`] = `
+{
+  "cursor": 13,
+  "data": [
+    {
+      "id": 11,
+    },
+    {
+      "id": 12,
+    },
+    {
+      "id": 13,
+    },
+  ],
+  "hasMore": true,
 }
 `;

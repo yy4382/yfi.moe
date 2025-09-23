@@ -50,9 +50,11 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
     setSubmittedEmail(email);
 
     try {
+      const callbackURL = new URL(window.location.href);
+      callbackURL.searchParams.set("refetch-session", "true");
       const { error } = await authClient.signIn.magicLink({
         email: email,
-        callbackURL: `${window.location.href}`,
+        callbackURL: callbackURL.href,
       });
 
       if (error) {

@@ -23,60 +23,66 @@ describe("get comments", () => {
     vi.spyOn(getModule, "getComments").mockImplementationOnce(async () => {
       const comments = [
         {
-          anonymousName: null,
-          children: [
-            {
-              anonymousName: null,
-              content: "1 reply to 1",
-              rawContent: "1 reply to 1",
-              createdAt: "1970-01-01T00:00:15.000Z",
-              displayName: "user",
-              id: 1000,
-              parentId: 1,
-              path: "/",
-              replyToId: 1,
-              reactions: [],
-              updatedAt: "2000-01-01T00:00:00.000Z",
-              userAgent: null,
-              userEmail: "user@example.com",
-              userId: "2",
-              userImage:
-                "https://www.gravatar.com/avatar/b58996c504c5638798eb6b511e6f49af?s=200&d=identicon&r=g",
-              userIp: null,
-              userName: "user",
-              visitorEmail: null,
-              visitorName: null,
-            },
-          ],
-          content: "comment 1",
-          rawContent: "comment 1",
-          createdAt: "1970-01-01T00:00:10.000Z",
-          displayName: "admin",
-          id: 1,
-          parentId: null,
-          path: "/",
-          reactions: [],
-          replyToId: null,
-          updatedAt: "2000-01-01T00:00:00.000Z",
-          userAgent: null,
-          userEmail: "admin@example.com",
-          userId: "1",
-          userImage:
-            "https://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=200&d=identicon&r=g",
-          userIp: null,
-          userName: "admin",
-          visitorEmail: null,
-          visitorName: null,
+          data: {
+            anonymousName: null,
+            content: "comment 1",
+            rawContent: "comment 1",
+            createdAt: "1970-01-01T00:00:10.000Z",
+            displayName: "admin",
+            id: 1,
+            parentId: null,
+            path: "/",
+            reactions: [],
+            replyToId: null,
+            updatedAt: "2000-01-01T00:00:00.000Z",
+            userAgent: null,
+            userEmail: "admin@example.com",
+            userId: "1",
+            userImage:
+              "https://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=200&d=identicon&r=g",
+            userIp: null,
+            userName: "admin",
+            visitorEmail: null,
+            visitorName: null,
+          },
+          children: {
+            cursor: 0,
+            hasMore: false,
+            total: 1,
+            data: [
+              {
+                anonymousName: null,
+                content: "1 reply to 1",
+                rawContent: "1 reply to 1",
+                createdAt: "1970-01-01T00:00:15.000Z",
+                displayName: "user",
+                id: 1000,
+                parentId: 1,
+                path: "/",
+                replyToId: 1,
+                reactions: [],
+                updatedAt: "2000-01-01T00:00:00.000Z",
+                userAgent: null,
+                userEmail: "user@example.com",
+                userId: "2",
+                userImage:
+                  "https://www.gravatar.com/avatar/b58996c504c5638798eb6b511e6f49af?s=200&d=identicon&r=g",
+                userIp: null,
+                userName: "user",
+                visitorEmail: null,
+                visitorName: null,
+              },
+            ],
+          },
         },
       ];
-      return { comments, total: comments.length };
+      return { comments, total: comments.length, cursor: 0, hasMore: false };
     });
 
     const resp = await testClient(createTestCommentApp()).get.$post({
       json: {
         path: "/",
         limit: 10,
-        offset: 0,
         sortBy: "created_desc",
       },
     });
@@ -84,8 +90,8 @@ describe("get comments", () => {
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.comments).toHaveLength(1);
-    expect(respJson.comments[0].id).toBe(1);
-    expect(respJson.comments[0].children).toHaveLength(1);
+    expect(respJson.comments[0].data.id).toBe(1);
+    expect(respJson.comments[0].children.data).toHaveLength(1);
   });
 });
 

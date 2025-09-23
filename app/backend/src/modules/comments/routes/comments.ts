@@ -1,11 +1,13 @@
 import { factory } from "@/factory.js";
-import { getComments } from "../services/get.js";
+import { getComments, getCommentsChildren } from "../services/get.js";
 import { addComment } from "../services/add/add.js";
 import { deleteComment } from "../services/delete.js";
 import { updateComment } from "../services/update.js";
 import { toggleCommentSpam } from "../services/toggle-spam.js";
 import {
   getCommentsBody,
+  getCommentsChildrenBody,
+  getCommentsChildrenResponse,
   getCommentsResponse,
 } from "@repo/api/comment/get.model";
 import {
@@ -52,21 +54,50 @@ export const commentsRoutes = factory
           path: body.path,
           sortBy: body.sortBy,
           limit: body.limit,
-          offset: body.offset,
+          cursor: body.cursor,
           userId: c.get("auth")?.user?.id,
         },
         "comments:get request",
       );
-      const { comments, total } = await getComments(body, {
+      const result = await getComments(body, {
         db: c.get("db"),
         user: c.get("auth")?.user ?? null,
         logger: c.get("logger"),
       });
-      const resp = getCommentsResponse.parse({ comments, total });
+      const resp = getCommentsResponse.parse(result);
       c.get("logger").debug(
-        { total, returned: comments.length },
+        { total: result.total, returned: result.comments.length },
         "comments:get response",
       );
+      return c.json(resp, 200);
+    },
+  )
+  .post(
+    "/get-children",
+    describeRoute({
+      description: "Get child comments of a root comment",
+      tags: ["Comments"],
+      responses: {
+        200: {
+          description: "OK",
+          content: {
+            "application/json": {
+              schema: resolver(getCommentsResponse),
+            },
+          },
+        },
+      },
+    }),
+    validator("json", getCommentsChildrenBody),
+    async (c) => {
+      const body = c.req.valid("json");
+      c.get("logger").debug(body, "comments:get-children request");
+      const result = await getCommentsChildren(body, {
+        db: c.get("db"),
+        user: c.get("auth")?.user ?? null,
+        logger: c.get("logger"),
+      });
+      const resp = getCommentsChildrenResponse.parse(result);
       return c.json(resp, 200);
     },
   )

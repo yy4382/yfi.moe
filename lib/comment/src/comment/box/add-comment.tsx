@@ -1,4 +1,9 @@
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import {
+  useQueryClient,
+  useQuery,
+  useMutation,
+  type InfiniteData,
+} from "@tanstack/react-query";
 import {
   type PropsWithChildren,
   useCallback,
@@ -16,17 +21,20 @@ import {
   persistentEmailAtom,
   persistentAsVisitorAtom,
   persistentNameAtom,
-  sessionOptions,
   sortByAtom,
+  sessionOptions,
 } from "../utils";
 import { type CommentBoxId, CommentBoxIdContext } from "./context";
-import { Loader2Icon, XIcon } from "lucide-react";
+import { /*Loader2Icon,*/ XIcon } from "lucide-react";
 import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
 import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import { produce } from "immer";
-import type { LayeredCommentData } from "@repo/api/comment/get.model";
+import type {
+  GetCommentsChildrenResponse,
+  LayeredCommentData,
+} from "@repo/api/comment/get.model";
 import {
   AuthClientRefContext,
   PathnameContext,
@@ -93,38 +101,42 @@ function useAddComment({
 
       // Only add to comment list if it's not spam (spam comments need admin approval)
       if (!data.isSpam) {
-        queryClient.setQueryData(
-          ["comments", { session: session?.user.id }, path, sortBy],
-          (old: {
-            pages: { comments: LayeredCommentData[]; total: number }[];
-          }) => {
-            if (!data.data.parentId)
+        if (!data.data.parentId) {
+          queryClient.setQueryData(
+            ["comments", { session: session?.user.id }, path, sortBy],
+            (old: {
+              pages: { comments: LayeredCommentData[]; total: number }[];
+            }) => {
               return produce(old, (draft) => {
                 draft.pages[0]!.comments.unshift({
-                  ...data.data,
-                  children: [],
+                  data: data.data,
+                  children: {
+                    data: [],
+                    hasMore: false,
+                    cursor: 0,
+                    total: 0,
+                  },
                 });
                 draft.pages[0]!.total++;
               });
-            else {
+            },
+          );
+        } else {
+          queryClient.setQueryData(
+            [
+              "comments",
+              { session: session?.user.id },
+              path,
+              sortBy,
+              data.data.parentId,
+            ],
+            (old: InfiniteData<GetCommentsChildrenResponse>) => {
               return produce(old, (draft) => {
-                let parentIndex = [-1, -1];
-                for (let i = 0; i < old.pages.length; i++) {
-                  for (let j = 0; j < old.pages[i]!.comments.length; j++) {
-                    if (old.pages[i]!.comments[j]!.id === data.data.parentId) {
-                      parentIndex = [i, j];
-                      break;
-                    }
-                  }
-                }
-                if (parentIndex[0] === -1) return old;
-                draft.pages[parentIndex[0]!]!.comments[
-                  parentIndex[1]!
-                ]!.children.push(data.data);
+                draft.pages.at(-1)!.data.push(data.data);
               });
-            }
-          },
-        );
+            },
+          );
+        }
       }
       void queryClient.invalidateQueries({
         queryKey: ["comments", { session: session?.user.id }, path],
@@ -271,18 +283,18 @@ function VisitorBox({ children }: PropsWithChildren) {
 }
 
 function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const authClient = useContext(AuthClientRefContext).current;
-  const { status } = useQuery(sessionOptions(authClient));
-  if (status === "pending")
-    return (
-      <div className="border-container bg-card text-muted-foreground flex min-h-36 w-full flex-col items-center justify-center gap-2 rounded-sm border py-4">
-        <div className="flex items-center gap-2">
-          <Loader2Icon className="size-8 animate-spin" />
-          <p className="ml-4 text-sm">检查登录状态...</p>
-        </div>
-      </div>
-    );
+  // const { status } = useQuery(sessionOptions(authClient));
+  // if (status === "pending")
+  //   return (
+  //     <div className="border-container bg-card text-muted-foreground flex min-h-36 w-full flex-col items-center justify-center gap-2 rounded-sm border py-4">
+  //       <div className="flex items-center gap-2">
+  //         <Loader2Icon className="size-8 animate-spin" />
+  //         <p className="ml-4 text-sm">检查登录状态...</p>
+  //       </div>
+  //     </div>
+  //   );
   return (
     <div className="border-container bg-card flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border py-4">
       <div className="flex flex-col items-center gap-2">
@@ -291,15 +303,16 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
           <button
             onClick={() => {
               const fn = async () => {
+                const callbackURL = new URL(window.location.href);
+                callbackURL.searchParams.set("refetch-session", "true");
                 const { error } = await authClient.signIn.social({
                   provider: "github",
-                  callbackURL: `${window.location.href}`,
+                  callbackURL: callbackURL.href,
                 });
                 if (error) {
                   toast.error(error.message);
                   return;
                 }
-                void queryClient.invalidateQueries(sessionOptions(authClient));
               };
               void fn();
             }}

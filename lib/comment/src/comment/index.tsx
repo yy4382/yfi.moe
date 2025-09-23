@@ -8,6 +8,7 @@ import {
   type AuthClient,
 } from "./context";
 import { CommentList } from "./list";
+import { useSearchParamRefetchSessionEffect } from "./utils";
 
 export type CommentYulineProps = {
   serverURL: string;
@@ -28,8 +29,14 @@ export default function CommentYuline({
         <PathnameContext value={pathname}>
           <CommentBoxNew />
           <CommentList />
+          <SearchParamsRefetchSessionHandler />
         </PathnameContext>
       </AuthClientRefContext>
     </ServerURLContext>
   );
+}
+
+function SearchParamsRefetchSessionHandler() {
+  useSearchParamRefetchSessionEffect();
+  return null;
 }

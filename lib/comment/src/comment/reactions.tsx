@@ -9,13 +9,14 @@ import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
 import type { GetCommentsResponse } from "@repo/api/comment/get.model";
 import {
   useMutation,
+  useQuery,
   useQueryClient,
   type InfiniteData,
 } from "@tanstack/react-query";
 import { produce } from "immer";
 import { toast } from "sonner";
 import { useAtomValue } from "jotai";
-import { sortByAtom } from "./utils";
+import { sessionOptions, sortByAtom } from "./utils";
 import {
   AuthClientRefContext,
   PathnameContext,
@@ -27,8 +28,6 @@ import { Popover } from "radix-ui";
 import type { ButtonHTMLAttributes } from "react";
 import clsx from "clsx";
 import { PlusIcon } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { sessionOptions } from "./utils";
 import type { User } from "@repo/api/auth/client";
 import MingcuteEmojiLine from "~icons/mingcute/emoji-line";
 
@@ -139,12 +138,12 @@ function updateCommentReactions(
     let updated = false;
     for (const page of draft.pages) {
       for (const comment of page.comments) {
-        if (comment.id === commentId) {
-          updater(comment);
+        if (comment.data.id === commentId) {
+          updater(comment.data);
           updated = true;
           break;
         }
-        const child = comment.children.find((c) => c.id === commentId);
+        const child = comment.children.data.find((c) => c.id === commentId);
         if (child) {
           updater(child);
           updated = true;

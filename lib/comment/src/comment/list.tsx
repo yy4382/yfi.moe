@@ -17,10 +17,10 @@ import { EditIcon, Loader2Icon, ShieldIcon, TrashIcon } from "lucide-react";
 import { CommentBoxNew } from "./box/add-comment";
 import { CommentBoxEdit } from "./box/edit-comment";
 import { toast } from "sonner";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { produce } from "immer";
 import type { User } from "@repo/api/auth/client";
-import { getComments } from "@repo/api/comment/get";
+import { getComments, getCommentsChildren } from "@repo/api/comment/get";
 import { deleteComment } from "@repo/api/comment/delete";
 import { toggleCommentSpam } from "@repo/api/comment/toggle-spam";
 import { z, ZodError } from "zod";
@@ -39,6 +39,7 @@ import {
 import MoreIcon from "~icons/mingcute/more-1-line";
 import CommentIcon from "~icons/mingcute/comment-line";
 import { CommentReactions } from "./reactions";
+import type { LayeredCommentData } from "@repo/api/comment/get.model";
 
 const PER_PAGE = 10;
 
@@ -50,14 +51,14 @@ function listOptions(
 ) {
   return infiniteQueryOptions({
     queryKey: ["comments", { session: user?.id }, path, sortBy],
-    queryFn: async ({ pageParam }: { pageParam: number }) => {
+    queryFn: async ({ pageParam }: { pageParam: number | undefined }) => {
       let result;
       try {
         result = await getComments(
           {
             path,
             limit: PER_PAGE,
-            offset: (pageParam - 1) * PER_PAGE,
+            cursor: pageParam,
             sortBy,
           },
           serverURL,
@@ -70,15 +71,9 @@ function listOptions(
       }
       return result.value;
     },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, pages) => {
-      if (
-        lastPage.comments.length < PER_PAGE ||
-        pages.length * PER_PAGE >= lastPage.total
-      ) {
-        return undefined;
-      }
-      return pages.length + 1;
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasMore ? lastPage.cursor : undefined;
     },
     placeholderData: (previousData, previousQuery) => {
       if (previousQuery?.queryKey[3] === sortBy) {
@@ -170,27 +165,8 @@ export function CommentList() {
         .map((page) => page.comments)
         .flat()
         .map((comment) => (
-          <Fragment key={comment.id}>
-            <CommentItem comment={comment} />
-            {comment.children.length > 0 && (
-              <div className="ml-6 pl-4">
-                {comment.children.map((children) => {
-                  const replyToName =
-                    children.replyToId === comment.id
-                      ? comment.displayName
-                      : comment.children.find(
-                          (c) => c.id === children.replyToId,
-                        )?.displayName;
-                  return (
-                    <CommentItem
-                      key={children.id}
-                      comment={children}
-                      replyToName={replyToName}
-                    />
-                  );
-                })}
-              </div>
-            )}
+          <Fragment key={comment.data.id}>
+            <CommentParent parentComment={comment} />
           </Fragment>
         ))}
       {hasNextPage && (
@@ -207,6 +183,101 @@ export function CommentList() {
       <div className="mt-6 text-center text-zinc-500">
         {isFetching && !isFetchingNextPage ? "加载中..." : null}
       </div>
+    </div>
+  );
+}
+
+export function CommentParent({
+  parentComment,
+}: {
+  parentComment: LayeredCommentData;
+}) {
+  const path = useContext(PathnameContext);
+  const serverURL = useContext(ServerURLContext);
+  const authClient = useContext(AuthClientRefContext).current;
+  const { data: session } = useQuery(sessionOptions(authClient));
+  const sortBy = useAtomValue(sortByAtom);
+
+  const {
+    data: childrenData,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: [
+      "comments",
+      { session: session?.user.id },
+      path,
+      sortBy,
+      parentComment.data.id,
+    ],
+    queryFn: async ({ pageParam }: { pageParam: number | undefined }) => {
+      let result;
+      try {
+        result = await getCommentsChildren(
+          {
+            path,
+            limit: PER_PAGE,
+            cursor: pageParam,
+            sortBy: "created_asc",
+            rootId: parentComment.data.id,
+          },
+          serverURL,
+        );
+      } catch {
+        throw new Error("网络请求失败");
+      }
+      if (result._tag === "err") {
+        throw new Error("服务器错误");
+      }
+      return result.value;
+    },
+    enabled: parentComment.children.hasMore,
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasMore ? lastPage.cursor : undefined;
+    },
+    initialData: {
+      pages: [parentComment.children],
+      pageParams: [undefined],
+    },
+    staleTime: 1000,
+  });
+
+  return (
+    <div className="flex flex-col gap-6">
+      <CommentItem comment={parentComment.data} />
+      {parentComment.children.total > 0 && (
+        <div className="ml-6 pl-4">
+          {childrenData.pages
+            .map((page) => page.data)
+            .flat()
+            .map((children) => {
+              const replyToName =
+                children.replyToId === parentComment.data.id
+                  ? parentComment.data.displayName
+                  : parentComment.children.data.find(
+                      (c) => c.id === children.replyToId,
+                    )?.displayName;
+              return (
+                <CommentItem
+                  key={children.id}
+                  comment={children}
+                  replyToName={replyToName}
+                />
+              );
+            })}
+          {hasNextPage && (
+            <div className="flex justify-center">
+              <button
+                onClick={() => void fetchNextPage()}
+                className="border-container text-comment rounded-md border px-2 py-1 shadow-md hover:scale-105 active:scale-95"
+              >
+                加载更多回复
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -24,6 +24,7 @@
     "akismet-api": "^6.0.0",
     "better-auth": "catalog:",
     "drizzle-orm": "^0.44.4",
+    "fp-ts": "^2.16.11",
     "hono": "^4.9.7",
     "hono-openapi": "^1.0.8",
     "hono-pino": "^0.10.2",

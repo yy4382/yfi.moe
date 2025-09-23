@@ -110,6 +110,9 @@ importers:
       drizzle-orm:
         specifier: ^0.44.4
         version: 0.44.4(@electric-sql/pglite@0.3.7)(@libsql/client@0.15.10)(@types/pg@8.15.5)(@upstash/redis@1.35.3)(kysely@0.28.4)(pg@8.16.3)(postgres@3.4.7)
+      fp-ts:
+        specifier: ^2.16.11
+        version: 2.16.11
       hono:
         specifier: ^4.9.7
         version: 4.9.7
@@ -5038,6 +5041,9 @@ packages:
 
   formidable@2.1.5:
     resolution: {integrity: sha512-Oz5Hwvwak/DCaXVVUtPn4oLMLLy1CdclLKO1LFgU7XzDpVMUU5UjlSLpGMocyQNNk8F6IJW9M/YdooSn2MRI+Q==}
+
+  fp-ts@2.16.11:
+    resolution: {integrity: sha512-LaI+KaX2NFkfn1ZGHoKCmcfv7yrZsC3b8NtWsTVQeHkq4F27vI5igUuO53sxqDEa2gNQMHFPmpojDw/1zmUK7w==}
 
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
@@ -12967,6 +12973,8 @@ snapshots:
       dezalgo: 1.0.4
       once: 1.4.0
       qs: 6.14.0
+
+  fp-ts@2.16.11: {}
 
   fraction.js@4.3.7: {}
 
