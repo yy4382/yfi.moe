@@ -59,10 +59,13 @@ describe("toggleCommentSpam", () => {
       visitorName: "Spammer",
       visitorEmail: "spam@example.com",
       path: "/blog/post",
+      isSpam: false,
+      deletedAt: null,
     };
 
     mockDb.limit.mockResolvedValue([mockComment]);
     mockDb.returning.mockResolvedValue([{ ...mockComment, isSpam: true }]);
+    vi.useFakeTimers().setSystemTime(new Date("2024-01-01T00:00:00Z"));
 
     const result = await toggleCommentSpam(1, true, {
       db: mockDb as unknown as DbClient,
@@ -73,7 +76,10 @@ describe("toggleCommentSpam", () => {
     expect(result.code).toBe(200);
     expect(result.data).toEqual({ success: true });
     expect(mockDb.update).toHaveBeenCalled();
-    expect(mockDb.set).toHaveBeenCalledWith({ isSpam: true });
+    expect(mockDb.set).toHaveBeenCalledWith({
+      isSpam: true,
+      updatedAt: new Date(),
+    });
     expect(mockAkismet.submitSpam).toHaveBeenCalledWith({
       content: "This is spam",
       userIp: "192.168.1.1",
@@ -93,6 +99,8 @@ describe("toggleCommentSpam", () => {
       visitorName: "Real User",
       visitorEmail: "user@example.com",
       path: "/blog/post",
+      isSpam: true,
+      deletedAt: null,
     };
 
     mockDb.limit.mockResolvedValue([mockComment]);
@@ -159,6 +167,8 @@ describe("toggleCommentSpam", () => {
       id: 1,
       rawContent: "Content",
       path: "/blog/post",
+      isSpam: false,
+      deletedAt: null,
     };
 
     mockDb.limit.mockResolvedValue([mockComment]);
