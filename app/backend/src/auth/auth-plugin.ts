@@ -1,11 +1,18 @@
 import { factory } from "@/factory.js";
 import { type AuthClient, createAuth } from "./create-auth.js";
 
+let authClientSingleton: AuthClient | null = null;
+
 export const betterAuthPlugin = factory.createMiddleware(async (c, next) => {
   const db = c.get("db");
-  const auth = createAuth(db);
-  c.set("authClient", auth);
-  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+  if (authClientSingleton === null) {
+    authClientSingleton = createAuth(db);
+  }
+  c.set("authClient", authClientSingleton);
+
+  const session = await authClientSingleton.api.getSession({
+    headers: c.req.raw.headers,
+  });
 
   if (!session) {
     c.set("auth", undefined);

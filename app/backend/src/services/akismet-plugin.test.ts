@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // Mock the akismet service
 vi.mock("./akismet.js", () => ({
@@ -19,6 +19,10 @@ vi.mock("@/env.js", () => ({
 }));
 
 describe("akismetPlugin", () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.clearAllMocks();
+  });
   it("should enable test mode when FRONTEND_URL contains localhost", async () => {
     const { AkismetService } = await import("./akismet.js");
     const { akismetPlugin } = await import("./akismet-plugin.js");

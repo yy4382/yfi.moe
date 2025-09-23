@@ -2,11 +2,16 @@ import { factory } from "@/factory.js";
 import { DefaultNotificationService } from "./service.js";
 import type { Env } from "@/env.js";
 
+let notificationServiceSingleton: DefaultNotificationService | null = null;
+
 export const notificationPlugin = (env: Env) => {
   return factory.createMiddleware(async (c, next) => {
-    const service = DefaultNotificationService.createFromEnv(env);
+    if (notificationServiceSingleton === null) {
+      notificationServiceSingleton =
+        DefaultNotificationService.createFromEnv(env);
+    }
 
-    c.set("notification", service);
+    c.set("notification", notificationServiceSingleton);
     await next();
   });
 };
