@@ -165,14 +165,16 @@ export function CommentList() {
           ))}
         </div>
       </div>
-      {data.pages
-        .map((page) => page.comments)
-        .flat()
-        .map((comment) => (
-          <Fragment key={comment.data.id}>
-            <CommentParent parentComment={comment} />
-          </Fragment>
-        ))}
+      <div className="flex flex-col gap-4">
+        {data.pages
+          .map((page) => page.comments)
+          .flat()
+          .map((comment) => (
+            <Fragment key={comment.data.id}>
+              <CommentParent parentComment={comment} />
+            </Fragment>
+          ))}
+      </div>
       {hasNextPage && (
         <div className="flex justify-center">
           <button
@@ -248,7 +250,7 @@ export function CommentParent({
   });
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col">
       <CommentItem comment={parentComment.data} />
       {parentComment.children.total > 0 && (
         <div className="ml-6 pl-4">
@@ -383,9 +385,9 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
           </div>
         </div>
       </div>
-      <AutoResizeHeight duration={0.1} className="mt-2 ml-5">
+      <AutoResizeHeight duration={0.1}>
         {replying && (
-          <div className="ml-3">
+          <div className="p-0.5 ml-8 pt-2">
             <CommentBoxNew
               reply={{
                 parentId: entry.parentId ? entry.parentId : entry.id,

@@ -8,6 +8,13 @@ interface AnimateChangeInHeightProps {
   duration?: number;
 }
 
+/**
+ * A component that automatically adjusts its height based on the content inside it,
+ * with smooth transitions when the height changes.
+ *
+ * Caveats:
+ * - The content inside should not use `margin-top` or `margin-bottom`, as this can interfere with height calculations.
+ */
 export const AutoResizeHeight: React.FC<AnimateChangeInHeightProps> = ({
   children,
   className,
