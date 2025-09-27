@@ -365,9 +365,6 @@ importers:
       jotai:
         specifier: ^2.13.0
         version: 2.13.0(@babel/core@7.28.0)(@babel/template@7.27.2)(@types/react@19.1.9)(react@19.1.1)
-      lucide-react:
-        specifier: ^0.525.0
-        version: 0.525.0(react@19.1.1)
       motion:
         specifier: 'catalog:'
         version: 12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1)

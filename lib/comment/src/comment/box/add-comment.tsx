@@ -25,7 +25,7 @@ import {
   sessionOptions,
 } from "../utils";
 import { type CommentBoxId, CommentBoxIdContext } from "./context";
-import { /*Loader2Icon,*/ XIcon } from "lucide-react";
+import MingcuteCloseLine from "~icons/mingcute/close-line";
 import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
@@ -383,7 +383,7 @@ function UserBox({ children, session }: UserBoxProps) {
             onClick={() => void handleSignOut()}
             className="flex size-full items-center justify-center"
           >
-            <XIcon className="size-2.5" />
+            <MingcuteCloseLine className="size-2.5" />
           </button>
         </div>
         {!isAccountsError &&

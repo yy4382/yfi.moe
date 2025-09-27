@@ -27,7 +27,7 @@ import { EmojiPicker } from "frimousse";
 import { Popover } from "radix-ui";
 import type { ButtonHTMLAttributes } from "react";
 import clsx from "clsx";
-import { PlusIcon } from "lucide-react";
+import MingcuteAddLine from "~icons/mingcute/add-line";
 import type { User } from "@repo/api/auth/client";
 import MingcuteEmojiLine from "~icons/mingcute/emoji-line";
 
@@ -345,7 +345,7 @@ export function CommentReactions({
             aria-label="添加表情"
           >
             <MingcuteEmojiLine className="size-5" />
-            <PlusIcon className="size-4" />
+            <MingcuteAddLine className="size-4" />
           </button>
         </Popover.Trigger>
         <Popover.Portal>

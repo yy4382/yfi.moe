@@ -13,7 +13,10 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import type { CommentData } from "@repo/api/comment/comment-data";
-import { EditIcon, Loader2Icon, ShieldIcon, TrashIcon } from "lucide-react";
+import MingcuteEditLine from "~icons/mingcute/edit-line";
+import MingcuteLoadingLine from "~icons/mingcute/loading-line";
+import MingcuteShieldShapeLine from "~icons/mingcute/shield-shape-line";
+import MingcuteDelete3Line from "~icons/mingcute/delete-3-line";
 import { CommentBoxNew } from "./box/add-comment";
 import { CommentBoxEdit } from "./box/edit-comment";
 import { toast } from "sonner";
@@ -143,7 +146,7 @@ export function CommentList() {
           <span>共{data.pages[0]!.total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
             <span>
-              <Loader2Icon className="size-6 animate-spin" />
+              <MingcuteLoadingLine className="size-6 animate-spin" />
             </span>
           )}
         </div>
@@ -468,11 +471,11 @@ function CommentItemDropdown({
         {isMine && (
           <>
             <DropdownMenuItem onClick={onEdit}>
-              <EditIcon />
+              <MingcuteEditLine />
               编辑
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => deleteCommentMutate(entry.id)}>
-              <TrashIcon />
+              <MingcuteDelete3Line />
               删除
             </DropdownMenuItem>
           </>
@@ -484,7 +487,7 @@ function CommentItemDropdown({
                 toggleSpamMutate({ id: entry.id, isSpam: !entry.isSpam })
               }
             >
-              <ShieldIcon />
+              <MingcuteShieldShapeLine />
               {entry.isSpam ? "标记为正常" : "标记为垃圾"}
             </DropdownMenuItem>
           )}

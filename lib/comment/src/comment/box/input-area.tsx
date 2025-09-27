@@ -1,6 +1,8 @@
-import { Loader2Icon, SendIcon, XIcon } from "lucide-react";
 import { atom, useAtom, type WritableAtom } from "jotai";
 import { type MutationStatus, useMutationState } from "@tanstack/react-query";
+import MingcuteCloseLine from "~icons/mingcute/close-line";
+import MingcuteSendPlaneLine from "~icons/mingcute/send-plane-line";
+import MingcuteLoadingLine from "~icons/mingcute/loading-line";
 
 type InputBoxProps = {
   submit: () => void;
@@ -36,7 +38,7 @@ export function InputBox({
             onClick={onCancel}
             className="rounded-full bg-zinc-200 p-1 dark:bg-zinc-800 hover:scale-105 active:scale-95"
           >
-            <XIcon className="size-3" />
+            <MingcuteCloseLine className="size-3" />
           </button>
         </div>
       )}
@@ -110,9 +112,9 @@ function InputBoxFooter({
           disabled={status === "pending" || !content.trim()}
         >
           {status === "pending" ? (
-            <Loader2Icon className="size-4 animate-spin" />
+            <MingcuteLoadingLine className="size-4 animate-spin" />
           ) : (
-            <SendIcon className="size-4" />
+            <MingcuteSendPlaneLine className="size-4" />
           )}
           发送
         </button>
