@@ -53,6 +53,8 @@ export default defineConfig({
         "immer",
         "jotai",
         "@repo/api",
+        /motion(\/.*)?/,
+        /better-auth(\/.*)?/,
       ],
     },
   },

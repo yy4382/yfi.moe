@@ -33,7 +33,7 @@
     "date-fns": "^4.1.0",
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.525.0",
-    "motion": "^12.23.12",
+    "motion": "catalog:",
     "ofetch": "^1.4.1",
     "radix-ui": "catalog:",
     "react": "catalog:",

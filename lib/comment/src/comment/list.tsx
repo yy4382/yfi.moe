@@ -40,6 +40,7 @@ import MoreIcon from "~icons/mingcute/more-1-line";
 import CommentIcon from "~icons/mingcute/comment-line";
 import { CommentReactions } from "./reactions";
 import type { LayeredCommentData } from "@repo/api/comment/get.model";
+import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
 
 const PER_PAGE = 10;
 
@@ -379,19 +380,21 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
           </div>
         </div>
       </div>
-      {replying && (
-        <div className="mt-2 ml-8">
-          <CommentBoxNew
-            reply={{
-              parentId: entry.parentId ? entry.parentId : entry.id,
-              replyToId: entry.id,
-              at: entry.displayName,
-              onCancel: () => setReplying(false),
-            }}
-            onSuccess={() => setReplying(false)}
-          />
-        </div>
-      )}
+      <AutoResizeHeight duration={0.1} className="mt-2 ml-5">
+        {replying && (
+          <div className="ml-3">
+            <CommentBoxNew
+              reply={{
+                parentId: entry.parentId ? entry.parentId : entry.id,
+                replyToId: entry.id,
+                at: entry.displayName,
+                onCancel: () => setReplying(false),
+              }}
+              onSuccess={() => setReplying(false)}
+            />
+          </div>
+        )}
+      </AutoResizeHeight>
     </div>
   );
 }
