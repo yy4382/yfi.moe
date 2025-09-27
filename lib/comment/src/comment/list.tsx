@@ -44,6 +44,8 @@ import CommentIcon from "~icons/mingcute/comment-line";
 import { CommentReactions } from "./reactions";
 import type { LayeredCommentData } from "@repo/api/comment/get.model";
 import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
+import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "motion/react";
 
 const PER_PAGE = 10;
 
@@ -367,7 +369,12 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
               />
             </div>
           )}
-          <div className="mt-1 flex items-center gap-4">
+          <div
+            className={cn(
+              "mt-1 flex items-center",
+              entry.reactions.length > 0 ? "gap-4" : "gap-2",
+            )}
+          >
             <CommentReactions
               commentId={entry.id}
               reactions={entry.reactions}
@@ -386,19 +393,31 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
         </div>
       </div>
       <AutoResizeHeight duration={0.1}>
-        {replying && (
-          <div className="p-0.5 ml-8 pt-2">
-            <CommentBoxNew
-              reply={{
-                parentId: entry.parentId ? entry.parentId : entry.id,
-                replyToId: entry.id,
-                at: entry.displayName,
-                onCancel: () => setReplying(false),
+        <AnimatePresence initial={false}>
+          {replying && (
+            <motion.div
+              className="p-0.5 ml-8 pt-2"
+              initial={{ opacity: 0, filter: "blur(4px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{
+                opacity: 0,
+                filter: "blur(4px)",
+                transition: { duration: 0.15 },
               }}
-              onSuccess={() => setReplying(false)}
-            />
-          </div>
-        )}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              <CommentBoxNew
+                reply={{
+                  parentId: entry.parentId ? entry.parentId : entry.id,
+                  replyToId: entry.id,
+                  at: entry.displayName,
+                  onCancel: () => setReplying(false),
+                }}
+                onSuccess={() => setReplying(false)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </AutoResizeHeight>
     </div>
   );
