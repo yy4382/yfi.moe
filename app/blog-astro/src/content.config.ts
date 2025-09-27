@@ -1,6 +1,6 @@
 import { defineCollection, z } from "astro:content";
-import { githubLoader } from "@/lib/content/github-loader";
 import { ARTICLE_PAT, PAGE_GH_INFO, POST_GH_INFO } from "astro:env/server";
+import { githubLoader } from "@/lib/content/github-loader";
 
 const baseSchema = z.object({
   title: z.string(),

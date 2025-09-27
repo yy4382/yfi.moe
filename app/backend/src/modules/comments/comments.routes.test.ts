@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/require-await */
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { testClient } from "hono/testing";
-import * as getModule from "./services/get.js";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import * as addModule from "./services/add/add.js";
-import * as updateModule from "./services/update.js";
-import * as deleteModule from "./services/delete.js";
 import * as notifyModule from "./services/add/notify.js";
+import * as deleteModule from "./services/delete.js";
+import * as getModule from "./services/get.js";
+import * as updateModule from "./services/update.js";
 import { createTestCommentApp } from "./test-utils.js";
 
 vi.mock(import("@/env.js"), () => ({

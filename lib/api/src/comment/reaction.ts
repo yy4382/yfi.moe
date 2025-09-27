@@ -1,7 +1,7 @@
-import { type Result, err, ok } from "@repo/helpers/result";
-import type { CommentReactionReqBody } from "./reaction.model.js";
 import { z } from "zod";
+import { type Result, err, ok } from "@repo/helpers/result";
 import { commentReaction } from "./comment-data.js";
+import type { CommentReactionReqBody } from "./reaction.model.js";
 
 const ANONYMOUS_IDENTITY_HEADER = "x-anonymous-key";
 

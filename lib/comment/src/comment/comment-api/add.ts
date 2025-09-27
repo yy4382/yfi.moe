@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { commentData } from "@repo/api/comment/comment-data";
 import { addComment as addCommentApi } from "@repo/api/comment/add";
+import { commentData } from "@repo/api/comment/comment-data";
 
 // inputting params
 export const commentContentSchema = z.preprocess(

@@ -1,9 +1,9 @@
-import rehypeExtendedLinks from "./rehype-extended-links.js";
-import type { Options } from "./rehype-extended-links.js";
-import { assert, describe, it } from "vitest";
-import { unified } from "unified";
 import rehypeParse from "rehype-parse";
 import rehypeStringify from "rehype-stringify";
+import { unified } from "unified";
+import { assert, describe, it } from "vitest";
+import rehypeExtendedLinks from "./rehype-extended-links.js";
+import type { Options } from "./rehype-extended-links.js";
 
 describe("Package", () => {
   it("should expose the public api", () => {

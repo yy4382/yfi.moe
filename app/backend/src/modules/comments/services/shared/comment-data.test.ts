@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { tablesToCommentData } from "./comment-data.js";
 import type { InferSelectModel } from "drizzle-orm";
-import type { comment, user } from "@/db/schema.js";
-import type { User } from "@/auth/auth-plugin.js";
-import { z } from "zod";
 import SparkMD5 from "spark-md5";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { z } from "zod";
+import type { User } from "@/auth/auth-plugin.js";
+import type { comment, user } from "@/db/schema.js";
+import { tablesToCommentData } from "./comment-data.js";
 
 vi.mock("@repo/helpers/get-gravatar-url", () => ({
   getGravatarUrl: vi.fn(

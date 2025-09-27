@@ -1,6 +1,6 @@
 import { pino } from "pino";
-import { factory } from "./factory.js";
 import { env } from "./env.js";
+import { factory } from "./factory.js";
 
 export const logger = pino({
   level: env.LOG_LEVEL ?? "info",

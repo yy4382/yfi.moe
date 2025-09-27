@@ -1,12 +1,12 @@
-import type { DbClient } from "@/db/db-plugin.js";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import * as schema from "@/db/schema.js";
 import { admin, magicLink, openAPI } from "better-auth/plugins";
+import type { DbClient } from "@/db/db-plugin.js";
+import * as schema from "@/db/schema.js";
 import { env } from "@/env.js";
+import { logger } from "@/logger.js";
 import { EmailNotifier } from "@/notification/providers/email.js";
 import NotionMagicLinkEmail from "./magic-link.js";
-import { logger } from "@/logger.js";
 
 export const createAuth = (db: DbClient) => {
   return betterAuth({

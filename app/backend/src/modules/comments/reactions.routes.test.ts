@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/require-await */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createTestCommentApp } from "./test-utils.js";
-import * as addReactionModule from "./services/reaction/add.js";
-import * as removeReactionModule from "./services/reaction/remove.js";
 import {
   ANONYMOUS_IDENTITY_COOKIE,
   ANONYMOUS_IDENTITY_HEADER,
 } from "@/plugins/anonymous-identity.js";
+import * as addReactionModule from "./services/reaction/add.js";
+import * as removeReactionModule from "./services/reaction/remove.js";
+import { createTestCommentApp } from "./test-utils.js";
 
 vi.mock(import("@/env.js"), () => ({
   env: {

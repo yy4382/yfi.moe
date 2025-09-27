@@ -1,5 +1,4 @@
-import type { User } from "@/auth/auth-plugin.js";
-import type { DbClient } from "@/db/db-plugin.js";
+import { and, asc, desc, eq, gt, isNull, lt, sql } from "drizzle-orm";
 import type {
   GetCommentsBody,
   LayeredCommentData,
@@ -7,7 +6,8 @@ import type {
   GetCommentsChildrenBody,
   GetCommentsChildrenResponse,
 } from "@repo/api/comment/get.model";
-import { and, asc, desc, eq, gt, isNull, lt, sql } from "drizzle-orm";
+import type { User } from "@/auth/auth-plugin.js";
+import type { DbClient } from "@/db/db-plugin.js";
 import { comment, reaction, user } from "@/db/schema.js";
 import { tablesToCommentData } from "./shared/comment-data.js";
 

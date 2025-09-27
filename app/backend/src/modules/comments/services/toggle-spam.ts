@@ -1,10 +1,10 @@
+import { eq } from "drizzle-orm";
+import type { ToggleSpamResponse } from "@repo/api/comment/toggle-spam.model";
 import type { User } from "@/auth/auth-plugin.js";
 import type { DbClient } from "@/db/db-plugin.js";
-import type { AkismetService } from "@/services/akismet.js";
 import { comment } from "@/db/schema.js";
-import { eq } from "drizzle-orm";
 import { env } from "@/env.js";
-import type { ToggleSpamResponse } from "@repo/api/comment/toggle-spam.model";
+import type { AkismetService } from "@/services/akismet.js";
 
 type ToggleSpamResult =
   | {

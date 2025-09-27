@@ -1,6 +1,6 @@
+import type { Env } from "@/env.js";
 import { factory } from "@/factory.js";
 import { DefaultNotificationService } from "./service.js";
-import type { Env } from "@/env.js";
 
 let notificationServiceSingleton: DefaultNotificationService | null = null;
 

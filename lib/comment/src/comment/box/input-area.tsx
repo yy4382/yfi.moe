@@ -1,8 +1,8 @@
-import { atom, useAtom, type WritableAtom } from "jotai";
 import { type MutationStatus, useMutationState } from "@tanstack/react-query";
+import { atom, useAtom, type WritableAtom } from "jotai";
 import MingcuteCloseLine from "~icons/mingcute/close-line";
-import MingcuteSendPlaneLine from "~icons/mingcute/send-plane-line";
 import MingcuteLoadingLine from "~icons/mingcute/loading-line";
+import MingcuteSendPlaneLine from "~icons/mingcute/send-plane-line";
 
 type InputBoxProps = {
   submit: () => void;
@@ -31,12 +31,12 @@ export function InputBox({
     }).at(0) ?? "idle";
 
   return (
-    <div className="group @container border-container focus-within:ring-primary relative flex min-h-36 w-full flex-col justify-between rounded-sm border p-1 focus-within:ring">
+    <div className="@container border-container focus-within:ring-primary group relative flex min-h-36 w-full flex-col justify-between rounded-sm border p-1 focus-within:ring">
       {onCancel && (
-        <div className="absolute -top-3 -right-2">
+        <div className="absolute -right-2 -top-3">
           <button
             onClick={onCancel}
-            className="rounded-full bg-zinc-200 p-1 dark:bg-zinc-800 hover:scale-105 active:scale-95"
+            className="rounded-full bg-zinc-200 p-1 hover:scale-105 active:scale-95 dark:bg-zinc-800"
           >
             <MingcuteCloseLine className="size-3" />
           </button>
@@ -90,7 +90,7 @@ function InputBoxFooter({
   return (
     <div className="text-comment flex items-center justify-between gap-2 px-1 text-sm">
       <div className="text-comment/90 flex items-center gap-2 text-xs">
-        <div className="flex items-center gap-2 @max-2xs:hidden">
+        <div className="@max-2xs:hidden flex items-center gap-2">
           支持 Markdown
         </div>
       </div>
@@ -108,7 +108,7 @@ function InputBoxFooter({
         )}
         <button
           onClick={() => submit()}
-          className="flex items-center gap-0.5 disabled:opacity-50 hover:scale-105 active:scale-95"
+          className="flex items-center gap-0.5 hover:scale-105 active:scale-95 disabled:opacity-50"
           disabled={status === "pending" || !content.trim()}
         >
           {status === "pending" ? (

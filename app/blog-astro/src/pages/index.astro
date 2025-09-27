@@ -30,16 +30,16 @@ const seoConfig = getSeo({
 
 <NavLayout seoConfig={seoConfig}>
   <Section
-    class="flex min-h-96 flex-col center gap-4 md:min-h-[40rem]"
+    class="center flex min-h-96 flex-col gap-4 md:min-h-[40rem]"
     bg="grid"
   >
-    <div class="flex center gap-4 md:gap-8">
+    <div class="center flex gap-4 md:gap-8">
       <Image src={logo} alt="logo" width={80} height={80} class="rounded-md" />
       <h1 class="text-5xl font-bold lg:text-8xl">{authorName}</h1>
     </div>
   </Section>
   <Section class="min-h-18" />
-  <Section class="relative pt-20 pb-16 sm:pt-8">
+  <Section class="relative pb-16 pt-20 sm:pt-8">
     <span class="section-number">01</span>
     <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
     <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
@@ -49,39 +49,39 @@ const seoConfig = getSeo({
     </p>
     <div class="dashed flex flex-col">
       <div
-        class="grid-row-3 sm:grid-row-1 relative grid place-items-stretch border-y border-container sm:grid-cols-3"
+        class="grid-row-3 sm:grid-row-1 border-container relative grid place-items-stretch border-y sm:grid-cols-3"
       >
         <div
-          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
+          class="center border-container flex flex-col border-b py-8 sm:border-b-0 sm:border-r"
         >
-          <div class="text-3xl font-bold text-heading">
+          <div class="text-heading text-3xl font-bold">
             {statistics.articles} 篇
           </div>
           <div class="text-comment">文章</div>
         </div>
         <div
-          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
+          class="center border-container flex flex-col border-b py-8 sm:border-b-0 sm:border-r"
         >
-          <div class="text-3xl font-bold text-heading">
+          <div class="text-heading text-3xl font-bold">
             {(statistics.words / 10000).toFixed(2)} 万
           </div>
           <div class="text-comment">字数</div>
         </div>
-        <div class="flex flex-col center border-container py-8">
-          <div class="text-3xl font-bold text-heading">
+        <div class="center border-container flex flex-col py-8">
+          <div class="text-heading text-3xl font-bold">
             {statistics.tags} 个
           </div>
           <div class="text-comment">标签</div>
         </div>
       </div>
-      <a class="flex center gap-1 card-btn py-6 font-semibold" href="/post">
+      <a class="center card-btn flex gap-1 py-6 font-semibold" href="/post">
         文章列表 <Icon name="mingcute:external-link-line" size={20} />
       </a>
     </div>
   </Section>
   <Section class="min-h-18" />
   {/* projects info */}
-  <Section class="relative pt-20 pb-16 sm:pt-8">
+  <Section class="relative pb-16 pt-20 sm:pt-8">
     <span class="section-number">02</span>
     <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">项目</h2>
     <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
@@ -94,28 +94,28 @@ const seoConfig = getSeo({
           <div
             class={cn(
               "group grid min-h-48 grid-cols-[1fr_5rem] grid-rows-1 *:py-8 sm:grid-cols-[1fr_10rem] lg:grid-cols-[12rem_1fr_10rem]",
-              "border-b border-container-light"
+              "border-container-light border-b",
             )}
           >
-            <div class="hidden center border-r border-container-light lg:flex">
+            <div class="center border-container-light hidden border-r lg:flex">
               <Icon name={p.icon} size={100} />
             </div>
-            <div class="flex flex-col justify-center gap-2 border-r border-container-light px-8 sm:px-12">
+            <div class="border-container-light flex flex-col justify-center gap-2 border-r px-8 sm:px-12">
               <div class="mb-4 flex items-center justify-start lg:hidden">
                 <Icon name={p.icon} size={64} />
               </div>
               <p class="text-comment">{p.desc}</p>
               <h3 class="text-xl font-bold">{p.title}</h3>
             </div>
-            <div class="grid grid-cols-1 place-items-stretch !py-0 font-bold text-comment/80 group-hover:text-content">
+            <div class="text-comment/80 group-hover:text-content grid grid-cols-1 place-items-stretch !py-0 font-bold">
               {p.links.map((l, i) => (
                 <a
                   href={l.href}
                   target="_blank"
                   class={cn(
-                    "flex center card-btn",
+                    "center card-btn flex",
                     i !== p.links.length - 1 &&
-                      "border-b border-container-light"
+                      "border-container-light border-b",
                   )}
                 >
                   <div class="inline-flex gap-2">
@@ -129,7 +129,7 @@ const seoConfig = getSeo({
         ))
       }
       <a
-        class="flex center gap-1 card-btn py-6 font-semibold"
+        class="center card-btn flex gap-1 py-6 font-semibold"
         href="https://github.com/yy4382"
       >
         更多 <Icon name="mingcute:external-link-line" size={20} />
@@ -138,7 +138,7 @@ const seoConfig = getSeo({
   </Section>
   <Section class="min-h-18" />
   {/* contact info */}
-  <Section class="relative pt-18 pb-8 sm:pt-8">
+  <Section class="pt-18 relative pb-8 sm:pt-8">
     <span class="section-number">03</span>
     <div
       class="relative flex size-full flex-col items-start justify-center gap-6 px-8 sm:flex-row sm:items-center sm:px-10"

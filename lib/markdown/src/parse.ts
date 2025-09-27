@@ -1,12 +1,12 @@
-import rehypeStringify from "rehype-stringify";
-import { rehypeHast } from "./plugins/rehype-hast.js";
-import { ArticlePreset, ArticlePresetFast } from "./preset.js";
-import type { MarkdownHeading } from "./plugins/remark-heading-ids.js";
-import { unified, type Preset } from "unified";
-import remarkParse from "remark-parse";
-import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
-import { VFile } from "vfile";
 import type { Root } from "hast";
+import rehypeStringify from "rehype-stringify";
+import remarkParse from "remark-parse";
+import { unified, type Preset } from "unified";
+import { VFile } from "vfile";
+import { rehypeHast } from "./plugins/rehype-hast.js";
+import type { MarkdownHeading } from "./plugins/remark-heading-ids.js";
+import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
+import { ArticlePreset, ArticlePresetFast } from "./preset.js";
 
 export const markdownToHast = async (
   rawContent: string,

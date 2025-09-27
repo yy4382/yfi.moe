@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { toggleCommentSpam } from "./toggle-spam.js";
-import type { DbClient } from "@/db/db-plugin.js";
 import type { User } from "@/auth/auth-plugin.js";
+import type { DbClient } from "@/db/db-plugin.js";
 import type { AkismetService } from "@/services/akismet.js";
+import { toggleCommentSpam } from "./toggle-spam.js";
 
 // Mock environment variables
 vi.mock("@/env.js", () => ({

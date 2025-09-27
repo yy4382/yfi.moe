@@ -1,5 +1,5 @@
-import type { UnsubscribeReq } from "./unsub.model.js";
 import { ok, err, type Result } from "@repo/helpers/result";
+import type { UnsubscribeReq } from "./unsub.model.js";
 
 export async function unsubscribe(
   options: UnsubscribeReq,

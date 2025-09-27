@@ -1,6 +1,6 @@
-import { visit } from "unist-util-visit";
 import type { Root } from "hast";
 import { h } from "hastscript";
+import { visit } from "unist-util-visit";
 
 export function rehypeCodeblockCopy() {
   return (tree: Root) => {

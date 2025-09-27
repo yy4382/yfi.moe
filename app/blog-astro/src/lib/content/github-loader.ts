@@ -1,7 +1,7 @@
-import type { Loader, LoaderContext, DataStore } from "astro/loaders";
 import type { components } from "@octokit/openapi-types";
-import { ofetch } from "ofetch";
+import type { Loader, LoaderContext, DataStore } from "astro/loaders";
 import yaml from "js-yaml";
+import { ofetch } from "ofetch";
 
 type GetRepoContentDir = components["schemas"]["content-directory"];
 type GetRepoContentFile = components["schemas"]["content-file"];

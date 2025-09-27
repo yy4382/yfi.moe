@@ -1,6 +1,6 @@
+import { render } from "@react-email/render";
 import * as nodemailer from "nodemailer";
 import type { Env } from "@/env.js";
-import { render } from "@react-email/render";
 import { logger as rawLogger } from "@/logger.js";
 
 const logger = rawLogger.child({

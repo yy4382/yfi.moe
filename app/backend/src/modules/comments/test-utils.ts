@@ -1,8 +1,8 @@
-import { factory, type Variables } from "@/factory.js";
-import commentApp from "./index.js";
-import { anonymousIdentityPlugin } from "@/plugins/anonymous-identity.js";
-import type { NotificationService } from "@/notification/types.js";
 import pino from "pino";
+import { factory, type Variables } from "@/factory.js";
+import type { NotificationService } from "@/notification/types.js";
+import { anonymousIdentityPlugin } from "@/plugins/anonymous-identity.js";
+import commentApp from "./index.js";
 
 export const createTestCommentApp = (
   auth: Variables["auth"] = undefined,

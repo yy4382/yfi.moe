@@ -1,7 +1,7 @@
-import { factory } from "@/factory.js";
-import { AkismetService } from "./akismet.js";
 import { env } from "@/env.js";
+import { factory } from "@/factory.js";
 import { logger as rawLogger } from "@/logger.js";
+import { AkismetService } from "./akismet.js";
 
 const logger = rawLogger.child({
   module: "akismet",

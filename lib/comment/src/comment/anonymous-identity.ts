@@ -1,6 +1,6 @@
-import { useCallback } from "react";
-import { atomWithStorage } from "jotai/utils";
 import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import { useCallback } from "react";
 
 export const ANONYMOUS_IDENTITY_STORAGE_KEY = "commentAnonymousKey";
 

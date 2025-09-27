@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, afterAll, beforeEach } from "vitest";
-import { drizzle } from "drizzle-orm/libsql";
-import { deleteComment } from "./delete.js";
-import * as schema from "@/db/schema.js";
-import { eq } from "drizzle-orm";
-import { migrate } from "drizzle-orm/libsql/migrator";
 import { createClient, type Client } from "@libsql/client";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
+import { describe, it, expect, vi, afterAll, beforeEach } from "vitest";
 import type { DbClient } from "@/db/db-plugin.js";
+import * as schema from "@/db/schema.js";
+import { deleteComment } from "./delete.js";
 
 let client: Client;
 let db: DbClient;

@@ -1,8 +1,8 @@
 import { and, eq, isNull } from "drizzle-orm";
-import { comment, reaction } from "@/db/schema.js";
-import type { DbClient } from "@/db/db-plugin.js";
-import type { ReactionActor } from "./types.js";
 import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
+import type { DbClient } from "@/db/db-plugin.js";
+import { comment, reaction } from "@/db/schema.js";
+import type { ReactionActor } from "./types.js";
 
 export type RemoveReactionResult =
   | {

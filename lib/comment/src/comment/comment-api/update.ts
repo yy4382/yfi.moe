@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { commentContentSchema } from "./add";
 import { commentData } from "@repo/api/comment/comment-data";
 import { updateComment as updateCommentApi } from "@repo/api/comment/update";
+import { commentContentSchema } from "./add";
 
 // inputting params
 export const commentUpdateParams = z.object({

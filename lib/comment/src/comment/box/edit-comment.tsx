@@ -1,23 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { sessionOptions, sortByAtom } from "../utils";
-import { z } from "zod";
+import { produce } from "immer";
+import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
+import { useContext, useState } from "react";
 import { toast } from "sonner";
-import { CommentBoxIdContext } from "./context";
-import { InputBox } from "./input-area";
+import { z } from "zod";
+import type { LayeredCommentData } from "@repo/api/comment/get.model";
 import {
   commentUpdateParamsBranded,
   type CommentUpdateParamsBranded,
   updateComment,
 } from "../comment-api/update";
-import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
-import type { LayeredCommentData } from "@repo/api/comment/get.model";
-import { produce } from "immer";
-import { useContext, useState } from "react";
 import {
   AuthClientRefContext,
   PathnameContext,
   ServerURLContext,
 } from "../context";
+import { sessionOptions, sortByAtom } from "../utils";
+import { CommentBoxIdContext } from "./context";
+import { InputBox } from "./input-area";
+
 export function CommentBoxEdit({
   editId,
   onCancel,

@@ -10,15 +10,17 @@ interface Props {
 const { date, updated } = Astro.props;
 ---
 
-<div class="flex items-center gap-2 select-none lg:gap-3">
-  <div class="flex items-center select-none">
+<div class="flex select-none items-center gap-2 lg:gap-3">
+  <div class="flex select-none items-center">
     <Icon name="lucide:calendar" size={16} class="mr-1" />
     {format(date, "yyyy-MM-dd")}
   </div>
-  {updated && !isSameDay(date, updated) && (
-    <div class="flex items-center select-none">
-      <Icon name="lucide:square-pen" size={16} class="mr-1" />
-      {format(updated, "yyyy-MM-dd")}
-    </div>
-  )}
+  {
+    updated && !isSameDay(date, updated) && (
+      <div class="flex select-none items-center">
+        <Icon name="lucide:square-pen" size={16} class="mr-1" />
+        {format(updated, "yyyy-MM-dd")}
+      </div>
+    )
+  }
 </div>

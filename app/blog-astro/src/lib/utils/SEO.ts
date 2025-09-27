@@ -1,5 +1,5 @@
-import { siteConfig, siteDomain } from "@/config/site";
 import type { SEOProps } from "astro-seo";
+import { siteConfig, siteDomain } from "@/config/site";
 
 export function getSeo(config: {
   title: string;

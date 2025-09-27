@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach } from "vitest";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
-import * as schema from "@/db/schema.js";
+import { describe, it, expect, beforeEach } from "vitest";
 import type { DbClient } from "@/db/db-plugin.js";
+import * as schema from "@/db/schema.js";
 import { addReaction } from "./add.js";
 import { removeReaction } from "./remove.js";
 import type { ReactionActor } from "./types.js";

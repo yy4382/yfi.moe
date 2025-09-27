@@ -1,7 +1,7 @@
-import { factory } from "@/factory.js";
 import { getCookie, setCookie } from "hono/cookie";
 import { randomUUID } from "node:crypto";
 import SparkMd5 from "spark-md5";
+import { factory } from "@/factory.js";
 
 const DEFAULT_COOKIE_NAME = "anon_key";
 const DEFAULT_HEADER_NAME = "x-anonymous-key";

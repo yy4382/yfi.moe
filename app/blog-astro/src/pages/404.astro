@@ -5,19 +5,19 @@ import NavLayout from "@/components/layouts/NavLayout.astro";
 import { contactInfo } from "@/config/author";
 const seoConfig = getSeo({ title: "404" });
 const mailToLink = contactInfo.find((info) =>
-  info.link.startsWith("mailto:")
+  info.link.startsWith("mailto:"),
 )?.link;
 ---
 
 <NavLayout seoConfig={seoConfig} stopTrack>
-  <Section class="mx-auto my-8 max-w-xl text-heading">
+  <Section class="text-heading mx-auto my-8 max-w-xl">
     <div class="flex flex-col gap-6">
       <h1 class="text-5xl font-semibold">哎呀！网页走丢啦</h1>
       <div class="flex gap-4">
-        <a class="block rounded-md bg-primary/80 p-2 text-black" href="/"
+        <a class="bg-primary/80 block rounded-md p-2 text-black" href="/"
           >返回首页</a
         >
-        <button class="rounded-md bg-primary/80 p-2 text-black" id="contact-me"
+        <button class="bg-primary/80 rounded-md p-2 text-black" id="contact-me"
           >联系我（邮件）</button
         >
       </div>
@@ -40,7 +40,7 @@ const mailToLink = contactInfo.find((info) =>
     if (!mailToLink) {
       alert("站长未设置联系邮箱");
       throw new Error(
-        "Email not set: to solve, add a new entry to the contactInfo array in `configs/author.ts` with a link property that starts with `mailto:`"
+        "Email not set: to solve, add a new entry to the contactInfo array in `configs/author.ts` with a link property that starts with `mailto:`",
       );
     }
     const subject = `404 问题反馈：${window.location.href}`;

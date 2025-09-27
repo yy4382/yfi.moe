@@ -1,8 +1,7 @@
-import type { Element, ElementContent, Properties, Root } from "hast";
-import type { Test } from "hast-util-is-element";
-
 // @ts-ignore
 import structuredClone from "@ungap/structured-clone";
+import type { Element, ElementContent, Properties, Root } from "hast";
+import type { Test } from "hast-util-is-element";
 import { convertElement } from "hast-util-is-element";
 import isAbsoluteUrl from "is-absolute-url";
 import { parse } from "space-separated-tokens";

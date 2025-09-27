@@ -1,7 +1,8 @@
 "use client";
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access */
-import { useEffect, useMemo, useState } from "react";
 import type { components } from "@octokit/openapi-types";
+import { useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 type GetRepoResp = components["schemas"]["repository"];
@@ -18,7 +19,7 @@ const languageColorMap: Record<string, string> = {
 };
 
 const GhCardSkeleton = () => (
-  <div className="not-prose group relative flex h-36 w-100 max-w-sm animate-pulse rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
+  <div className="not-prose w-100 group relative flex h-36 max-w-sm animate-pulse rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
     <div className="flex flex-1 flex-col justify-between">
       <div className="space-y-3">
         <div className="h-5 w-3/4 rounded bg-zinc-300 dark:bg-zinc-700"></div>
@@ -51,7 +52,7 @@ export const GhCard = ({ user, repo }: { user: string; repo: string }) => {
             href={repoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="not-prose group relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center text-red-500 transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+            className="not-prose w-100 group relative flex h-36 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center text-red-500 transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
           >
             加载 GitHub 数据失败，点击直接访问仓库 {user}/{repo}。
           </a>
@@ -122,7 +123,7 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
         href={repoUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="not-prose group text-comment relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+        className="not-prose text-comment w-100 group relative flex h-36 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
       >
         {errorMessage}
         <br />

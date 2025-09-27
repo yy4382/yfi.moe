@@ -1,10 +1,10 @@
-import { factory } from "@/factory.js";
-import { unsubscribeReq } from "@repo/api/account/unsub.model";
-import { unsubscribedEmail } from "@/db/schema.js";
-import { verifyUnsubscribeSignature } from "./unsub.service.js";
-import { env } from "@/env.js";
 import { eq } from "drizzle-orm";
 import { describeRoute, validator } from "hono-openapi";
+import { unsubscribeReq } from "@repo/api/account/unsub.model";
+import { unsubscribedEmail } from "@/db/schema.js";
+import { env } from "@/env.js";
+import { factory } from "@/factory.js";
+import { verifyUnsubscribeSignature } from "./unsub.service.js";
 
 export const unsubscribeApp = factory
   .createApp()

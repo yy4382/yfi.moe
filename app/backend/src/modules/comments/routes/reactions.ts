@@ -1,15 +1,15 @@
-import { factory, type Variables } from "@/factory.js";
-import { describeRoute, resolver, validator } from "hono-openapi";
 import type { Context } from "hono";
-import { commentReactionReqBody } from "@repo/api/comment/reaction.model";
+import { describeRoute, resolver, validator } from "hono-openapi";
 import { commentReaction } from "@repo/api/comment/comment-data";
+import { commentReactionReqBody } from "@repo/api/comment/reaction.model";
+import { factory, type Variables } from "@/factory.js";
+import { ANONYMOUS_IDENTITY_HEADER } from "@/plugins/anonymous-identity.js";
 import { addReaction } from "../services/reaction/add.js";
 import { removeReaction } from "../services/reaction/remove.js";
 import {
   actorFromUser,
   type ReactionActor,
 } from "../services/reaction/types.js";
-import { ANONYMOUS_IDENTITY_HEADER } from "@/plugins/anonymous-identity.js";
 
 const parseCommentId = (commentIdRaw: string): number | null => {
   const parsed = Number.parseInt(commentIdRaw, 10);

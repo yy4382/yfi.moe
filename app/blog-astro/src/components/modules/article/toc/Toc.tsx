@@ -1,16 +1,15 @@
 "use client";
 
-import TocEntry from "./TocEntry";
+import { ListIcon } from "lucide-react";
+import { motion } from "motion/react";
 import { useState, useEffect, useRef, useMemo } from "react";
-
+import type { MarkdownHeading } from "@repo/markdown/parse";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/motion-popover";
-import { motion } from "motion/react";
-import type { MarkdownHeading } from "@repo/markdown/parse";
-import { ListIcon } from "lucide-react";
+import TocEntry from "./TocEntry";
 
 function useHeading(headingsInput: MarkdownHeading[]) {
   const [headings] = useState<MarkdownHeading[]>(headingsInput);

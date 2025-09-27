@@ -15,17 +15,16 @@
  *   - this is achieved by a shared function `tablesToCommentData`
  *   - should test it separately
  */
-
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { drizzle } from "drizzle-orm/libsql";
-import { getComments, getCommentsChildren } from "./get.js";
-import * as schema from "@/db/schema.js";
-import { eq } from "drizzle-orm";
-import type { DbClient } from "@/db/db-plugin.js";
-import { migrate } from "drizzle-orm/libsql/migrator";
 import { createClient } from "@libsql/client";
 import type { Client } from "@libsql/client";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
 import SparkMD5 from "spark-md5";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import type { DbClient } from "@/db/db-plugin.js";
+import * as schema from "@/db/schema.js";
+import { getComments, getCommentsChildren } from "./get.js";
 
 let client: Client;
 let db: DbClient;

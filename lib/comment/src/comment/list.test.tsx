@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { CommentItem } from "./list";
-import type { CommentData } from "@repo/api/comment/comment-data";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render, screen } from "@testing-library/react";
+import { useRef } from "react";
+import { describe, it, expect } from "vitest";
+import type { CommentData } from "@repo/api/comment/comment-data";
 import {
   AuthClientRefContext,
   createAuthClient,
@@ -10,7 +10,7 @@ import {
   ServerURLContext,
   type AuthClient,
 } from "./context";
-import { useRef } from "react";
+import { CommentItem } from "./list";
 
 function Provider({
   children,

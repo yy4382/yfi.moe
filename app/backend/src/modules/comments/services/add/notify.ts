@@ -1,12 +1,12 @@
+import { eq } from "drizzle-orm";
 import type { DbClient } from "@/db/db-plugin.js";
 import { user, comment, unsubscribedEmail } from "@/db/schema.js";
-import type { NotificationService } from "@/notification/types.js";
-import { eq } from "drizzle-orm";
-import AdminNewCommentEmail from "./notify/templates/admin-new-comment.js";
 import { env } from "@/env.js";
-import { EmailNotifier } from "@/notification/providers/email.js";
-import CommentReplyEmail from "./notify/templates/comment-reply.js";
 import { generateUnsubscribeUrl } from "@/modules/account/unsubscribe/unsub.service.js";
+import { EmailNotifier } from "@/notification/providers/email.js";
+import type { NotificationService } from "@/notification/types.js";
+import AdminNewCommentEmail from "./notify/templates/admin-new-comment.js";
+import CommentReplyEmail from "./notify/templates/comment-reply.js";
 
 type SendNotificationCommentData = {
   id: number;

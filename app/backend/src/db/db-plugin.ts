@@ -1,6 +1,6 @@
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import { factory } from "@/factory.js";
 import type * as schema from "./schema.js";
-import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
 export type DbClient = LibSQLDatabase<typeof schema>;
 

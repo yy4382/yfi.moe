@@ -4,6 +4,8 @@ import {
   useMutation,
   type InfiniteData,
 } from "@tanstack/react-query";
+import { produce } from "immer";
+import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import {
   type PropsWithChildren,
   useCallback,
@@ -12,11 +14,25 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
+import MingcuteCloseLine from "~icons/mingcute/close-line";
+import GitHubIcon from "~icons/mingcute/github-line";
+import MailSendLineIcon from "~icons/mingcute/mail-send-line";
+import type {
+  GetCommentsChildrenResponse,
+  LayeredCommentData,
+} from "@repo/api/comment/get.model";
+import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import {
   addComment,
   commentAddParamsBranded,
   type CommentAddParamsBranded,
 } from "../comment-api/add";
+import {
+  AuthClientRefContext,
+  PathnameContext,
+  ServerURLContext,
+  type AuthClient,
+} from "../context";
 import {
   persistentEmailAtom,
   persistentAsVisitorAtom,
@@ -25,24 +41,8 @@ import {
   sessionOptions,
 } from "../utils";
 import { type CommentBoxId, CommentBoxIdContext } from "./context";
-import MingcuteCloseLine from "~icons/mingcute/close-line";
-import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
-import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
-import { produce } from "immer";
-import type {
-  GetCommentsChildrenResponse,
-  LayeredCommentData,
-} from "@repo/api/comment/get.model";
-import {
-  AuthClientRefContext,
-  PathnameContext,
-  ServerURLContext,
-  type AuthClient,
-} from "../context";
-import GitHubIcon from "~icons/mingcute/github-line";
-import MailSendLineIcon from "~icons/mingcute/mail-send-line";
 
 function useAddComment({
   onSuccess,
@@ -259,14 +259,14 @@ function VisitorBox({ children }: PropsWithChildren) {
         <input
           type="text"
           placeholder="昵称*"
-          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:ring focus:outline-none"
+          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:outline-none focus:ring"
           value={visitorName}
           onChange={(e) => setVisitorName(e.target.value)}
         />
         <input
           type="text"
           placeholder="邮箱*"
-          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:ring focus:outline-none"
+          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:outline-none focus:ring"
           value={visitorEmail}
           onChange={(e) => setVisitorEmail(e.target.value)}
         />
@@ -378,7 +378,7 @@ function UserBox({ children, session }: UserBoxProps) {
           height={56}
           className="aspect-square size-14 rounded-full ring-2 ring-black dark:ring-white"
         />
-        <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
+        <div className="absolute -right-1 -top-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
           <button
             onClick={() => void handleSignOut()}
             className="flex size-full items-center justify-center"
@@ -389,7 +389,7 @@ function UserBox({ children, session }: UserBoxProps) {
         {!isAccountsError &&
           !isAccountsPending &&
           accounts?.data?.find((account) => account.provider === "github") && (
-            <span className="absolute -right-1 -bottom-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
+            <span className="absolute -bottom-1 -right-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
               <GitHubIcon className="size-3.5 text-black" />
             </span>
           )}

@@ -1,8 +1,8 @@
 // rehype-replace-custom-elements.ts
-import type { Plugin } from "unified";
 import type { Root, Element, ElementContent, Properties } from "hast";
-import { visit, SKIP } from "unist-util-visit";
 import { fromHtml } from "hast-util-from-html";
+import type { Plugin } from "unified";
+import { visit, SKIP } from "unist-util-visit";
 
 type Replacer = string | ((node: Element, props: Properties) => string);
 

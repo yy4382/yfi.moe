@@ -1,11 +1,9 @@
-import satori, { type SatoriOptions } from "satori";
 import { readFile } from "node:fs/promises";
+import satori, { type SatoriOptions } from "satori";
 import sharp from "sharp";
-
-import { postOgImage } from "./og-image-template";
-
-import fontRegularUrl from "@/assets/fonts/MiSans-Regular.ttf?filepath";
 import fontBoldUrl from "@/assets/fonts/MiSans-Bold.ttf?filepath";
+import fontRegularUrl from "@/assets/fonts/MiSans-Regular.ttf?filepath";
+import { postOgImage } from "./og-image-template";
 
 const fetchFonts = async () => {
   // Use Promise.all with async readFile

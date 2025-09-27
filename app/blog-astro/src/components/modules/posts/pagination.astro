@@ -70,45 +70,45 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
           : "text-content/50 cursor-not-allowed"
       }`}
     >
-      {prevPage ? (
-        <Icon name="lucide:chevron-left" size={24} />
-      ) : (
-        <Icon name="lucide:chevron-left" size={24} class="opacity-50" />
-      )}
+      {
+        prevPage ? (
+          <Icon name="lucide:chevron-left" size={24} />
+        ) : (
+          <Icon name="lucide:chevron-left" size={24} class="opacity-50" />
+        )
+      }
     </a>
 
-    <div class="text-content flex flex-row items-center gap-2 bg-none font-bold">
-      {pages.map((p, _index) => {
-        if (p === HIDDEN) {
-          return (
-            <Icon
-              name="lucide:more-horizontal"
-              size={20}
-              class="mx-1"
-            />
-          );
-        }
+    <div
+      class="text-content flex flex-row items-center gap-2 bg-none font-bold"
+    >
+      {
+        pages.map((p, _index) => {
+          if (p === HIDDEN) {
+            return (
+              <Icon name="lucide:more-horizontal" size={20} class="mx-1" />
+            );
+          }
 
-        if (p === currentPage) {
+          if (p === currentPage) {
+            return (
+              <div class="bg-primary/90 text-primary-foreground flex size-9 items-center justify-center rounded-full">
+                {p}
+              </div>
+            );
+          }
+
           return (
-            <div
-              class="bg-primary/90 text-primary-foreground flex size-9 items-center justify-center rounded-full"
+            <a
+              href={buildPageUrl(p)}
+              aria-label={`Page ${p}`}
+              class="hover:bg-accent hover:text-accent-foreground flex size-9 items-center justify-center rounded-full transition-colors"
             >
               {p}
-            </div>
+            </a>
           );
-        }
-
-        return (
-          <a
-            href={buildPageUrl(p)}
-            aria-label={`Page ${p}`}
-            class="hover:bg-accent hover:text-accent-foreground flex size-9 items-center justify-center rounded-full transition-colors"
-          >
-            {p}
-          </a>
-        );
-      })}
+        })
+      }
     </div>
 
     <a
@@ -120,11 +120,13 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
           : "text-content/50 cursor-not-allowed"
       }`}
     >
-      {nextPage ? (
-        <Icon name="lucide:chevron-right" size={24} />
-      ) : (
-        <Icon name="lucide:chevron-right" size={24} class="opacity-50" />
-      )}
+      {
+        nextPage ? (
+          <Icon name="lucide:chevron-right" size={24} />
+        ) : (
+          <Icon name="lucide:chevron-right" size={24} class="opacity-50" />
+        )
+      }
     </a>
   </div>
 </Section>

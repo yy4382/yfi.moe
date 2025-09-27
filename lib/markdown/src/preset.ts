@@ -1,23 +1,23 @@
-import { type Preset } from "unified";
-import remarkGithubAlerts from "remark-github-alerts";
-import remarkRehype from "remark-rehype";
-import rehypeRaw from "rehype-raw";
-import rehypeRemoveComments from "rehype-remove-comments";
+import rehypeShiki from "@shikijs/rehype";
+import type { Element } from "hast";
+import { h } from "hastscript";
+import rehypeExternalLinks from "rehype-external-links";
 import rehypeImageOptimization, {
   defineOptions as defineOptimizeOptions,
 } from "rehype-image-optim";
-import rehypeExtendedLinks from "./plugins/rehype-extended-links.js";
-import { h } from "hastscript";
-import type { Element } from "hast";
-import rehypeShiki from "@shikijs/rehype";
-import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
-import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy.js";
-import remarkDirective from "remark-directive";
-import { remarkGithubRepo } from "./plugins/remark-github-repo.js";
-import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeRemoveComments from "rehype-remove-comments";
 import rehypeSanitize from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
-import rehypeExternalLinks from "rehype-external-links";
+import remarkDirective from "remark-directive";
+import remarkGfm from "remark-gfm";
+import remarkGithubAlerts from "remark-github-alerts";
+import remarkRehype from "remark-rehype";
+import { type Preset } from "unified";
+import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy.js";
+import rehypeExtendedLinks from "./plugins/rehype-extended-links.js";
+import { remarkGithubRepo } from "./plugins/remark-github-repo.js";
+import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
 
 export const linkIcons = (): [string, RegExp][] => [
   ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],

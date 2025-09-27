@@ -1,11 +1,11 @@
 import { and, eq, isNull } from "drizzle-orm";
-import { comment, reaction, user } from "@/db/schema.js";
-import type { DbClient } from "@/db/db-plugin.js";
-import type { ReactionActor } from "./types.js";
-import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
 import { z } from "zod";
 import { commentReaction } from "@repo/api/comment/comment-data";
+import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
 import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
+import type { DbClient } from "@/db/db-plugin.js";
+import { comment, reaction, user } from "@/db/schema.js";
+import type { ReactionActor } from "./types.js";
 
 export type AddReactionResult =
   | {

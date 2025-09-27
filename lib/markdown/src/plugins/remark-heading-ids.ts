@@ -1,7 +1,7 @@
-import type { Root } from "mdast";
-import { visit } from "unist-util-visit";
 import Slugger from "github-slugger";
+import type { Root } from "mdast";
 import type { Plugin } from "unified";
+import { visit } from "unist-util-visit";
 
 export interface MarkdownHeading {
   depth: number;

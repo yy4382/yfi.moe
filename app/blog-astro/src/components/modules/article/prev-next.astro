@@ -11,65 +11,69 @@ const { currentSlug } = Astro.props;
 const { prev, next } = await getAdjacentPosts(currentSlug);
 ---
 
-{(prev || next) && (
-  <div class="border-container border-b">
-    <div class={cn(
-      "main-container grid items-stretch",
-      prev && next && "grid-cols-1 lg:grid-cols-2",
-      prev && !next && "grid-cols-1", 
-      !prev && next && "grid-cols-1"
-    )}>
-      {prev && (
-        <div class="@container group">
-          <a 
-            class={cn([
-              "flex h-full items-center",
-              "border-container",
-              "card-btn",
-              "gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8",
-              "border-b lg:border-r lg:border-b-0"
-            ])}
-            href={`/post/${prev.id}`}
-          >
-            <div class="bg-accent/10 border-accent/20 flex size-12 items-center justify-center rounded-full border transition-all duration-200 group-hover:bg-accent/20 group-hover:border-accent/30">
-              <Icon 
-                name="lucide:chevron-left"
-                size={36}
-                class="shrink-0 transition-transform group-hover:scale-120 group-active:scale-95"
-              />
-            </div>
-            <div>
-              <p class="text-comment text-sm">上一篇</p>
-              <p class="@lg:text-lg">{prev.data.title}</p>
-            </div>
-          </a>
-        </div>
-      )}
-      {next && (
-        <div class="@container group">
-          <a 
-            class={cn([
-              "flex h-full items-center flex-row-reverse",
-              "border-container", 
-              "card-btn",
-              "gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8"
-            ])}
-            href={`/post/${next.id}`}
-          >
-            <div class="bg-accent/10 border-accent/20 flex size-12 items-center justify-center rounded-full border transition-all duration-200 group-hover:bg-accent/20 group-hover:border-accent/30">
-              <Icon 
-                name="lucide:chevron-right"
-                size={36}
-                class="shrink-0 transition-transform group-hover:scale-120 group-active:scale-95"
-              />
-            </div>
-            <div class="flex flex-col items-end">
-              <p class="text-comment text-sm">下一篇</p>
-              <p class="@lg:text-lg">{next.data.title}</p>
-            </div>
-          </a>
-        </div>
-      )}
+{
+  (prev || next) && (
+    <div class="border-container border-b">
+      <div
+        class={cn(
+          "main-container grid items-stretch",
+          prev && next && "grid-cols-1 lg:grid-cols-2",
+          prev && !next && "grid-cols-1",
+          !prev && next && "grid-cols-1",
+        )}
+      >
+        {prev && (
+          <div class="@container group">
+            <a
+              class={cn([
+                "flex h-full items-center",
+                "border-container",
+                "card-btn",
+                "@lg:gap-8 @lg:px-16 @lg:py-8 gap-4 px-6 py-6",
+                "border-b lg:border-b-0 lg:border-r",
+              ])}
+              href={`/post/${prev.id}`}
+            >
+              <div class="bg-accent/10 border-accent/20 group-hover:bg-accent/20 group-hover:border-accent/30 flex size-12 items-center justify-center rounded-full border transition-all duration-200">
+                <Icon
+                  name="lucide:chevron-left"
+                  size={36}
+                  class="group-hover:scale-120 shrink-0 transition-transform group-active:scale-95"
+                />
+              </div>
+              <div>
+                <p class="text-comment text-sm">上一篇</p>
+                <p class="@lg:text-lg">{prev.data.title}</p>
+              </div>
+            </a>
+          </div>
+        )}
+        {next && (
+          <div class="@container group">
+            <a
+              class={cn([
+                "flex h-full flex-row-reverse items-center",
+                "border-container",
+                "card-btn",
+                "@lg:gap-8 @lg:px-16 @lg:py-8 gap-4 px-6 py-6",
+              ])}
+              href={`/post/${next.id}`}
+            >
+              <div class="bg-accent/10 border-accent/20 group-hover:bg-accent/20 group-hover:border-accent/30 flex size-12 items-center justify-center rounded-full border transition-all duration-200">
+                <Icon
+                  name="lucide:chevron-right"
+                  size={36}
+                  class="group-hover:scale-120 shrink-0 transition-transform group-active:scale-95"
+                />
+              </div>
+              <div class="flex flex-col items-end">
+                <p class="text-comment text-sm">下一篇</p>
+                <p class="@lg:text-lg">{next.data.title}</p>
+              </div>
+            </a>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-)}
+  )
+}

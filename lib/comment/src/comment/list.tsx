@@ -1,10 +1,3 @@
-import { Fragment, useContext, useState } from "react";
-import {
-  sessionOptions,
-  SORT_BY_LABELS,
-  SORT_BY_OPTIONS,
-  sortByAtom,
-} from "./utils";
 import {
   infiniteQueryOptions,
   useInfiniteQuery,
@@ -12,40 +5,47 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { CommentData } from "@repo/api/comment/comment-data";
+import clsx from "clsx";
+import { produce } from "immer";
+import { useAtom, useAtomValue } from "jotai";
+import { AnimatePresence, motion } from "motion/react";
+import { Fragment, useContext, useState } from "react";
+import { toast } from "sonner";
+import { z, ZodError } from "zod";
+import CommentIcon from "~icons/mingcute/comment-line";
+import MingcuteDelete3Line from "~icons/mingcute/delete-3-line";
 import MingcuteEditLine from "~icons/mingcute/edit-line";
 import MingcuteLoadingLine from "~icons/mingcute/loading-line";
+import MoreIcon from "~icons/mingcute/more-1-line";
 import MingcuteShieldShapeLine from "~icons/mingcute/shield-shape-line";
-import MingcuteDelete3Line from "~icons/mingcute/delete-3-line";
-import { CommentBoxNew } from "./box/add-comment";
-import { CommentBoxEdit } from "./box/edit-comment";
-import { toast } from "sonner";
-import { useAtom, useAtomValue } from "jotai";
-import { produce } from "immer";
 import type { User } from "@repo/api/auth/client";
-import { getComments, getCommentsChildren } from "@repo/api/comment/get";
+import type { CommentData } from "@repo/api/comment/comment-data";
 import { deleteComment } from "@repo/api/comment/delete";
+import { getComments, getCommentsChildren } from "@repo/api/comment/get";
+import type { LayeredCommentData } from "@repo/api/comment/get.model";
 import { toggleCommentSpam } from "@repo/api/comment/toggle-spam";
-import { z, ZodError } from "zod";
-import {
-  AuthClientRefContext,
-  PathnameContext,
-  ServerURLContext,
-} from "./context";
-import clsx from "clsx";
+import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import MoreIcon from "~icons/mingcute/more-1-line";
-import CommentIcon from "~icons/mingcute/comment-line";
-import { CommentReactions } from "./reactions";
-import type { LayeredCommentData } from "@repo/api/comment/get.model";
-import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "motion/react";
+import { CommentBoxNew } from "./box/add-comment";
+import { CommentBoxEdit } from "./box/edit-comment";
+import {
+  AuthClientRefContext,
+  PathnameContext,
+  ServerURLContext,
+} from "./context";
+import { CommentReactions } from "./reactions";
+import {
+  sessionOptions,
+  SORT_BY_LABELS,
+  SORT_BY_OPTIONS,
+  sortByAtom,
+} from "./utils";
 
 const PER_PAGE = 10;
 
@@ -121,7 +121,7 @@ export function CommentList() {
   }
   if (isError) {
     return (
-      <div className="mt-6 flex items-center justify-center-safe gap-2 p-4 text-center text-red-500">
+      <div className="justify-center-safe mt-6 flex items-center gap-2 p-4 text-center text-red-500">
         加载评论失败:{" "}
         {error instanceof ZodError ? z.prettifyError(error) : error.message}
         <button
@@ -144,7 +144,7 @@ export function CommentList() {
   return (
     <div className="mt-10">
       <div className="mb-6 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-comment">
+        <div className="text-comment flex items-center gap-2">
           <span>共{data.pages[0]!.total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
             <span>
@@ -322,7 +322,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
         </div>
 
         {/* 评论内容区域 */}
-        <div className="group mb-1 min-w-0 flex-1 flex flex-col mt-0.5">
+        <div className="group mb-1 mt-0.5 flex min-w-0 flex-1 flex-col">
           <div className="mb-1 flex items-center gap-2">
             <span className="text-content/80 text-sm">{entry.displayName}</span>
 
@@ -381,7 +381,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
             />
             <button
               onClick={() => setReplying(!replying)}
-              className="text-sm inline-flex shrink-0 items-center gap-1 text-comment h-7 rounded-md border px-2 py-0.5 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-700 border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 transition"
+              className="text-comment inline-flex h-7 shrink-0 items-center gap-1 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-sm transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800"
             >
               <CommentIcon /> 回复
             </button>
@@ -396,7 +396,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
         <AnimatePresence initial={false}>
           {replying && (
             <motion.div
-              className="p-0.5 ml-8 pt-2"
+              className="ml-8 p-0.5 pt-2"
               initial={{ opacity: 0, filter: "blur(4px)" }}
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{

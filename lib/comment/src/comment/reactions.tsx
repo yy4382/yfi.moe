@@ -1,35 +1,35 @@
-import { useContext, useMemo, useState, useCallback } from "react";
-import type { CommentData } from "@repo/api/comment/comment-data";
-import {
-  addCommentReaction,
-  removeCommentReaction,
-  type CommentReactionResponse,
-} from "@repo/api/comment/reaction";
-import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
-import type { GetCommentsResponse } from "@repo/api/comment/get.model";
 import {
   useMutation,
   useQuery,
   useQueryClient,
   type InfiniteData,
 } from "@tanstack/react-query";
+import clsx from "clsx";
+import { EmojiPicker } from "frimousse";
 import { produce } from "immer";
-import { toast } from "sonner";
 import { useAtomValue } from "jotai";
-import { sessionOptions, sortByAtom } from "./utils";
+import { Popover } from "radix-ui";
+import { useContext, useMemo, useState, useCallback } from "react";
+import type { ButtonHTMLAttributes } from "react";
+import { toast } from "sonner";
+import MingcuteAddLine from "~icons/mingcute/add-line";
+import MingcuteEmojiLine from "~icons/mingcute/emoji-line";
+import type { User } from "@repo/api/auth/client";
+import type { CommentData } from "@repo/api/comment/comment-data";
+import type { GetCommentsResponse } from "@repo/api/comment/get.model";
+import {
+  addCommentReaction,
+  removeCommentReaction,
+  type CommentReactionResponse,
+} from "@repo/api/comment/reaction";
+import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
+import { useAnonymousIdentity } from "./anonymous-identity";
 import {
   AuthClientRefContext,
   PathnameContext,
   ServerURLContext,
 } from "./context";
-import { useAnonymousIdentity } from "./anonymous-identity";
-import { EmojiPicker } from "frimousse";
-import { Popover } from "radix-ui";
-import type { ButtonHTMLAttributes } from "react";
-import clsx from "clsx";
-import MingcuteAddLine from "~icons/mingcute/add-line";
-import type { User } from "@repo/api/auth/client";
-import MingcuteEmojiLine from "~icons/mingcute/emoji-line";
+import { sessionOptions, sortByAtom } from "./utils";
 
 type ReactionGroup = {
   emojiKey: string;
@@ -169,9 +169,9 @@ function ReactionChip(
     <button
       type="button"
       className={clsx(
-        "flex items-center gap-1 h-7 rounded-md border px-2 py-0.5 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+        "flex h-7 items-center gap-1 rounded-md border px-2 py-0.5 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
         active
-          ? "border-blue-200 bg-blue-100 text-blue-70 dark:border-blue-200/50 dark:bg-blue-100/30 dark:text-blue-300"
+          ? "text-blue-70 border-blue-200 bg-blue-100 dark:border-blue-200/50 dark:bg-blue-100/30 dark:text-blue-300"
           : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700",
         className,
       )}
@@ -179,7 +179,7 @@ function ReactionChip(
       {...rest}
     >
       <span className="text-base leading-none">{emoji}</span>
-      <span className="text-xs leading-none tabular-nums">{count}</span>
+      <span className="text-xs tabular-nums leading-none">{count}</span>
     </button>
   );
 }
@@ -339,7 +339,7 @@ export function CommentReactions({
           <button
             type="button"
             className={clsx(
-              "text-sm inline-flex items-center gap-0.5 text-comment border rounded-md px-2 py-0.5 h-7 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-700 border-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 transition",
+              "text-comment inline-flex h-7 items-center gap-0.5 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-sm transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800",
               isBusy && "pointer-events-none opacity-60",
             )}
             aria-label="添加表情"
@@ -352,12 +352,12 @@ export function CommentReactions({
           <Popover.Content
             align="start"
             sideOffset={6}
-            className="bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md"
+            className="bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) z-50 min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border p-1 shadow-md"
             collisionPadding={12}
           >
             <EmojiPicker.Root
               onEmojiSelect={({ emoji }) => handleEmojiSelect(emoji)}
-              className="isolate flex h-[368px] w-fit flex-col bg-popover rounded-md"
+              className="bg-popover isolate flex h-[368px] w-fit flex-col rounded-md"
             >
               <div className="flex flex-wrap gap-1 px-2 pt-2">
                 {QUICK_ACTION_EMOJIS.map(({ label, emoji }) => (
@@ -375,7 +375,7 @@ export function CommentReactions({
                 ))}
               </div>
               <EmojiPicker.Search className="z-10 mx-2 mt-2 appearance-none rounded-md bg-neutral-200 px-2.5 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:bg-neutral-700" />
-              <EmojiPicker.Viewport className="relative flex-1 outline-hidden">
+              <EmojiPicker.Viewport className="outline-hidden relative flex-1">
                 <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400 dark:text-neutral-500">
                   Loading…
                 </EmojiPicker.Loading>
@@ -383,7 +383,7 @@ export function CommentReactions({
                   No emoji found.
                 </EmojiPicker.Empty>
                 <EmojiPicker.List
-                  className="select-none pb-1.5 w-full"
+                  className="w-full select-none pb-1.5"
                   components={{
                     CategoryHeader: ({ category, ...props }) => (
                       <div

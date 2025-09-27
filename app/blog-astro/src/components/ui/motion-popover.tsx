@@ -4,15 +4,14 @@
  * MIT License
  * https://github.com/animate-ui/animate-ui
  */
-
-import * as React from "react";
-import { Popover as PopoverPrimitive } from "radix-ui";
 import {
   AnimatePresence,
   motion,
   type HTMLMotionProps,
   type Transition,
 } from "motion/react";
+import { Popover as PopoverPrimitive } from "radix-ui";
+import * as React from "react";
 import { cn } from "@/lib/utils/cn";
 
 type PopoverContextType = {

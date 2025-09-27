@@ -20,7 +20,7 @@ export const getStaticPaths = (async ({ paginate }) => {
       });
       return acc;
     },
-    {} as Record<string, CollectionEntry<"post">[]>
+    {} as Record<string, CollectionEntry<"post">[]>,
   );
 
   return Object.entries(uniqueTags).flatMap(([tag, posts]) => {

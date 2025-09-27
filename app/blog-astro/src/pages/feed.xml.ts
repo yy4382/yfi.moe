@@ -1,8 +1,8 @@
 import rss from "@astrojs/rss";
-import { getSortedPosts } from "@/lib/utils/content";
 import type { APIContext } from "astro";
 import { markdownToHtml } from "@repo/markdown/parse";
 import { siteDomain } from "@/config/site";
+import { getSortedPosts } from "@/lib/utils/content";
 
 export async function GET(context: APIContext) {
   const entries = await getSortedPosts();

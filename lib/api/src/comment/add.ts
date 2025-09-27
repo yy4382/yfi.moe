@@ -1,9 +1,9 @@
+import { type Result, err, ok } from "@repo/helpers/result";
 import {
   addCommentResponse,
   type AddCommentBody,
   type AddCommentResponse,
 } from "./add.model.js";
-import { type Result, err, ok } from "@repo/helpers/result";
 
 export async function addComment(
   options: AddCommentBody,

@@ -1,9 +1,9 @@
+import { type Result, err, ok } from "@repo/helpers/result";
 import {
   toggleSpamResponse,
   type ToggleSpamRequest,
   type ToggleSpamResponse,
 } from "./toggle-spam.model.js";
-import { type Result, err, ok } from "@repo/helpers/result";
 
 export async function toggleCommentSpam(
   options: ToggleSpamRequest,

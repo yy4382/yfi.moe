@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { rehypeCodeblockCopy } from "./rehype-codeblock-copy.js";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
 import rehypeShiki from "@shikijs/rehype";
 import rehypeRemoveComments from "rehype-remove-comments";
 import rehypeStringify from "rehype-stringify";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { unified } from "unified";
+import { describe, it, expect } from "vitest";
+import { rehypeCodeblockCopy } from "./rehype-codeblock-copy.js";
 
 describe("rehypeCodeblockCopy", () => {
   it("should add a copy button to code blocks", async () => {

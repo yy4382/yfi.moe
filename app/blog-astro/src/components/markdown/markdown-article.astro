@@ -30,7 +30,7 @@ preset.plugins.push([
         createElement("div", {
           "data-react-component": "CopyButton",
           children: createElement(CopyButton),
-        })
+        }),
       ),
       "github-repo": (_, props) =>
         renderToString(
@@ -41,7 +41,7 @@ preset.plugins.push([
               user: props.user as string,
               repo: props.repo as string,
             }),
-          })
+          }),
         ),
     } satisfies Options["map"],
   },
@@ -65,19 +65,19 @@ const html = await markdownToHtml(content, { preset });
 
   function hydrate() {
     const CopyButtons = document.querySelectorAll(
-      "[data-react-component='CopyButton']"
+      "[data-react-component='CopyButton']",
     );
     CopyButtons.forEach((button) => {
       const root = hydrateRoot(button, createElement(CopyButton));
       roots.push(root);
     });
     const GhCards = document.querySelectorAll(
-      "[data-react-component='GhCard']"
+      "[data-react-component='GhCard']",
     );
     GhCards.forEach((card) => {
       const root = hydrateRoot(
         card,
-        createElement(GhCard, JSON.parse(card.getAttribute("data-props")!))
+        createElement(GhCard, JSON.parse(card.getAttribute("data-props")!)),
       );
       roots.push(root);
     });

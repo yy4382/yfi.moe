@@ -200,7 +200,7 @@
 }
 
 @utility main-container {
-  @apply border-container mx-auto box-border w-screen max-w-screen sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
+  @apply border-container max-w-screen mx-auto box-border w-screen sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
 }
 
 @utility bg-grid {

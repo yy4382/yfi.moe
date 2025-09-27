@@ -1,8 +1,8 @@
 import { queryOptions, useQueryClient } from "@tanstack/react-query";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { AuthClientRefContext, type AuthClient } from "./context";
 import { useContext, useEffect, useLayoutEffect, useRef } from "react";
+import { AuthClientRefContext, type AuthClient } from "./context";
 
 export function sessionOptions(authClient: AuthClient) {
   return queryOptions({

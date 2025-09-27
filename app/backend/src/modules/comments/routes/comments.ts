@@ -1,9 +1,12 @@
-import { factory } from "@/factory.js";
-import { getComments, getCommentsChildren } from "../services/get.js";
-import { addComment } from "../services/add/add.js";
-import { deleteComment } from "../services/delete.js";
-import { updateComment } from "../services/update.js";
-import { toggleCommentSpam } from "../services/toggle-spam.js";
+import { describeRoute, resolver, validator } from "hono-openapi";
+import {
+  addCommentBody,
+  addCommentResponse,
+} from "@repo/api/comment/add.model";
+import {
+  deleteCommentRequest,
+  deleteCommentResponse,
+} from "@repo/api/comment/delete.model";
 import {
   getCommentsBody,
   getCommentsChildrenBody,
@@ -11,22 +14,19 @@ import {
   getCommentsResponse,
 } from "@repo/api/comment/get.model";
 import {
-  addCommentBody,
-  addCommentResponse,
-} from "@repo/api/comment/add.model";
+  toggleSpamRequest,
+  toggleSpamResponse,
+} from "@repo/api/comment/toggle-spam.model";
 import {
   updateCommentBody,
   updateCommentResponse,
 } from "@repo/api/comment/update.model";
-import {
-  deleteCommentRequest,
-  deleteCommentResponse,
-} from "@repo/api/comment/delete.model";
-import {
-  toggleSpamRequest,
-  toggleSpamResponse,
-} from "@repo/api/comment/toggle-spam.model";
-import { describeRoute, resolver, validator } from "hono-openapi";
+import { factory } from "@/factory.js";
+import { addComment } from "../services/add/add.js";
+import { deleteComment } from "../services/delete.js";
+import { getComments, getCommentsChildren } from "../services/get.js";
+import { toggleCommentSpam } from "../services/toggle-spam.js";
+import { updateComment } from "../services/update.js";
 
 export const commentsRoutes = factory
   .createApp()

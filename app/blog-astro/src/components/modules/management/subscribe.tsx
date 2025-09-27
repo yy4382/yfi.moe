@@ -1,7 +1,7 @@
 import { QueryClientProvider, useMutation } from "@tanstack/react-query";
-import { unsubscribe, resubscribe } from "@repo/api/account/unsub";
 import { WALINE_URL } from "astro:env/client";
 import { useEffect, useState } from "react";
+import { unsubscribe, resubscribe } from "@repo/api/account/unsub";
 import { queryClient } from "@/lib/query-client";
 
 function UnsubscribeWrapper() {

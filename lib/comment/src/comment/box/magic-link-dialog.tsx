@@ -1,7 +1,10 @@
 "use client";
 
+import { useAtom } from "jotai";
 import { useContext, useState } from "react";
 import { toast } from "sonner";
+import MailSendLineIcon from "~icons/mingcute/mail-send-line";
+import { Button } from "../../components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,19 +13,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 import {
   Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,
 } from "../../components/ui/tabs";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
-import MailSendLineIcon from "~icons/mingcute/mail-send-line";
-import { persistentEmailAtom, persistentNameAtom } from "../utils";
-import { useAtom } from "jotai";
 import { AuthClientRefContext } from "../context";
+import { persistentEmailAtom, persistentNameAtom } from "../utils";
 
 interface MagicLinkDialogProps {
   children: React.ReactNode;

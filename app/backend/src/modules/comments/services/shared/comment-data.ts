@@ -1,8 +1,6 @@
-import { z } from "zod";
 import type { InferSelectModel } from "drizzle-orm";
-import { comment, reaction, user } from "@/db/schema.js";
-import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
-import type { User } from "@/auth/auth-plugin.js";
+import SparkMD5 from "spark-md5";
+import { z } from "zod";
 import {
   commentDataBase,
   commentDataUser,
@@ -12,7 +10,9 @@ import {
   type CommentData,
   commentReaction,
 } from "@repo/api/comment/comment-data";
-import SparkMD5 from "spark-md5";
+import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
+import type { User } from "@/auth/auth-plugin.js";
+import { comment, reaction, user } from "@/db/schema.js";
 
 export function tablesToCommentData(
   commentTableData: InferSelectModel<typeof comment>,

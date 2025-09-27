@@ -1,6 +1,6 @@
 import { Text, Link, Section } from "@react-email/components";
-import { BaseTemplate } from "@/notification/templates/base-template.js";
 import type { CSSProperties } from "react";
+import { BaseTemplate } from "@/notification/templates/base-template.js";
 
 interface CommentReplyEmailProps {
   authorName: string;

@@ -1,7 +1,7 @@
-import { comment } from "@/db/schema.js";
-import type { DbClient } from "@/db/db-plugin.js";
-import type { User } from "@/auth/auth-plugin.js";
 import { and, or, isNull, eq } from "drizzle-orm";
+import type { User } from "@/auth/auth-plugin.js";
+import type { DbClient } from "@/db/db-plugin.js";
+import { comment } from "@/db/schema.js";
 
 type DeleteCommentResult =
   | {
