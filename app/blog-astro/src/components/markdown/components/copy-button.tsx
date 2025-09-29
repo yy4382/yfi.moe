@@ -32,9 +32,9 @@ export function CopyButton() {
       ref={buttonRef}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="hover:bg-accent-foreground absolute right-2 top-2 inline-flex size-8 cursor-pointer items-center justify-center rounded-lg transition-colors [&_svg]:pointer-events-none [&_svg]:size-4"
+      className="absolute right-2 top-2 inline-flex size-8 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-violet-300/20 [&_svg]:pointer-events-none [&_svg]:size-4"
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={isCopied}
           initial={{ scale: 0 }}
