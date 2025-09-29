@@ -1,8 +1,12 @@
 import { getCollection } from "astro:content";
 
-export async function getSortedPosts() {
+const noDraftsDefault = !import.meta.env.DEV;
+
+export async function getSortedPosts(
+  { noDrafts } = { noDrafts: noDraftsDefault },
+) {
   return (await getCollection("post"))
-    .filter((post) => post.data.published)
+    .filter((post) => (noDrafts ? post.data.published : true))
     .sort((a, b) => Number(b.data.date) - Number(a.data.date));
 }
 
