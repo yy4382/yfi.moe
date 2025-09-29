@@ -13,6 +13,6 @@ export default {
       },
     },
   ],
-  tailwindStylesheet: "./app/blog-astro/src/styles/globals.css",
+  tailwindStylesheet: "./app/blog-astro/src/styles/global.css",
   importOrder: ["<THIRD_PARTY_MODULES>", "^@repo/(.*)$", "^@/(.*)$", "^[./]"],
 };
