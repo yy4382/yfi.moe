@@ -1,0 +1,61 @@
+---
+import { getSimilarPosts } from "@/lib/utils/content";
+import { cn } from "@/lib/utils/cn";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  currentSlug: string;
+  limit?: number;
+}
+
+const { currentSlug, limit = 3 } = Astro.props;
+const similarPosts = await getSimilarPosts(currentSlug, limit);
+---
+
+{
+  similarPosts.length > 0 && (
+    <div class="border-container border-b">
+      <div class="main-container">
+        <div class="border-container border-b px-6 py-4">
+          <h2 class="text-lg font-medium">相关推荐</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          {similarPosts.map(({ post }, index) => (
+            <a
+              href={`/post/${post.id}`}
+              class={cn([
+                "@container group",
+                "border-container card-btn",
+                "@lg:px-8 @lg:py-8 flex flex-col gap-2 px-6 py-6",
+                index < similarPosts.length - 1 &&
+                  "border-b md:border-b-0 md:border-r",
+              ])}
+            >
+              <h3 class="group-hover:text-accent-foreground font-medium leading-snug transition-colors">
+                {post.data.title}
+              </h3>
+              {post.data.description && (
+                <p class="text-comment line-clamp-2 text-sm">
+                  {post.data.description}
+                </p>
+              )}
+              {post.data.tags.length > 0 && (
+                <div class="text-comment mt-auto flex select-none items-center pt-2 text-sm">
+                  <Icon name="lucide:hash" size={16} class="mr-1" />
+                  <span class="space-x-0.5">
+                    {post.data.tags.slice(0, 3).map((tag, tagIndex) => (
+                      <>
+                        {tagIndex !== 0 && <span>|</span>}
+                        <span>{tag}</span>
+                      </>
+                    ))}
+                  </span>
+                </div>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}

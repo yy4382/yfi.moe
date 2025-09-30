@@ -4,10 +4,13 @@
     "astrojs",
     "Elysia",
     "errmsg",
+    "nodejieba",
     "optim",
     "POSTHOG",
     "srcset",
     "stringbool",
+    "tfidf",
+    "TFIDF",
     "waline",
     "Yuline"
   ],

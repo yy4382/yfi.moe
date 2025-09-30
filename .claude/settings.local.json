@@ -4,7 +4,9 @@
       "Bash(pnpm check-types:*)",
       "Bash(pnpm lint:*)",
       "Bash(pnpm vitest run:*)",
-      "Bash(pnpm astro check:*)"
+      "Bash(pnpm astro check:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebSearch"
     ],
     "deny": []
   }

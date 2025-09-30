@@ -6,6 +6,7 @@ import ArticleHero from "@/components/modules/article/article-hero.astro";
 import ArticleContent from "@/components/modules/article/article-content.astro";
 import CopyrightCard from "@/components/modules/article/copyright-card.astro";
 import PrevNext from "@/components/modules/article/prev-next.astro";
+import SimilarPosts from "@/components/modules/article/similar-posts.astro";
 import { getSeo } from "@/lib/utils/SEO";
 import { getDesc } from "@/lib/content/get-description";
 import Comment from "@/components/modules/comments/comment.astro";
@@ -50,6 +51,7 @@ const seoConfig = getSeo({
   />
   <ArticleContent text={body || ""} />
   {data.copyright && <CopyrightCard />}
+  <SimilarPosts currentSlug={slug} />
   <PrevNext currentSlug={slug} />
   <Comment />
 </NavLayout>
