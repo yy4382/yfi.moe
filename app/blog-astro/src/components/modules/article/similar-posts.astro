@@ -34,11 +34,6 @@ const similarPosts = await getSimilarPosts(currentSlug, limit);
               <h3 class="group-hover:text-accent-foreground font-medium leading-snug transition-colors">
                 {post.data.title}
               </h3>
-              {post.data.description && (
-                <p class="text-comment line-clamp-2 text-sm">
-                  {post.data.description}
-                </p>
-              )}
               {post.data.tags.length > 0 && (
                 <div class="text-comment mt-auto flex select-none items-center pt-2 text-sm">
                   <Icon name="lucide:hash" size={16} class="mr-1" />
