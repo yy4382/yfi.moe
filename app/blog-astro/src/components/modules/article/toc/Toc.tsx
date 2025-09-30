@@ -6,6 +6,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import type { MarkdownHeading } from "@repo/markdown/parse";
 import {
   Popover,
+  PopoverPortal,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/motion-popover";
@@ -88,18 +89,24 @@ const Toc: React.FC<{
           </motion.span>
         </button>
       </PopoverTrigger>
-      <PopoverContent
-        sideOffset={5}
-        asChild
-        collisionPadding={5}
-        align="end"
-        side="bottom"
-        alignOffset={-10}
-      >
-        <div className="toc-card border-container bg-bg w-76 border px-6 py-8">
-          <TocEntry headings={headings} activeIndex={activeIndex} />
-        </div>
-      </PopoverContent>
+      <PopoverPortal>
+        <PopoverContent
+          sideOffset={5}
+          collisionPadding={5}
+          align="end"
+          side="bottom"
+          alignOffset={-10}
+          transition={{
+            type: "spring",
+            visualDuration: 0.15,
+            bounce: 0.2,
+          }}
+        >
+          <div className="toc-card border-container bg-bg w-76 border px-6 py-8">
+            <TocEntry headings={headings} activeIndex={activeIndex} />
+          </div>
+        </PopoverContent>
+      </PopoverPortal>
     </Popover>
   );
 };
