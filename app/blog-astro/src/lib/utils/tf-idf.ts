@@ -1,4 +1,8 @@
-import nodejieba from "nodejieba";
+import { Jieba } from "@node-rs/jieba";
+import { dict } from "@node-rs/jieba/dict";
+
+// load jieba with the default dict
+const jieba = Jieba.withDict(dict);
 
 export interface Document {
   id: string;
@@ -15,7 +19,7 @@ export interface SimilarDocument {
  */
 function tokenize(text: string): string[] {
   // Use nodejieba to segment Chinese text properly
-  const tokens = nodejieba.cut(text);
+  const tokens = jieba.cut(text);
 
   // Filter out very short tokens and normalize
   return tokens

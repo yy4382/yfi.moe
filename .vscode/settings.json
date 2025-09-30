@@ -4,6 +4,7 @@
     "astrojs",
     "Elysia",
     "errmsg",
+    "jieba",
     "nodejieba",
     "optim",
     "POSTHOG",

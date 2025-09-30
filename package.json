@@ -30,7 +30,6 @@
       "cn-font-split",
       "esbuild",
       "koffi",
-      "nodejieba",
       "protobufjs",
       "sharp"
     ]
