@@ -1,4 +1,5 @@
 // @ts-check
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
@@ -9,13 +10,13 @@ import { siteDomain } from "./src/config/site";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), icon(), sitemap()],
+  integrations: [react(), icon(), sitemap(), mdx()],
   output: "static",
 
   site: siteDomain,
 
   vite: {
-    plugins: [tailwindcss(), fileSystemPath(), font.vite()],
+    plugins: [tailwindcss(), fileSystemPath(), font.vite() as any],
   },
 
   env: {

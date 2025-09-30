@@ -6,7 +6,7 @@ import type { ContentTimeData } from "@/content.config";
 
 interface Props {
   title: string;
-  time: ContentTimeData;
+  time?: ContentTimeData;
   tags?: string[];
 }
 
@@ -18,7 +18,7 @@ const { title, time, tags } = Astro.props;
   <div
     class="text-comment flex flex-col items-center gap-2 text-[0.8rem] md:flex-row lg:gap-3"
   >
-    <PostAttrTime {...time} />
+    {time && <PostAttrTime {...time} />}
     {tags && <PostAttrTags tags={tags} />}
   </div>
 </Section>
