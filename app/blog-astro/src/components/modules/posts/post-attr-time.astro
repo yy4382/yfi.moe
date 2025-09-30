@@ -1,25 +1,23 @@
 ---
 import { Icon } from "astro-icon/components";
 import { format, isSameDay } from "date-fns";
+import type { ContentTimeData } from "@/content.config";
 
-interface Props {
-  date: Date;
-  updated?: Date;
-}
+type Props = ContentTimeData;
 
-const { date, updated } = Astro.props;
+const { writingDate, updatedDate, publishedDate } = Astro.props;
 ---
 
 <div class="flex select-none items-center gap-2 lg:gap-3">
   <div class="flex select-none items-center">
     <Icon name="lucide:calendar" size={16} class="mr-1" />
-    {format(date, "yyyy-MM-dd")}
+    {format(publishedDate, "yyyy-MM-dd")}
   </div>
   {
-    updated && !isSameDay(date, updated) && (
+    updatedDate && !isSameDay(publishedDate, updatedDate) && (
       <div class="flex select-none items-center">
         <Icon name="lucide:square-pen" size={16} class="mr-1" />
-        {format(updated, "yyyy-MM-dd")}
+        {format(updatedDate, "yyyy-MM-dd")}
       </div>
     )
   }

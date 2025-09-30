@@ -8,7 +8,9 @@ export async function getSortedPosts(
 ) {
   return (await getCollection("post"))
     .filter((post) => (noDrafts ? post.data.published : true))
-    .sort((a, b) => Number(b.data.date) - Number(a.data.date));
+    .sort(
+      (a, b) => Number(b.data.publishedDate) - Number(a.data.publishedDate),
+    );
 }
 
 export async function getAdjacentPosts(currentSlug: string) {

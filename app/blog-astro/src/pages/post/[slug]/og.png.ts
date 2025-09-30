@@ -15,7 +15,7 @@ export const GET: APIRoute<
   new Response(
     (await generateOgImageForPost({
       ...props.data,
-      date: props.data.date.toISOString(),
+      date: props.data.publishedDate.toISOString(),
     })) as BodyInit,
     {
       headers: { "Content-Type": "image/png" },

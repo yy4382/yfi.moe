@@ -1,7 +1,9 @@
 import type { components } from "@octokit/openapi-types";
 import type { Loader, LoaderContext, DataStore } from "astro/loaders";
+import { z } from "astro:content";
 import yaml from "js-yaml";
 import { ofetch } from "ofetch";
+import type { ContentTimeData } from "@/content.config";
 
 type GetRepoContentDir = components["schemas"]["content-directory"];
 type GetRepoContentFile = components["schemas"]["content-file"];
@@ -147,7 +149,10 @@ async function processFile(
     throw new Error(`File ${file.name} does not have a slug`);
   }
 
-  const parsedFm = await ctx.parseData({ id: data.slug, data });
+  const parsedFm = await ctx.parseData({
+    id: data.slug,
+    data: dateTransformer(data),
+  });
 
   return {
     id: data.slug,
@@ -155,6 +160,30 @@ async function processFile(
     data: parsedFm,
     digest: ctx.generateDigest(rawContent),
   };
+}
+
+const postDateSchema = z.object({
+  date: z.coerce.date(),
+  publishedDate: z.coerce.date().optional(),
+  updated: z.coerce.date().optional(),
+});
+function dateTransformer(data: Record<string, unknown>): ContentTimeData {
+  const parsed = postDateSchema.parse(data);
+  if (parsed.publishedDate) {
+    return {
+      ...data,
+      writingDate: parsed.date,
+      publishedDate: parsed.publishedDate,
+      updatedDate: parsed.updated,
+    };
+  } else {
+    return {
+      ...data,
+      writingDate: undefined,
+      publishedDate: parsed.date,
+      updatedDate: parsed.updated,
+    };
+  }
 }
 
 function parseMarkdownFrontmatter(markdown: string) {

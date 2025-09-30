@@ -34,7 +34,7 @@ const description =
       </h2>
     </a>
     <div class="text-comment flex flex-wrap gap-2 text-[0.8rem] lg:gap-3">
-      <PostAttrTime date={post.data.date} updated={post.data.updated} />
+      <PostAttrTime {...post.data} />
       <PostAttrTags tags={post.data.tags} />
     </div>
     <div

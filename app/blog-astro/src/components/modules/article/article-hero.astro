@@ -2,15 +2,15 @@
 import Section from "@/components/ui/section.astro";
 import PostAttrTime from "@/components/modules/posts/post-attr-time.astro";
 import PostAttrTags from "@/components/modules/posts/post-attr-tags.astro";
+import type { ContentTimeData } from "@/content.config";
 
 interface Props {
   title: string;
-  date: Date;
-  updated?: Date;
+  time: ContentTimeData;
   tags?: string[];
 }
 
-const { title, date, updated, tags } = Astro.props;
+const { title, time, tags } = Astro.props;
 ---
 
 <Section class="center mx-auto flex flex-col gap-6 py-24" padding="article">
@@ -18,7 +18,7 @@ const { title, date, updated, tags } = Astro.props;
   <div
     class="text-comment flex flex-col items-center gap-2 text-[0.8rem] md:flex-row lg:gap-3"
   >
-    <PostAttrTime date={date} updated={updated} />
+    <PostAttrTime {...time} />
     {tags && <PostAttrTags tags={tags} />}
   </div>
 </Section>

@@ -26,10 +26,6 @@ const seoConfig = getSeo({
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <ArticleHero
-    title={page.data.title}
-    date={page.data.date}
-    updated={page.data.updated}
-  />
+  <ArticleHero title={page.data.title} time={page.data} />
   <ArticleContent text={page.body || ""} />
 </NavLayout>

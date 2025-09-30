@@ -7,12 +7,18 @@ const baseSchema = z.object({
   description: z.string().default(""),
   slug: z.string(),
 
-  date: z.coerce.date(),
-  updated: z.coerce.date().optional(),
+  writingDate: z.coerce.date().optional(),
+  publishedDate: z.coerce.date(),
+  updatedDate: z.coerce.date().optional(),
 
   image: z.string().optional(),
   copyright: z.boolean().default(true),
 });
+
+export type ContentTimeData = Pick<
+  z.infer<typeof baseSchema>,
+  "writingDate" | "publishedDate" | "updatedDate"
+>;
 
 const postSchema = baseSchema.extend({
   tags: z.array(z.string()),

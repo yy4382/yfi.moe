@@ -44,12 +44,7 @@ const seoConfig = getSeo({
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <ArticleHero
-    title={data.title}
-    date={data.date}
-    updated={data.updated}
-    tags={data.tags}
-  />
+  <ArticleHero title={data.title} time={data} tags={data.tags} />
   {data.series && <SeriesCard seriesId={data.series.id} currentSlug={slug} />}
   <ArticleContent text={body || ""} />
   {data.series && <SeriesCard seriesId={data.series.id} currentSlug={slug} />}
