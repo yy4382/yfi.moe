@@ -43,6 +43,18 @@ import clsx from "clsx";
           Posts
         </a>
       </li>
+      <li>
+        <a
+          href="/achieve"
+          data-active={Astro.url.pathname === "/achieve"}
+          class={clsx([
+            "data-[active=true]:text-accent-foreground",
+            "text-muted-foreground hover:text-accent-foreground transition-colors",
+          ])}
+        >
+          Achieve
+        </a>
+      </li>
     </ul>
   </section>
 </header>

@@ -1,0 +1,81 @@
+---
+import NavLayout from "@/components/layouts/NavLayout.astro";
+import Section from "@/components/ui/section.astro";
+import { getSortedPosts } from "@/lib/utils/content";
+import { getSeo } from "@/lib/utils/SEO";
+import type { CollectionEntry } from "astro:content";
+import { format } from "date-fns";
+
+const posts = await getSortedPosts();
+
+const groupedPosts = posts.reduce<
+  {
+    year: string;
+    posts: CollectionEntry<"post">[];
+  }[]
+>((acc, post) => {
+  const year = format(post.data.publishedDate, "yyyy");
+  const index = acc.findIndex((item) => item.year === year);
+  if (index !== -1) {
+    acc[index].posts.push(post);
+  } else {
+    acc.push({ year, posts: [post] });
+  }
+  return acc;
+}, []);
+groupedPosts.sort((a, b) => Number(b.year) - Number(a.year));
+
+const seoConfig = getSeo({
+  title: "归档",
+  description: "文章归档",
+  noindex: true,
+});
+---
+
+<NavLayout seoConfig={seoConfig}>
+  <Section
+    class="flex h-52 flex-col items-start justify-center px-4 lg:h-96"
+    bg="grid"
+  >
+    <div class="mx-auto w-full max-w-prose">
+      <h1 class="text-heading @3xl:text-6xl text-5xl font-bold">归档</h1>
+      <p class="text-content ml-1 mt-4 text-lg">共有 {posts.length} 篇文章</p>
+    </div>
+  </Section>
+  <Section class="py-18 px-4">
+    <div class="mx-auto flex max-w-prose flex-col gap-8">
+      {
+        groupedPosts.map((group) => (
+          <div class="flex flex-col gap-4">
+            <h2 class="text-2xl font-bold">
+              {group.year}{" "}
+              <span class="text-comment text-sm font-normal">
+                ({group.posts.length})
+              </span>
+            </h2>
+            <ul class="list-none text-sm lg:text-base">
+              {group.posts.map((post) => (
+                <li class="flex items-center justify-between">
+                  <span class="flex min-w-0 shrink items-center">
+                    <span class="inline-block w-12 pr-2 font-light tabular-nums lg:w-16">
+                      {format(post.data.publishedDate, "MM/dd")}
+                    </span>
+                    <a
+                      class="hover:text-accent-foreground pointer-coarse:py-1 min-w-0 truncate py-0.5 leading-6 transition-colors"
+                      href={`/post/${post.id}`}
+                    >
+                      {post.data.title}
+                    </a>
+                  </span>
+                  {/* <span class="hidden font-light text-xs lg:inline max-w-24 truncate">
+                    {post.data.tags.map((tag) => `#${tag}`).join("/")}
+                  </span> */}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+</NavLayout>
