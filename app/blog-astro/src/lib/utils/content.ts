@@ -55,3 +55,14 @@ export async function getSimilarPosts(
     })
     .filter((item) => item !== null);
 }
+
+export async function getSeriesPosts(
+  seriesId: string,
+  { noDrafts } = { noDrafts: noDraftsDefault },
+) {
+  const posts = await getSortedPosts({ noDrafts });
+
+  return posts
+    .filter((post) => post.data.series?.id === seriesId)
+    .sort((a, b) => (a.data.series?.order ?? 0) - (b.data.series?.order ?? 0));
+}

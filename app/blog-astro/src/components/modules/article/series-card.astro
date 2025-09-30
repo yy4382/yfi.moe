@@ -1,0 +1,56 @@
+---
+import { getSeriesPosts } from "@/lib/utils/content";
+import Section from "@/components/ui/section.astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  seriesId: string;
+  currentSlug: string;
+}
+
+const { seriesId, currentSlug } = Astro.props;
+const seriesPosts = await getSeriesPosts(seriesId);
+
+// Don't render if there's only one post in the series
+if (seriesPosts.length <= 1) {
+  return null;
+}
+---
+
+<Section class="py-10" padding="article">
+  <div class="mx-auto max-w-prose">
+    <div class="mb-4 flex items-center gap-2">
+      <Icon name="lucide:list" size={20} class="shrink-0" />
+      <h3 class="text-base font-semibold">
+        {"系列文章"}
+      </h3>
+    </div>
+    <ol class="m-0 list-none space-y-3 p-0">
+      {
+        seriesPosts.map((post, index) => {
+          const isCurrent = post.id === currentSlug;
+          return (
+            <li class="m-0 p-0">
+              {isCurrent ? (
+                <div class="text-accent-foreground flex items-start gap-2 font-medium leading-relaxed">
+                  <span class="text-comment shrink-0 font-normal">
+                    {index + 1}.
+                  </span>
+                  <span>{post.data.title}</span>
+                </div>
+              ) : (
+                <a
+                  href={`/post/${post.id}`}
+                  class="hover:text-accent-foreground flex items-start gap-2 leading-relaxed no-underline transition-colors"
+                >
+                  <span class="text-comment shrink-0">{index + 1}.</span>
+                  <span>{post.data.title}</span>
+                </a>
+              )}
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</Section>

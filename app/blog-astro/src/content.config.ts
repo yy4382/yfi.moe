@@ -18,7 +18,6 @@ const postSchema = baseSchema.extend({
   tags: z.array(z.string()),
   series: z
     .object({
-      title: z.string().optional(),
       id: z.string(),
       order: z.number().optional(),
     })

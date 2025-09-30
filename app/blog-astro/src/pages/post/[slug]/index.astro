@@ -5,6 +5,7 @@ import NavLayout from "@/components/layouts/NavLayout.astro";
 import ArticleHero from "@/components/modules/article/article-hero.astro";
 import ArticleContent from "@/components/modules/article/article-content.astro";
 import CopyrightCard from "@/components/modules/article/copyright-card.astro";
+import SeriesCard from "@/components/modules/article/series-card.astro";
 import PrevNext from "@/components/modules/article/prev-next.astro";
 import SimilarPosts from "@/components/modules/article/similar-posts.astro";
 import { getSeo } from "@/lib/utils/SEO";
@@ -49,7 +50,9 @@ const seoConfig = getSeo({
     updated={data.updated}
     tags={data.tags}
   />
+  {data.series && <SeriesCard seriesId={data.series.id} currentSlug={slug} />}
   <ArticleContent text={body || ""} />
+  {data.series && <SeriesCard seriesId={data.series.id} currentSlug={slug} />}
   {data.copyright && <CopyrightCard />}
   <SimilarPosts currentSlug={slug} />
   <PrevNext currentSlug={slug} />
