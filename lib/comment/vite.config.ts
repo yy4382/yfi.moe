@@ -4,7 +4,6 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import Icons from "unplugin-icons/vite";
 import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 let analyzer;
@@ -23,7 +22,6 @@ export default defineConfig({
         plugins: ["babel-plugin-react-compiler"],
       },
     }),
-    dts({ tsconfigPath: "./tsconfig.app.json", rollupTypes: true }),
     Icons({ compiler: "jsx", jsx: "react" }),
     ...((process.env.ANALYZE === "true" && analyzer
       ? [analyzer()].flat()
