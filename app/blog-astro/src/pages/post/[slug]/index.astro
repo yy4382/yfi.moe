@@ -11,6 +11,7 @@ import SimilarPosts from "@/components/modules/article/similar-posts.astro";
 import { getSeo } from "@/lib/utils/SEO";
 import { getDesc } from "@/lib/content/get-description";
 import Comment from "@/components/modules/comments/comment.astro";
+import Section from "@/components/ui/section.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("post");
@@ -47,9 +48,24 @@ const seoConfig = getSeo({
   <ArticleHero title={data.title} time={data} tags={data.tags} />
   {data.series && <SeriesCard seriesId={data.series.id} currentSlug={slug} />}
   <ArticleContent text={body || ""} />
-  {data.series && <SeriesCard seriesId={data.series.id} currentSlug={slug} />}
-  {data.copyright && <CopyrightCard />}
+  {
+    data.copyright && (
+      <>
+        <CopyrightCard />
+        <Section class="bg-grid min-h-12" />
+      </>
+    )
+  }
+  {
+    data.series && (
+      <>
+        <SeriesCard seriesId={data.series.id} currentSlug={slug} />
+        <Section class="bg-grid min-h-12" />
+      </>
+    )
+  }
   <SimilarPosts currentSlug={slug} />
+  <Section class="bg-grid min-h-12" />
   <PrevNext currentSlug={slug} />
   <Comment />
 </NavLayout>
