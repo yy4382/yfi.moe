@@ -34,7 +34,7 @@ import clsx from "clsx";
       <li>
         <a
           href="/post"
-          data-active={Astro.url.pathname === "/post"}
+          data-active={Astro.url.pathname.startsWith("/post")}
           class={clsx([
             "data-[active=true]:text-accent-foreground",
             "text-muted-foreground hover:text-accent-foreground transition-colors",
@@ -46,7 +46,7 @@ import clsx from "clsx";
       <li>
         <a
           href="/achieve"
-          data-active={Astro.url.pathname === "/achieve"}
+          data-active={Astro.url.pathname.startsWith("/achieve")}
           class={clsx([
             "data-[active=true]:text-accent-foreground",
             "text-muted-foreground hover:text-accent-foreground transition-colors",
