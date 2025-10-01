@@ -1,60 +1,28 @@
 ---
+import { getEntry } from "astro:content";
+import { Navbar as NavbarReact, type NavbarProps } from "./navbar/index.tsx";
 import { Image } from "astro:assets";
 import logo from "@/assets/logo.png";
-import clsx from "clsx";
+
+let postInfo: NavbarProps["postInfo"] = undefined;
+if (Astro.routePattern === "/post/[slug]") {
+  const post = await getEntry("post", Astro.params.slug!);
+  if (!post) {
+    return;
+  }
+  postInfo = {
+    title: post.data.title,
+    tags: post.data.tags,
+  };
+}
 ---
 
-<header class="border-container border-b">
-  <section
-    class="main-container text-content flex items-center justify-between px-6 py-4"
-  >
-    <a href="/" class="flex gap-4 text-2xl font-bold">
-      <Image
-        src={logo}
-        alt="logo"
-        class="h-8 w-8 rounded-lg"
-        width={32}
-        height={32}
-      />
-      Yunfi
-    </a>
-    <ul class="flex list-none flex-nowrap gap-4">
-      <li>
-        <a
-          href="/"
-          data-active={Astro.url.pathname === "/"}
-          class={clsx([
-            "data-[active=true]:text-accent-foreground",
-            "text-muted-foreground hover:text-accent-foreground transition-colors",
-          ])}
-        >
-          Home
-        </a>
-      </li>
-      <li>
-        <a
-          href="/post"
-          data-active={Astro.url.pathname.startsWith("/post")}
-          class={clsx([
-            "data-[active=true]:text-accent-foreground",
-            "text-muted-foreground hover:text-accent-foreground transition-colors",
-          ])}
-        >
-          Posts
-        </a>
-      </li>
-      <li>
-        <a
-          href="/achieve"
-          data-active={Astro.url.pathname.startsWith("/achieve")}
-          class={clsx([
-            "data-[active=true]:text-accent-foreground",
-            "text-muted-foreground hover:text-accent-foreground transition-colors",
-          ])}
-        >
-          Achieve
-        </a>
-      </li>
-    </ul>
-  </section>
-</header>
+<NavbarReact url={Astro.url} postInfo={postInfo} client:load>
+  <Image
+    src={logo}
+    alt="logo"
+    class="h-8 w-8 rounded-lg"
+    width={32}
+    height={32}
+  />
+</NavbarReact>

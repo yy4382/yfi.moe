@@ -8,7 +8,9 @@ type Props = Parameters<typeof BaseLayout>[0];
 
 <BaseLayout {...Astro.props}>
   <div class="bg-bg text-content m-0 bg-fixed p-0">
-    <div class="grid min-h-[100lvh] grid-rows-[auto_auto_1fr_auto]">
+    <div
+      class="grid min-h-[100lvh] grid-rows-[var(--navbar-height)_auto_1fr_auto]"
+    >
       <Navbar />
       <div class="w-full">
         <slot />

@@ -32,7 +32,10 @@
       "koffi",
       "protobufjs",
       "sharp"
-    ]
+    ],
+    "patchedDependencies": {
+      "vaul": "patches/vaul.patch"
+    }
   },
   "lint-staged": {
     "*": "prettier --ignore-unknown --write"

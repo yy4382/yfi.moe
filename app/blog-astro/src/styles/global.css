@@ -311,6 +311,11 @@
   --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
+:root {
+  --navbar-height: 80px;
+  scroll-padding-top: var(--navbar-height);
+}
+
 /* 1Password auto-fill quirk fix */
 body input[data-com-onepassword-filled],
 body input[data-com-onepassword-filled]:focus {
