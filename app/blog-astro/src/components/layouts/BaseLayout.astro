@@ -12,6 +12,7 @@ import LoadingIndicator from "astro-loading-indicator/component";
 import TagManagers from "@/components/html-head/TagManager.astro";
 // @ts-expect-error fontFamilyFallback is not correctly typed
 import { css, fontFamilyFallback } from "@/assets/fonts/MiSansVF.ttf";
+import { Toaster } from "sonner";
 
 interface Props {
   seoConfig: SEOProps;
@@ -42,6 +43,7 @@ const { seoConfig, stopTrack } = Astro.props;
   </head>
   <body class="bg-bg text-content m-0 overflow-x-hidden bg-fixed p-0">
     <slot />
+    <Toaster theme="system" client:load />
   </body>
 </html>
 

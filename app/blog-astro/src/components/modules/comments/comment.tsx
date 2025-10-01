@@ -16,7 +16,6 @@ export function Comment({ pathname }: { pathname: string }) {
   return (
     <QueryClientProvider client={queryClient}>
       <CommentYuline serverURL={WALINE_URL} pathname={pathname} />
-      <Toaster theme="system" />
     </QueryClientProvider>
   );
 }

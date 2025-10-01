@@ -81,19 +81,25 @@ import { Icon } from "astro-icon/components";
 </div>
 
 <script>
+  import { toast } from "sonner";
+
   function initCopyEmail() {
     document.querySelectorAll(".copy-email").forEach((button) => {
       button.addEventListener("click", () => {
         const email = button.getAttribute("data-email");
         if (email) {
-          navigator.clipboard.writeText(email).catch(() => {
-            alert("复制失败，可能您没有使用 HTTPS 访问");
-          });
+          navigator.clipboard
+            .writeText(email)
+            .then(() => {
+              toast.success("复制邮箱成功");
+            })
+            .catch(() => {
+              toast.error("复制失败，可能您没有使用 HTTPS 访问");
+            });
         }
       });
     });
   }
 
-  initCopyEmail();
   document.addEventListener("astro:page-load", initCopyEmail);
 </script>
