@@ -3,6 +3,14 @@
   "extends": ["//"],
   "tasks": {
     "build": {
+      "env": [
+        "ARTICLE_PAT",
+        "POST_GH_INFO",
+        "PAGE_GH_INFO",
+        "WALINE_URL",
+        "POSTHOG_KEY",
+        "POSTHOG_HOST"
+      ],
       "cache": false
     }
   }

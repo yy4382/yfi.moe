@@ -1,22 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalEnv": [
-    "VERCEL_ENV",
-    "ARTICLE_PAT",
-    "POST_GH_INFO",
-    "PAGE_GH_INFO",
-    "UPSTASH_REDIS_REST_URL",
-    "UPSTASH_REDIS_REST_TOKEN",
-    "CONTENT_REFRESH_TOKEN",
-    "WALINE_URL",
-    "POSTHOG_KEY",
-    "POSTHOG_HOST"
-  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "outputs": ["dist/**"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
     "dev": {
