@@ -12,7 +12,7 @@ import readingTime from "reading-time";
 import { getSeo } from "@/lib/utils/SEO";
 
 const posts = await getSortedPosts();
-const firstDate = posts[0]!.data.publishedDate;
+const firstDate = posts.at(-1)!.data.publishedDate;
 const statistics = {
   articles: posts.length,
   words: posts.reduce((acc, post) => {
