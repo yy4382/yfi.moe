@@ -1,4 +1,3 @@
-import rehypeShiki from "@shikijs/rehype";
 import type { Element } from "hast";
 import { h } from "hastscript";
 import rehypeExternalLinks from "rehype-external-links";
@@ -18,6 +17,7 @@ import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy.js";
 import rehypeExtendedLinks from "./plugins/rehype-extended-links.js";
 import { remarkGithubRepo } from "./plugins/remark-github-repo.js";
 import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
+import { shikiPluggable } from "./plugins/shiki-config.js";
 
 export const linkIcons = (): [string, RegExp][] => [
   ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
@@ -90,7 +90,7 @@ export const ArticlePreset: Preset = {
         rel: ["noopener"],
       },
     ],
-    [rehypeShiki, { theme: "catppuccin-macchiato" }],
+    shikiPluggable,
     rehypeCodeblockCopy,
   ],
 };

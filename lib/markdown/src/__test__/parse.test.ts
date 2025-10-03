@@ -20,7 +20,6 @@ describe("comment", () => {
     return await markdownToHtml(comment, {
       stringifyAllowDangerous: false,
       preset: CommentPreset,
-      sync: true,
     });
   }
   it("should sanitize comment", async () => {
@@ -113,5 +112,19 @@ www.autolink.com
       "<p><a href="https://www.google.com" rel="nofollow noopener noreferrer ugc" target="_blank">link</a><br>
       <a href="http://www.autolink.com" rel="nofollow noopener noreferrer ugc" target="_blank">www.autolink.com</a></p>"
     `);
+  });
+});
+
+describe("code highlight", () => {
+  it("should highlight code", async () => {
+    const comment = `
+\`\`\`ts
+console.log("Hello, world!");
+\`\`\`
+    `;
+    const html = await markdownToHtml(comment);
+    expect(html).toMatchInlineSnapshot(
+      `"<pre class="shiki catppuccin-macchiato copy-code-pre" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code><span class="line"><span style="color:#CAD3F5">console</span><span style="color:#8BD5CA">.</span><span style="color:#8AADF4;font-style:italic">log</span><span style="color:#CAD3F5">(</span><span style="color:#A6DA95">"Hello, world!"</span><span style="color:#CAD3F5">)</span><span style="color:#939AB7">;</span></span></code><copy-button></copy-button></pre>"`,
+    );
   });
 });

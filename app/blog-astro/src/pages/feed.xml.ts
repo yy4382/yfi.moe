@@ -6,18 +6,17 @@ import { getSortedPosts } from "@/lib/utils/content";
 
 export async function GET(context: APIContext) {
   const entries = await getSortedPosts();
-  const items: RSSFeedItem[] = await Promise.all(
-    new Array(8)
-      .fill(0)
-      .map((_, i) => entries[i])
-      .map(async (entry) => ({
-        title: entry.data.title,
-        pubDate: entry.data.publishedDate,
-        description: entry.data.description,
-        link: `/post/${entry.id}`,
-        content: await markdownToHtml(entry.body ?? ""),
-      })),
-  );
+  const items: RSSFeedItem[] = new Array(8)
+    .fill(0)
+    .map((_, i) => entries[i])
+    .map((entry) => ({
+      title: entry.data.title,
+      pubDate: entry.data.publishedDate,
+      description: entry.data.description,
+      link: `/post/${entry.id}`,
+      content: markdownToHtml(entry.body ?? ""),
+    }));
+
   return rss({
     title: "Yunfi Blog",
     description: "记录折腾，分享经验",

@@ -58,7 +58,7 @@ export async function updateComment(
     .update(comment)
     .set({
       rawContent: content.rawContent,
-      renderedContent: await parseMarkdown(content.rawContent),
+      renderedContent: parseMarkdown(content.rawContent),
       updatedAt: now,
     })
     .where(eq(comment.id, id))

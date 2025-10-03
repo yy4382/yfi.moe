@@ -56,7 +56,7 @@ export async function addComment(
     };
   }
 
-  const renderedContent = await parseMarkdown(body.content);
+  const renderedContent = parseMarkdown(body.content);
 
   const isSpam = await checkSpam(body, akismet, options);
 

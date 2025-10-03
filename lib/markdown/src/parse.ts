@@ -13,30 +13,24 @@ export const markdownToHast = async (
   {
     fast = false,
     preset: presetParam = ArticlePreset,
-    sync = false,
-  }: { fast?: boolean; preset?: Preset; sync?: boolean } = {},
+  }: { fast?: boolean; preset?: Preset } = {},
 ) => {
   const preset = fast ? ArticlePresetFast : presetParam;
   const processor = unified()
     .use(remarkParse)
     .use(preset)
     .use(rehypeHast, { removePosition: true });
-  if (sync) {
-    return processor.processSync(rawContent).result as Root;
-  }
-  return (await processor.process(rawContent)).result as Root;
+  return processor.processSync(rawContent).result as Root;
 };
 
-export const markdownToHtml = async (
+export const markdownToHtml = (
   rawContent: string,
   {
     preset = ArticlePreset,
     stringifyAllowDangerous = true,
-    sync = false,
   }: {
     preset?: Preset;
     stringifyAllowDangerous?: boolean;
-    sync?: boolean;
   } = {},
 ) => {
   const processor = unified()
@@ -45,10 +39,7 @@ export const markdownToHtml = async (
     .use(rehypeStringify, {
       allowDangerousHtml: stringifyAllowDangerous,
     });
-  if (sync) {
-    return String(processor.processSync(rawContent));
-  }
-  return String(await processor.process(structuredClone(rawContent)));
+  return String(processor.processSync(rawContent));
 };
 
 export const markdownToHeadings = (rawContent: string): MarkdownHeading[] => {
