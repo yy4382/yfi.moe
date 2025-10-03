@@ -1,8 +1,9 @@
-import type { Loader, LoaderContext } from "astro/loaders";
+import type { Loader, LoaderContext, DataStore } from "astro/loaders";
 import { z } from "astro:content";
 import yaml from "js-yaml";
 import type { ContentTimeData } from "@/content.config";
 
+type DataEntry = Parameters<DataStore["set"]>[0];
 export interface ContentFetcher {
   name: string;
   checkHasChanged?: (
@@ -73,11 +74,25 @@ export function yfiLoader<Options>(
   return loader;
 }
 
+type FrontmatterTransformer = (
+  data: Record<string, unknown>,
+) => Record<string, unknown>;
+
+/**
+ * Process a file and return the processed file.
+ *
+ * @param rawContent The raw content of the file.
+ * @param file An Identifier for the file, typically the file path or name (user-readable, for error messages)
+ * @param ctx The astro loader context.
+ * @param frontmatterTransformer Transform the frontmatter data before adding to the data store.
+ * @returns The processed file.
+ */
 async function processFile(
   rawContent: string,
   file: string,
   ctx: LoaderContext,
-) {
+  frontmatterTransformer: FrontmatterTransformer = dateTransformer,
+): Promise<DataEntry> {
   const { data, content } = parseMarkdownFrontmatter(rawContent);
 
   if (!data.slug || typeof data.slug !== "string") {
@@ -86,7 +101,7 @@ async function processFile(
 
   const parsedFm = await ctx.parseData({
     id: data.slug,
-    data: dateTransformer(data),
+    data: frontmatterTransformer(data),
   });
 
   return {
@@ -102,6 +117,20 @@ const postDateSchema = z.object({
   publishedDate: z.coerce.date().optional(),
   updated: z.coerce.date().optional(),
 });
+
+/**
+ * Transform the frontmatter data to the content time data.
+ *
+ * This is only used for the blog post.
+ *
+ * Rules:
+ * - If `publishedDate` is provided, use it as the published date, and use the `date` as the writing date.
+ * - If `publishedDate` is not provided, use the `date` as the published date.
+ * - `updated` renames to `updatedDate`.
+ *
+ * @param data The frontmatter data from raw content.
+ * @returns The transformed data (including all fields, not only the transformed fields).
+ */
 function dateTransformer(data: Record<string, unknown>): ContentTimeData {
   const parsed = postDateSchema.parse(data);
   if (parsed.publishedDate) {
