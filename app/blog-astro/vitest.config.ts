@@ -6,4 +6,8 @@ export default getViteConfig(
   defineConfig({
     test: {},
   }) as ViteUserConfig,
+  {
+    // override to empty env, allowing tests to run without env variables
+    env: {},
+  },
 );
