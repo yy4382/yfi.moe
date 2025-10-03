@@ -57,6 +57,8 @@
     "@iconify-json/lucide": "^1.2.62",
     "@iconify-json/mingcute": "^1.2.5",
     "@types/js-yaml": "^4.0.9",
+    "memfs": "^4.48.1",
+    "msw": "^2.11.3",
     "vite-plugin-font": "^5.1.2",
     "vitest": "catalog:"
   }

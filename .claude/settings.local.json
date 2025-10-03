@@ -6,7 +6,11 @@
       "Bash(pnpm vitest run:*)",
       "Bash(pnpm astro check:*)",
       "WebFetch(domain:www.npmjs.com)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:vitest.dev)",
+      "Bash(pnpm exec prettier:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs"
     ],
     "deny": []
   }

@@ -1,5 +1,5 @@
 import type { LoaderContext } from "astro/loaders";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import { yfiLoader, type ContentFetcher } from "../shared-loader";
 
 type WatchHandler = (changedPath: string) => Promise<void> | void;
@@ -106,6 +106,10 @@ function createTestLoader(
 }
 
 describe("yfiLoader", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   describe("basic content loading", () => {
     it("stores fetched markdown entries and transforms dates with publishedDate", async () => {
       const fetch = vi.fn(async () => [
