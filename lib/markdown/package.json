@@ -2,7 +2,7 @@
   "name": "@repo/markdown",
   "type": "module",
   "scripts": {
-    "test": "vitest --run",
+    "test": "vitest run",
     "check-types": "tsc --noEmit",
     "build": "tsc",
     "dev": "tsc --watch"
