@@ -41,7 +41,7 @@ const { seoConfig, stopTrack } = Astro.props;
     <ClientRouter fallback="swap" />
     <LoadingIndicator color="hsl(236, 100%, 81%)" />
   </head>
-  <body class="bg-bg text-content m-0 overflow-x-hidden bg-fixed p-0">
+  <body class="bg-background text-content m-0 overflow-x-hidden bg-fixed p-0">
     <slot />
     <Toaster theme="system" client:load />
   </body>

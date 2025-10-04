@@ -272,7 +272,7 @@ function VisitorBox({ children }: PropsWithChildren) {
         />
         <button
           onClick={() => setAsVisitor(false)}
-          className="border-container bg-bg rounded-md border px-2 py-1 text-sm shadow"
+          className="border-container bg-background rounded-md border px-2 py-1 text-sm shadow"
         >
           登录/注册
         </button>
@@ -316,13 +316,13 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
               };
               void fn();
             }}
-            className="border-container bg-bg flex items-center gap-1 rounded-full border p-2 shadow hover:scale-105 active:scale-95"
+            className="border-container bg-background flex items-center gap-1 rounded-full border p-2 shadow hover:scale-105 active:scale-95"
           >
             <GitHubIcon className="size-4" />
           </button>
 
           <MagicLinkDialog>
-            <button className="border-container bg-bg flex items-center gap-1 rounded-full border p-2 shadow hover:scale-105 active:scale-95">
+            <button className="border-container bg-background flex items-center gap-1 rounded-full border p-2 shadow hover:scale-105 active:scale-95">
               <MailSendLineIcon className="size-4" />
             </button>
           </MagicLinkDialog>
@@ -330,7 +330,7 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
       </div>
       <button
         onClick={setAsVisitor}
-        className="border-container bg-bg rounded-full border px-2 py-1 text-sm shadow hover:scale-105 active:scale-95"
+        className="border-container bg-background rounded-full border px-2 py-1 text-sm shadow hover:scale-105 active:scale-95"
       >
         以游客身份留言
       </button>

@@ -83,7 +83,7 @@ const Toc: React.FC<{
   return (
     <Popover modal={false}>
       <PopoverTrigger asChild>
-        <button className="center border-container bg-bg flex size-10 border-b border-l">
+        <button className="center border-container bg-background flex size-10 border-b border-l">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <ListIcon className="text-heading size-6" />
           </motion.span>
@@ -102,7 +102,7 @@ const Toc: React.FC<{
             bounce: 0.2,
           }}
         >
-          <div className="toc-card border-container bg-bg w-76 border px-6 py-8">
+          <div className="toc-card border-container bg-background w-76 border px-6 py-8">
             <TocEntry headings={headings} activeIndex={activeIndex} />
           </div>
         </PopoverContent>
