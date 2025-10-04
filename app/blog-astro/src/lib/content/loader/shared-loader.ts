@@ -15,6 +15,7 @@ export interface ContentFetcher {
   ) => Promise<{ file: string; rawContent: string }[]>;
 
   shouldRefetchOnWatchChange?: (changedPath: string) => Promise<boolean>;
+  setupFileWatch?: (ctx: LoaderContext) => Promise<void>;
 }
 
 export function yfiLoader<Options>(
@@ -29,6 +30,8 @@ export function yfiLoader<Options>(
         if (hasChanged?.fresh) {
           return;
         }
+
+        await fetcher.setupFileWatch?.(ctx);
 
         async function onChange(changedPath: string) {
           const shouldRefetch =

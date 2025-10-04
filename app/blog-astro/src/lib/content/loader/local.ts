@@ -27,6 +27,12 @@ export class LocalFetcher implements ContentFetcher {
   async shouldRefetchOnWatchChange(changedPath: string) {
     return isAncestor(this.dirname, changedPath);
   }
+  async setupFileWatch(ctx: LoaderContext) {
+    if (ctx.watcher) {
+      ctx.watcher.add(this.dirname);
+      ctx.logger.info(`Added watcher for ${this.dirname}`);
+    }
+  }
 }
 
 /**

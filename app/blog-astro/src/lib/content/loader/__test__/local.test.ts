@@ -210,6 +210,33 @@ describe("LocalFetcher", () => {
       expect(fetcher.name).toBe("local-loader");
     });
   });
+
+  describe("setupFileWatch", () => {
+    it("adds directory to watcher and logs info", async () => {
+      const fetcher = new LocalFetcher(TEST_PATHS.contentDir);
+      const { ctx } = createMockContext();
+
+      const mockAdd = vi.fn();
+      (ctx as any).watcher = { add: mockAdd };
+
+      await fetcher.setupFileWatch(ctx);
+
+      expect(mockAdd).toHaveBeenCalledWith(TEST_PATHS.contentDir);
+      expect(ctx.logger.info).toHaveBeenCalledWith(
+        `Added watcher for ${TEST_PATHS.contentDir}`,
+      );
+    });
+
+    it("handles missing watcher gracefully without logging", async () => {
+      const fetcher = new LocalFetcher(TEST_PATHS.contentDir);
+      const { ctx } = createMockContext();
+
+      (ctx as any).watcher = undefined;
+
+      await expect(fetcher.setupFileWatch(ctx)).resolves.not.toThrow();
+      expect(ctx.logger.info).not.toHaveBeenCalled();
+    });
+  });
 });
 
 describe("parseLocalUrl", () => {

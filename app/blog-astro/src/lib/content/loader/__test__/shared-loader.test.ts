@@ -95,6 +95,7 @@ function createTestLoader(
   options: {
     checkHasChanged?: ContentFetcher["checkHasChanged"];
     shouldRefetchOnWatchChange?: ContentFetcher["shouldRefetchOnWatchChange"];
+    setupFileWatch?: ContentFetcher["setupFileWatch"];
   } = {},
 ) {
   const fetcher: ContentFetcher = {
@@ -544,6 +545,69 @@ describe("yfiLoader", () => {
 
       // Remove watcher to simulate undefined
       (ctx as { watcher?: unknown }).watcher = undefined;
+
+      await loader.load(ctx);
+
+      expect(fetch).toHaveBeenCalledOnce();
+      expect(storeMap.has("test-post")).toBe(true);
+    });
+  });
+
+  describe("setupFileWatch integration", () => {
+    it("calls setupFileWatch if provided by fetcher", async () => {
+      const fetch = vi.fn(async () => [
+        {
+          file: "posts/test.md",
+          rawContent: createMarkdownContent("test-post", "Test", "Content", {
+            date: TEST_DATES.writing,
+          }),
+        },
+      ]);
+
+      const setupFileWatch = vi.fn(async () => {});
+
+      const loader = createTestLoader(fetch, { setupFileWatch });
+      const { ctx } = createMockContext();
+
+      await loader.load(ctx);
+
+      expect(setupFileWatch).toHaveBeenCalledOnce();
+      expect(setupFileWatch).toHaveBeenCalledWith(ctx);
+    });
+
+    it("does not call setupFileWatch when checkHasChanged returns fresh", async () => {
+      const fetch = vi.fn(async () => []);
+      const setupFileWatch = vi.fn(async () => {});
+      const checkHasChanged = vi.fn(async () => ({
+        fresh: true,
+        updateFailCb: vi.fn(),
+      }));
+
+      const loader = createTestLoader(fetch, {
+        setupFileWatch,
+        checkHasChanged,
+      });
+      const { ctx } = createMockContext();
+
+      await loader.load(ctx);
+
+      expect(checkHasChanged).toHaveBeenCalledOnce();
+      expect(setupFileWatch).not.toHaveBeenCalled();
+      expect(fetch).not.toHaveBeenCalled();
+    });
+
+    it("works when setupFileWatch is not provided", async () => {
+      const fetch = vi.fn(async () => [
+        {
+          file: "posts/test.md",
+          rawContent: createMarkdownContent("test-post", "Test", "Content", {
+            date: TEST_DATES.writing,
+          }),
+        },
+      ]);
+
+      const loader = createTestLoader(fetch);
+      const { ctx, storeMap } = createMockContext();
 
       await loader.load(ctx);
 
