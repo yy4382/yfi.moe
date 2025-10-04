@@ -3,14 +3,13 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import icon from "astro-icon";
 import { defineConfig, envField } from "astro/config";
 import font from "vite-plugin-font";
 import { siteDomain } from "./src/config/site";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), icon(), sitemap(), mdx()],
+  integrations: [react(), sitemap(), mdx()],
   output: "static",
 
   site: siteDomain,

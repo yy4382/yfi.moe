@@ -1,7 +1,6 @@
 ---
 import { getAdjacentPosts } from "@/lib/utils/content";
 import { cn } from "@/lib/utils/cn";
-import { Icon } from "astro-icon/components";
 
 interface Props {
   currentSlug: string;
@@ -35,11 +34,7 @@ const { prev, next } = await getAdjacentPosts(currentSlug);
               href={`/post/${prev.id}`}
             >
               <div class="bg-accent/10 border-accent/20 group-hover:bg-accent/20 group-hover:border-accent/30 flex size-12 items-center justify-center rounded-full border transition-all duration-200">
-                <Icon
-                  name="lucide:chevron-left"
-                  size={36}
-                  class="group-hover:scale-120 shrink-0 transition-transform group-active:scale-95"
-                />
+                <span class="i-lucide-chevron-left group-hover:scale-120 size-9 shrink-0 transition-transform group-active:scale-95" />
               </div>
               <div>
                 <p class="text-comment text-sm">上一篇</p>
@@ -60,11 +55,7 @@ const { prev, next } = await getAdjacentPosts(currentSlug);
               href={`/post/${next.id}`}
             >
               <div class="bg-accent/10 border-accent/20 group-hover:bg-accent/20 group-hover:border-accent/30 flex size-12 items-center justify-center rounded-full border transition-all duration-200">
-                <Icon
-                  name="lucide:chevron-right"
-                  size={36}
-                  class="group-hover:scale-120 shrink-0 transition-transform group-active:scale-95"
-                />
+                <span class="i-lucide-chevron-right group-hover:scale-120 size-9 shrink-0 transition-transform group-active:scale-95" />
               </div>
               <div class="flex flex-col items-end">
                 <p class="text-comment text-sm">下一篇</p>

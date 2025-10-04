@@ -1,6 +1,5 @@
 ---
 import Section from "@/components/ui/section.astro";
-import { Icon } from "astro-icon/components";
 
 interface Props {
   currentPage: number;
@@ -72,9 +71,9 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
     >
       {
         prevPage ? (
-          <Icon name="lucide:chevron-left" size={24} />
+          <span class="i-lucide-chevron-left size-6" />
         ) : (
-          <Icon name="lucide:chevron-left" size={24} class="opacity-50" />
+          <span class="i-lucide-chevron-left size-6 opacity-50" />
         )
       }
     </a>
@@ -85,9 +84,7 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
       {
         pages.map((p, _index) => {
           if (p === HIDDEN) {
-            return (
-              <Icon name="lucide:more-horizontal" size={20} class="mx-1" />
-            );
+            return <span class="i-lucide-more-horizontal mx-1 size-5" />;
           }
 
           if (p === currentPage) {
@@ -122,9 +119,9 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
     >
       {
         nextPage ? (
-          <Icon name="lucide:chevron-right" size={24} />
+          <span class="i-lucide-chevron-right size-6" />
         ) : (
-          <Icon name="lucide:chevron-right" size={24} class="opacity-50" />
+          <span class="i-lucide-chevron-right size-6 opacity-50" />
         )
       }
     </a>

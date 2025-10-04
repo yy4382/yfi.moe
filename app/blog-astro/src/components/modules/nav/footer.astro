@@ -2,7 +2,6 @@
 import { siteConfig, siteDomain } from "@/config/site";
 import { Image } from "astro:assets";
 import logo from "@/assets/logo.png";
-import { Icon } from "astro-icon/components";
 ---
 
 <div
@@ -27,7 +26,7 @@ import { Icon } from "astro-icon/components";
       <li>
         <span class="text-content inline-flex items-center font-medium">
           关于
-          <Icon name="lucide:chevron-right" size={16} />
+          <span class="i-lucide-chevron-right size-4"></span>
         </span>
         <span class="inline-flex gap-2">
           <a href="/about">关于我</a>
@@ -38,7 +37,7 @@ import { Icon } from "astro-icon/components";
       <li>
         <span class="text-content inline-flex items-center font-medium">
           联系
-          <Icon name="lucide:chevron-right" size={16} />
+          <span class="i-lucide-chevron-right size-4"></span>
         </span>
         <span class="inline-flex gap-2">
           <button class="copy-email" data-email="yy4382@gmail.com"
@@ -54,7 +53,7 @@ import { Icon } from "astro-icon/components";
     >
       <span class="text-comment inline-flex items-center gap-x-1">
         <span class="inline-flex items-center gap-0.5">
-          <Icon name="lucide:copyright" size={16} />
+          <span class="i-lucide-copyright size-4"></span>
           2023-2024
           <span>
             <a href={siteDomain} class="underline"> {siteConfig.title}</a>.
@@ -62,12 +61,12 @@ import { Icon } from "astro-icon/components";
         </span>
         <span class="opacity-70">|</span>
         <a href="/feed.xml" class="inline-flex items-center gap-0.5">
-          <Icon name="lucide:rss" size={16} />
+          <span class="i-lucide-rss size-4"></span>
           RSS
         </a>
         <span class="opacity-70">|</span>
         <a href="/sitemap-index.xml" class="inline-flex items-center gap-0.5">
-          <Icon name="lucide:map" size={16} />
+          <span class="i-lucide-map size-4"></span>
           Site Map
         </a>
       </span>

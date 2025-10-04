@@ -1,6 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
-
 interface Props {
   tags: string[];
 }
@@ -9,7 +7,7 @@ const { tags } = Astro.props;
 ---
 
 <div class="flex select-none items-center">
-  <Icon name="lucide:hash" size={16} class="mr-1" />
+  <span class="i-lucide-hash mr-1 size-4"></span>
   <span class="space-x-0.5">
     {
       tags.map((tag, index) => (

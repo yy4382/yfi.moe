@@ -1,7 +1,6 @@
 ---
 import { getSimilarPosts } from "@/lib/utils/content";
 import { cn } from "@/lib/utils/cn";
-import { Icon } from "astro-icon/components";
 
 interface Props {
   currentSlug: string;
@@ -36,7 +35,7 @@ const similarPosts = await getSimilarPosts(currentSlug, limit);
               </h3>
               {post.data.tags.length > 0 && (
                 <div class="text-comment mt-auto flex select-none items-center pt-2 text-sm">
-                  <Icon name="lucide:hash" size={16} class="mr-1" />
+                  <span class="i-lucide-hash mr-1 size-4" />
                   <span class="space-x-0.5">
                     {post.data.tags.slice(0, 3).map((tag, tagIndex) => (
                       <>

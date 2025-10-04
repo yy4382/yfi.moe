@@ -2,13 +2,17 @@
 @plugin "tailwindcss-animated";
 @plugin "@tailwindcss/typography";
 @import "tw-animate-css";
+@plugin '@egoist/tailwindcss-icons';
 
-@import "./icons.css";
-
-/* @source "../../../../lib/comment-waline/src"; */
 @source "../../../../lib/comment/src";
 
-/* @custom-variant dark (&:is(.dark *)); */
+/* #region icons in markdown prose (added by the @repo/markdown package, need to be in safe-list) */
+@source inline("i-mingcute-{github-line,external-link-line,twitter-line,sword-line}");
+@source inline("prose-link-icon");
+@utility prose-link-icon {
+  @apply size-[0.75lh] align-text-bottom;
+}
+/* #endregion */
 
 @theme {
   --color-content: var(--color-foreground);

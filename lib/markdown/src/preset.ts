@@ -76,7 +76,7 @@ export const ArticlePreset: Preset = {
             .map(([icon, regex]) => {
               if (regex.test(url))
                 return h("span", {
-                  className: [icon],
+                  className: [icon, "prose-link-icon"],
                 });
             })
             .find((i) => i !== undefined);
@@ -84,7 +84,7 @@ export const ArticlePreset: Preset = {
         content(node: Element): Element | undefined {
           if (nodeHas(node, "img")) return undefined;
           return h("span", {
-            className: ["i-mingcute-external-link-line"],
+            className: ["i-mingcute-external-link-line", "prose-link-icon"],
           });
         },
         rel: ["noopener"],

@@ -6,7 +6,6 @@ import logo from "@/assets/logo.png";
 import { authorName, contactInfo, projects } from "@/config/author";
 import { getSortedPosts } from "@/lib/utils/content";
 import { format } from "date-fns";
-import { Icon } from "astro-icon/components";
 import { cn } from "@/lib/utils/cn";
 import readingTime from "reading-time";
 import { getSeo } from "@/lib/utils/SEO";
@@ -75,7 +74,7 @@ const seoConfig = getSeo({
         </div>
       </div>
       <a class="center card-btn flex gap-1 py-6 font-semibold" href="/post">
-        文章列表 <Icon name="mingcute:external-link-line" size={20} />
+        文章列表 <span class="i-mingcute-external-link-line size-5"></span>
       </a>
     </div>
   </Section>
@@ -98,11 +97,13 @@ const seoConfig = getSeo({
             )}
           >
             <div class="center border-container-light hidden border-r lg:flex">
-              <Icon name={p.icon} size={100} />
+              {/* <Icon name={p.icon} size={100} /> */}
+              <p.icon width={100} height={100} />
             </div>
             <div class="border-container-light flex flex-col justify-center gap-2 border-r px-8 sm:px-12">
               <div class="mb-4 flex items-center justify-start lg:hidden">
-                <Icon name={p.icon} size={64} />
+                {/* <Icon name={p.icon} size={64} /> */}
+                <p.icon width={64} height={64} />
               </div>
               <p class="text-comment">{p.desc}</p>
               <h3 class="text-xl font-bold">{p.title}</h3>
@@ -119,7 +120,7 @@ const seoConfig = getSeo({
                   )}
                 >
                   <div class="inline-flex gap-2">
-                    <Icon name={l.icon} size={24} />{" "}
+                    <span class:list={[l.icon, "size-6!"]} />{" "}
                     <span class="hidden sm:inline">{l.text}</span>
                   </div>
                 </a>
@@ -132,7 +133,7 @@ const seoConfig = getSeo({
         class="center card-btn flex gap-1 py-6 font-semibold"
         href="https://github.com/yy4382"
       >
-        更多 <Icon name="mingcute:external-link-line" size={20} />
+        更多 <span class="i-mingcute-external-link-line size-5"></span>
       </a>
     </div>
   </Section>
@@ -153,9 +154,10 @@ const seoConfig = getSeo({
                 target="_blank"
                 aria-label={c.name}
                 style={`background-color: ${c.color}`}
-                class="rounded-full p-2"
+                class="size-10 rounded-full p-2"
               >
-                <Icon name={c.icon} size={24} class="text-white" />
+                {/* <Icon name={c.icon} size={24} class="text-white" /> */}
+                <span class:list={[c.icon, "size-6! text-white!"]} />
               </a>
             );
           })

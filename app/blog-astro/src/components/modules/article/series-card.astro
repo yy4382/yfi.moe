@@ -1,7 +1,6 @@
 ---
 import { getSeriesPosts } from "@/lib/utils/content";
 import Section from "@/components/ui/section.astro";
-import { Icon } from "astro-icon/components";
 
 interface Props {
   seriesId: string;
@@ -20,7 +19,7 @@ if (seriesPosts.length <= 1) {
 <Section class="py-10" padding="article">
   <div class="mx-auto max-w-prose">
     <div class="mb-4 flex items-center gap-2">
-      <Icon name="lucide:list" size={20} class="shrink-0" />
+      <span class="i-lucide-list size-4 shrink-0"></span>
       <h3 class="text-base font-semibold">
         {"系列文章"}
       </h3>
