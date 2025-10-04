@@ -1,0 +1,71 @@
+---
+layout: ../components/layouts/page-layout.astro
+title: 关于
+useComment: true
+---
+
+import { contactInfo } from "@/config/author";
+
+## 关于我
+
+目前是本科学生（很快就不是了），专业计科，平时常折腾一些个人前端项目。
+
+#### 网名由来
+
+最初追溯到小学的时候脸滚键盘打出的用户名 `yunfinibol`；后来逐步简化，常用的就是 `Yunfi` 了。
+
+> 可以从一些别的地方看到简称演化的痕迹：比如 Docker Hub 上的用户名还是完整的 `yunfinibol`；Twitter 的 handle 则是 `yunfini`。
+
+### 链接 🔗
+
+<div class="not-prose my-4 flex gap-4">
+  {contactInfo.map((c) => {
+    return (
+      <a
+        href={c.link}
+        target="_blank"
+        class="group inline-flex items-center gap-2"
+      >
+        <div
+          aria-label={c.name}
+          style={`background-color: ${c.color}`}
+          class="size-8.5 rounded-full p-1.5 transition-transform group-hover:scale-105 group-active:scale-95"
+        >
+          <span class:list={[c.icon, "size-full! text-white!"]} />
+        </div>
+        <span class="group-hover:text-primary-foreground]">{c.name}</span>
+      </a>
+    );
+  })}
+</div>
+
+## 关于本站
+
+不定期分享经验、经历。
+
+从 [Achieve](/achieve) 页面可以看到，2025 年来更新频率越来越低了，之后会考虑提高更新频率。
+
+还维护着一个 [站志：本站历史小记](/site-history) 页面，记录本站的一些历史。
+
+#### 站点相关 Q & A 💬
+
+1. **Q**: 有 RSS 吗？  
+   **A**: 有。[RSS](/feed.xml) 链接。
+
+1. **Q**: 没有站内搜索？  
+   **A**: 确实没有。之前使用过 pagefind，但是效果一般，就去掉了。作为 workaround，可以在 Google 搜索中添加 `site:yfi.moe` 后缀来搜索本站内容。
+
+1. **Q**: 为什么选择了 `yfi.moe` 作为域名？  
+   **A**：yfi 是网名 Yunfi 的缩写，顶级域名 `moe` 则是因为喜欢。
+
+1. **Q**：使用的是什么主题？  
+   **A**：自己写的 Astro 站点，很难说有一个“主题”概念。网站本身在 [yy4382/yfi.moe - GitHub](https://github.com/yy4382/yfi.moe) 开放源代码访问。
+
+1. **Q**：采用的技术栈，以及页面设计来源？  
+   **A**：请看 [Credits](/credits) 页面。
+
+1. **Q**：文章版权？  
+   **A**：大部分文章使用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en) 许可证；具体可以在每篇文章末尾的版权卡片上看到。
+
+1. **Q**：隐私收集？  
+   **A**：会收集一些基本信息，如浏览时间、IP 地址等，主要用于统计访问量。

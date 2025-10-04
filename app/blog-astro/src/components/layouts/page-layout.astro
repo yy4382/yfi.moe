@@ -2,6 +2,7 @@
 import { getSeo } from "@/lib/utils/SEO";
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import ArticleHero from "@/components/modules/article/article-hero.astro";
+import Comment from "@/components/modules/comments/comment.astro";
 
 import type { MarkdownLayoutProps } from "astro";
 
@@ -9,6 +10,7 @@ type Props = MarkdownLayoutProps<{
   // 在这里定义 frontmatter 属性
   title: string;
   description?: string;
+  useComment?: boolean;
 }>;
 
 const { frontmatter: page } = Astro.props;
@@ -33,4 +35,5 @@ const seoConfig = getSeo({
       </div>
     </div>
   </div>
+  {page.useComment && <Comment />}
 </NavLayout>
