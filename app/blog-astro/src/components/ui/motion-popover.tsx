@@ -7,70 +7,8 @@
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import { Popover as PopoverPrimitive } from "radix-ui";
 import * as React from "react";
-
-function getStrictContext<T>(
-  name?: string,
-): readonly [
-  ({
-    value,
-    children,
-  }: {
-    value: T;
-    children?: React.ReactNode;
-  }) => React.JSX.Element,
-  () => T,
-] {
-  const Context = React.createContext<T | undefined>(undefined);
-
-  const Provider = ({
-    value,
-    children,
-  }: {
-    value: T;
-    children?: React.ReactNode;
-  }) => <Context.Provider value={value}>{children}</Context.Provider>;
-
-  const useSafeContext = () => {
-    const ctx = React.useContext(Context);
-    if (ctx === undefined) {
-      throw new Error(`useContext must be used within ${name ?? "a Provider"}`);
-    }
-    return ctx;
-  };
-
-  return [Provider, useSafeContext] as const;
-}
-interface CommonControlledStateProps<T> {
-  value?: T;
-  defaultValue?: T;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function useControlledState<T, Rest extends any[] = []>(
-  props: CommonControlledStateProps<T> & {
-    onChange?: (value: T, ...args: Rest) => void;
-  },
-): readonly [T, (next: T, ...args: Rest) => void] {
-  const { value, defaultValue, onChange } = props;
-
-  const [state, setInternalState] = React.useState<T>(
-    value !== undefined ? value : (defaultValue as T),
-  );
-
-  React.useEffect(() => {
-    if (value !== undefined) setInternalState(value);
-  }, [value]);
-
-  const setState = React.useCallback(
-    (next: T, ...args: Rest) => {
-      setInternalState(next);
-      onChange?.(next, ...args);
-    },
-    [onChange],
-  );
-
-  return [state, setState] as const;
-}
+import { getStrictContext } from "@/lib/hooks/get-strict-context";
+import { useControlledState } from "@/lib/hooks/use-controlled-state";
 
 type PopoverContextType = {
   isOpen: boolean;

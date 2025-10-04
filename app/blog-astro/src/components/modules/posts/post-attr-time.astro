@@ -1,23 +1,17 @@
 ---
-import { format, isSameDay } from "date-fns";
 import type { ContentTimeData } from "@/content.config";
+import { PostAttrTimeTooltip as PostAttrTimeReact } from "./post-attr-time-tooltip";
 
 type Props = ContentTimeData;
 
-const { writingDate, updatedDate, publishedDate } = Astro.props;
+// rebinding because the passed-in props may have other properties
+// since the props will be embedded into the html (because of passing them to react component),
+// we need to rebinding the props to the content time data
+const time: ContentTimeData = {
+  writingDate: Astro.props.writingDate,
+  publishedDate: Astro.props.publishedDate,
+  updatedDate: Astro.props.updatedDate,
+};
 ---
 
-<div class="flex select-none items-center gap-2 lg:gap-3">
-  <div class="flex select-none items-center">
-    <span class="i-lucide-calendar mr-1 size-4"></span>
-    {format(publishedDate, "yyyy-MM-dd")}
-  </div>
-  {
-    updatedDate && !isSameDay(publishedDate, updatedDate) && (
-      <div class="flex select-none items-center">
-        <span class="i-lucide-square-pen mr-1 size-4" />
-        {format(updatedDate, "yyyy-MM-dd")}
-      </div>
-    )
-  }
-</div>
+<PostAttrTimeReact time={time} client:idle />
