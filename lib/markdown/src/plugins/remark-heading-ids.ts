@@ -15,7 +15,12 @@ declare module "vfile" {
   }
 }
 
-export function remarkHeadingIds(): ReturnType<Plugin<[], Root, Root>> {
+/**
+ * A plugin that attach heading {@link MarkdownHeading} to `vfile.data.headings`.
+ *
+ * @returns A plugin that adds ids to headings.
+ */
+export function remarkHeadingIds(): ReturnType<Plugin<[], Root>> {
   return (tree, file) => {
     const slugger = new Slugger();
     const headings: MarkdownHeading[] = [];

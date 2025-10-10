@@ -5,6 +5,7 @@ import type { Test } from "hast-util-is-element";
 import { convertElement } from "hast-util-is-element";
 import isAbsoluteUrl from "is-absolute-url";
 import { parse } from "space-separated-tokens";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
 
 type Content =
@@ -42,83 +43,84 @@ const defaultRel = ["nofollow"];
 
 const emptyOptions: Options = {};
 
-export default function rehypeExtendedLinks(
-  options: Options | null | undefined,
-) {
-  const settings = options || emptyOptions;
-  const protocols = settings.protocols || defaultProtocols;
-  const is = convertElement(settings.test);
+const rehypeExtendedLinks: Plugin<[Options | null | undefined], Root> =
+  function (options: Options | null | undefined) {
+    const settings = options || emptyOptions;
+    const protocols = settings.protocols || defaultProtocols;
+    const is = convertElement(settings.test);
 
-  return function (tree: Root): undefined {
-    visit(tree, "element", function (node, index, parent) {
-      if (
-        node.tagName === "a" &&
-        typeof node.properties.href === "string" &&
-        is(node, index, parent)
-      ) {
-        const url = node.properties.href;
-
+    return function (tree) {
+      visit(tree, "element", function (node, index, parent) {
         if (
-          isAbsoluteUrl(url)
-            ? protocols.includes(url.slice(0, url.indexOf(":")))
-            : url.startsWith("//")
+          node.tagName === "a" &&
+          typeof node.properties.href === "string" &&
+          is(node, index, parent)
         ) {
-          const contentRaw = createIfNeeded(settings.content, node);
-          const content =
-            contentRaw && !Array.isArray(contentRaw)
-              ? [contentRaw]
-              : contentRaw;
-          const preContentRaw = createIfNeeded(settings.preContent, node);
-          const preContent =
-            preContentRaw && !Array.isArray(preContentRaw)
-              ? [preContentRaw]
-              : preContentRaw;
+          const url = node.properties.href;
 
-          const relRaw = createIfNeeded(settings.rel, node) || defaultRel;
-          const rel = typeof relRaw === "string" ? parse(relRaw) : relRaw;
-          const target = createIfNeeded(settings.target, node);
+          if (
+            isAbsoluteUrl(url)
+              ? protocols.includes(url.slice(0, url.indexOf(":")))
+              : url.startsWith("//")
+          ) {
+            const contentRaw = createIfNeeded(settings.content, node);
+            const content =
+              contentRaw && !Array.isArray(contentRaw)
+                ? [contentRaw]
+                : contentRaw;
+            const preContentRaw = createIfNeeded(settings.preContent, node);
+            const preContent =
+              preContentRaw && !Array.isArray(preContentRaw)
+                ? [preContentRaw]
+                : preContentRaw;
 
-          const properties = createIfNeeded(settings.properties, node);
+            const relRaw = createIfNeeded(settings.rel, node) || defaultRel;
+            const rel = typeof relRaw === "string" ? parse(relRaw) : relRaw;
+            const target = createIfNeeded(settings.target, node);
 
-          const wrapped = content || preContent;
+            const properties = createIfNeeded(settings.properties, node);
 
-          if (properties) {
-            Object.assign(node.properties, structuredClone(properties));
-          }
+            const wrapped = content || preContent;
 
-          if (rel.length > 0) {
-            node.properties.rel = [...rel];
-          }
+            if (properties) {
+              Object.assign(node.properties, structuredClone(properties));
+            }
 
-          if (target) {
-            node.properties.target = target;
-          }
+            if (rel.length > 0) {
+              node.properties.rel = [...rel];
+            }
 
-          if (!wrapped) return;
+            if (target) {
+              node.properties.target = target;
+            }
 
-          if (settings.wrappedProperties) {
-            const rawContent = structuredClone(node.children);
-            const children: Element = {
-              type: "element",
-              tagName: "span",
-              children: rawContent,
-              properties: settings.wrappedProperties,
-            };
-            node.children = [children];
-          }
+            if (!wrapped) return;
 
-          if (content) {
-            node.children.push(...content);
-          }
+            if (settings.wrappedProperties) {
+              const rawContent = structuredClone(node.children);
+              const children: Element = {
+                type: "element",
+                tagName: "span",
+                children: rawContent,
+                properties: settings.wrappedProperties,
+              };
+              node.children = [children];
+            }
 
-          if (preContent) {
-            node.children.unshift(...preContent);
+            if (content) {
+              node.children.push(...content);
+            }
+
+            if (preContent) {
+              node.children.unshift(...preContent);
+            }
           }
         }
-      }
-    });
+      });
+    };
   };
-}
+
+export default rehypeExtendedLinks;
 
 function createIfNeeded<T>(
   value: T,

@@ -1,9 +1,10 @@
 import type { Root } from "hast";
 import { h } from "hastscript";
-import { visit } from "unist-util-visit";
+import type { Plugin } from "unified";
+import { SKIP, visit } from "unist-util-visit";
 
-export function rehypeCodeblockCopy() {
-  return (tree: Root) => {
+export const rehypeCodeblockCopy: Plugin<[], Root> = function () {
+  return (tree) => {
     visit(tree, "element", (node, __, parent) => {
       if (node.tagName !== "code") return;
       if (!parent || parent.type !== "element" || parent.tagName !== "pre")
@@ -21,6 +22,7 @@ export function rehypeCodeblockCopy() {
       }
       const copyButton = h("copy-button");
       parent.children.push(copyButton);
+      return SKIP;
     });
   };
-}
+};
