@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { markdownToHeadings, markdownToHtml } from "../parse.js";
-import { CommentPreset } from "../preset.js";
+import {
+  markdownToHeadings,
+  markdownToHtml,
+  markdownToHtmlAsync,
+} from "../parse.js";
+import { ArticlePreset, CommentPreset } from "../preset.js";
 
 describe("to headings", () => {
   it("should return headings", async () => {
@@ -122,7 +126,7 @@ describe("code highlight", () => {
 console.log("Hello, world!");
 \`\`\`
     `;
-    const html = await markdownToHtml(comment);
+    const html = await markdownToHtmlAsync(comment, { preset: ArticlePreset });
     expect(html).toMatchInlineSnapshot(
       `"<pre class="shiki catppuccin-macchiato copy-code-pre" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code><span class="line"><span style="color:#CAD3F5">console</span><span style="color:#8BD5CA">.</span><span style="color:#8AADF4;font-style:italic">log</span><span style="color:#CAD3F5">(</span><span style="color:#A6DA95">"Hello, world!"</span><span style="color:#CAD3F5">)</span><span style="color:#939AB7">;</span></span></code><copy-button></copy-button></pre>"`,
     );

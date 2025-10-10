@@ -1,37 +1,20 @@
-import type { Root } from "hast";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import { unified, type Preset } from "unified";
 import { VFile } from "vfile";
-import { rehypeHast } from "./plugins/rehype-hast.js";
 import type { MarkdownHeading } from "./plugins/remark-heading-ids.js";
 import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
-import { ArticlePreset, ArticlePresetFast } from "./preset.js";
-
-export const markdownToHast = async (
-  rawContent: string,
-  {
-    fast = false,
-    preset: presetParam = ArticlePreset,
-  }: { fast?: boolean; preset?: Preset } = {},
-) => {
-  const preset = fast ? ArticlePresetFast : presetParam;
-  const processor = unified()
-    .use(remarkParse)
-    .use(preset)
-    .use(rehypeHast, { removePosition: true });
-  return processor.processSync(rawContent).result as Root;
-};
+import type { SyncPreset } from "./preset.js";
 
 export const markdownToHtml = (
   rawContent: string,
   {
-    preset = ArticlePreset,
+    preset,
     stringifyAllowDangerous = true,
   }: {
-    preset?: Preset;
+    preset: SyncPreset;
     stringifyAllowDangerous?: boolean;
-  } = {},
+  },
 ) => {
   const processor = unified()
     .use(remarkParse)
@@ -40,6 +23,26 @@ export const markdownToHtml = (
       allowDangerousHtml: stringifyAllowDangerous,
     });
   return String(processor.processSync(rawContent));
+};
+
+export const markdownToHtmlAsync = async (
+  rawContent: string,
+  {
+    preset,
+    stringifyAllowDangerous = true,
+  }: {
+    preset: Preset;
+    stringifyAllowDangerous?: boolean;
+  },
+) => {
+  const processor = unified()
+    .use(remarkParse)
+    .use(preset)
+    .use(rehypeStringify, {
+      allowDangerousHtml: stringifyAllowDangerous,
+    });
+  const vfile = await processor.process(rawContent);
+  return String(vfile);
 };
 
 export const markdownToHeadings = (rawContent: string): MarkdownHeading[] => {

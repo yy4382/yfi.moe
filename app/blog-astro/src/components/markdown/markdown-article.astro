@@ -1,5 +1,5 @@
 ---
-import { markdownToHtml } from "@repo/markdown/parse";
+import { markdownToHtmlAsync } from "@repo/markdown/parse";
 import { ArticlePreset } from "@repo/markdown/preset";
 import rehypeReplaceCustomElements, {
   type Options,
@@ -47,7 +47,7 @@ preset.plugins.push([
   },
 ]);
 
-const html = markdownToHtml(content, { preset });
+const html = await markdownToHtmlAsync(content, { preset });
 ---
 
 <div

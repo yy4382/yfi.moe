@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`shiki config > should not highlight inline code 1`] = `"<p><code>print("Hello, world!")</code></p>"`;
+
+exports[`shiki config > should work with 1 language 1`] = `"<pre class="shiki catppuccin-macchiato" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code><span class="line"><span style="color:#CAD3F5">console</span><span style="color:#8BD5CA">.</span><span style="color:#8AADF4;font-style:italic">log</span><span style="color:#CAD3F5">(</span><span style="color:#A6DA95">"Hello, world!"</span><span style="color:#CAD3F5">)</span><span style="color:#939AB7">;</span></span></code></pre>"`;
+
+exports[`shiki config > should work with 2 file with different languages 1`] = `"<pre class="shiki catppuccin-macchiato" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code><span class="line"><span style="color:#CAD3F5">console</span><span style="color:#8BD5CA">.</span><span style="color:#8AADF4;font-style:italic">log</span><span style="color:#CAD3F5">(</span><span style="color:#A6DA95">"Hello, world!"</span><span style="color:#CAD3F5">)</span><span style="color:#939AB7">;</span></span></code></pre>"`;
+
+exports[`shiki config > should work with 2 file with different languages 2`] = `"<pre class="shiki catppuccin-macchiato" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code><span class="line"><span style="color:#F5A97F;font-style:italic">print</span><span style="color:#939AB7">(</span><span style="color:#A6DA95">"Hello, world!"</span><span style="color:#939AB7">)</span><span style="color:#CAD3F5">;</span></span></code></pre>"`;
+
+exports[`shiki config > should work with 2 languages 1`] = `
+"<pre class="shiki catppuccin-macchiato" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code><span class="line"><span style="color:#CAD3F5">console</span><span style="color:#8BD5CA">.</span><span style="color:#8AADF4;font-style:italic">log</span><span style="color:#CAD3F5">(</span><span style="color:#A6DA95">"Hello, world!"</span><span style="color:#CAD3F5">)</span><span style="color:#939AB7">;</span></span></code></pre>
+<pre class="shiki catppuccin-macchiato" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code><span class="line"><span style="color:#F5A97F;font-style:italic">print</span><span style="color:#939AB7">(</span><span style="color:#A6DA95">"Hello, world!"</span><span style="color:#939AB7">)</span><span style="color:#CAD3F5">;</span></span></code></pre>"
+`;

@@ -1,5 +1,6 @@
 import type { Element } from "hast";
 import { h } from "hastscript";
+import type { Blockquote, Paragraph, Root, Text } from "mdast";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeImageOptimization, {
   defineOptions as defineOptimizeOptions,
@@ -17,7 +18,7 @@ import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy.js";
 import rehypeExtendedLinks from "./plugins/rehype-extended-links.js";
 import { remarkGithubRepo } from "./plugins/remark-github-repo.js";
 import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
-import { shikiPluggable } from "./plugins/shiki-config.js";
+import { rehypeShikiPreset } from "./plugins/shiki-config.js";
 
 export const linkIcons = (): [string, RegExp][] => [
   ["i-mingcute-github-line", /^(https?:\/\/)?(www\.)?github\.com\/.*/i],
@@ -37,6 +38,8 @@ const nodeHas = (node: Element, tagName: string | string[]): boolean => {
         : tagName.includes(child.tagName)),
   );
 };
+
+export type SyncPreset = Preset & { __brand: "sync" };
 
 export const ArticlePreset: Preset = {
   plugins: [
@@ -90,20 +93,65 @@ export const ArticlePreset: Preset = {
         rel: ["noopener"],
       },
     ],
-    shikiPluggable,
+    rehypeShikiPreset,
     rehypeCodeblockCopy,
   ],
 };
 
-export const ArticlePresetFast: Preset = {
+export const ArticlePresetFast: SyncPreset = {
   plugins: [
     remarkGfm,
     remarkGithubAlerts,
     [remarkRehype, { allowDangerousHtml: true }],
   ],
-};
+} satisfies Preset as SyncPreset;
 
-export const CommentPreset: Preset = {
+export const ArticleRSSPreset: SyncPreset = {
+  plugins: [
+    () => {
+      return function (tree: Root) {
+        tree.children.unshift({
+          type: "blockquote",
+          children: [
+            {
+              type: "paragraph",
+              children: [
+                {
+                  type: "text",
+                  value:
+                    "TIP: 在 RSS 阅读器中，一些组件可能无法正常显示。在浏览器中打开以获得更好的阅读体验。",
+                } as Text,
+              ],
+            } as Paragraph,
+          ],
+        } as Blockquote);
+      };
+    },
+    remarkGfm,
+    [remarkRehype, { allowDangerousHtml: true }],
+    rehypeRaw,
+    rehypeRemoveComments,
+    [
+      rehypeImageOptimization,
+      defineOptimizeOptions({
+        provider: "cloudflare",
+        originValidation: (url: string) => {
+          return new URL(url).hostname === "i.yfi.moe";
+        },
+        optimizeSrcOptions: { options: "f=auto,w=640,fit=scale-down" },
+        srcsetOptionsList: [
+          [{ options: "f=auto,w=320,fit=scale-down" }, "320w"],
+          [{ options: "f=auto,w=640,fit=scale-down" }, "640w"],
+          [{ options: "f=auto,w=1280,fit=scale-down" }, "1280w"],
+        ],
+        sizesOptionsList: ["(max-width: 640px) 320px", "640px"],
+        style: "max-width: 100%; width:100%; height: auto;",
+      }),
+    ],
+  ],
+} satisfies Preset as SyncPreset;
+
+export const CommentPreset = {
   plugins: [
     remarkBreaks,
     remarkGfm,
@@ -117,4 +165,4 @@ export const CommentPreset: Preset = {
       },
     ],
   ],
-};
+} satisfies Preset as SyncPreset;

@@ -1,6 +1,7 @@
 import rss, { type RSSFeedItem } from "@astrojs/rss";
 import type { APIContext } from "astro";
 import { markdownToHtml } from "@repo/markdown/parse";
+import { ArticleRSSPreset } from "@repo/markdown/preset";
 import { siteDomain } from "@/config/site";
 import { getSortedPosts } from "@/lib/utils/content";
 
@@ -14,7 +15,9 @@ export async function GET(context: APIContext) {
       pubDate: entry.data.publishedDate,
       description: entry.data.description,
       link: `/post/${entry.id}`,
-      content: markdownToHtml(entry.body ?? ""),
+      content: markdownToHtml(entry.body ?? "", {
+        preset: ArticleRSSPreset,
+      }),
     }));
 
   return rss({
