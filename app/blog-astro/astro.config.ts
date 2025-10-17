@@ -23,6 +23,10 @@ export default defineConfig({
       ARTICLE_PAT: envField.string({ context: "server", access: "secret" }),
       POST_GH_INFO: envField.string({ context: "server", access: "secret" }),
       PAGE_GH_INFO: envField.string({ context: "server", access: "secret" }),
+      IMAGE_META_SOURCE: envField.string({
+        context: "server",
+        access: "secret",
+      }),
       WALINE_URL: envField.string({ context: "client", access: "public" }),
       POSTHOG_KEY: envField.string({
         context: "client",

@@ -16,6 +16,7 @@ import remarkRehype from "remark-rehype";
 import { type Preset } from "unified";
 import { rehypeCodeblockCopy } from "./plugins/rehype-codeblock-copy.js";
 import rehypeExtendedLinks from "./plugins/rehype-extended-links.js";
+import { rehypeImageMetadata } from "./plugins/rehype-image-metadata.js";
 import { remarkGithubRepo } from "./plugins/remark-github-repo.js";
 import { remarkHeadingIds } from "./plugins/remark-heading-ids.js";
 import { rehypeShikiPreset } from "./plugins/shiki-config.js";
@@ -51,6 +52,7 @@ export const ArticlePreset: Preset = {
     [remarkRehype, { allowDangerousHtml: true }],
     rehypeRaw,
     rehypeRemoveComments,
+    rehypeImageMetadata,
     [
       rehypeImageOptimization,
       defineOptimizeOptions({

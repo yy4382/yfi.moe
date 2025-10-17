@@ -9,7 +9,8 @@
         "PAGE_GH_INFO",
         "WALINE_URL",
         "POSTHOG_KEY",
-        "POSTHOG_HOST"
+        "POSTHOG_HOST",
+        "IMAGE_META_SOURCE"
       ],
       "cache": false
     }

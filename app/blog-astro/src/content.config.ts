@@ -1,6 +1,16 @@
 import { defineCollection, z } from "astro:content";
-import { ARTICLE_PAT, PAGE_GH_INFO, POST_GH_INFO } from "astro:env/server";
+import {
+  ARTICLE_PAT,
+  IMAGE_META_SOURCE,
+  PAGE_GH_INFO,
+  POST_GH_INFO,
+} from "astro:env/server";
 import { githubLoader, parseGithubUrl } from "@/lib/content/loader/github";
+import {
+  githubImageMetaLoader,
+  localImageMetaLoader,
+  parseGithubFileUrl,
+} from "./lib/content/loader/image-meta";
 import { localLoader, parseLocalUrl } from "./lib/content/loader/local";
 
 const baseSchema = z.object({
@@ -50,6 +60,29 @@ function getLoader(url: string) {
   throw new Error(`Invalid URL: ${url}`);
 }
 
+function getImageMetaLoader(url: string) {
+  if (url.startsWith("http")) {
+    return githubImageMetaLoader({
+      ...parseGithubFileUrl(url),
+      pat: ARTICLE_PAT,
+    });
+  } else if (url.startsWith("file://")) {
+    return localImageMetaLoader(parseLocalUrl(url));
+  }
+  throw new Error(`Invalid image metadata URL: ${url}`);
+}
+
+const imageMetaSchema = z.object({
+  entries: z.array(
+    z.object({
+      url: z.string(),
+      width: z.number(),
+      height: z.number(),
+      blurhash: z.string(),
+    }),
+  ),
+});
+
 const post = defineCollection({
   loader: getLoader(POST_GH_INFO),
   schema: postSchema,
@@ -60,4 +93,9 @@ const page = defineCollection({
   schema: pageSchema,
 });
 
-export const collections = { post, page };
+const imageMeta = defineCollection({
+  loader: getImageMetaLoader(IMAGE_META_SOURCE),
+  schema: imageMetaSchema,
+});
+
+export const collections = { post, page, imageMeta };

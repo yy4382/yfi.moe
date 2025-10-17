@@ -1,9 +1,11 @@
 ---
+import { getEntry } from "astro:content";
 import { markdownToHtmlAsync } from "@repo/markdown/parse";
 import { ArticlePreset } from "@repo/markdown/preset";
 import rehypeReplaceCustomElements, {
   type Options,
 } from "@repo/markdown/plugins/rehype-replace-item";
+import type { ImageMeta } from "@repo/markdown/plugins/rehype-image-metadata";
 
 import "@/styles/global.css";
 import "@repo/markdown/style";
@@ -17,6 +19,11 @@ interface Props {
 }
 
 const { content } = Astro.props;
+
+const imageMetaEntry = await getEntry("imageMeta", "image-meta").catch(
+  () => undefined,
+);
+const imageMeta = (imageMetaEntry?.data.entries ?? []) as ImageMeta[];
 
 const preset = {
   plugins: [...ArticlePreset.plugins!],
@@ -47,7 +54,12 @@ preset.plugins.push([
   },
 ]);
 
-const html = await markdownToHtmlAsync(content, { preset });
+const html = await markdownToHtmlAsync(content, {
+  preset,
+  fileData: {
+    imageMeta,
+  },
+});
 ---
 
 <div
