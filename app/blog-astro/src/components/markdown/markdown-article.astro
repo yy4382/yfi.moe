@@ -20,9 +20,7 @@ interface Props {
 
 const { content } = Astro.props;
 
-const imageMetaEntry = await getEntry("imageMeta", "image-meta").catch(
-  () => undefined,
-);
+const imageMetaEntry = await getEntry("imageMeta", "image-meta");
 const imageMeta = (imageMetaEntry?.data.entries ?? []) as ImageMeta[];
 
 const preset = {
