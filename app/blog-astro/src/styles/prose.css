@@ -11,6 +11,8 @@
 }
 
 @utility prose {
+  max-width: var(--prose-max-width);
+
   :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     text-decoration: none;
     border-bottom: 2px solid var(--link-underline-color);
@@ -42,5 +44,14 @@
         content: none;
       }
     }
+  }
+}
+
+@layer utilities {
+  :root {
+    --prose-max-width: 40em;
+  }
+  .max-w-prose {
+    max-width: var(--prose-max-width) !important;
   }
 }
