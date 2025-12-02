@@ -77,8 +77,8 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
   }, [isDesktop, shouldShow]);
 
   return (
-    <header className="border-container bg-background/70 fixed inset-x-0 top-0 z-30 h-[var(--navbar-height)] border-b backdrop-blur-lg">
-      <section className="main-container text-content flex h-full items-center justify-between px-6 py-4">
+    <header className="fixed inset-x-0 top-0 z-30 h-[var(--navbar-height)] border-b border-container bg-background/70 backdrop-blur-lg">
+      <section className="main-container flex h-full items-center justify-between px-6 py-4 text-content">
         <div className="flex min-w-0 shrink grow items-center gap-4">
           <AnimatePresence initial={false} mode="popLayout">
             <motion.div
@@ -104,7 +104,7 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
                       {postInfo!.tags.map((tag) => `#${tag}`).join(" / ")}
                     </span>
                   </small>
-                  <h2 className="min-w-0 truncate text-[1.1rem] font-medium leading-normal">
+                  <h2 className="min-w-0 truncate text-[1.1rem] leading-normal font-medium">
                     {postInfo!.title}
                   </h2>
                 </div>

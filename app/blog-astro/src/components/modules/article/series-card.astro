@@ -31,8 +31,8 @@ if (seriesPosts.length <= 1) {
           return (
             <li class="m-0 p-0">
               {isCurrent ? (
-                <div class="text-accent-foreground flex items-start gap-2 font-medium leading-relaxed">
-                  <span class="text-comment shrink-0 font-normal">
+                <div class="flex items-start gap-2 leading-relaxed font-medium text-accent-foreground">
+                  <span class="shrink-0 font-normal text-comment">
                     {index + 1}.
                   </span>
                   <span>{post.data.title}</span>
@@ -40,9 +40,9 @@ if (seriesPosts.length <= 1) {
               ) : (
                 <a
                   href={`/post/${post.id}`}
-                  class="hover:text-accent-foreground flex items-start gap-2 leading-relaxed no-underline transition-colors"
+                  class="flex items-start gap-2 leading-relaxed no-underline transition-colors hover:text-accent-foreground"
                 >
-                  <span class="text-comment shrink-0">{index + 1}.</span>
+                  <span class="shrink-0 text-comment">{index + 1}.</span>
                   <span>{post.data.title}</span>
                 </a>
               )}

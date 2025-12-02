@@ -14,6 +14,6 @@ const { title, desc } = Astro.props;
   padding="postList"
   bg="grid"
 >
-  <h1 class="text-heading @3xl:text-6xl text-5xl font-bold">{title}</h1>
-  {desc && <p class="text-content ml-1 mt-4 text-lg">{desc}</p>}
+  <h1 class="text-5xl font-bold text-heading @3xl:text-6xl">{title}</h1>
+  {desc && <p class="mt-4 ml-1 text-lg text-content">{desc}</p>}
 </Section>

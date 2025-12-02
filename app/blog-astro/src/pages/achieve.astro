@@ -38,18 +38,18 @@ const seoConfig = getSeo({
     bg="grid"
   >
     <div class="mx-auto w-full max-w-prose">
-      <h1 class="text-heading @3xl:text-6xl text-5xl font-bold">归档</h1>
-      <p class="text-content ml-1 mt-4 text-lg">共有 {posts.length} 篇文章</p>
+      <h1 class="text-5xl font-bold text-heading @3xl:text-6xl">归档</h1>
+      <p class="mt-4 ml-1 text-lg text-content">共有 {posts.length} 篇文章</p>
     </div>
   </Section>
-  <Section class="py-18 px-4">
+  <Section class="px-4 py-18">
     <div class="mx-auto flex max-w-prose flex-col gap-8">
       {
         groupedPosts.map((group) => (
           <div class="flex flex-col gap-4">
             <h2 class="text-2xl font-bold">
               {group.year}{" "}
-              <span class="text-comment text-sm font-normal">
+              <span class="text-sm font-normal text-comment">
                 ({group.posts.length})
               </span>
             </h2>
@@ -61,7 +61,7 @@ const seoConfig = getSeo({
                       {format(post.data.publishedDate, "MM/dd")}
                     </span>
                     <a
-                      class="hover:text-accent-foreground pointer-coarse:py-1 min-w-0 truncate py-0.5 leading-6 transition-colors"
+                      class="min-w-0 truncate py-0.5 leading-6 transition-colors hover:text-accent-foreground pointer-coarse:py-1"
                       href={`/post/${post.id}`}
                     >
                       {post.data.title}

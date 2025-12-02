@@ -121,12 +121,12 @@ export function CommentList() {
   }
   if (isError) {
     return (
-      <div className="justify-center-safe mt-6 flex items-center gap-2 p-4 text-center text-red-500">
+      <div className="mt-6 flex items-center justify-center-safe gap-2 p-4 text-center text-red-500">
         加载评论失败:{" "}
         {error instanceof ZodError ? z.prettifyError(error) : error.message}
         <button
           onClick={() => void refetch()}
-          className="border-container text-comment rounded-md border px-2 py-1 shadow-md hover:scale-105 active:scale-95"
+          className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
         >
           重试
         </button>
@@ -144,7 +144,7 @@ export function CommentList() {
   return (
     <div className="mt-10">
       <div className="mb-6 flex items-center justify-between gap-2">
-        <div className="text-comment flex items-center gap-2">
+        <div className="flex items-center gap-2 text-comment">
           <span>共{data.pages[0]!.total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
             <span>
@@ -158,7 +158,7 @@ export function CommentList() {
               key={sortByOption}
               onClick={() => setSortBy(sortByOption)}
               className={clsx(
-                "text-accent-foreground py-1 text-sm hover:scale-105 active:scale-95",
+                "py-1 text-sm text-accent-foreground hover:scale-105 active:scale-95",
                 sortBy !== sortByOption && "text-muted-foreground",
               )}
             >
@@ -182,7 +182,7 @@ export function CommentList() {
           <button
             onClick={() => void fetchNextPage()}
             disabled={isFetching}
-            className="border-container text-comment rounded-md border px-2 py-1 shadow-md hover:scale-105 active:scale-95"
+            className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
           >
             {isFetchingNextPage ? "正在加载..." : "加载更多"}
           </button>
@@ -278,7 +278,7 @@ export function CommentParent({
             <div className="flex justify-center">
               <button
                 onClick={() => void fetchNextPage()}
-                className="border-container text-comment rounded-md border px-2 py-1 shadow-md hover:scale-105 active:scale-95"
+                className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
               >
                 加载更多回复
               </button>
@@ -322,9 +322,9 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
         </div>
 
         {/* 评论内容区域 */}
-        <div className="group mb-1 mt-0.5 flex min-w-0 flex-1 flex-col">
+        <div className="group mt-0.5 mb-1 flex min-w-0 flex-1 flex-col">
           <div className="mb-1 flex items-center gap-2">
-            <span className="text-content/80 text-sm">{entry.displayName}</span>
+            <span className="text-sm text-content/80">{entry.displayName}</span>
 
             {isMine && (
               <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-600 dark:bg-blue-800/60 dark:text-blue-100">
@@ -364,7 +364,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
                 </a>
               )}
               <div
-                className="prose prose-sm dark:prose-invert prose-p:my-1 text-content break-words"
+                className="prose prose-sm break-words text-content dark:prose-invert prose-p:my-1"
                 dangerouslySetInnerHTML={{ __html: entry.content }}
               />
             </div>
@@ -381,7 +381,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
             />
             <button
               onClick={() => setReplying(!replying)}
-              className="text-comment inline-flex h-7 shrink-0 items-center gap-1 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-sm transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+              className="inline-flex h-7 shrink-0 items-center gap-1 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-sm text-comment transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800"
             >
               <CommentIcon /> 回复
             </button>

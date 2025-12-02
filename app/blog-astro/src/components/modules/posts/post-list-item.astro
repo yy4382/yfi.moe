@@ -25,20 +25,20 @@ const description =
     className,
   )}
 >
-  <div class="@xl:px-10 @4xl:px-16 @4xl:py-12 @6xl:px-32 px-6 py-8">
+  <div class="px-6 py-8 @xl:px-10 @4xl:px-16 @4xl:py-12 @6xl:px-32">
     <a href={`/post/${post.id}`}>
       <h2
-        class="hover:text-accent-foreground @xl:text-xl @4xl:text-3xl mb-2 text-lg font-bold transition-colors"
+        class="mb-2 text-lg font-bold transition-colors hover:text-accent-foreground @xl:text-xl @4xl:text-3xl"
       >
         {post.data.title}
       </h2>
     </a>
-    <div class="text-comment flex flex-wrap gap-2 text-[0.8rem] lg:gap-3">
+    <div class="flex flex-wrap gap-2 text-[0.8rem] text-comment lg:gap-3">
       <PostAttrTime {...post.data} />
       <PostAttrTags tags={post.data.tags} />
     </div>
     <div
-      class="prose dark:prose-invert @4xl:block mt-4 hidden max-w-[90ch]"
+      class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert"
       set:html={description}
     />
   </div>

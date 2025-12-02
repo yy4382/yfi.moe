@@ -126,9 +126,7 @@ type GithubFileOptions = {
   pat: string;
 };
 
-export class GithubImageMetaFetcher
-  implements ImageMetaFetcher<GithubFileOptions>
-{
+export class GithubImageMetaFetcher implements ImageMetaFetcher<GithubFileOptions> {
   name = "github-image-meta-loader";
   private options: GithubFileOptions;
   private ofetcher: typeof ofetch;
@@ -189,9 +187,7 @@ type LocalFileOptions = {
   filePath: string;
 };
 
-export class LocalImageMetaFetcher
-  implements ImageMetaFetcher<LocalFileOptions>
-{
+export class LocalImageMetaFetcher implements ImageMetaFetcher<LocalFileOptions> {
   name = "local-image-meta-loader";
   private filePath: string;
 

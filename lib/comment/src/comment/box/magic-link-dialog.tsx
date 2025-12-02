@@ -175,7 +175,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                 </div>
               </div>
             </div>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-sm text-muted-foreground">
               如果几分钟内没有收到邮件，请检查垃圾邮件文件夹
             </p>
           </div>
@@ -216,7 +216,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-2">
-                      <div className="border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                       发送中...
                     </div>
                   ) : (
@@ -266,7 +266,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-2">
-                      <div className="border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                       发送中...
                     </div>
                   ) : (

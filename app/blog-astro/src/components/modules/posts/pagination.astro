@@ -79,17 +79,17 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
     </a>
 
     <div
-      class="text-content flex flex-row items-center gap-2 bg-none font-bold"
+      class="flex flex-row items-center gap-2 bg-none font-bold text-content"
     >
       {
         pages.map((p, _index) => {
           if (p === HIDDEN) {
-            return <span class="i-lucide-more-horizontal mx-1 size-5" />;
+            return <span class="mx-1 i-lucide-more-horizontal size-5" />;
           }
 
           if (p === currentPage) {
             return (
-              <div class="bg-primary/90 text-primary-foreground flex size-9 items-center justify-center rounded-full">
+              <div class="flex size-9 items-center justify-center rounded-full bg-primary/90 text-primary-foreground">
                 {p}
               </div>
             );
@@ -99,7 +99,7 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
             <a
               href={buildPageUrl(p)}
               aria-label={`Page ${p}`}
-              class="hover:bg-accent hover:text-accent-foreground flex size-9 items-center justify-center rounded-full transition-colors"
+              class="flex size-9 items-center justify-center rounded-full transition-colors hover:bg-accent hover:text-accent-foreground"
             >
               {p}
             </a>

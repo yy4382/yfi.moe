@@ -29,7 +29,7 @@ export function NavLinkList({ url }: { url: URL }) {
             data-active={link.active(url)}
             className={cn([
               "data-[active=true]:text-accent-foreground",
-              "text-muted-foreground hover:text-accent-foreground transition-colors",
+              "text-muted-foreground transition-colors hover:text-accent-foreground",
             ])}
           >
             {link.label}

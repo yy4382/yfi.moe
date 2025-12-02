@@ -13,10 +13,10 @@ interface Props {
 const { title, time, tags } = Astro.props;
 ---
 
-<Section class="center mx-auto flex flex-col gap-6 py-24" padding="article">
-  <h1 class="text-heading text-center text-3xl font-bold">{title}</h1>
+<Section class="mx-auto flex flex-col center gap-6 py-24" padding="article">
+  <h1 class="text-center text-3xl font-bold text-heading">{title}</h1>
   <div
-    class="text-comment flex flex-col items-center gap-2 text-[0.8rem] md:flex-row lg:gap-3"
+    class="flex flex-col items-center gap-2 text-[0.8rem] text-comment md:flex-row lg:gap-3"
   >
     {time && <PostAttrTime {...time} />}
     {tags && <PostAttrTags tags={tags} />}

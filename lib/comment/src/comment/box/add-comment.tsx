@@ -259,20 +259,20 @@ function VisitorBox({ children }: PropsWithChildren) {
         <input
           type="text"
           placeholder="昵称*"
-          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:outline-none focus:ring"
+          className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
           value={visitorName}
           onChange={(e) => setVisitorName(e.target.value)}
         />
         <input
           type="text"
           placeholder="邮箱*"
-          className="border-container focus:ring-primary flex-1 rounded-md border p-1 focus:outline-none focus:ring"
+          className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
           value={visitorEmail}
           onChange={(e) => setVisitorEmail(e.target.value)}
         />
         <button
           onClick={() => setAsVisitor(false)}
-          className="border-container bg-background rounded-md border px-2 py-1 text-sm shadow"
+          className="rounded-md border border-container bg-background px-2 py-1 text-sm shadow"
         >
           登录/注册
         </button>
@@ -296,9 +296,9 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   //     </div>
   //   );
   return (
-    <div className="border-container bg-card flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border py-4">
+    <div className="flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border border-container bg-card py-4">
       <div className="flex flex-col items-center gap-2">
-        <span className="text-comment text-xs">使用社交账号登录</span>
+        <span className="text-xs text-comment">使用社交账号登录</span>
         <div className="flex gap-2">
           <button
             onClick={() => {
@@ -316,13 +316,13 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
               };
               void fn();
             }}
-            className="border-container bg-background flex items-center gap-1 rounded-full border p-2 shadow hover:scale-105 active:scale-95"
+            className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow hover:scale-105 active:scale-95"
           >
             <GitHubIcon className="size-4" />
           </button>
 
           <MagicLinkDialog>
-            <button className="border-container bg-background flex items-center gap-1 rounded-full border p-2 shadow hover:scale-105 active:scale-95">
+            <button className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow hover:scale-105 active:scale-95">
               <MailSendLineIcon className="size-4" />
             </button>
           </MagicLinkDialog>
@@ -330,7 +330,7 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
       </div>
       <button
         onClick={setAsVisitor}
-        className="border-container bg-background rounded-full border px-2 py-1 text-sm shadow hover:scale-105 active:scale-95"
+        className="rounded-full border border-container bg-background px-2 py-1 text-sm shadow hover:scale-105 active:scale-95"
       >
         以游客身份留言
       </button>
@@ -378,7 +378,7 @@ function UserBox({ children, session }: UserBoxProps) {
           height={56}
           className="aspect-square size-14 rounded-full ring-2 ring-black dark:ring-white"
         />
-        <div className="absolute -right-1 -top-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
+        <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
           <button
             onClick={() => void handleSignOut()}
             className="flex size-full items-center justify-center"
@@ -391,7 +391,7 @@ function UserBox({ children, session }: UserBoxProps) {
           accounts?.data?.find(
             (account) => account.providerId === "github",
           ) && (
-            <span className="absolute -bottom-1 -right-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
+            <span className="absolute -right-1 -bottom-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
               <GitHubIcon className="size-3.5 text-black" />
             </span>
           )}

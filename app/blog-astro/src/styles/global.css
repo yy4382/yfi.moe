@@ -2,14 +2,18 @@
 @plugin "tailwindcss-animated";
 @plugin "@tailwindcss/typography";
 @import "tw-animate-css";
-@plugin '@egoist/tailwindcss-icons';
+@plugin "@egoist/tailwindcss-icons";
 
 @import "./prose.css";
 
 @source "../../../../lib/comment/src";
 
 /* #region icons in markdown prose (added by the @repo/markdown package, need to be in safe-list) */
+
+/* the @source inline() cannot be split into multiple lines */
+/* prettier-ignore */
 @source inline("i-mingcute-{github-line,external-link-line,twitter-line,sword-line}");
+
 @source inline("prose-link-icon");
 @utility prose-link-icon {
   @apply size-[0.75lh] align-text-bottom;
@@ -209,7 +213,7 @@
 }
 
 @utility main-container {
-  @apply border-container max-w-screen mx-auto box-border w-screen sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
+  @apply mx-auto box-border w-screen max-w-screen border-container sm:w-[calc(100vw-100px)] sm:border-x xl:w-[1120px];
 }
 
 @utility bg-grid {
@@ -230,7 +234,7 @@
 }
 
 @utility color-transition-card-btn {
-  @apply hover:bg-accent hover:text-accent-foreground transition-colors;
+  @apply transition-colors hover:bg-accent hover:text-accent-foreground;
 }
 :root {
   --container-border: var(--color-zinc-300);
