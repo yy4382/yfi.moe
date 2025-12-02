@@ -2,14 +2,22 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AkismetService } from "./akismet.js";
 
 // Mock the akismet-api module
-const mockAkismetInstance = {
-  checkSpam: vi.fn(),
-  submitSpam: vi.fn(),
-  submitHam: vi.fn(),
-};
+const mockAkismetInstance = vi.hoisted(() => {
+  return {
+    checkSpam: vi.fn(),
+    submitSpam: vi.fn(),
+    submitHam: vi.fn(),
+  };
+});
 
 vi.mock("akismet-api", () => ({
-  AkismetClient: vi.fn().mockImplementation(() => mockAkismetInstance),
+  AkismetClient: vi.fn(
+    class {
+      checkSpam = mockAkismetInstance.checkSpam;
+      submitSpam = mockAkismetInstance.submitSpam;
+      submitHam = mockAkismetInstance.submitHam;
+    },
+  ),
 }));
 
 vi.mock("@/logger.js", async () => {

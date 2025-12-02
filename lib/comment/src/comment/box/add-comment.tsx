@@ -388,7 +388,9 @@ function UserBox({ children, session }: UserBoxProps) {
         </div>
         {!isAccountsError &&
           !isAccountsPending &&
-          accounts?.data?.find((account) => account.provider === "github") && (
+          accounts?.data?.find(
+            (account) => account.providerId === "github",
+          ) && (
             <span className="absolute -bottom-1 -right-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
               <GitHubIcon className="size-3.5 text-black" />
             </span>
