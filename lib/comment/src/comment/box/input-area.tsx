@@ -31,7 +31,7 @@ export function InputBox({
     }).at(0) ?? "idle";
 
   return (
-    <div className="group @container relative flex min-h-36 w-full flex-col justify-between rounded-sm border border-container p-1 focus-within:ring focus-within:ring-primary">
+    <div className="group @container relative flex min-h-36 w-full flex-col justify-between rounded-sm border border-container p-1 transition focus-within:ring focus-within:ring-primary">
       {onCancel && (
         <div className="absolute -top-3 -right-2">
           <button

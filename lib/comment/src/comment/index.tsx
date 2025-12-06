@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
 import { CommentBoxNew } from "./box/add-comment";
 import {
   AuthClientRefContext,
@@ -27,7 +28,11 @@ export default function CommentYuline({
     <ServerURLContext value={serverURL}>
       <AuthClientRefContext value={authClientRef}>
         <PathnameContext value={pathname}>
-          <CommentBoxNew />
+          <AutoResizeHeight duration={0.1}>
+            <div className="p-0.5">
+              <CommentBoxNew />
+            </div>
+          </AutoResizeHeight>
           <CommentList />
           <SearchParamsRefetchSessionHandler />
         </PathnameContext>

@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { produce } from "immer";
 import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
+import { motion } from "motion/react";
 import {
   type PropsWithChildren,
   useCallback,
@@ -300,7 +301,7 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs text-comment">使用社交账号登录</span>
         <div className="flex gap-2">
-          <button
+          <motion.button
             onClick={() => {
               const fn = async () => {
                 const callbackURL = new URL(window.location.href);
@@ -316,24 +317,32 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
               };
               void fn();
             }}
-            className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow hover:scale-105 active:scale-95"
+            className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <GitHubIcon className="size-4" />
-          </button>
+          </motion.button>
 
           <MagicLinkDialog>
-            <button className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow hover:scale-105 active:scale-95">
+            <motion.button
+              className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <MailSendLineIcon className="size-4" />
-            </button>
+            </motion.button>
           </MagicLinkDialog>
         </div>
       </div>
-      <button
+      <motion.button
         onClick={setAsVisitor}
-        className="rounded-full border border-container bg-background px-2 py-1 text-sm shadow hover:scale-105 active:scale-95"
+        className="rounded-full border border-container bg-background px-3 py-1.5 text-sm shadow"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.95 }}
       >
         以游客身份留言
-      </button>
+      </motion.button>
     </div>
   );
 }
