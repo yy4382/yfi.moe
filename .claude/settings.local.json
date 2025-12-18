@@ -10,7 +10,8 @@
       "WebFetch(domain:vitest.dev)",
       "Bash(pnpm exec prettier:*)",
       "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs"
+      "mcp__context7__get-library-docs",
+      "Bash(pnpm --filter @repo/backend check-types:*)"
     ],
     "deny": []
   }

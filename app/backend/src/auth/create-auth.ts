@@ -5,7 +5,7 @@ import type { DbClient } from "@/db/db-plugin.js";
 import * as schema from "@/db/schema.js";
 import { env } from "@/env.js";
 import { logger } from "@/logger.js";
-import { EmailNotifier } from "@/notification/providers/email.js";
+import { EmailNotifier } from "@/services/notification/providers/email.js";
 import NotionMagicLinkEmail from "./magic-link.js";
 
 export const createAuth = (db: DbClient) => {

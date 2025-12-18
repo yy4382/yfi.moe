@@ -1,7 +1,7 @@
 import pino from "pino";
 import { factory, type Variables } from "@/factory.js";
-import type { NotificationService } from "@/notification/types.js";
 import { anonymousIdentityPlugin } from "@/plugins/anonymous-identity.js";
+import type { NotificationService } from "@/services/notification/types.js";
 import commentApp from "./index.js";
 
 export const createTestCommentApp = (

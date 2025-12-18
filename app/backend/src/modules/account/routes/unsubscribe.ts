@@ -4,7 +4,7 @@ import { unsubscribeReq } from "@repo/api/account/unsub.model";
 import { unsubscribedEmail } from "@/db/schema.js";
 import { env } from "@/env.js";
 import { factory } from "@/factory.js";
-import { verifyUnsubscribeSignature } from "./unsub.service.js";
+import { verifyUnsubscribeSignature } from "../services/unsubscribe.js";
 
 export const unsubscribeApp = factory
   .createApp()

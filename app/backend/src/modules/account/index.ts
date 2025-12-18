@@ -1,5 +1,5 @@
 import { factory } from "@/factory.js";
-import { unsubscribeApp } from "./unsubscribe/unsub.js";
+import { unsubscribeApp } from "./routes/unsubscribe.js";
 
 export const accountApp = factory
   .createApp()
