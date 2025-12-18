@@ -3,7 +3,6 @@ import { describeRoute, resolver, validator } from "hono-openapi";
 import { commentReaction } from "@repo/api/comment/comment-data";
 import { commentReactionReqBody } from "@repo/api/comment/reaction.model";
 import { factory, type Variables } from "@/factory.js";
-import { ANONYMOUS_IDENTITY_HEADER } from "@/plugins/anonymous-identity.js";
 import { addReaction } from "../services/reaction/add.js";
 import { removeReaction } from "../services/reaction/remove.js";
 import {
@@ -48,7 +47,6 @@ const resolveReactionActor = (
     return null;
   }
 
-  c.header(ANONYMOUS_IDENTITY_HEADER, key, { append: false });
   return { actor: { type: "anonymous", key } };
 };
 

@@ -1,6 +1,7 @@
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
+import SparkMD5 from "spark-md5";
 import { describe, it, expect, beforeEach } from "vitest";
 import type { DbClient } from "@/db/db-plugin.js";
 import * as schema from "@/db/schema.js";
@@ -92,7 +93,7 @@ describe("addReaction", () => {
     }
     expect(result.data.user).toEqual({
       type: "anonymous",
-      key: anonymousActor.key,
+      key: SparkMD5.hash(anonymousActor.key),
     });
 
     const rows = await db.select().from(reaction);

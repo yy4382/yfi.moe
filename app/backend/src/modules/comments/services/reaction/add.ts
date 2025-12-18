@@ -1,4 +1,5 @@
 import { and, eq, isNull } from "drizzle-orm";
+import SparkMD5 from "spark-md5";
 import { z } from "zod";
 import { commentReaction } from "@repo/api/comment/comment-data";
 import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
@@ -115,7 +116,10 @@ async function fetchReaction(
       id: data.reaction.id,
       emojiKey: data.reaction.emojiKey,
       emojiRaw: data.reaction.emojiRaw,
-      user: { type: "anonymous", key: data.reaction.actorAnonKey },
+      user: {
+        type: "anonymous",
+        key: SparkMD5.hash(data.reaction.actorAnonKey),
+      },
     });
   }
 
