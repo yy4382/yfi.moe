@@ -1,7 +1,6 @@
 import { QueryClientProvider, useMutation } from "@tanstack/react-query";
-import { WALINE_URL } from "astro:env/client";
 import { useEffect, useState } from "react";
-import { unsubscribe, resubscribe } from "@repo/api/account/unsub";
+import { client } from "@/lib/hono-client";
 import { queryClient } from "@/lib/query-client";
 
 function UnsubscribeWrapper() {
@@ -36,18 +35,18 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
       if (!email || !signature || !expiresAtTimestampSec) {
         throw new Error("请求 URL 不完整");
       }
-      const result = await unsubscribe(
-        {
+      const result1 = await client.account.notification.unsubscribe.$post({
+        json: {
           email,
           credentials: {
             signature,
             expiresAtTimestampSec: parseInt(expiresAtTimestampSec),
           },
         },
-        WALINE_URL,
-      );
-      if (result._tag === "err") {
-        throw new Error(result.error);
+      });
+      const resultJson = await result1.json();
+      if (!resultJson.success) {
+        throw new Error(resultJson.cause);
       }
       return true;
     },
@@ -59,18 +58,18 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
       if (!email || !signature || !expiresAtTimestampSec) {
         throw new Error("请求 URL 不完整");
       }
-      const result = await resubscribe(
-        {
+      const result1 = await client.account.notification.resubscribe.$post({
+        json: {
           email,
           credentials: {
             signature,
             expiresAtTimestampSec: parseInt(expiresAtTimestampSec),
           },
         },
-        WALINE_URL,
-      );
-      if (result._tag === "err") {
-        throw new Error(result.error);
+      });
+      const resultJson = await result1.json();
+      if (!resultJson.success) {
+        throw new Error(resultJson.cause);
       }
       return true;
     },

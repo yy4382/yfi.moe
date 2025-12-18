@@ -12,8 +12,8 @@ import {
 } from "../comment-api/update";
 import {
   AuthClientRefContext,
+  HonoClientRefContext,
   PathnameContext,
-  ServerURLContext,
 } from "../context";
 import { sessionOptions, sortByAtom } from "../utils";
 import { CommentBoxIdContext } from "./context";
@@ -40,11 +40,11 @@ export function CommentBoxEdit({
   );
   const [content, setContent] = useAtom(contentAtom);
   const mutationKey = ["editComment", editId];
-  const serverURL = useContext(ServerURLContext);
+  const honoClient = useContext(HonoClientRefContext).current;
   const { mutate } = useMutation({
     mutationKey,
     mutationFn: (params: CommentUpdateParamsBranded) =>
-      updateComment(params, serverURL),
+      updateComment(params, honoClient),
     onError(error) {
       toast.error(error.message);
     },

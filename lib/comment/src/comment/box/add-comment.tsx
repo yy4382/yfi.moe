@@ -30,8 +30,8 @@ import {
 } from "../comment-api/add";
 import {
   AuthClientRefContext,
+  HonoClientRefContext,
   PathnameContext,
-  ServerURLContext,
   type AuthClient,
 } from "../context";
 import {
@@ -57,12 +57,12 @@ function useAddComment({
   const authClient = useContext(AuthClientRefContext).current;
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
-  const serverURL = useContext(ServerURLContext);
+  const honoClient = useContext(HonoClientRefContext).current;
 
   const mutation = useMutation({
     mutationKey: ["addComment", id],
     mutationFn: (params: CommentAddParamsBranded) =>
-      addComment(params, serverURL),
+      addComment(params, honoClient),
     onSuccess: (data) => {
       onSuccess?.();
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { commentData } from "@repo/api/comment/comment-data";
-import { updateComment as updateCommentApi } from "@repo/api/comment/update";
+import type { HonoClient } from "../context";
 import { commentContentSchema } from "./add";
 
 // inputting params
@@ -27,17 +27,16 @@ export type CommentUpdateResponse = z.infer<typeof commentUpdateResponse>;
 
 export async function updateComment(
   params: CommentUpdateParamsBranded,
-  serverURL: string,
+  honoClient: HonoClient,
 ): Promise<CommentUpdateResponse> {
-  const result = await updateCommentApi(
-    {
+  const result = await honoClient.comments.update.$post({
+    json: {
       id: params.id,
       rawContent: params.content,
     },
-    serverURL,
-  );
-  if (result._tag === "err") {
-    throw new Error(result.error);
+  });
+  if (!result.ok) {
+    throw new Error(await result.text());
   }
-  return commentUpdateResponse.parse(result.value);
+  return commentUpdateResponse.decode(await result.json());
 }

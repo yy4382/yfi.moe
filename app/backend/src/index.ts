@@ -21,7 +21,7 @@ await migrate(db, { migrationsFolder: "./drizzle" });
 
 const app = factory
   .createApp()
-  .basePath(new URL(env.BACKEND_URL).pathname)
+  .basePath("/api")
   .use(requestId())
   .use(pinoMiddleware)
   .use(dbPlugin(db))
@@ -79,7 +79,7 @@ app.get(
         title: "yfi.moe API",
         version: "1.0.0",
       },
-      servers: [{ url: "http://localhost:3001", description: "Local Server" }],
+      servers: [{ url: env.BACKEND_URL, description: "Local Server" }],
     },
   }),
 );
@@ -131,3 +131,5 @@ process.on("SIGTERM", () => {
 
 logger.info(`Server started on ${env.BACKEND_URL}`);
 logger.info(`Health check on ${new URL("health", env.BACKEND_URL)}`);
+
+export type AppType = typeof app;

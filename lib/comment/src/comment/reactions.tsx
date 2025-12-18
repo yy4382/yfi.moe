@@ -17,17 +17,17 @@ import MingcuteEmojiLine from "~icons/mingcute/emoji-line";
 import type { User } from "@repo/api/auth/client";
 import type { CommentData } from "@repo/api/comment/comment-data";
 import type { GetCommentsResponse } from "@repo/api/comment/get.model";
+import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
+import { useAnonymousIdentity } from "./anonymous-identity";
 import {
   addCommentReaction,
   removeCommentReaction,
   type CommentReactionResponse,
-} from "@repo/api/comment/reaction";
-import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
-import { useAnonymousIdentity } from "./anonymous-identity";
+} from "./comment-api/reaction";
 import {
   AuthClientRefContext,
+  HonoClientRefContext,
   PathnameContext,
-  ServerURLContext,
 } from "./context";
 import { sessionOptions, sortByAtom } from "./utils";
 
@@ -188,7 +188,6 @@ export function CommentReactions({
   commentId,
   reactions,
 }: CommentReactionsProps) {
-  const serverURL = useContext(ServerURLContext);
   const path = useContext(PathnameContext);
   const authClient = useContext(AuthClientRefContext).current;
   const { data: session } = useQuery(sessionOptions(authClient));
@@ -262,6 +261,8 @@ export function CommentReactions({
     [anonymousKey, currentUser, setCachedReaction, syncFromHeader],
   );
 
+  const honoClient = useContext(HonoClientRefContext).current;
+
   const addReactionMutation = useMutation<
     AddReactionMutationData,
     Error,
@@ -270,7 +271,7 @@ export function CommentReactions({
     mutationFn: async (emojiRaw: string) => {
       const result = await addCommentReaction(
         { commentId, body: { emoji: emojiRaw } },
-        serverURL,
+        honoClient,
       );
       if (result._tag === "err") {
         throw new Error(result.error);
@@ -295,7 +296,7 @@ export function CommentReactions({
     mutationFn: async (emojiRaw: string) => {
       const result = await removeCommentReaction(
         { commentId, body: { emoji: emojiRaw } },
-        serverURL,
+        honoClient,
       );
       if (result._tag === "err") {
         throw new Error(result.error);

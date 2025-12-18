@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { commentReaction } from "@repo/api/comment/comment-data";
+import type { CommentReactionReqBody } from "@repo/api/comment/reaction.model";
 import { type Result, err, ok } from "@repo/helpers/result";
-import { commentReaction } from "./comment-data.js";
-import type { CommentReactionReqBody } from "./reaction.model.js";
+import type { HonoClient } from "../context";
 
 const ANONYMOUS_IDENTITY_HEADER = "x-anonymous-key";
 
@@ -16,19 +17,11 @@ export type CommentReactionRemoveResponse = {
 
 export async function addCommentReaction(
   options: { commentId: number; body: CommentReactionReqBody },
-  serverUrl: string,
+  honoClient: HonoClient,
 ): Promise<Result<CommentReactionResponse, string>> {
-  const path = new URL(
-    `v1/comments/reaction/${options.commentId}/add`,
-    serverUrl,
-  ).href;
-  const resp = await fetch(path, {
-    method: "POST",
-    body: JSON.stringify(options.body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
+  const resp = await honoClient.comments.reaction[":commentId"].add.$post({
+    param: { commentId: options.commentId.toString() },
+    json: options.body,
   });
   if (!resp.ok) {
     return err(await resp.text());
@@ -43,19 +36,11 @@ export async function addCommentReaction(
 
 export async function removeCommentReaction(
   options: { commentId: number; body: CommentReactionReqBody },
-  serverUrl: string,
+  honoClient: HonoClient,
 ): Promise<Result<CommentReactionRemoveResponse, string>> {
-  const path = new URL(
-    `v1/comments/reaction/${options.commentId}/remove`,
-    serverUrl,
-  ).href;
-  const resp = await fetch(path, {
-    method: "POST",
-    body: JSON.stringify(options.body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
+  const resp = await honoClient.comments.reaction[":commentId"].remove.$post({
+    param: { commentId: options.commentId.toString() },
+    json: options.body,
   });
   if (!resp.ok) {
     return err(await resp.text());

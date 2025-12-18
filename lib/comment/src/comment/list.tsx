@@ -20,10 +20,13 @@ import MoreIcon from "~icons/mingcute/more-1-line";
 import MingcuteShieldShapeLine from "~icons/mingcute/shield-shape-line";
 import type { User } from "@repo/api/auth/client";
 import type { CommentData } from "@repo/api/comment/comment-data";
-import { deleteComment } from "@repo/api/comment/delete";
-import { getComments, getCommentsChildren } from "@repo/api/comment/get";
-import type { LayeredCommentData } from "@repo/api/comment/get.model";
-import { toggleCommentSpam } from "@repo/api/comment/toggle-spam";
+import { deleteCommentResponse } from "@repo/api/comment/delete.model";
+import {
+  getCommentsResponse,
+  type LayeredCommentData,
+  getCommentsChildrenResponse,
+} from "@repo/api/comment/get.model";
+import { toggleSpamResponse } from "@repo/api/comment/toggle-spam.model";
 import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
 import {
   DropdownMenu,
@@ -36,8 +39,9 @@ import { CommentBoxNew } from "./box/add-comment";
 import { CommentBoxEdit } from "./box/edit-comment";
 import {
   AuthClientRefContext,
+  HonoClientRefContext,
   PathnameContext,
-  ServerURLContext,
+  type HonoClient,
 } from "./context";
 import { CommentReactions } from "./reactions";
 import {
@@ -53,29 +57,27 @@ function listOptions(
   user: User | undefined,
   path: string,
   sortBy: (typeof SORT_BY_OPTIONS)[number],
-  serverURL: string,
+  honoClient: HonoClient,
 ) {
   return infiniteQueryOptions({
     queryKey: ["comments", { session: user?.id }, path, sortBy],
     queryFn: async ({ pageParam }: { pageParam: number | undefined }) => {
-      let result;
       try {
-        result = await getComments(
-          {
+        const result = await honoClient.comments.get.$post({
+          json: {
             path,
             limit: PER_PAGE,
             cursor: pageParam,
             sortBy,
           },
-          serverURL,
-        );
+        });
+        if (!result.ok) {
+          throw new Error(await result.text());
+        }
+        return getCommentsResponse.decode(await result.json());
       } catch {
         throw new Error("网络请求失败");
       }
-      if (result._tag === "err") {
-        throw new Error("服务器错误");
-      }
-      return result.value;
     },
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => {
@@ -98,10 +100,10 @@ function listOptions(
 
 export function CommentList() {
   const path = useContext(PathnameContext);
-  const serverURL = useContext(ServerURLContext);
   const authClient = useContext(AuthClientRefContext).current;
   const { data: session } = useQuery(sessionOptions(authClient));
   const [sortBy, setSortBy] = useAtom(sortByAtom);
+  const honoClient = useContext(HonoClientRefContext).current;
   const {
     data,
     fetchNextPage,
@@ -112,7 +114,7 @@ export function CommentList() {
     isFetchingNextPage,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(listOptions(session?.user, path, sortBy, serverURL));
+  } = useInfiniteQuery(listOptions(session?.user, path, sortBy, honoClient));
 
   if (isPending) {
     return (
@@ -201,7 +203,7 @@ export function CommentParent({
   parentComment: LayeredCommentData;
 }) {
   const path = useContext(PathnameContext);
-  const serverURL = useContext(ServerURLContext);
+  const honoClient = useContext(HonoClientRefContext).current;
   const authClient = useContext(AuthClientRefContext).current;
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
@@ -219,25 +221,19 @@ export function CommentParent({
       parentComment.data.id,
     ],
     queryFn: async ({ pageParam }: { pageParam: number | undefined }) => {
-      let result;
-      try {
-        result = await getCommentsChildren(
-          {
-            path,
-            limit: PER_PAGE,
-            cursor: pageParam,
-            sortBy: "created_asc",
-            rootId: parentComment.data.id,
-          },
-          serverURL,
-        );
-      } catch {
-        throw new Error("网络请求失败");
+      const result = await honoClient.comments["get-children"].$post({
+        json: {
+          path,
+          limit: PER_PAGE,
+          cursor: pageParam,
+          sortBy: "created_asc",
+          rootId: parentComment.data.id,
+        },
+      });
+      if (!result.ok) {
+        throw new Error(await result.text());
       }
-      if (result._tag === "err") {
-        throw new Error("服务器错误");
-      }
-      return result.value;
+      return getCommentsChildrenResponse.decode(await result.json());
     },
     enabled: parentComment.children.hasMore,
     initialPageParam: undefined,
@@ -431,10 +427,10 @@ function CommentItemDropdown({
   onEdit: () => void;
 }) {
   const path = useContext(PathnameContext);
-  const serverURL = useContext(ServerURLContext);
   const queryClient = useQueryClient();
   const authClient = useContext(AuthClientRefContext).current;
   const { data: session } = useQuery(sessionOptions(authClient));
+  const honoClient = useContext(HonoClientRefContext).current;
 
   const isMine = session && entry.userId && entry.userId === session.user.id;
 
@@ -443,11 +439,11 @@ function CommentItemDropdown({
       if (!session) {
         throw new Error("请先登录");
       }
-      const result = await deleteComment({ id }, serverURL);
-      if (result._tag === "err") {
-        throw new Error(result.error);
+      const result = await honoClient.comments.delete.$post({ json: { id } });
+      if (!result.ok) {
+        throw new Error(await result.text());
       }
-      return result.value;
+      return deleteCommentResponse.decode(await result.json());
     },
     onError(error) {
       toast.error(error.message);
@@ -464,11 +460,13 @@ function CommentItemDropdown({
       if (!session) {
         throw new Error("请先登录");
       }
-      const result = await toggleCommentSpam({ id, isSpam }, serverURL);
-      if (result._tag === "err") {
-        throw new Error(result.error);
+      const result = await honoClient.comments["toggle-spam"].$post({
+        json: { id, isSpam },
+      });
+      if (!result.ok) {
+        throw new Error(await result.text());
       }
-      return result.value;
+      return toggleSpamResponse.decode(await result.json());
     },
     onError(error) {
       toast.error(error.message);

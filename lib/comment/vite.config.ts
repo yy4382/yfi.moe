@@ -52,6 +52,7 @@ export default defineConfig({
         "@repo/api",
         /motion(\/.*)?/,
         /better-auth(\/.*)?/,
+        /hono(\/.*)?/,
       ],
     },
   },

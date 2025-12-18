@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { addComment as addCommentApi } from "@repo/api/comment/add";
-import { commentData } from "@repo/api/comment/comment-data";
+import { addCommentResponse } from "@repo/api/comment/add.model";
+import type { HonoClient } from "../context";
 
 // inputting params
 export const commentContentSchema = z.preprocess(
@@ -31,9 +31,8 @@ export type CommentAddParams = z.infer<typeof commentAddParams>;
 export type CommentAddParamsBranded = z.infer<typeof commentAddParamsBranded>;
 
 // returning params
-export const commentAddResponse = z
-  .object({ data: commentData, isSpam: z.boolean() })
-  .brand("CommentAddResponse");
+export const commentAddResponse =
+  addCommentResponse.brand("CommentAddResponse");
 export type CommentAddResponse = z.infer<typeof commentAddResponse>;
 
 // api fn
@@ -41,17 +40,16 @@ export type CommentAddResponse = z.infer<typeof commentAddResponse>;
 // while this fn will return validated response
 export async function addComment(
   params: CommentAddParamsBranded,
-  serverURL: string,
+  honoClient: HonoClient,
 ) {
-  const result = await addCommentApi(
-    {
+  const result = await honoClient.comments.add.$post({
+    json: {
       ...params,
       anonymousName: params.isAnonymous ? "匿名" : undefined,
     },
-    serverURL,
-  );
-  if (result._tag === "err") {
-    throw new Error(result.error);
+  });
+  if (!result.ok) {
+    throw new Error(await result.text());
   }
-  return result.value;
+  return commentAddResponse.parse(await result.json());
 }
