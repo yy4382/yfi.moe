@@ -16,7 +16,7 @@
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.6.0",
-    "@base-ui-components/react": "1.0.0-rc.0",
+    "@base-ui/react": "^1.0.0",
     "@node-rs/jieba": "^2.0.1",
     "@octokit/openapi-types": "^26.0.0",
     "@repo/comment": "workspace:*",

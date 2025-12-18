@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip as TooltipPrimitive } from "@base-ui-components/react/tooltip";
+import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import * as React from "react";
 import { getStrictContext } from "@/lib/hooks/get-strict-context";

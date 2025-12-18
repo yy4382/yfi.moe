@@ -7,15 +7,18 @@ catalog:
   "@tanstack/react-query": ^5.90.2
   "@types/react": ^19.2.7
   "@types/react-dom": ^19.2.3
-  better-auth: ^1.4.5
+  better-auth: ^1.4.7
   eslint: ^9.39.1
+  hono: ^4.9.9
   motion: ^12.23.12
   radix-ui: ^1.4.2
-  react: ^19.2.1
-  react-dom: ^19.2.1
+  react: ^19.2.3
+  react-dom: ^19.2.3
   sonner: ^2.0.7
   typescript: ^5.9.3
   typescript-eslint: ^8.48.1
   vitest: ^4.0.14
   zod: ^4.0.14
-  hono: ^4.9.9
+
+overrides:
+  "better-auth>next": "-"
