@@ -1,6 +1,10 @@
 import { factory } from "@/factory.js";
-import { commentsRoutes } from "./routes/comments.js";
+import { addCommentRoute } from "./routes/add-comment.js";
+import { deleteCommentRoute } from "./routes/delete-comment.js";
+import { getCommentsRoute } from "./routes/get-comments.js";
 import { reactionRoutes } from "./routes/reactions.js";
+import { toggleSpamRoute } from "./routes/toggle-spam.js";
+import { updateCommentRoute } from "./routes/update-comment.js";
 
 const commentApp = factory
   .createApp()
@@ -14,7 +18,11 @@ const commentApp = factory
       return next();
     }),
   )
-  .route("/", commentsRoutes)
+  .route("/", getCommentsRoute)
+  .route("/add", addCommentRoute)
+  .route("/delete", deleteCommentRoute)
+  .route("/update", updateCommentRoute)
+  .route("/toggle-spam", toggleSpamRoute)
   .route("/reaction", reactionRoutes);
 
 export default commentApp;
