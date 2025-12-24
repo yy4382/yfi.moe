@@ -66,9 +66,11 @@ function useHeading(headingsInput: MarkdownHeading[]) {
   const activeIndex = useMemo(() => {
     const index = isVisible.findIndex((visible) => visible);
     if (index !== -1) {
+      // eslint-disable-next-line react-hooks/refs
       lastActiveIndexRef.current = index;
       return index;
     }
+    // eslint-disable-next-line react-hooks/refs
     return lastActiveIndexRef.current;
   }, [isVisible]);
 

@@ -2,7 +2,7 @@
 
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import type { FC, PropsWithChildren } from "react";
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useLayoutEffect, useMemo, useRef, useEffectEvent } from "react";
 import { throttle } from "@/lib/utils/debounce";
 
 const pageScrollLocationAtom = atom(0);
@@ -18,8 +18,12 @@ export const PageScrollInfoProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const ScrollDetector = () => {
-  const setPageScrollLocation = useSetAtom(pageScrollLocationAtom);
-  const setPageScrollDirection = useSetAtom(pageScrollDirectionAtom);
+  const setPageScrollLocation = useEffectEvent(
+    useSetAtom(pageScrollLocationAtom),
+  );
+  const setPageScrollDirection = useEffectEvent(
+    useSetAtom(pageScrollDirectionAtom),
+  );
   const prevScrollY = useRef(0);
 
   // 通过在页面切换后重置方向，避免出现切换页面后因为页面方向的改变导致组件动画闪烁。
@@ -32,7 +36,7 @@ const ScrollDetector = () => {
     return () => {
       document.removeEventListener("astro:after-swap", resetDirection);
     };
-  }, [setPageScrollDirection]);
+  }, []);
 
   useLayoutEffect(() => {
     const scrollHandler = throttle(

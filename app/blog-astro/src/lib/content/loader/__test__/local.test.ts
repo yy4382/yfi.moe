@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { LoaderContext } from "astro/loaders";
 import { fs, vol } from "memfs";
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";

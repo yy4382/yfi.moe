@@ -9,6 +9,7 @@ function UnsubscribeWrapper() {
   );
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSearchParams(searchParams);
   }, []);
   return (

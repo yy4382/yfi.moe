@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const debounce = <F extends (...args: any[]) => any>(
   func: F,
   wait: number,

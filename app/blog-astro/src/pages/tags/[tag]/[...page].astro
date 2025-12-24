@@ -16,7 +16,11 @@ export const getStaticPaths = (async ({ paginate }) => {
   const uniqueTags = allPosts.reduce(
     (acc, post) => {
       post.data.tags.forEach((tag) => {
-        tag in acc ? acc[tag].push(post) : (acc[tag] = [post]);
+        if (tag in acc) {
+          acc[tag].push(post);
+        } else {
+          acc[tag] = [post];
+        }
       });
       return acc;
     },

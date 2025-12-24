@@ -14,7 +14,7 @@ export class LocalFetcher implements ContentFetcher {
   }
 
   async fetch(
-    ctx: LoaderContext,
+    _ctx: LoaderContext,
   ): Promise<{ file: string; rawContent: string }[]> {
     const files = await fs.readdir(this.dirname);
     return await Promise.all(

@@ -13,7 +13,7 @@ export type ImageMetaEntry = {
   blurhash: string;
 };
 
-interface ImageMetaFetcher<Options> {
+interface ImageMetaFetcher {
   name: string;
   fetch: (
     ctx: LoaderContext,
@@ -28,7 +28,7 @@ interface ImageMetaFetcher<Options> {
 const STORE_ID = "image-meta";
 
 export function imageMetaLoader<Options>(
-  fetcherBuilder: (options: Options) => ImageMetaFetcher<Options>,
+  fetcherBuilder: (options: Options) => ImageMetaFetcher,
 ): (options: Options) => Loader {
   return function loader(options: Options): Loader {
     const fetcher = fetcherBuilder(options);
@@ -126,7 +126,7 @@ type GithubFileOptions = {
   pat: string;
 };
 
-export class GithubImageMetaFetcher implements ImageMetaFetcher<GithubFileOptions> {
+export class GithubImageMetaFetcher implements ImageMetaFetcher {
   name = "github-image-meta-loader";
   private options: GithubFileOptions;
   private ofetcher: typeof ofetch;
@@ -187,7 +187,7 @@ type LocalFileOptions = {
   filePath: string;
 };
 
-export class LocalImageMetaFetcher implements ImageMetaFetcher<LocalFileOptions> {
+export class LocalImageMetaFetcher implements ImageMetaFetcher {
   name = "local-image-meta-loader";
   private filePath: string;
 

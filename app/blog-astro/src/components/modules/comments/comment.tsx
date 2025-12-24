@@ -1,14 +1,11 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { WALINE_URL } from "astro:env/client";
-import { useEffect, useState } from "react";
 import CommentYuline from "@repo/comment";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { queryClient } from "@/lib/query-client";
 
 export function Comment({ pathname }: { pathname: string }) {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    setShow(true);
-  }, []);
+  const show = useHydrated();
   if (!show) {
     return <div></div>;
   }

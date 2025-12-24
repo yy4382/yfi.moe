@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
+    "lint": "eslint .",
     "test": "vitest run"
   },
   "dependencies": {
@@ -55,12 +55,19 @@
   },
   "devDependencies": {
     "@egoist/tailwindcss-icons": "^1.9.0",
+    "@eslint/js": "catalog:",
     "@iconify-json/lucide": "^1.2.68",
     "@iconify-json/mingcute": "^1.2.5",
     "@repo/backend": "workspace:*",
     "@types/js-yaml": "^4.0.9",
+    "@typescript-eslint/parser": "^8.50.1",
+    "eslint": "catalog:",
+    "eslint-plugin-astro": "^1.5.0",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
     "memfs": "^4.48.1",
     "msw": "^2.11.3",
+    "typescript-eslint": "catalog:",
     "vite-plugin-font": "^5.1.2",
     "vitest": "catalog:"
   }

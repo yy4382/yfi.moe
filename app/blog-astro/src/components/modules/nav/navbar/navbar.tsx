@@ -74,10 +74,10 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
       return <NavLinksDrawer url={url} />;
     }
     return <Logo>{children}</Logo>;
-  }, [isDesktop, shouldShow]);
+  }, [isDesktop, shouldShow, children, url]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 h-[var(--navbar-height)] border-b border-container bg-background/70 backdrop-blur-lg">
+    <header className="fixed inset-x-0 top-0 z-30 h-(--navbar-height) border-b border-container bg-background/70 backdrop-blur-lg">
       <section className="main-container flex h-full items-center justify-between px-6 py-4 text-content">
         <div className="flex min-w-0 shrink grow items-center gap-4">
           <AnimatePresence initial={false} mode="popLayout">

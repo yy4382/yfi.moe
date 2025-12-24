@@ -66,22 +66,19 @@ Second post from GitHub`,
 const server = setupServer(
   // Mock git ref endpoint (for SHA fetching)
   // Note: The :ref param captures everything after /git/ref/, including slashes
-  http.get(
-    "https://api.github.com/repos/:owner/:repo/git/ref/*",
-    ({ params }) => {
-      return HttpResponse.json({
-        object: {
-          sha: TEST_GITHUB.sha,
-        },
-      });
-    },
-  ),
+  http.get("https://api.github.com/repos/:owner/:repo/git/ref/*", () => {
+    return HttpResponse.json({
+      object: {
+        sha: TEST_GITHUB.sha,
+      },
+    });
+  }),
 
   // Mock contents endpoint for directory listing
   // Use wildcard to match paths with slashes
   http.get(
     "https://api.github.com/repos/:owner/:repo/contents/*",
-    ({ params, request }) => {
+    ({ request }) => {
       const url = new URL(request.url);
       // Extract the full path after /contents/
       const fullPath = url.pathname.split("/contents/")[1];
