@@ -4,8 +4,7 @@
   "scripts": {
     "test": "vitest run",
     "check-types": "tsc --noEmit",
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "tsc"
   },
   "dependencies": {
     "@shikijs/rehype": "^3.13.0",

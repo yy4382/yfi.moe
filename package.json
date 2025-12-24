@@ -12,6 +12,8 @@
     "build:backend": "turbo run build --filter=@repo/backend",
     "check-types": "turbo run check-types",
     "dev": "turbo run dev",
+    "dev:f": "turbo watch dev --filter=blog-astro",
+    "dev:b": "turbo watch dev --filter=@repo/backend",
     "prepare": "husky"
   },
   "devDependencies": {
