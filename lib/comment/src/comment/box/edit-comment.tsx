@@ -1,21 +1,26 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type InfiniteData,
+} from "@tanstack/react-query";
 import { produce } from "immer";
 import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import type { LayeredCommentData } from "@repo/api/comment/get.model";
+import type {
+  GetCommentsChildrenResponse,
+  LayeredCommentData,
+} from "@repo/api/comment/get.model";
 import {
   commentUpdateParamsBranded,
   type CommentUpdateParamsBranded,
   updateComment,
-} from "../comment-api/update";
-import {
-  AuthClientRefContext,
-  HonoClientRefContext,
-  PathnameContext,
-} from "../context";
-import { sessionOptions, sortByAtom } from "../utils";
+} from "@/lib/api/comment/update";
+import { sessionOptions } from "@/lib/auth/session-options";
+import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
+import { sortByAtom } from "../atoms";
 import { CommentBoxIdContext } from "./context";
 import { InputBox } from "./input-area";
 
@@ -30,9 +35,9 @@ export function CommentBoxEdit({
   onCancel: () => void;
   onSuccess?: () => void;
 }) {
-  const path = useContext(PathnameContext);
+  const path = usePathname();
   const queryClient = useQueryClient();
-  const authClient = useContext(AuthClientRefContext).current;
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
   const [contentAtom] = useState<PrimitiveAtom<string>>(() =>
@@ -40,7 +45,7 @@ export function CommentBoxEdit({
   );
   const [content, setContent] = useAtom(contentAtom);
   const mutationKey = ["editComment", editId];
-  const honoClient = useContext(HonoClientRefContext).current;
+  const honoClient = useHonoClient();
   const { mutate } = useMutation({
     mutationKey,
     mutationFn: (params: CommentUpdateParamsBranded) =>
@@ -55,32 +60,49 @@ export function CommentBoxEdit({
           pages: { comments: LayeredCommentData[]; total: number }[];
         }) => {
           return produce(old, (draft) => {
-            for (let i = 0; i < old.pages.length; i++) {
-              for (let j = 0; j < old.pages[i]!.comments.length; j++) {
-                if (old.pages[i]!.comments[j]!.data.id === data.id) {
-                  draft.pages[i]!.comments[j] = {
-                    data: data,
-                    children: old.pages[i]!.comments[j]!.children,
-                  };
-                  return;
+            draft.pages.some((page) => {
+              return page.comments.some((rootComment) => {
+                if (rootComment.data.id === data.id) {
+                  rootComment.data = data;
+                  return true;
                 }
-                for (
-                  let k = 0;
-                  k < old.pages[i]!.comments[j]!.children.data.length;
-                  k++
-                ) {
-                  if (
-                    old.pages[i]!.comments[j]!.children.data[k]!.id === data.id
-                  ) {
-                    draft.pages[i]!.comments[j]!.children.data[k] = data;
-                    return;
-                  }
-                }
-              }
-            }
+                return rootComment.children.data.some(
+                  (childComment, childCommentIndex) => {
+                    if (childComment.id === data.id) {
+                      rootComment.children.data[childCommentIndex] = data;
+                      return true;
+                    }
+                  },
+                );
+              });
+            });
           });
         },
       );
+      if (data.parentId) {
+        queryClient.setQueryData(
+          [
+            "comments",
+            { session: session?.user.id },
+            path,
+            sortBy,
+            data.parentId,
+          ],
+          (old: InfiniteData<GetCommentsChildrenResponse>) => {
+            return produce(old, (draft) => {
+              draft.pages.some((page) => {
+                return page.data.some((comment, i) => {
+                  if (comment.id === data.id) {
+                    page.data[i] = data;
+                    return true;
+                  }
+                });
+              });
+            });
+          },
+        );
+      }
+
       void queryClient.invalidateQueries({
         queryKey: ["comments", { session: session?.user.id }, path],
       });

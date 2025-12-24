@@ -7,13 +7,7 @@ import {
 import { produce } from "immer";
 import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import { motion } from "motion/react";
-import {
-  type PropsWithChildren,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { type PropsWithChildren, useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import MingcuteCloseLine from "~icons/mingcute/close-line";
 import GitHubIcon from "~icons/mingcute/github-line";
@@ -23,24 +17,25 @@ import type {
   LayeredCommentData,
 } from "@repo/api/comment/get.model";
 import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
+import type { AuthClient } from "@/lib/auth/create-auth";
+import { getRefetchSessionUrl } from "@/lib/auth/refetch-session-url";
+import { sessionOptions, sessionOptionsKey } from "@/lib/auth/session-options";
 import {
   addComment,
   commentAddParamsBranded,
   type CommentAddParamsBranded,
-} from "../comment-api/add";
+} from "../../lib/api/comment/add";
 import {
-  AuthClientRefContext,
-  HonoClientRefContext,
-  PathnameContext,
-  type AuthClient,
-} from "../context";
+  useAuthClient,
+  useHonoClient,
+  usePathname,
+} from "../../lib/hooks/context";
 import {
   persistentEmailAtom,
   persistentAsVisitorAtom,
   persistentNameAtom,
   sortByAtom,
-  sessionOptions,
-} from "../utils";
+} from "../atoms";
 import { type CommentBoxId, CommentBoxIdContext } from "./context";
 import { InputBox } from "./input-area";
 import { MagicLinkDialog } from "./magic-link-dialog";
@@ -52,12 +47,12 @@ function useAddComment({
   onSuccess?: () => void;
   id: CommentBoxId;
 }) {
-  const path = useContext(PathnameContext);
+  const path = usePathname();
   const queryClient = useQueryClient();
-  const authClient = useContext(AuthClientRefContext).current;
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
-  const honoClient = useContext(HonoClientRefContext).current;
+  const honoClient = useHonoClient();
 
   const mutation = useMutation({
     mutationKey: ["addComment", id],
@@ -167,8 +162,8 @@ const useNewCommentData = () => {
 };
 
 export function CommentBoxNew({ reply, onSuccess }: CommentBoxNewProps) {
-  const path = useContext(PathnameContext);
-  const authClient = useContext(AuthClientRefContext).current;
+  const path = usePathname();
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
 
   const commentBoxId = {
@@ -285,7 +280,7 @@ function VisitorBox({ children }: PropsWithChildren) {
 
 function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
   // const queryClient = useQueryClient();
-  const authClient = useContext(AuthClientRefContext).current;
+  const authClient = useAuthClient();
   // const { status } = useQuery(sessionOptions(authClient));
   // if (status === "pending")
   //   return (
@@ -304,8 +299,7 @@ function VisitorBoxLogin({ setAsVisitor }: { setAsVisitor: () => void }) {
           <motion.button
             onClick={() => {
               const fn = async () => {
-                const callbackURL = new URL(window.location.href);
-                callbackURL.searchParams.set("refetch-session", "true");
+                const callbackURL = getRefetchSessionUrl();
                 const { error } = await authClient.signIn.social({
                   provider: "github",
                   callbackURL: callbackURL.href,
@@ -353,7 +347,7 @@ type UserBoxProps = PropsWithChildren<{
 
 function UserBox({ children, session }: UserBoxProps) {
   const queryClient = useQueryClient();
-  const authClient = useContext(AuthClientRefContext).current;
+  const authClient = useAuthClient();
 
   const {
     data: accounts,
@@ -373,13 +367,13 @@ function UserBox({ children, session }: UserBoxProps) {
       toast.error(error.message);
       return;
     }
-    void queryClient.invalidateQueries(sessionOptions(authClient));
+    void queryClient.invalidateQueries(sessionOptionsKey);
     void queryClient.invalidateQueries({ queryKey: ["comments"] });
   }, [queryClient, authClient]);
 
   return (
     <div className="flex w-full items-end gap-4">
-      <div className="group relative mb-2 flex-shrink-0">
+      <div className="group relative mb-2 shrink-0">
         <img
           src={session.user.image ?? getDiceBearUrl(session.user.email)}
           alt={session.user.name}

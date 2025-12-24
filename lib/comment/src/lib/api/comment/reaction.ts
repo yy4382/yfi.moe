@@ -2,7 +2,7 @@ import { z } from "zod";
 import { commentReaction } from "@repo/api/comment/comment-data";
 import type { CommentReactionReqBody } from "@repo/api/comment/reaction.model";
 import { type Result, err, ok } from "@repo/helpers/result";
-import type { HonoClient } from "../context";
+import type { HonoClient } from "@/lib/api/create-client";
 
 const ANONYMOUS_IDENTITY_HEADER = "x-anonymous-key";
 

@@ -9,7 +9,7 @@ import { EmojiPicker } from "frimousse";
 import { produce } from "immer";
 import { useAtomValue } from "jotai";
 import { Popover } from "radix-ui";
-import { useContext, useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 import type { ButtonHTMLAttributes } from "react";
 import { toast } from "sonner";
 import MingcuteAddLine from "~icons/mingcute/add-line";
@@ -18,18 +18,15 @@ import type { User } from "@repo/api/auth/client";
 import type { CommentData } from "@repo/api/comment/comment-data";
 import type { GetCommentsResponse } from "@repo/api/comment/get.model";
 import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
-import { useAnonymousIdentity } from "./anonymous-identity";
 import {
   addCommentReaction,
   removeCommentReaction,
   type CommentReactionResponse,
-} from "./comment-api/reaction";
-import {
-  AuthClientRefContext,
-  HonoClientRefContext,
-  PathnameContext,
-} from "./context";
-import { sessionOptions, sortByAtom } from "./utils";
+} from "@/lib/api/comment/reaction";
+import { sessionOptions } from "@/lib/auth/session-options";
+import { useAnonymousIdentity } from "@/lib/hooks/anonymous-identity";
+import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
+import { sortByAtom } from "./atoms";
 
 type ReactionGroup = {
   emojiKey: string;
@@ -188,8 +185,8 @@ export function CommentReactions({
   commentId,
   reactions,
 }: CommentReactionsProps) {
-  const path = useContext(PathnameContext);
-  const authClient = useContext(AuthClientRefContext).current;
+  const path = usePathname();
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
   const queryClient = useQueryClient();
@@ -261,7 +258,7 @@ export function CommentReactions({
     [anonymousKey, currentUser, setCachedReaction, syncFromHeader],
   );
 
-  const honoClient = useContext(HonoClientRefContext).current;
+  const honoClient = useHonoClient();
 
   const addReactionMutation = useMutation<
     AddReactionMutationData,
@@ -353,7 +350,7 @@ export function CommentReactions({
           <Popover.Content
             align="start"
             sideOffset={6}
-            className="z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+            className="z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
             collisionPadding={12}
           >
             <EmojiPicker.Root
@@ -401,7 +398,7 @@ export function CommentReactions({
                     ),
                     Emoji: ({ emoji, ...props }) => (
                       <button
-                        className="flex size-8 items-center justify-center rounded-md text-lg data-[active]:bg-neutral-200 dark:data-[active]:bg-neutral-700"
+                        className="flex size-8 items-center justify-center rounded-md text-lg data-active:bg-neutral-200 dark:data-active:bg-neutral-700"
                         {...props}
                       >
                         {emoji.emoji}

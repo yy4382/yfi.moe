@@ -1,15 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
-import { useRef } from "react";
 import { describe, it, expect } from "vitest";
 import type { CommentData } from "@repo/api/comment/comment-data";
-import {
-  AuthClientRefContext,
-  createAuthClient,
-  PathnameContext,
-  ServerURLContext,
-  type AuthClient,
-} from "./context";
+import { CommentProvider } from "@/components/provider";
 import { CommentItem } from "./list";
 
 function Provider({
@@ -19,16 +12,14 @@ function Provider({
   children: React.ReactNode;
   queryClient: QueryClient;
 }) {
-  const authClientRef = useRef<AuthClient>(
-    createAuthClient("http://localhost:3001/api/"),
-  );
   return (
     <QueryClientProvider client={queryClient}>
-      <ServerURLContext value="http://localhost:3001/api/">
-        <AuthClientRefContext value={authClientRef}>
-          <PathnameContext value="/post/test-post">{children}</PathnameContext>
-        </AuthClientRefContext>
-      </ServerURLContext>
+      <CommentProvider
+        serverURL="http://localhost:3001/api/"
+        pathname="/post/test-post"
+      >
+        {children}
+      </CommentProvider>
     </QueryClientProvider>
   );
 }

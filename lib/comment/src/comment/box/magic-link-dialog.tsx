@@ -1,10 +1,10 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import MailSendLineIcon from "~icons/mingcute/mail-send-line";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,17 +12,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "../../components/ui/tabs";
-import { AuthClientRefContext } from "../context";
-import { persistentEmailAtom, persistentNameAtom } from "../utils";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { getRefetchSessionUrl } from "@/lib/auth/refetch-session-url";
+import { useAuthClient } from "@/lib/hooks/context";
+import { persistentEmailAtom, persistentNameAtom } from "../atoms";
 
 interface MagicLinkDialogProps {
   children: React.ReactNode;
@@ -36,7 +32,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   const [emailSent, setEmailSent] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
   const [submittedEmail, setSubmittedEmail] = useState("");
-  const authClient = useContext(AuthClientRefContext).current;
+  const authClient = useAuthClient();
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,8 +46,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
     setSubmittedEmail(email);
 
     try {
-      const callbackURL = new URL(window.location.href);
-      callbackURL.searchParams.set("refetch-session", "true");
+      const callbackURL = getRefetchSessionUrl();
       const { error } = await authClient.signIn.magicLink({
         email: email,
         callbackURL: callbackURL.href,
@@ -151,7 +146,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
           <div className="space-y-4 text-center">
             <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
               <div className="flex items-center justify-center">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <svg
                     className="h-5 w-5 text-green-400"
                     viewBox="0 0 20 20"

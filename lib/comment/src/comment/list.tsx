@@ -9,7 +9,7 @@ import clsx from "clsx";
 import { produce } from "immer";
 import { useAtom, useAtomValue } from "jotai";
 import { AnimatePresence, motion } from "motion/react";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useState } from "react";
 import { toast } from "sonner";
 import { z, ZodError } from "zod";
 import CommentIcon from "~icons/mingcute/comment-line";
@@ -34,22 +34,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { HonoClient } from "@/lib/api/create-client";
+import { sessionOptions } from "@/lib/auth/session-options";
+import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
 import { cn } from "@/lib/utils";
+import { SORT_BY_LABELS, SORT_BY_OPTIONS, sortByAtom } from "./atoms";
 import { CommentBoxNew } from "./box/add-comment";
 import { CommentBoxEdit } from "./box/edit-comment";
-import {
-  AuthClientRefContext,
-  HonoClientRefContext,
-  PathnameContext,
-  type HonoClient,
-} from "./context";
 import { CommentReactions } from "./reactions";
-import {
-  sessionOptions,
-  SORT_BY_LABELS,
-  SORT_BY_OPTIONS,
-  sortByAtom,
-} from "./utils";
 
 const PER_PAGE = 10;
 
@@ -99,11 +91,11 @@ function listOptions(
 }
 
 export function CommentList() {
-  const path = useContext(PathnameContext);
-  const authClient = useContext(AuthClientRefContext).current;
+  const path = usePathname();
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
   const [sortBy, setSortBy] = useAtom(sortByAtom);
-  const honoClient = useContext(HonoClientRefContext).current;
+  const honoClient = useHonoClient();
   const {
     data,
     fetchNextPage,
@@ -202,9 +194,9 @@ export function CommentParent({
 }: {
   parentComment: LayeredCommentData;
 }) {
-  const path = useContext(PathnameContext);
-  const honoClient = useContext(HonoClientRefContext).current;
-  const authClient = useContext(AuthClientRefContext).current;
+  const path = usePathname();
+  const honoClient = useHonoClient();
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
 
@@ -293,7 +285,7 @@ type CommentItemProps = {
 export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
   const [replying, setReplying] = useState(false);
   const [editing, setEditing] = useState(false);
-  const authClient = useContext(AuthClientRefContext).current;
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
 
   const isMine = session && entry.userId && entry.userId === session.user.id;
@@ -302,7 +294,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
     <div id={`comment-${entry.id}`}>
       <div className="flex items-start gap-3 border-zinc-100 py-2 last:border-b-0">
         {/* 用户头像 */}
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <img
             src={entry.userImage}
             alt={entry.displayName}
@@ -360,7 +352,7 @@ export function CommentItem({ comment: entry, replyToName }: CommentItemProps) {
                 </a>
               )}
               <div
-                className="prose prose-sm break-words text-content dark:prose-invert prose-p:my-1"
+                className="prose prose-sm wrap-break-word text-content dark:prose-invert prose-p:my-1"
                 dangerouslySetInnerHTML={{ __html: entry.content }}
               />
             </div>
@@ -426,11 +418,11 @@ function CommentItemDropdown({
   entry: CommentData;
   onEdit: () => void;
 }) {
-  const path = useContext(PathnameContext);
+  const path = usePathname();
   const queryClient = useQueryClient();
-  const authClient = useContext(AuthClientRefContext).current;
+  const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
-  const honoClient = useContext(HonoClientRefContext).current;
+  const honoClient = useHonoClient();
 
   const isMine = session && entry.userId && entry.userId === session.user.id;
 
