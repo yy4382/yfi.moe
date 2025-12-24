@@ -11,7 +11,7 @@
     "build:frontend": "turbo run build --filter=blog-astro",
     "build:backend": "turbo run build --filter=@repo/backend",
     "check-types": "turbo run check-types",
-    "dev": "turbo run dev",
+    "dev": "turbo watch dev",
     "dev:f": "turbo watch dev --filter=blog-astro",
     "dev:b": "turbo watch dev --filter=@repo/backend",
     "prepare": "husky"
