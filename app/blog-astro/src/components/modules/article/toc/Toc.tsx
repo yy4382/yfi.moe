@@ -7,7 +7,8 @@ import type { MarkdownHeading } from "@repo/markdown/parse";
 import {
   Popover,
   PopoverPortal,
-  PopoverContent,
+  PopoverPositioner,
+  PopoverPopup,
   PopoverTrigger,
 } from "@/components/ui/motion-popover";
 import TocEntry from "./TocEntry";
@@ -84,30 +85,25 @@ const Toc: React.FC<{
 
   return (
     <Popover modal={false}>
-      <PopoverTrigger asChild>
-        <button className="flex size-10 center border-b border-l border-container bg-background">
-          <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <ListIcon className="size-6 text-heading" />
-          </motion.span>
-        </button>
+      <PopoverTrigger className="flex size-10 center border-b border-l border-container bg-background">
+        <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <ListIcon className="size-6 text-heading" />
+        </motion.span>
       </PopoverTrigger>
       <PopoverPortal>
-        <PopoverContent
-          sideOffset={5}
-          collisionPadding={5}
-          align="end"
-          side="bottom"
-          alignOffset={-10}
-          transition={{
-            type: "spring",
-            visualDuration: 0.15,
-            bounce: 0.2,
-          }}
-        >
-          <div className="toc-card w-76 border border-container bg-background px-6 py-8">
-            <TocEntry headings={headings} activeIndex={activeIndex} />
-          </div>
-        </PopoverContent>
+        <PopoverPositioner sideOffset={5} className="z-50">
+          <PopoverPopup
+            transition={{
+              type: "spring",
+              visualDuration: 0.15,
+              bounce: 0.2,
+            }}
+          >
+            <div className="toc-card w-76 border border-container bg-background px-6 py-8">
+              <TocEntry headings={headings} activeIndex={activeIndex} />
+            </div>
+          </PopoverPopup>
+        </PopoverPositioner>
       </PopoverPortal>
     </Popover>
   );

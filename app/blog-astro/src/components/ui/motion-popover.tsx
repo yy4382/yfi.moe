@@ -1,18 +1,14 @@
-/**
- * From animate ui popover https://animate-ui.com/docs/radix/popover
- *
- * MIT License
- * https://github.com/animate-ui/animate-ui
- */
+"use client";
+
+import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
-import { Popover as PopoverPrimitive } from "radix-ui";
 import * as React from "react";
 import { getStrictContext } from "@/lib/hooks/get-strict-context";
 import { useControlledState } from "@/lib/hooks/use-controlled-state";
 
 type PopoverContextType = {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  setIsOpen: PopoverProps["onOpenChange"];
 };
 
 const [PopoverProvider, usePopover] =
@@ -48,7 +44,7 @@ function PopoverTrigger(props: PopoverTriggerProps) {
 
 type PopoverPortalProps = Omit<
   React.ComponentProps<typeof PopoverPrimitive.Portal>,
-  "forceMount"
+  "keepMounted"
 >;
 
 function PopoverPortal(props: PopoverPortalProps) {
@@ -58,7 +54,7 @@ function PopoverPortal(props: PopoverPortalProps) {
     <AnimatePresence>
       {isOpen && (
         <PopoverPrimitive.Portal
-          forceMount
+          keepMounted
           data-slot="popover-portal"
           {...props}
         />
@@ -67,70 +63,41 @@ function PopoverPortal(props: PopoverPortalProps) {
   );
 }
 
-type PopoverContentProps = Omit<
-  React.ComponentProps<typeof PopoverPrimitive.Content>,
-  "forceMount" | "asChild"
-> &
-  HTMLMotionProps<"div">;
+type PopoverPositionerProps = React.ComponentProps<
+  typeof PopoverPrimitive.Positioner
+>;
 
-function PopoverContent({
-  onOpenAutoFocus,
-  onCloseAutoFocus,
-  onEscapeKeyDown,
-  onPointerDownOutside,
-  onFocusOutside,
-  onInteractOutside,
-  align,
-  alignOffset,
-  side,
-  sideOffset,
-  avoidCollisions,
-  collisionBoundary,
-  collisionPadding,
-  arrowPadding,
-  sticky,
-  hideWhenDetached,
-  transition = { type: "spring", stiffness: 300, damping: 25 },
-  ...props
-}: PopoverContentProps) {
+function PopoverPositioner(props: PopoverPositionerProps) {
   return (
-    <PopoverPrimitive.Content
-      asChild
-      forceMount
-      align={align}
-      alignOffset={alignOffset}
-      side={side}
-      sideOffset={sideOffset}
-      avoidCollisions={avoidCollisions}
-      collisionBoundary={collisionBoundary}
-      collisionPadding={collisionPadding}
-      arrowPadding={arrowPadding}
-      sticky={sticky}
-      hideWhenDetached={hideWhenDetached}
-      onOpenAutoFocus={onOpenAutoFocus}
-      onCloseAutoFocus={onCloseAutoFocus}
-      onEscapeKeyDown={onEscapeKeyDown}
-      onPointerDownOutside={onPointerDownOutside}
-      onInteractOutside={onInteractOutside}
-      onFocusOutside={onFocusOutside}
-    >
-      <motion.div
-        key="popover-content"
-        data-slot="popover-content"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.5 }}
-        transition={transition}
-        {...props}
-      />
-    </PopoverPrimitive.Content>
+    <PopoverPrimitive.Positioner data-slot="popover-positioner" {...props} />
   );
 }
 
-type PopoverAnchorProps = React.ComponentProps<typeof PopoverPrimitive.Anchor>;
+type PopoverPopupProps = Omit<
+  React.ComponentProps<typeof PopoverPrimitive.Popup>,
+  "render"
+> &
+  HTMLMotionProps<"div">;
 
-function PopoverAnchor({ ...props }: PopoverAnchorProps) {
-  return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />;
+function PopoverPopup({
+  transition = { type: "spring", stiffness: 500, damping: 30, mass: 0.8 },
+  ...props
+}: PopoverPopupProps) {
+  return (
+    <PopoverPrimitive.Popup
+      render={
+        <motion.div
+          key="popover-popup"
+          data-slot="popover-popup"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          transition={transition}
+          {...props}
+        />
+      }
+    />
+  );
 }
 
 type PopoverArrowProps = React.ComponentProps<typeof PopoverPrimitive.Arrow>;
@@ -139,27 +106,19 @@ function PopoverArrow(props: PopoverArrowProps) {
   return <PopoverPrimitive.Arrow data-slot="popover-arrow" {...props} />;
 }
 
-type PopoverCloseProps = React.ComponentProps<typeof PopoverPrimitive.Close>;
-
-function PopoverClose(props: PopoverCloseProps) {
-  return <PopoverPrimitive.Close data-slot="popover-close" {...props} />;
-}
-
 export {
   Popover,
   PopoverTrigger,
   PopoverPortal,
-  PopoverContent,
-  PopoverAnchor,
-  PopoverClose,
+  PopoverPositioner,
+  PopoverPopup,
   PopoverArrow,
   usePopover,
   type PopoverProps,
   type PopoverTriggerProps,
   type PopoverPortalProps,
-  type PopoverContentProps,
-  type PopoverAnchorProps,
-  type PopoverCloseProps,
+  type PopoverPositionerProps,
+  type PopoverPopupProps,
   type PopoverArrowProps,
   type PopoverContextType,
 };
