@@ -1,17 +1,8 @@
 import { createContext } from "react";
+import type { CommentBoxId } from "../types";
 
-export type CommentBoxId = {
-  parentId?: number | undefined;
-  replyingTo?: number | undefined;
-  editId?: number | undefined;
-  path: string;
-};
-
+/**
+ * Context for passing comment box identification down the tree.
+ * Used by InputBox to track mutation state.
+ */
 export const CommentBoxIdContext = createContext<CommentBoxId>({ path: "" });
-
-export type CommentBoxFillingData = {
-  visitorName?: string;
-  visitorEmail?: string;
-  content: string;
-  isAnonymous: boolean;
-};

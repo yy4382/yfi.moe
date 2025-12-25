@@ -1,7 +1,7 @@
 import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
 import { useSearchParamRefetchSessionEffect } from "@/lib/auth/refetch-session-url";
 import { CommentProvider } from "../components/provider";
-import { CommentBoxNew } from "./box/add-comment";
+import { CommentBoxNew } from "./box";
 import { CommentList } from "./list";
 
 export type CommentYulineProps = {

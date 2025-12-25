@@ -19,97 +19,27 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { getRefetchSessionUrl } from "@/lib/auth/refetch-session-url";
 import { useAuthClient } from "@/lib/hooks/context";
 import { persistentEmailAtom, persistentNameAtom } from "../atoms";
+import { DIALOG_CLOSE_DELAY } from "../utils/constants";
 
 interface MagicLinkDialogProps {
   children: React.ReactNode;
 }
 
+type AuthMode = "login" | "signup";
+
+/**
+ * Dialog for email-based authentication via magic link.
+ * Supports both login (existing users) and signup (new users).
+ */
 export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useAtom(persistentEmailAtom);
   const [signupName, setSignupName] = useAtom(persistentNameAtom);
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
-  const [activeTab, setActiveTab] = useState("login");
+  const [activeTab, setActiveTab] = useState<AuthMode>("login");
   const [submittedEmail, setSubmittedEmail] = useState("");
   const authClient = useAuthClient();
-
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email) {
-      toast.error("请输入邮箱地址");
-      return;
-    }
-
-    setIsLoading(true);
-    setSubmittedEmail(email);
-
-    try {
-      const callbackURL = getRefetchSessionUrl();
-      const { error } = await authClient.signIn.magicLink({
-        email: email,
-        callbackURL: callbackURL.href,
-      });
-
-      if (error) {
-        toast.error(error.message || "发送邮件失败");
-        return;
-      }
-
-      setEmailSent(true);
-      toast.success("登录链接已发送到您的邮箱！");
-    } catch (error) {
-      console.error("Magic link error:", error);
-      toast.error("发送登录链接时出错");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSignupSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email) {
-      toast.error("请输入邮箱地址");
-      return;
-    }
-
-    if (!signupName) {
-      toast.error("请输入昵称");
-      return;
-    }
-
-    setIsLoading(true);
-    setSubmittedEmail(email);
-
-    try {
-      const { error } = await authClient.signIn.magicLink({
-        email,
-        name: signupName,
-        callbackURL: `${window.location.href}`,
-      });
-
-      if (error) {
-        toast.error(error.message || "发送邮件失败");
-        return;
-      }
-
-      setEmailSent(true);
-      toast.success("注册链接已发送到您的邮箱！");
-
-      // Optionally close dialog after a delay
-      setTimeout(() => {
-        setOpen(false);
-        resetForm();
-      }, 3000);
-    } catch (error) {
-      console.error("Magic link error:", error);
-      toast.error("发送注册链接时出错");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const resetForm = () => {
     setEmail("");
@@ -120,14 +50,60 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
     setActiveTab("login");
   };
 
+  /**
+   * Unified handler for both login and signup magic link requests.
+   */
+  const handleMagicLink = async (mode: AuthMode) => {
+    if (!email) {
+      toast.error("请输入邮箱地址");
+      return;
+    }
+    if (mode === "signup" && !signupName) {
+      toast.error("请输入昵称");
+      return;
+    }
+
+    setIsLoading(true);
+    setSubmittedEmail(email);
+
+    try {
+      const callbackURL = getRefetchSessionUrl();
+      const { error } = await authClient.signIn.magicLink({
+        email,
+        ...(mode === "signup" && { name: signupName }),
+        callbackURL: callbackURL.href,
+      });
+
+      if (error) {
+        toast.error(error.message || "发送邮件失败");
+        return;
+      }
+
+      setEmailSent(true);
+      toast.success(mode === "login" ? "登录链接已发送！" : "注册链接已发送！");
+
+      if (mode === "signup") {
+        setTimeout(() => {
+          setOpen(false);
+          resetForm();
+        }, DIALOG_CLOSE_DELAY);
+      }
+    } catch (error) {
+      console.error("Magic link error:", error);
+      toast.error(
+        mode === "login" ? "发送登录链接时出错" : "发送注册链接时出错",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Dialog
       open={open}
-      onOpenChange={(open) => {
-        setOpen(open);
-        if (!open) {
-          resetForm();
-        }
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) resetForm();
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -143,41 +119,11 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
         </DialogHeader>
 
         {emailSent ? (
-          <div className="space-y-4 text-center">
-            <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
-              <div className="flex items-center justify-center">
-                <div className="shrink-0">
-                  <svg
-                    className="h-5 w-5 text-green-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-green-800 dark:text-green-200">
-                    {activeTab === "login" ? "登录" : "注册"}链接已发送！
-                  </p>
-                  <p className="text-sm text-green-700 dark:text-green-300">
-                    请检查您的邮箱 ({submittedEmail}) 并点击链接
-                    {activeTab === "login" ? "登录" : "完成注册"}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              如果几分钟内没有收到邮件，请检查垃圾邮件文件夹
-            </p>
-          </div>
+          <EmailSentMessage mode={activeTab} email={submittedEmail} />
         ) : (
           <Tabs
             value={activeTab}
-            onValueChange={setActiveTab}
+            onValueChange={(v) => setActiveTab(v as AuthMode)}
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-2">
@@ -187,43 +133,32 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
 
             <TabsContent value="login" className="mt-4 space-y-4">
               <form
-                onSubmit={(e) => void handleLoginSubmit(e)}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void handleMagicLink("login");
+                }}
                 className="space-y-4"
               >
-                <div className="space-y-2">
-                  <Label htmlFor="login-email">邮箱地址</Label>
-                  <Input
-                    id="login-email"
-                    type="email"
-                    placeholder="请输入您的邮箱地址"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    disabled={isLoading}
-                    className="w-full"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isLoading || !email}
-                >
-                  {isLoading ? (
-                    <div className="flex items-center gap-2">
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                      发送中...
-                    </div>
-                  ) : (
-                    "发送登录链接"
-                  )}
-                </Button>
+                <EmailField
+                  id="login-email"
+                  value={email}
+                  onChange={setEmail}
+                  disabled={isLoading}
+                />
+                <SubmitButton
+                  isLoading={isLoading}
+                  disabled={!email}
+                  label="发送登录链接"
+                />
               </form>
             </TabsContent>
 
             <TabsContent value="signup" className="mt-4 space-y-4">
               <form
-                onSubmit={(e) => void handleSignupSubmit(e)}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void handleMagicLink("signup");
+                }}
                 className="space-y-4"
               >
                 <div className="space-y-2">
@@ -239,40 +174,111 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                     className="w-full"
                   />
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">邮箱地址</Label>
-                  <Input
-                    id="signup-email"
-                    type="email"
-                    placeholder="请输入您的邮箱地址"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    disabled={isLoading}
-                    className="w-full"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isLoading || !email || !signupName}
-                >
-                  {isLoading ? (
-                    <div className="flex items-center gap-2">
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                      发送中...
-                    </div>
-                  ) : (
-                    "发送注册链接"
-                  )}
-                </Button>
+                <EmailField
+                  id="signup-email"
+                  value={email}
+                  onChange={setEmail}
+                  disabled={isLoading}
+                />
+                <SubmitButton
+                  isLoading={isLoading}
+                  disabled={!email || !signupName}
+                  label="发送注册链接"
+                />
               </form>
             </TabsContent>
           </Tabs>
         )}
       </DialogContent>
     </Dialog>
+  );
+}
+
+function EmailField({
+  id,
+  value,
+  onChange,
+  disabled,
+}: {
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+  disabled: boolean;
+}) {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id}>邮箱地址</Label>
+      <Input
+        id={id}
+        type="email"
+        placeholder="请输入您的邮箱地址"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required
+        disabled={disabled}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function SubmitButton({
+  isLoading,
+  disabled,
+  label,
+}: {
+  isLoading: boolean;
+  disabled: boolean;
+  label: string;
+}) {
+  return (
+    <Button type="submit" className="w-full" disabled={isLoading || disabled}>
+      {isLoading ? (
+        <div className="flex items-center gap-2">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          发送中...
+        </div>
+      ) : (
+        label
+      )}
+    </Button>
+  );
+}
+
+function EmailSentMessage({ mode, email }: { mode: AuthMode; email: string }) {
+  const modeText = mode === "login" ? "登录" : "注册";
+
+  return (
+    <div className="space-y-4 text-center">
+      <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
+        <div className="flex items-center justify-center">
+          <div className="shrink-0">
+            <svg
+              className="h-5 w-5 text-green-400"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <p className="text-sm font-medium text-green-800 dark:text-green-200">
+              {modeText}链接已发送！
+            </p>
+            <p className="text-sm text-green-700 dark:text-green-300">
+              请检查您的邮箱 ({email}) 并点击链接
+              {mode === "login" ? "登录" : "完成注册"}
+            </p>
+          </div>
+        </div>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        如果几分钟内没有收到邮件，请检查垃圾邮件文件夹
+      </p>
+    </div>
   );
 }

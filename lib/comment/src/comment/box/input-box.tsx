@@ -1,19 +1,29 @@
 import { type MutationStatus, useMutationState } from "@tanstack/react-query";
-import { atom, useAtom, type WritableAtom } from "jotai";
+import { useAtom, type WritableAtom } from "jotai";
 import MingcuteCloseLine from "~icons/mingcute/close-line";
 import MingcuteLoadingLine from "~icons/mingcute/loading-line";
 import MingcuteSendPlaneLine from "~icons/mingcute/send-plane-line";
+import { COMMENT_MAX_LENGTH } from "../utils/constants";
 
-type InputBoxProps = {
+interface InputBoxProps {
   submit: () => void;
   contentAtom: WritableAtom<string, [string], void>;
   isAnonymousAtom?: WritableAtom<boolean, [boolean], void>;
-  placeholder?: string | undefined;
-  mutationKey: unknown[];
-
+  placeholder?: string;
+  mutationKey: readonly unknown[];
   onCancel?: () => void;
-};
+}
 
+/**
+ * Shared input textarea for new comments and edits.
+ *
+ * Features:
+ * - Markdown support indicator
+ * - Character count
+ * - Optional anonymous checkbox
+ * - Keyboard shortcut (Ctrl/Cmd+Enter to submit)
+ * - Loading state during submission
+ */
 export function InputBox({
   submit,
   contentAtom,
@@ -45,9 +55,7 @@ export function InputBox({
 
       <textarea
         value={content}
-        onChange={(e) => {
-          setContent(e.target.value);
-        }}
+        onChange={(e) => setContent(e.target.value)}
         onKeyDown={(e) => {
           if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
             e.preventDefault();
@@ -71,22 +79,19 @@ export function InputBox({
   );
 }
 
-const notAnonymousAtom = atom(Symbol("notAnonymous"));
+interface InputBoxFooterProps {
+  content: string;
+  submit: () => void;
+  isAnonymousAtom?: WritableAtom<boolean, [boolean], void>;
+  status: MutationStatus;
+}
+
 function InputBoxFooter({
   content,
   isAnonymousAtom,
   submit,
   status,
-}: {
-  content: string;
-  isAnonymousAtom?: WritableAtom<boolean, [boolean], void> | undefined;
-  submit: () => void;
-  status: MutationStatus;
-}) {
-  const [isAnonymous, setIsAnonymous] = useAtom(
-    isAnonymousAtom ?? notAnonymousAtom,
-  );
-
+}: InputBoxFooterProps) {
   return (
     <div className="flex items-center justify-between gap-2 px-1 text-sm text-comment">
       <div className="flex items-center gap-2 text-xs text-comment/90">
@@ -95,17 +100,10 @@ function InputBoxFooter({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <div>{content.length} / 500</div>
-        {typeof isAnonymous === "boolean" && (
-          <label className="flex items-center gap-1">
-            <input
-              type="checkbox"
-              checked={isAnonymous}
-              onChange={(e) => setIsAnonymous(e.target.checked)}
-            />
-            <span>匿名</span>
-          </label>
-        )}
+        <div>
+          {content.length} / {COMMENT_MAX_LENGTH}
+        </div>
+        {isAnonymousAtom && <AnonymousCheckbox atom={isAnonymousAtom} />}
         <button
           onClick={() => submit()}
           className="flex items-center gap-0.5 hover:scale-105 active:scale-95 disabled:opacity-50"
@@ -120,5 +118,24 @@ function InputBoxFooter({
         </button>
       </div>
     </div>
+  );
+}
+
+interface AnonymousCheckboxProps {
+  atom: WritableAtom<boolean, [boolean], void>;
+}
+
+function AnonymousCheckbox({ atom }: AnonymousCheckboxProps) {
+  const [isAnonymous, setIsAnonymous] = useAtom(atom);
+
+  return (
+    <label className="flex items-center gap-1">
+      <input
+        type="checkbox"
+        checked={isAnonymous}
+        onChange={(e) => setIsAnonymous(e.target.checked)}
+      />
+      <span>匿名</span>
+    </label>
   );
 }
