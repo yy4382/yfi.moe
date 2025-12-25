@@ -1,12 +1,5 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
 import type { LayeredCommentData } from "@repo/api/comment/get.model";
-import { getCommentsChildrenResponse } from "@repo/api/comment/get.model";
-import { sessionOptions } from "@/lib/auth/session-options";
-import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
-import { sortByAtom } from "../atoms";
-import { PER_PAGE } from "../utils/constants";
-import { commentKeys } from "../utils/query-keys";
+import { useChildrenQuery } from "../hooks/use-children-query";
 import { CommentItem } from "./comment-item";
 
 interface CommentParentProps {
@@ -18,49 +11,11 @@ interface CommentParentProps {
  * Supports loading more children with pagination.
  */
 export function CommentParent({ parentComment }: CommentParentProps) {
-  const path = usePathname();
-  const honoClient = useHonoClient();
-  const authClient = useAuthClient();
-  const { data: session } = useQuery(sessionOptions(authClient));
-  const sortBy = useAtomValue(sortByAtom);
-
   const {
     data: childrenData,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery({
-    queryKey: commentKeys.children(
-      session?.user.id,
-      path,
-      sortBy,
-      parentComment.data.id,
-    ),
-    queryFn: async ({ pageParam }: { pageParam: number | undefined }) => {
-      const result = await honoClient.comments["get-children"].$post({
-        json: {
-          path,
-          limit: PER_PAGE,
-          cursor: pageParam,
-          sortBy: "created_asc",
-          rootId: parentComment.data.id,
-        },
-      });
-      if (!result.ok) {
-        throw new Error(await result.text());
-      }
-      return getCommentsChildrenResponse.decode(await result.json());
-    },
-    enabled: parentComment.children.hasMore,
-    initialPageParam: undefined,
-    getNextPageParam: (lastPage) => {
-      return lastPage.hasMore ? lastPage.cursor : undefined;
-    },
-    initialData: {
-      pages: [parentComment.children],
-      pageParams: [undefined],
-    },
-    staleTime: 1000,
-  });
+  } = useChildrenQuery(parentComment);
 
   return (
     <div className="flex flex-col">
