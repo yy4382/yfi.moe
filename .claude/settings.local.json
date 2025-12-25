@@ -11,7 +11,13 @@
       "Bash(pnpm exec prettier:*)",
       "mcp__context7__resolve-library-id",
       "mcp__context7__get-library-docs",
-      "Bash(pnpm --filter @repo/backend check-types:*)"
+      "Bash(pnpm --filter @repo/backend check-types:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(xargs ls:*)",
+      "Bash(grep:*)",
+      "Skill(frontend-design:frontend-design)",
+      "WebFetch(domain:localhost)"
     ],
     "deny": []
   }
