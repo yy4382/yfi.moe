@@ -5,7 +5,7 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import { produce } from "immer";
-import { atom, type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
+import { atom, type PrimitiveAtom, useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -24,15 +24,13 @@ import { sortByAtom } from "../atoms";
 import { CommentBoxIdContext } from "./context";
 import { InputBox } from "./input-area";
 
-export function CommentBoxEdit({
+function useUpdateComment({
   editId,
-  onCancel,
+  contentAtom,
   onSuccess,
-  initialContent,
 }: {
   editId: number;
-  initialContent: string;
-  onCancel: () => void;
+  contentAtom: PrimitiveAtom<string>;
   onSuccess?: () => void;
 }) {
   const path = usePathname();
@@ -40,13 +38,10 @@ export function CommentBoxEdit({
   const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
-  const [contentAtom] = useState<PrimitiveAtom<string>>(() =>
-    atom(initialContent),
-  );
-  const [content, setContent] = useAtom(contentAtom);
+  const setContent = useSetAtom(contentAtom);
   const mutationKey = ["editComment", editId];
   const honoClient = useHonoClient();
-  const { mutate } = useMutation({
+  const mutation = useMutation({
     mutationKey,
     mutationFn: (params: CommentUpdateParamsBranded) =>
       updateComment(params, honoClient),
@@ -109,6 +104,30 @@ export function CommentBoxEdit({
       setContent("");
       onSuccess?.();
     },
+  });
+  return [mutation, mutationKey] as const;
+}
+
+export function CommentBoxEdit({
+  editId,
+  onCancel,
+  onSuccess,
+  initialContent,
+}: {
+  editId: number;
+  initialContent: string;
+  onCancel: () => void;
+  onSuccess?: () => void;
+}) {
+  const path = usePathname();
+  const [contentAtom] = useState<PrimitiveAtom<string>>(() =>
+    atom(initialContent),
+  );
+  const content = useAtomValue(contentAtom);
+  const [{ mutate }, mutationKey] = useUpdateComment({
+    editId,
+    contentAtom,
+    onSuccess,
   });
 
   const handleSubmit = () => {
