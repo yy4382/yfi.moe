@@ -5,6 +5,7 @@ import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import * as React from "react";
 import { getStrictContext } from "@/lib/hooks/get-strict-context";
 import { useControlledState } from "@/lib/hooks/use-controlled-state";
+import { cn } from "@/lib/utils/cn";
 
 type PopoverContextType = {
   isOpen: boolean;
@@ -63,6 +64,23 @@ function PopoverPortal(props: PopoverPortalProps) {
   );
 }
 
+type PopoverBackdropProps = React.ComponentProps<
+  typeof PopoverPrimitive.Backdrop
+>;
+
+function PopoverBackdrop({ className, ...props }: PopoverBackdropProps) {
+  return (
+    <PopoverPrimitive.Backdrop
+      data-slot="popover-backdrop"
+      className={cn(
+        "fixed inset-0 isolate z-50 bg-black/10 duration-100 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:bg-black/50",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
 type PopoverPositionerProps = React.ComponentProps<
   typeof PopoverPrimitive.Positioner
 >;
@@ -110,6 +128,7 @@ export {
   Popover,
   PopoverTrigger,
   PopoverPortal,
+  PopoverBackdrop,
   PopoverPositioner,
   PopoverPopup,
   PopoverArrow,
@@ -117,6 +136,7 @@ export {
   type PopoverProps,
   type PopoverTriggerProps,
   type PopoverPortalProps,
+  type PopoverBackdropProps,
   type PopoverPositionerProps,
   type PopoverPopupProps,
   type PopoverArrowProps,

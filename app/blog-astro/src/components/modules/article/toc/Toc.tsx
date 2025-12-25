@@ -10,8 +10,8 @@ import {
   PopoverPositioner,
   PopoverPopup,
   PopoverTrigger,
+  PopoverBackdrop,
 } from "@/components/ui/motion-popover";
-import { throttle } from "@/lib/utils/debounce";
 import TocEntry from "./TocEntry";
 
 function useHeading(headingsInput: MarkdownHeading[]) {
@@ -83,46 +83,16 @@ const Toc: React.FC<{
   headings: MarkdownHeading[];
 }> = ({ headings }) => {
   const activeIndex = useHeading(headings);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const thresholdRef = useRef(60);
-
-  useEffect(() => {
-    const navbarHeight = parseInt(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--navbar-height",
-      ),
-    );
-    if (!isNaN(navbarHeight)) {
-      thresholdRef.current = navbarHeight - 20;
-    }
-  }, []);
-
-  useEffect(() => {
-    const checkPosition = throttle(() => {
-      if (!buttonRef.current || !isOpen) return;
-
-      const rect = buttonRef.current.getBoundingClientRect();
-      if (rect.top < thresholdRef.current && rect.top >= 0) {
-        setIsOpen(false);
-      }
-    }, 100);
-
-    window.addEventListener("scroll", checkPosition, { passive: true });
-    return () => window.removeEventListener("scroll", checkPosition);
-  }, [isOpen]);
 
   return (
-    <Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger
-        className="flex size-10 center border-b border-l border-container bg-background"
-        ref={buttonRef}
-      >
+    <Popover modal={true}>
+      <PopoverTrigger className="flex size-10 center border-b border-l border-container bg-background">
         <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <ListIcon className="size-6 text-heading" />
         </motion.span>
       </PopoverTrigger>
       <PopoverPortal>
+        <PopoverBackdrop />
         <PopoverPositioner sideOffset={5} className="z-50">
           <PopoverPopup
             transition={{
