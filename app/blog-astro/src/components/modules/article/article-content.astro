@@ -2,6 +2,7 @@
 import { markdownToHeadings } from "@repo/markdown/parse";
 import MarkdownArticle from "@/components/markdown/markdown-article.astro";
 import Toc from "./toc/Toc";
+import ReadingProgress from "./reading-progress";
 
 interface Props {
   text: string;
@@ -16,6 +17,10 @@ const headings = markdownToHeadings(text);
     class="@container relative main-container grid h-full grid-cols-1"
     id="article-container"
   >
+    <div class="pointer-events-none col-start-1 row-start-1">
+      <ReadingProgress client:load client:only="react" />
+    </div>
+
     <div class="pointer-events-none col-start-1 row-start-1">
       <Toc headings={headings} client:load client:only="react" />
     </div>
