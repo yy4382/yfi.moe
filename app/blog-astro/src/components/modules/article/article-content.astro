@@ -12,13 +12,15 @@ const headings = markdownToHeadings(text);
 ---
 
 <div class="border-b border-container">
-  <div class="@container relative main-container h-full">
-    <div class="sticky top-(--navbar-height) z-20">
-      <div class="flex justify-end">
-        <Toc headings={headings} client:load />
-      </div>
+  <div
+    class="@container relative main-container grid h-full grid-cols-1"
+    id="article-container"
+  >
+    <div class="pointer-events-none col-start-1 row-start-1">
+      <Toc headings={headings} client:load client:only="react" />
     </div>
-    <div class="px-4 py-18">
+
+    <div class="col-start-1 row-start-1 px-4 py-18">
       <MarkdownArticle content={text} />
     </div>
   </div>

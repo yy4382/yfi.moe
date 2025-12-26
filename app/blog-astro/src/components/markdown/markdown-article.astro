@@ -60,9 +60,10 @@ const html = await markdownToHtmlAsync(content, {
 });
 ---
 
-<div
+<article
   set:html={html}
-  class="mx-auto prose break-words prose-gray dark:prose-invert prose-headings:scroll-mt-8"
+  id="article-content"
+  class="mx-auto prose wrap-break-word prose-gray dark:prose-invert prose-headings:scroll-mt-8"
 />
 
 <script>
