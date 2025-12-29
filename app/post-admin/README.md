@@ -1,14 +1,30 @@
 # Post Admin
 
-用于管理文章的 Web 管理后台。
+博客文章管理后台。
 
-面向用户 feature：查看文章列表、修改文章，markdown 双栏编辑。
+## 功能
 
-实现：将包含文章的 git 仓库 clone 到本地，然后提供 api 供 web 管理后台使用。
-通过一个环境变量配置本地 git 仓库的地址。
+- 文章列表：搜索、按标签过滤、按日期排序
+- 文章编辑：Frontmatter 表单 + Markdown 编辑器（Edit/Preview 切换）
+- 新建/删除文章
+- Git 同步：查看仓库状态，手动 pull/commit/push
 
-技术栈：
-前端：React, React Router Declarative mode, tanstack query, antd, tailwindcss.
-后端：通过 Nitro v3 提供 api。Hono。Node.js。Use a very simple way to protect the api with auth.
+## 技术栈
 
-后端位于 `server` 目录下，前端位于 `src` 目录下。
+**前端** (`src/`)：React 19, React Router, TanStack Query, Ant Design, TailwindCSS, CodeMirror 6, @repo/markdown
+
+**后端** (`server/`)：Nitro v3, Hono, simple-git, Bearer Token 认证
+
+## 环境变量
+
+```bash
+POSTS_REPO_PATH=/path/to/blog-posts   # Git 仓库路径
+POSTS_SUBDIR=post                      # 文章子目录
+AUTH_TOKEN=your-secret-token           # API 认证 Token
+```
+
+## 开发
+
+```bash
+pnpm --filter post-admin dev
+```

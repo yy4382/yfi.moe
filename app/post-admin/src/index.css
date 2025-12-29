@@ -1,0 +1,6 @@
+@layer theme, base, antd, components, utilities;
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import "@repo/markdown/style";

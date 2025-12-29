@@ -17,7 +17,8 @@
       "Bash(xargs ls:*)",
       "Bash(grep:*)",
       "Skill(frontend-design:frontend-design)",
-      "WebFetch(domain:localhost)"
+      "WebFetch(domain:localhost)",
+      "Bash(pnpm install:*)"
     ],
     "deny": []
   }
