@@ -4,21 +4,9 @@
 @import "tw-animate-css";
 @plugin "@egoist/tailwindcss-icons";
 
-@import "./prose.css";
+@import "@repo/markdown/style/tailwind.css";
 
 @source "../../../../lib/comment/src";
-
-/* #region icons in markdown prose (added by the @repo/markdown package, need to be in safe-list) */
-
-/* the @source inline() cannot be split into multiple lines */
-/* prettier-ignore */
-@source inline("i-mingcute-{github-line,external-link-line,twitter-line,sword-line}");
-
-@source inline("prose-link-icon");
-@utility prose-link-icon {
-  @apply size-[0.75lh] align-text-bottom;
-}
-/* #endregion */
 
 @theme {
   --color-content: var(--color-foreground);

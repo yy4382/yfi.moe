@@ -1,3 +1,20 @@
+/* Tailwind specific styles for @repo/markdown and prose */
+
+@plugin "@egoist/tailwindcss-icons";
+
+/* #region icons in markdown prose (added by the @repo/markdown package, need to be in safe-list) */
+
+/* the @source inline() cannot be split into multiple lines */
+/* prettier-ignore */
+@source inline("i-mingcute-{github-line,external-link-line,twitter-line,sword-line}");
+
+@source inline("prose-link-icon");
+@utility prose-link-icon {
+  @apply size-[0.75lh] align-text-bottom;
+}
+/* #endregion */
+
+/* #region prose styles */
 @utility prose {
   --link-underline-color: --alpha(var(--color-zinc-900) / 0.4);
   --link-underline-color-hover: --alpha(var(--color-zinc-900) / 0.6);
@@ -55,3 +72,4 @@
     max-width: var(--prose-max-width) !important;
   }
 }
+/* #endregion */

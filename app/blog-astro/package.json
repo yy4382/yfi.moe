@@ -54,7 +54,7 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "@egoist/tailwindcss-icons": "^1.9.0",
+    "@egoist/tailwindcss-icons": "catalog:",
     "@eslint/js": "catalog:",
     "@iconify-json/lucide": "^1.2.68",
     "@iconify-json/mingcute": "^1.2.5",

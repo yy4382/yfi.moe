@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@egoist/tailwindcss-icons':
+      specifier: ^1.9.0
+      version: 1.9.0
     '@eslint/js':
       specifier: ^9.39.1
       version: 9.39.1
@@ -199,7 +202,7 @@ importers:
         version: 8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.9.3)(vite@7.2.6(@types/node@20.19.19)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1))
+        version: 5.1.4(typescript@5.9.3)(vite@7.3.0(@types/node@20.19.19)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1))
       vitest:
         specifier: 'catalog:'
         version: 4.0.14(@types/node@20.19.19)(jiti@2.6.1)(jsdom@27.2.0(postcss@8.5.6))(lightningcss@1.30.2)(msw@2.11.3(@types/node@20.19.19)(typescript@5.9.3))(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1)
@@ -334,7 +337,7 @@ importers:
         version: 1.1.2(patch_hash=b82176cc5cc83366b9f66d6bf126cc1b4720e6f39af3af4b465a0be35130048c)(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
       '@egoist/tailwindcss-icons':
-        specifier: ^1.9.0
+        specifier: 'catalog:'
         version: 1.9.0(tailwindcss@4.1.17)
       '@eslint/js':
         specifier: 'catalog:'
@@ -384,6 +387,9 @@ importers:
 
   app/post-admin:
     dependencies:
+      '@ant-design/cssinjs':
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@ant-design/icons':
         specifier: ^6.1.0
         version: 6.1.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -719,6 +725,9 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
     devDependencies:
+      '@egoist/tailwindcss-icons':
+        specifier: 'catalog:'
+        version: 1.9.0(tailwindcss@4.1.18)
       '@types/hast':
         specifier: ^3.0.4
         version: 3.0.4
@@ -754,6 +763,12 @@ packages:
 
   '@ant-design/cssinjs@1.24.0':
     resolution: {integrity: sha512-K4cYrJBsgvL+IoozUXYjbT6LHHNt+19a9zkvpBPxLjFHas1UpPM2A5MlhROb0BT8N8WoavM5VsP9MeSeNK/3mg==}
+    peerDependencies:
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+
+  '@ant-design/cssinjs@2.0.1':
+    resolution: {integrity: sha512-Lw1Z4cUQxdMmTNir67gU0HCpTl5TtkKCJPZ6UBvCqzcOTl/QmMFB6qAEoj8qFl0CuZDX9qQYa3m9+rEKfaBSbA==}
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
@@ -9263,6 +9278,18 @@ snapshots:
       react-dom: 19.2.3(react@19.2.3)
       stylis: 4.3.6
 
+  '@ant-design/cssinjs@2.0.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@babel/runtime': 7.28.4
+      '@emotion/hash': 0.8.0
+      '@emotion/unitless': 0.7.5
+      '@rc-component/util': 1.6.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      clsx: 2.1.1
+      csstype: 3.2.3
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      stylis: 4.3.6
+
   '@ant-design/fast-color@2.0.6':
     dependencies:
       '@babel/runtime': 7.28.4
@@ -10230,6 +10257,13 @@ snapshots:
     dependencies:
       '@iconify/utils': 2.3.0
       tailwindcss: 4.1.17
+    transitivePeerDependencies:
+      - supports-color
+
+  '@egoist/tailwindcss-icons@1.9.0(tailwindcss@4.1.18)':
+    dependencies:
+      '@iconify/utils': 2.3.0
+      tailwindcss: 4.1.18
     transitivePeerDependencies:
       - supports-color
 
@@ -13218,7 +13252,7 @@ snapshots:
 
   '@types/pg@8.15.5':
     dependencies:
-      '@types/node': 20.19.19
+      '@types/node': 24.10.4
       pg-protocol: 1.10.3
       pg-types: 2.2.0
     optional: true
@@ -18270,17 +18304,6 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.2.6(@types/node@20.19.19)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1)):
-    dependencies:
-      debug: 4.4.3
-      globrex: 0.1.2
-      tsconfck: 3.1.6(typescript@5.9.3)
-    optionalDependencies:
-      vite: 7.2.6(@types/node@20.19.19)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
   vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.2.6(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1)):
     dependencies:
       debug: 4.4.3
@@ -18288,6 +18311,17 @@ snapshots:
       tsconfck: 3.1.6(typescript@5.9.3)
     optionalDependencies:
       vite: 7.2.6(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.3.0(@types/node@20.19.19)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1)):
+    dependencies:
+      debug: 4.4.3
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.9.3)
+    optionalDependencies:
+      vite: 7.3.0(@types/node@20.19.19)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -18342,6 +18376,24 @@ snapshots:
       terser: 5.43.1
       tsx: 4.21.0
       yaml: 2.8.1
+
+  vite@7.3.0(@types/node@20.19.19)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1):
+    dependencies:
+      esbuild: 0.27.0
+      fdir: 6.5.0(picomatch@4.0.3)
+      picomatch: 4.0.3
+      postcss: 8.5.6
+      rollup: 4.53.3
+      tinyglobby: 0.2.15
+    optionalDependencies:
+      '@types/node': 20.19.19
+      fsevents: 2.3.3
+      jiti: 2.6.1
+      lightningcss: 1.30.2
+      terser: 5.43.1
+      tsx: 4.21.0
+      yaml: 2.8.1
+    optional: true
 
   vite@7.3.0(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.43.1)(tsx@4.21.0)(yaml@2.8.1):
     dependencies:

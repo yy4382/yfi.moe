@@ -4,3 +4,4 @@
 @plugin "@tailwindcss/typography";
 
 @import "@repo/markdown/style";
+@import "@repo/markdown/style/tailwind.css";

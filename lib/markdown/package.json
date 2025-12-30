@@ -38,6 +38,7 @@
     "vfile": "^6.0.3"
   },
   "devDependencies": {
+    "@egoist/tailwindcss-icons": "catalog:",
     "@types/hast": "^3.0.4",
     "rehype-parse": "^9.0.1",
     "typescript": "catalog:",
@@ -47,6 +48,7 @@
     "./parse": "./dist/parse.js",
     "./preset": "./dist/preset.js",
     "./plugins/*": "./dist/plugins/*.js",
-    "./style": "./src/style/index.css"
+    "./style": "./src/style/index.css",
+    "./style/tailwind.css": "./src/style/tailwind.css"
   }
 }
