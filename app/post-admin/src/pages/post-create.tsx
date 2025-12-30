@@ -1,26 +1,42 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { App, Button } from "antd";
+import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons";
+import { App, Button, Input, Space } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { MarkdownEditor } from "../components/editor/markdown-editor";
-import { PostForm } from "../components/post/post-form";
 import { useCreatePost } from "../hooks/use-posts";
-import type { PostFrontmatter } from "../types/post";
+
+const DEFAULT_TEMPLATE = `---
+title: ""
+slug: ""
+description: ""
+date: ${new Date().toISOString().split("T")[0]}
+tags: []
+published: false
+copyright: true
+---
+
+`;
 
 export function PostCreatePage() {
   const navigate = useNavigate();
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
   const { message } = App.useApp();
 
-  const [content, setContent] = useState("");
+  const [slug, setSlug] = useState("");
+  const [raw, setRaw] = useState(DEFAULT_TEMPLATE);
 
-  const handleCreate = (frontmatter: PostFrontmatter) => {
+  const handleCreate = () => {
+    if (!slug.trim()) {
+      message.error("Slug is required");
+      return;
+    }
+
     createPost(
-      { frontmatter, content },
+      { slug: slug.trim(), raw },
       {
         onSuccess: () => {
-          message.success("Post created successfully");
-          navigate(`/posts/${frontmatter.slug}`);
+          message.success("Post created");
+          navigate(`/posts/${slug.trim()}`);
         },
         onError: (error) => {
           message.error(error.message);
@@ -38,14 +54,26 @@ export function PostCreatePage() {
           type="text"
         />
         <h1 className="text-xl font-bold">New Post</h1>
+        <div className="flex-1" />
+        <Space.Compact>
+          <Input
+            placeholder="slug"
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+            style={{ width: 200 }}
+          />
+          <Button
+            type="primary"
+            icon={<SaveOutlined />}
+            onClick={handleCreate}
+            loading={isCreating}
+          >
+            Create
+          </Button>
+        </Space.Compact>
       </div>
-      <div className="grid min-h-0 flex-1 grid-cols-[300px_1fr] gap-4">
-        <div className="overflow-auto">
-          <PostForm onSubmit={handleCreate} isLoading={isCreating} isCreate />
-        </div>
-        <div className="min-h-0">
-          <MarkdownEditor value={content} onChange={setContent} />
-        </div>
+      <div className="min-h-0 flex-1">
+        <MarkdownEditor value={raw} onChange={setRaw} />
       </div>
     </div>
   );

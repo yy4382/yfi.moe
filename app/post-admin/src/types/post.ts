@@ -1,21 +1,6 @@
-export interface PostFrontmatter {
-  title: string;
-  slug: string;
-  description?: string;
-  date: string;
-  publishedDate?: string;
-  updated?: string;
-  tags: string[];
-  series?: { id: string; order?: number };
-  highlight?: boolean;
-  published: boolean;
-  image?: string;
-  copyright?: boolean;
-}
-
 export interface Post {
-  frontmatter: PostFrontmatter;
-  content: string;
+  slug: string;
+  raw: string;
   filename: string;
 }
 

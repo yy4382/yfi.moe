@@ -1,4 +1,4 @@
-import type { Post, PostListItem, PostFrontmatter } from "../types/post";
+import type { Post, PostListItem } from "../types/post";
 import { apiClient } from "./client";
 
 export async function fetchPosts(): Promise<PostListItem[]> {
@@ -11,24 +11,17 @@ export async function fetchPost(slug: string): Promise<Post> {
   return data.post;
 }
 
-export async function updatePost(
-  slug: string,
-  frontmatter: PostFrontmatter,
-  content: string,
-): Promise<void> {
+export async function updatePost(slug: string, raw: string): Promise<void> {
   await apiClient(`/posts/${slug}`, {
     method: "PUT",
-    body: JSON.stringify({ frontmatter, content }),
+    body: JSON.stringify({ raw }),
   });
 }
 
-export async function createPost(
-  frontmatter: PostFrontmatter,
-  content: string,
-): Promise<void> {
+export async function createPost(slug: string, raw: string): Promise<void> {
   await apiClient("/posts", {
     method: "POST",
-    body: JSON.stringify({ frontmatter, content }),
+    body: JSON.stringify({ slug, raw }),
   });
 }
 

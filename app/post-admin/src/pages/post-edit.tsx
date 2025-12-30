@@ -1,35 +1,29 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons";
 import { Spin, App, Button } from "antd";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { MarkdownEditor } from "../components/editor/markdown-editor";
-import { PostForm } from "../components/post/post-form";
 import { usePost, useUpdatePost } from "../hooks/use-posts";
-import type { PostFrontmatter } from "../types/post";
 
 function PostEditor({
-  initialContent,
-  initialFrontmatter,
+  initialRaw,
   slug,
-  title,
 }: {
-  initialContent: string;
-  initialFrontmatter: PostFrontmatter;
+  initialRaw: string;
   slug: string;
-  title: string;
 }) {
   const navigate = useNavigate();
   const { mutate: updatePost, isPending: isSaving } = useUpdatePost();
   const { message } = App.useApp();
 
-  const [content, setContent] = useState(initialContent);
+  const [raw, setRaw] = useState(initialRaw);
 
-  const handleSave = (frontmatter: PostFrontmatter) => {
+  const handleSave = () => {
     updatePost(
-      { slug, frontmatter, content },
+      { slug, raw },
       {
         onSuccess: () => {
-          message.success("Post saved successfully");
+          message.success("Post saved");
         },
         onError: (error) => {
           message.error(error.message);
@@ -46,19 +40,18 @@ function PostEditor({
           onClick={() => navigate("/")}
           type="text"
         />
-        <h1 className="flex-1 truncate text-xl font-bold">{title}</h1>
+        <h1 className="flex-1 truncate text-xl font-bold">{slug}</h1>
+        <Button
+          type="primary"
+          icon={<SaveOutlined />}
+          onClick={handleSave}
+          loading={isSaving}
+        >
+          Save
+        </Button>
       </div>
-      <div className="grid min-h-0 flex-1 grid-cols-[300px_1fr] gap-4">
-        <div className="overflow-auto">
-          <PostForm
-            initialValues={initialFrontmatter}
-            onSubmit={handleSave}
-            isLoading={isSaving}
-          />
-        </div>
-        <div className="min-h-0">
-          <MarkdownEditor value={content} onChange={setContent} />
-        </div>
+      <div className="min-h-0 flex-1">
+        <MarkdownEditor value={raw} onChange={setRaw} />
       </div>
     </div>
   );
@@ -88,14 +81,5 @@ export function PostEditPage() {
     );
   }
 
-  // Use key to reset state when slug changes
-  return (
-    <PostEditor
-      key={slug}
-      initialContent={post.content}
-      initialFrontmatter={post.frontmatter}
-      slug={slug!}
-      title={post.frontmatter.title}
-    />
-  );
+  return <PostEditor key={slug} initialRaw={post.raw} slug={slug!} />;
 }

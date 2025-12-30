@@ -6,7 +6,6 @@ import {
   createPost,
   deletePost,
 } from "../api/posts";
-import type { PostFrontmatter } from "../types/post";
 
 export function usePosts() {
   return useQuery({
@@ -27,15 +26,8 @@ export function useUpdatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      slug,
-      frontmatter,
-      content,
-    }: {
-      slug: string;
-      frontmatter: PostFrontmatter;
-      content: string;
-    }) => updatePost(slug, frontmatter, content),
+    mutationFn: ({ slug, raw }: { slug: string; raw: string }) =>
+      updatePost(slug, raw),
     onSuccess: (_, { slug }) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       queryClient.invalidateQueries({ queryKey: ["posts", slug] });
@@ -47,13 +39,8 @@ export function useCreatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      frontmatter,
-      content,
-    }: {
-      frontmatter: PostFrontmatter;
-      content: string;
-    }) => createPost(frontmatter, content),
+    mutationFn: ({ slug, raw }: { slug: string; raw: string }) =>
+      createPost(slug, raw),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },

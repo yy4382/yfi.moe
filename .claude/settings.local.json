@@ -18,7 +18,8 @@
       "Bash(grep:*)",
       "Skill(frontend-design:frontend-design)",
       "WebFetch(domain:localhost)",
-      "Bash(pnpm install:*)"
+      "Bash(pnpm install:*)",
+      "Bash(pnpm --filter post-admin check-types:*)"
     ],
     "deny": []
   }

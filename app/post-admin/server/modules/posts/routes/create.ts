@@ -6,10 +6,10 @@ import { createPostSchema } from "../types.js";
 export const createPostRoute = factory
   .createApp()
   .post("/", zValidator("json", createPostSchema), async (c) => {
-    const body = c.req.valid("json");
+    const { slug, raw } = c.req.valid("json");
 
     try {
-      await createPost(body.frontmatter, body.content);
+      await createPost(slug, raw);
       return c.json({ success: true }, 201);
     } catch (error) {
       const message =

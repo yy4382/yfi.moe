@@ -7,10 +7,10 @@ export const updatePostRoute = factory
   .createApp()
   .put("/:slug", zValidator("json", updatePostSchema), async (c) => {
     const slug = c.req.param("slug");
-    const body = c.req.valid("json");
+    const { raw } = c.req.valid("json");
 
     try {
-      await updatePost(slug, body.frontmatter, body.content);
+      await updatePost(slug, raw);
       return c.json({ success: true });
     } catch (error) {
       const message =
