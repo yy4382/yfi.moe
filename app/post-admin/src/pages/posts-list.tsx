@@ -1,12 +1,8 @@
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import { Table, Button, Tag, Space, Input, Popconfirm, App } from "antd";
+import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
+import { Button, Tag, Input, Table, ConfirmDialog } from "../components/ui";
 import { usePosts, useDeletePost } from "../hooks/use-posts";
 import type { PostListItem } from "../types/post";
 
@@ -14,8 +10,8 @@ export function PostsListPage() {
   const navigate = useNavigate();
   const { data: posts, isLoading } = usePosts();
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
-  const { message } = App.useApp();
   const [searchText, setSearchText] = useState("");
+  const [deleteSlug, setDeleteSlug] = useState<string | null>(null);
 
   const filteredPosts = posts?.filter(
     (post) =>
@@ -28,75 +24,85 @@ export function PostsListPage() {
   const handleDelete = (slug: string) => {
     deletePost(slug, {
       onSuccess: () => {
-        message.success("Post deleted");
+        toast.success("Post deleted");
+        setDeleteSlug(null);
       },
       onError: (error) => {
-        message.error(error.message);
+        toast.error(error.message);
       },
     });
   };
 
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
       key: "title",
-      render: (title: string, record: PostListItem) => (
-        <a onClick={() => navigate(`/posts/${record.slug}`)}>{title}</a>
+      title: "Title",
+      render: (record: PostListItem) => (
+        <button
+          onClick={() => navigate(`/posts/${record.slug}`)}
+          className="text-left font-medium text-neutral-900 transition-colors hover:text-neutral-600"
+        >
+          {record.title}
+        </button>
       ),
     },
     {
-      title: "Date",
-      dataIndex: "date",
       key: "date",
+      title: "Date",
       width: 120,
-      render: (date: string) => new Date(date).toLocaleDateString(),
+      render: (record: PostListItem) =>
+        new Date(record.date).toLocaleDateString(),
     },
     {
+      key: "status",
       title: "Status",
-      dataIndex: "published",
-      key: "published",
       width: 100,
-      render: (published: boolean) => (
-        <Tag color={published ? "green" : "orange"}>
-          {published ? "Published" : "Draft"}
+      render: (record: PostListItem) => (
+        <Tag color={record.published ? "success" : "warning"}>
+          {record.published ? "Published" : "Draft"}
         </Tag>
       ),
     },
     {
-      title: "Tags",
-      dataIndex: "tags",
       key: "tags",
-      render: (tags: string[]) => (
-        <Space size={[0, 4]} wrap>
-          {tags.slice(0, 3).map((tag) => (
+      title: "Tags",
+      render: (record: PostListItem) => (
+        <div className="flex flex-wrap gap-1">
+          {record.tags.slice(0, 3).map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}
-          {tags.length > 3 && <Tag>+{tags.length - 3}</Tag>}
-        </Space>
+          {record.tags.length > 3 && <Tag>+{record.tags.length - 3}</Tag>}
+        </div>
       ),
     },
     {
-      title: "Actions",
       key: "actions",
-      width: 120,
-      render: (_: unknown, record: PostListItem) => (
-        <Space>
+      title: "Actions",
+      width: 100,
+      render: (record: PostListItem) => (
+        <div className="flex items-center gap-1">
           <Button
-            type="text"
-            icon={<EditOutlined />}
+            variant="ghost"
+            size="sm"
+            icon={<Pencil className="h-4 w-4" />}
             onClick={() => navigate(`/posts/${record.slug}`)}
           />
-          <Popconfirm
+          <ConfirmDialog
+            open={deleteSlug === record.slug}
+            onOpenChange={(open) => setDeleteSlug(open ? record.slug : null)}
             title="Delete post?"
             description="This action cannot be undone."
+            confirmText="Delete"
+            danger
             onConfirm={() => handleDelete(record.slug)}
-            okText="Delete"
-            okButtonProps={{ danger: true }}
           >
-            <Button type="text" danger icon={<DeleteOutlined />} />
-          </Popconfirm>
-        </Space>
+            <Button
+              variant="ghost"
+              size="sm"
+              icon={<Trash2 className="h-4 w-4 text-red-500" />}
+            />
+          </ConfirmDialog>
+        </div>
       ),
     },
   ];
@@ -104,10 +110,10 @@ export function PostsListPage() {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Posts</h1>
+        <h1 className="text-xl font-semibold text-neutral-900">Posts</h1>
         <Button
-          type="primary"
-          icon={<PlusOutlined />}
+          variant="primary"
+          icon={<Plus className="h-4 w-4" />}
           onClick={() => navigate("/posts/new")}
         >
           New Post
@@ -116,19 +122,20 @@ export function PostsListPage() {
       <div className="mb-4">
         <Input
           placeholder="Search by title or tag..."
-          prefix={<SearchOutlined />}
+          icon={<Search className="h-4 w-4" />}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          className="max-w-md"
           allowClear
+          onClear={() => setSearchText("")}
+          className="max-w-xs"
         />
       </div>
       <Table
         columns={columns}
-        dataSource={filteredPosts}
-        rowKey="slug"
+        data={filteredPosts ?? []}
+        rowKey={(record) => record.slug}
         loading={isLoading || isDeleting}
-        pagination={{ pageSize: 20 }}
+        emptyText="No posts found"
       />
     </div>
   );

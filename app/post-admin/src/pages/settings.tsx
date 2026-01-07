@@ -1,20 +1,20 @@
-import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
-import { Card, Descriptions, Tag, Button, Spin, App } from "antd";
+import { RefreshCw, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
+import { Button, Card, Tag, Spinner, Descriptions } from "../components/ui";
 import { useGitStatus, useGitSync } from "../hooks/use-git";
 
 export function SettingsPage() {
   const { data: status, isLoading, refetch } = useGitStatus();
   const { mutate: sync, isPending: isSyncing } = useGitSync();
-  const { message } = App.useApp();
 
   const handleSync = () => {
     sync(undefined, {
       onSuccess: (data) => {
-        message.success(data.message);
+        toast.success(data.message);
         refetch();
       },
       onError: (error) => {
-        message.error(error.message);
+        toast.error(error.message);
       },
     });
   };
@@ -22,7 +22,7 @@ export function SettingsPage() {
   if (isLoading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Spin size="large" />
+        <Spinner size="lg" />
       </div>
     );
   }
@@ -32,63 +32,97 @@ export function SettingsPage() {
     (status?.created.length ?? 0) +
     (status?.deleted.length ?? 0);
 
+  const descriptionItems = [
+    {
+      label: "Branch",
+      children: <span className="font-mono text-sm">{status?.current}</span>,
+    },
+    {
+      label: "Tracking",
+      children: (
+        <span className="font-mono text-sm">
+          {status?.tracking || "Not set"}
+        </span>
+      ),
+    },
+    {
+      label: "Status",
+      children: status?.isClean ? (
+        <Tag icon={<CheckCircle className="h-3 w-3" />} color="success">
+          Clean
+        </Tag>
+      ) : (
+        <Tag color="warning">{changesCount} uncommitted changes</Tag>
+      ),
+    },
+    {
+      label: "Ahead/Behind",
+      children: (
+        <span className="text-sm">
+          {status?.ahead} ahead / {status?.behind} behind
+        </span>
+      ),
+    },
+  ];
+
+  if ((status?.modified.length ?? 0) > 0) {
+    descriptionItems.push({
+      label: "Modified",
+      children: (
+        <div className="flex flex-wrap gap-1">
+          {status?.modified.map((file) => (
+            <Tag key={file}>{file}</Tag>
+          ))}
+        </div>
+      ),
+    });
+  }
+
+  if ((status?.created.length ?? 0) > 0) {
+    descriptionItems.push({
+      label: "Created",
+      children: (
+        <div className="flex flex-wrap gap-1">
+          {status?.created.map((file) => (
+            <Tag key={file} color="success">
+              {file}
+            </Tag>
+          ))}
+        </div>
+      ),
+    });
+  }
+
+  if ((status?.deleted.length ?? 0) > 0) {
+    descriptionItems.push({
+      label: "Deleted",
+      children: (
+        <div className="flex flex-wrap gap-1">
+          {status?.deleted.map((file) => (
+            <Tag key={file} color="danger">
+              {file}
+            </Tag>
+          ))}
+        </div>
+      ),
+    });
+  }
+
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">Settings</h1>
+      <h1 className="mb-6 text-xl font-semibold text-neutral-900">Settings</h1>
 
       <Card title="Git Repository Status" className="max-w-2xl">
-        <Descriptions column={1} bordered size="small">
-          <Descriptions.Item label="Branch">
-            {status?.current}
-          </Descriptions.Item>
-          <Descriptions.Item label="Tracking">
-            {status?.tracking || "Not set"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Status">
-            {status?.isClean ? (
-              <Tag icon={<CheckCircleOutlined />} color="success">
-                Clean
-              </Tag>
-            ) : (
-              <Tag color="warning">{changesCount} uncommitted changes</Tag>
-            )}
-          </Descriptions.Item>
-          <Descriptions.Item label="Ahead/Behind">
-            {status?.ahead} ahead / {status?.behind} behind
-          </Descriptions.Item>
-          {(status?.modified.length ?? 0) > 0 && (
-            <Descriptions.Item label="Modified">
-              {status?.modified.map((file) => (
-                <Tag key={file} className="mb-1">
-                  {file}
-                </Tag>
-              ))}
-            </Descriptions.Item>
-          )}
-          {(status?.created.length ?? 0) > 0 && (
-            <Descriptions.Item label="Created">
-              {status?.created.map((file) => (
-                <Tag key={file} color="green" className="mb-1">
-                  {file}
-                </Tag>
-              ))}
-            </Descriptions.Item>
-          )}
-          {(status?.deleted.length ?? 0) > 0 && (
-            <Descriptions.Item label="Deleted">
-              {status?.deleted.map((file) => (
-                <Tag key={file} color="red" className="mb-1">
-                  {file}
-                </Tag>
-              ))}
-            </Descriptions.Item>
-          )}
-        </Descriptions>
+        <Descriptions items={descriptionItems} />
 
-        <div className="mt-4">
+        <div className="mt-6">
           <Button
-            type="primary"
-            icon={<SyncOutlined spin={isSyncing} />}
+            variant="primary"
+            icon={
+              <RefreshCw
+                className={`h-4 w-4 ${isSyncing ? "animate-spin" : ""}`}
+              />
+            }
             onClick={handleSync}
             loading={isSyncing}
           >

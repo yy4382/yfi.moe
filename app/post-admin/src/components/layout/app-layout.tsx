@@ -1,23 +1,15 @@
-import {
-  FileTextOutlined,
-  SettingOutlined,
-  SyncOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Button, Badge, Tooltip, App } from "antd";
-import { Outlet, useNavigate, useLocation } from "react-router";
+import { FileText, Settings, RefreshCw, LogOut } from "lucide-react";
+import { Outlet, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { useAuth } from "../../hooks/use-auth";
 import { useGitStatus, useGitSync } from "../../hooks/use-git";
-
-const { Header, Sider, Content } = Layout;
+import { Button, Badge, Tooltip, Menu } from "../ui";
 
 export function AppLayout() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { logout } = useAuth();
   const { data: gitStatus } = useGitStatus();
   const { mutate: syncGit, isPending: isSyncing } = useGitSync();
-  const { message } = App.useApp();
 
   const changesCount =
     (gitStatus?.modified.length ?? 0) +
@@ -27,10 +19,10 @@ export function AppLayout() {
   const handleSync = () => {
     syncGit(undefined, {
       onSuccess: (data) => {
-        message.success(data.message);
+        toast.success(data.message);
       },
       onError: (error) => {
-        message.error(error.message);
+        toast.error(error.message);
       },
     });
   };
@@ -42,33 +34,37 @@ export function AppLayout() {
 
   const menuItems = [
     {
-      key: "/",
-      icon: <FileTextOutlined />,
+      key: "posts",
+      icon: <FileText className="h-5 w-5" />,
       label: "Posts",
+      to: "/",
     },
     {
-      key: "/settings",
-      icon: <SettingOutlined />,
+      key: "settings",
+      icon: <Settings className="h-5 w-5" />,
       label: "Settings",
+      to: "/settings",
     },
   ];
 
   return (
-    <Layout className="min-h-screen">
-      <Sider theme="light" className="border-r border-gray-200">
-        <div className="flex h-16 items-center justify-center border-b border-gray-200">
-          <h1 className="text-lg font-semibold">Post Admin</h1>
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <aside className="w-56 shrink-0 border-r border-neutral-200 bg-white">
+        <div className="flex h-14 items-center justify-center border-b border-neutral-200">
+          <h1 className="text-base font-semibold text-neutral-900">
+            Post Admin
+          </h1>
         </div>
-        <Menu
-          mode="inline"
-          selectedKeys={[location.pathname]}
-          items={menuItems}
-          onClick={({ key }) => navigate(key)}
-          className="border-none"
-        />
-      </Sider>
-      <Layout>
-        <Header className="flex items-center justify-end gap-4 border-b border-gray-200 bg-white px-6">
+        <div className="p-3">
+          <Menu items={menuItems} />
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <div className="flex flex-1 flex-col">
+        {/* Header */}
+        <header className="flex h-14 shrink-0 items-center justify-end gap-3 border-b border-neutral-200 bg-white px-6">
           <Tooltip
             title={
               changesCount > 0
@@ -76,9 +72,13 @@ export function AppLayout() {
                 : "All changes synced"
             }
           >
-            <Badge count={changesCount} size="small">
+            <Badge count={changesCount}>
               <Button
-                icon={<SyncOutlined spin={isSyncing} />}
+                icon={
+                  <RefreshCw
+                    className={`h-4 w-4 ${isSyncing ? "animate-spin" : ""}`}
+                  />
+                }
                 onClick={handleSync}
                 loading={isSyncing}
               >
@@ -86,14 +86,20 @@ export function AppLayout() {
               </Button>
             </Badge>
           </Tooltip>
-          <Button icon={<LogoutOutlined />} onClick={handleLogout}>
+          <Button
+            variant="ghost"
+            icon={<LogOut className="h-4 w-4" />}
+            onClick={handleLogout}
+          >
             Logout
           </Button>
-        </Header>
-        <Content className="bg-gray-50 p-6">
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 bg-neutral-50 p-6">
           <Outlet />
-        </Content>
-      </Layout>
-    </Layout>
+        </main>
+      </div>
+    </div>
   );
 }

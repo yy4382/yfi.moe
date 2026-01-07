@@ -11,19 +11,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/cssinjs": "^2.0.1",
-    "@ant-design/icons": "^6.1.0",
+    "@base-ui-components/react": "1.0.0-rc.0",
+    "@codemirror/view": "^6.39.8",
     "@hono/zod-validator": "^0.7.6",
     "@repo/markdown": "workspace:*",
     "@tanstack/react-query": "catalog:",
-    "antd": "^5.29.3",
     "dayjs": "^1.11.19",
     "hono": "catalog:",
     "js-yaml": "^4.1.1",
+    "lucide-react": "^0.544.0",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router": "^7.11.0",
     "simple-git": "^3.30.0",
+    "sonner": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

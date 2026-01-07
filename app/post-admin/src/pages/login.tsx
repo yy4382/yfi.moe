@@ -1,45 +1,45 @@
-import { LockOutlined } from "@ant-design/icons";
-import { Form, Input, Button, Card, App } from "antd";
+import { Lock } from "lucide-react";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
+import { Button, Card, Input, Form, FormItem } from "../components/ui";
 import { useAuth } from "../hooks/use-auth";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const { message } = App.useApp();
-  const [form] = Form.useForm();
+  const [token, setToken] = useState("");
 
-  const handleSubmit = (values: { token: string }) => {
-    if (!values.token.trim()) {
-      message.error("Please enter a token");
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!token.trim()) {
+      toast.error("Please enter a token");
       return;
     }
-    login(values.token.trim());
-    message.success("Logged in successfully");
+    login(token.trim());
+    toast.success("Logged in successfully");
     navigate("/");
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <Card className="w-full max-w-md">
-        <h1 className="mb-6 text-center text-2xl font-bold">Post Admin</h1>
-        <Form form={form} onFinish={handleSubmit} layout="vertical">
-          <Form.Item
-            name="token"
-            label="Auth Token"
-            rules={[{ required: true, message: "Please enter your token" }]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
+    <div className="flex min-h-screen items-center justify-center bg-neutral-100">
+      <Card className="w-full max-w-sm">
+        <h1 className="mb-6 text-center text-xl font-semibold text-neutral-900">
+          Post Admin
+        </h1>
+        <Form onSubmit={handleSubmit}>
+          <FormItem label="Auth Token" required>
+            <Input
+              type="password"
+              icon={<Lock className="h-4 w-4" />}
               placeholder="Enter your auth token"
-              size="large"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
             />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" size="large" block>
-              Login
-            </Button>
-          </Form.Item>
+          </FormItem>
+          <Button type="submit" variant="primary" size="lg" block>
+            Login
+          </Button>
         </Form>
       </Card>
     </div>

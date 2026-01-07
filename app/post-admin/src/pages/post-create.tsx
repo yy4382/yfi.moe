@@ -1,8 +1,9 @@
-import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons";
-import { App, Button, Input, Space } from "antd";
+import { ArrowLeft, Save } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { MarkdownEditor } from "../components/editor/markdown-editor";
+import { Button, Input } from "../components/ui";
 import { useCreatePost } from "../hooks/use-posts";
 
 const DEFAULT_TEMPLATE = `---
@@ -20,14 +21,13 @@ copyright: true
 export function PostCreatePage() {
   const navigate = useNavigate();
   const { mutate: createPost, isPending: isCreating } = useCreatePost();
-  const { message } = App.useApp();
 
   const [slug, setSlug] = useState("");
   const [raw, setRaw] = useState(DEFAULT_TEMPLATE);
 
   const handleCreate = () => {
     if (!slug.trim()) {
-      message.error("Slug is required");
+      toast.error("Slug is required");
       return;
     }
 
@@ -35,11 +35,11 @@ export function PostCreatePage() {
       { slug: slug.trim(), raw },
       {
         onSuccess: () => {
-          message.success("Post created");
+          toast.success("Post created");
           navigate(`/posts/${slug.trim()}`);
         },
         onError: (error) => {
-          message.error(error.message);
+          toast.error(error.message);
         },
       },
     );
@@ -49,28 +49,29 @@ export function PostCreatePage() {
     <div className="flex h-full flex-col">
       <div className="mb-4 flex items-center gap-4">
         <Button
-          icon={<ArrowLeftOutlined />}
+          variant="ghost"
+          icon={<ArrowLeft className="h-4 w-4" />}
           onClick={() => navigate("/")}
-          type="text"
         />
-        <h1 className="text-xl font-bold">New Post</h1>
+        <h1 className="text-lg font-semibold text-neutral-900">New Post</h1>
         <div className="flex-1" />
-        <Space.Compact>
+        <div className="flex items-center gap-0">
           <Input
             placeholder="slug"
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
-            style={{ width: 200 }}
+            className="w-48 rounded-r-none border-r-0"
           />
           <Button
-            type="primary"
-            icon={<SaveOutlined />}
+            variant="primary"
+            icon={<Save className="h-4 w-4" />}
             onClick={handleCreate}
             loading={isCreating}
+            className="rounded-l-none"
           >
             Create
           </Button>
-        </Space.Compact>
+        </div>
       </div>
       <div className="min-h-0 flex-1">
         <MarkdownEditor value={raw} onChange={setRaw} />

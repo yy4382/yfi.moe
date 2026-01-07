@@ -19,7 +19,10 @@
       "Skill(frontend-design:frontend-design)",
       "WebFetch(domain:localhost)",
       "Bash(pnpm install:*)",
-      "Bash(pnpm --filter post-admin check-types:*)"
+      "Bash(pnpm --filter post-admin check-types:*)",
+      "Bash(pnpm --filter post-admin add:*)",
+      "Bash(pnpm --filter post-admin remove:*)",
+      "Bash(pnpm --filter post-admin lint:*)"
     ],
     "deny": []
   }

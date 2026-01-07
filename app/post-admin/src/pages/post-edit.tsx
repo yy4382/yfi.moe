@@ -1,8 +1,9 @@
-import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons";
-import { Spin, App, Button } from "antd";
+import { ArrowLeft, Save } from "lucide-react";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { MarkdownEditor } from "../components/editor/markdown-editor";
+import { Button, Spinner } from "../components/ui";
 import { usePost, useUpdatePost } from "../hooks/use-posts";
 
 function PostEditor({
@@ -14,7 +15,6 @@ function PostEditor({
 }) {
   const navigate = useNavigate();
   const { mutate: updatePost, isPending: isSaving } = useUpdatePost();
-  const { message } = App.useApp();
 
   const [raw, setRaw] = useState(initialRaw);
 
@@ -23,10 +23,10 @@ function PostEditor({
       { slug, raw },
       {
         onSuccess: () => {
-          message.success("Post saved");
+          toast.success("Post saved");
         },
         onError: (error) => {
-          message.error(error.message);
+          toast.error(error.message);
         },
       },
     );
@@ -36,14 +36,16 @@ function PostEditor({
     <div className="flex h-full flex-col">
       <div className="mb-4 flex items-center gap-4">
         <Button
-          icon={<ArrowLeftOutlined />}
+          variant="ghost"
+          icon={<ArrowLeft className="h-4 w-4" />}
           onClick={() => navigate("/")}
-          type="text"
         />
-        <h1 className="flex-1 truncate text-xl font-bold">{slug}</h1>
+        <h1 className="flex-1 truncate text-lg font-semibold text-neutral-900">
+          {slug}
+        </h1>
         <Button
-          type="primary"
-          icon={<SaveOutlined />}
+          variant="primary"
+          icon={<Save className="h-4 w-4" />}
           onClick={handleSave}
           loading={isSaving}
         >
@@ -65,7 +67,7 @@ export function PostEditPage() {
   if (isLoading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Spin size="large" />
+        <Spinner size="lg" />
       </div>
     );
   }
@@ -73,7 +75,7 @@ export function PostEditPage() {
   if (error || !post) {
     return (
       <div className="py-12 text-center">
-        <p className="mb-4 text-red-500">
+        <p className="mb-4 text-sm text-red-500">
           {error?.message || "Post not found"}
         </p>
         <Button onClick={() => navigate("/")}>Back to posts</Button>

@@ -1,7 +1,13 @@
-@layer theme, base, antd, components, utilities;
+@layer theme, base, components, utilities;
 
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @import "@repo/markdown/style";
 @import "@repo/markdown/style/tailwind.css";
+
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-900 antialiased;
+  }
+}
