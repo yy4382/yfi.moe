@@ -13,9 +13,9 @@ const navLinks = [
     active: (url: URL) => url.pathname.startsWith("/post"),
   },
   {
-    href: "/achieve",
-    label: "Achieve",
-    active: (url: URL) => url.pathname.startsWith("/achieve"),
+    href: "/archive",
+    label: "Archive",
+    active: (url: URL) => url.pathname.startsWith("/archive"),
   },
 ];
 

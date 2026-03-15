@@ -46,6 +46,9 @@ export default defineConfig({
       }),
     },
   },
+  redirects: {
+    "/achieve": "/archive",
+  },
   server: {
     port: 3000,
   },
