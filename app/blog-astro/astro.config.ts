@@ -15,13 +15,7 @@ export default defineConfig({
   site: siteDomain,
 
   vite: {
-    plugins: [
-      // @ts-expect-error - tailwindcss depends on vite@7, but astro is using vite@6
-      // causing a type error
-      tailwindcss(),
-      fileSystemPath(),
-      font.vite(),
-    ],
+    plugins: [tailwindcss(), fileSystemPath(), font.vite()],
   },
 
   env: {
