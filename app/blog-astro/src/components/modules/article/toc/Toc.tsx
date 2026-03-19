@@ -212,13 +212,7 @@ function TocPopover({ headings }: TocPopoverProps) {
         <PopoverPortal>
           <PopoverBackdrop />
           <PopoverPositioner sideOffset={5} className="z-50">
-            <PopoverPopup
-              transition={{
-                type: "spring",
-                visualDuration: 0.15,
-                bounce: 0.2,
-              }}
-            >
+            <PopoverPopup>
               <div className="pointer-events-auto w-76 border border-container bg-background px-6 py-8 text-comment">
                 <TocEntry headings={headings} activeIndex={activeIndex} />
               </div>

@@ -73,7 +73,7 @@ function PopoverBackdrop({ className, ...props }: PopoverBackdropProps) {
     <PopoverPrimitive.Backdrop
       data-slot="popover-backdrop"
       className={cn(
-        "fixed inset-0 isolate z-50 bg-black/10 duration-100 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:bg-black/50",
+        "fixed inset-0 isolate z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:bg-black/50",
         className,
       )}
       {...props}
@@ -98,7 +98,7 @@ type PopoverPopupProps = Omit<
   HTMLMotionProps<"div">;
 
 function PopoverPopup({
-  transition = { type: "spring", stiffness: 500, damping: 30, mass: 0.8 },
+  transition = { ease: "easeOut", duration: 0.15 },
   ...props
 }: PopoverPopupProps) {
   return (
@@ -107,9 +107,9 @@ function PopoverPopup({
         <motion.div
           key="popover-popup"
           data-slot="popover-popup"
-          initial={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
+          exit={{ opacity: 0, scale: 0.95 }}
           transition={transition}
           {...props}
         />

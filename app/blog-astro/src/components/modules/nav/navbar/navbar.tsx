@@ -86,7 +86,7 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
               initial={{ opacity: 0, filter: "blur(4px)", scale: 0.9 }}
               animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
               exit={{ opacity: 0, filter: "blur(4px)", scale: 0.9 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
               {logoPart}
             </motion.div>

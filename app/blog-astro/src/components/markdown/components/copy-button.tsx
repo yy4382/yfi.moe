@@ -39,7 +39,7 @@ export function CopyButton() {
           key={isCopied}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          exit={{ scale: 0 }}
+          exit={{ scale: 0.9 }}
           transition={{ duration: 0.15 }}
         >
           <Icon />
