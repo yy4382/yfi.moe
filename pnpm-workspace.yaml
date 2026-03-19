@@ -7,7 +7,7 @@ catalog:
   "@tanstack/react-query": ^5.90.2
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  better-auth: ^1.4.7
+  better-auth: ^1.5.5
   eslint: ^9.39.4
   hono: ^4.12.8
   motion: ^12.38.0
