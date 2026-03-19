@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "clean": "rm -rf dist .astro"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.7",

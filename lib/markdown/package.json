@@ -4,7 +4,8 @@
   "scripts": {
     "test": "vitest run",
     "check-types": "tsc --noEmit",
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@shikijs/rehype": "^3.13.0",

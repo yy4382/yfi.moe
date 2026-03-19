@@ -9,7 +9,8 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "email:dev": "pnpx react-email dev --dir src"
+    "email:dev": "pnpx react-email dev --dir src",
+    "clean": "rm -rf dist"
   },
   "exports": {
     ".": "./dist/index.js"
