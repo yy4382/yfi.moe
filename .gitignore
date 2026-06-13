@@ -29,6 +29,7 @@ app/blog/src/content/post
 **/.vercel/
 
 **/.turbo/
+**/.tanstack/
 .vercel
 
 **/*.local/**

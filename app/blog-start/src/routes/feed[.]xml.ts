@@ -37,4 +37,4 @@ export const Route = createFileRoute("/feed.xml")({
       },
     },
   },
-} as never);
+});

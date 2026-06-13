@@ -13,7 +13,7 @@ const loadOgDependencies = createServerOnlyFn(async () => {
 export const Route = createFileRoute("/post/$slug/og.png")({
   server: {
     handlers: {
-      GET: async ({ params }: { params: { slug: string } }) => {
+      GET: async ({ params }) => {
         const { getPost, generateOgImageForPost } = await loadOgDependencies();
         const post = await getPost(params.slug);
         if (!post) {
@@ -31,4 +31,4 @@ export const Route = createFileRoute("/post/$slug/og.png")({
       },
     },
   },
-} as never);
+});
