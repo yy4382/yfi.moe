@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Fragment } from "react";
 
 export function PostAttrTags({ tags }: { tags: string[] }) {
   return (
@@ -6,7 +7,7 @@ export function PostAttrTags({ tags }: { tags: string[] }) {
       <span className="mr-1 i-lucide-hash size-4" />
       <span className="space-x-0.5">
         {tags.map((tag, index) => (
-          <span key={tag}>
+          <Fragment key={tag}>
             {index !== 0 && <span className="text-comment">|</span>}
             <Link
               to="/tags/$tag"
@@ -15,7 +16,7 @@ export function PostAttrTags({ tags }: { tags: string[] }) {
             >
               {tag}
             </Link>
-          </span>
+          </Fragment>
         ))}
       </span>
     </div>
