@@ -65,17 +65,17 @@ export const Route = createFileRoute("/post/$slug")({
       };
     }
 
-    const post = await getPost(params.slug);
+    const post = await getPost({ data: params.slug });
     if (!post) {
       throw redirect({ to: "/404" });
     }
 
     const [imageMeta, adjacent, similarPosts, seriesPosts] = await Promise.all([
       getImageMeta(),
-      getAdjacentPosts(post.id),
-      getSimilarPosts(post.id),
+      getAdjacentPosts({ data: post.id }),
+      getSimilarPosts({ data: { currentSlug: post.id } }),
       post.data.series
-        ? getSeriesPosts(post.data.series.id)
+        ? getSeriesPosts({ data: { seriesId: post.data.series.id } })
         : Promise.resolve([]),
     ]);
     const markdown = await renderMarkdownArticle({

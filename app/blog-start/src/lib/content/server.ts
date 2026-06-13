@@ -19,53 +19,55 @@ const sortedPostsOptionsSchema = z
   })
   .optional();
 
-const getPostsFn = createServerFn({ method: "GET" }).handler(
+export const getPosts = createServerFn({ method: "GET" }).handler(
   async (): Promise<ContentEntry<PostData>[]> => {
-    const { getPosts } = await import("@/lib/content/source");
-    return getPosts();
+    const { getPosts: loadPosts } = await import("@/lib/content/source");
+    return loadPosts();
   },
 );
 
-const getPagesFn = createServerFn({ method: "GET" }).handler(
+export const getPages = createServerFn({ method: "GET" }).handler(
   async (): Promise<ContentEntry<PageData>[]> => {
-    const { getPages } = await import("@/lib/content/source");
-    return getPages();
+    const { getPages: loadPages } = await import("@/lib/content/source");
+    return loadPages();
   },
 );
 
-const getImageMetaFn = createServerFn({ method: "GET" }).handler(
+export const getImageMeta = createServerFn({ method: "GET" }).handler(
   async (): Promise<ImageMeta[]> => {
-    const { getImageMeta } = await import("@/lib/content/source");
-    return getImageMeta();
+    const { getImageMeta: loadImageMeta } =
+      await import("@/lib/content/source");
+    return loadImageMeta();
   },
 );
 
-const getSortedPostsFn = createServerFn({ method: "GET" })
+export const getSortedPosts = createServerFn({ method: "GET" })
   .validator(sortedPostsOptionsSchema)
   .handler(async ({ data: options }): Promise<ContentEntry<PostData>[]> => {
-    const { getSortedPosts } = await import("@/lib/content/source");
-    return getSortedPosts(normalizeSortedPostsOptions(options));
+    const { getSortedPosts: loadSortedPosts } =
+      await import("@/lib/content/source");
+    return loadSortedPosts(normalizeSortedPostsOptions(options));
   });
 
-const getPostFn = createServerFn({ method: "GET" })
+export const getPost = createServerFn({ method: "GET" })
   .validator(z.string())
   .handler(
     async ({ data: slug }): Promise<ContentEntry<PostData> | undefined> => {
-      const { getPost } = await import("@/lib/content/source");
-      return getPost(slug);
+      const { getPost: loadPost } = await import("@/lib/content/source");
+      return loadPost(slug);
     },
   );
 
-const getPageFn = createServerFn({ method: "GET" })
+export const getPage = createServerFn({ method: "GET" })
   .validator(z.string())
   .handler(
     async ({ data: slug }): Promise<ContentEntry<PageData> | undefined> => {
-      const { getPage } = await import("@/lib/content/source");
-      return getPage(slug);
+      const { getPage: loadPage } = await import("@/lib/content/source");
+      return loadPage(slug);
     },
   );
 
-const getAdjacentPostsFn = createServerFn({ method: "GET" })
+export const getAdjacentPosts = createServerFn({ method: "GET" })
   .validator(z.string())
   .handler(
     async ({
@@ -74,12 +76,13 @@ const getAdjacentPostsFn = createServerFn({ method: "GET" })
       prev?: ContentEntry<PostData>;
       next?: ContentEntry<PostData>;
     }> => {
-      const { getAdjacentPosts } = await import("@/lib/content/source");
-      return getAdjacentPosts(currentSlug);
+      const { getAdjacentPosts: loadAdjacentPosts } =
+        await import("@/lib/content/source");
+      return loadAdjacentPosts(currentSlug);
     },
   );
 
-const getSeriesPostsFn = createServerFn({ method: "GET" })
+export const getSeriesPosts = createServerFn({ method: "GET" })
   .validator(
     z.object({
       seriesId: z.string(),
@@ -87,14 +90,15 @@ const getSeriesPostsFn = createServerFn({ method: "GET" })
     }),
   )
   .handler(async ({ data }): Promise<ContentEntry<PostData>[]> => {
-    const { getSeriesPosts } = await import("@/lib/content/source");
-    return getSeriesPosts(
+    const { getSeriesPosts: loadSeriesPosts } =
+      await import("@/lib/content/source");
+    return loadSeriesPosts(
       data.seriesId,
       normalizeSortedPostsOptions(data.options),
     );
   });
 
-const getSimilarPostsFn = createServerFn({ method: "GET" })
+export const getSimilarPosts = createServerFn({ method: "GET" })
   .validator(
     z.object({
       currentSlug: z.string(),
@@ -106,62 +110,12 @@ const getSimilarPostsFn = createServerFn({ method: "GET" })
     async ({
       data,
     }): Promise<{ post: ContentEntry<PostData>; score: number }[]> => {
-      const { getSimilarPosts } = await import("@/lib/content/source");
-      return getSimilarPosts(
+      const { getSimilarPosts: loadSimilarPosts } =
+        await import("@/lib/content/source");
+      return loadSimilarPosts(
         data.currentSlug,
         data.limit,
         normalizeSortedPostsOptions(data.options),
       );
     },
   );
-
-export function getPosts() {
-  return getPostsFn();
-}
-
-export function getPages() {
-  return getPagesFn();
-}
-
-export function getImageMeta() {
-  return getImageMetaFn();
-}
-
-export function getSortedPosts(options?: Partial<SortedPostsOptions>) {
-  return getSortedPostsFn({ data: normalizeSortedPostsOptions(options) });
-}
-
-export function getPost(slug: string) {
-  return getPostFn({ data: slug });
-}
-
-export function getPage(slug: string) {
-  return getPageFn({ data: slug });
-}
-
-export function getAdjacentPosts(currentSlug: string) {
-  return getAdjacentPostsFn({ data: currentSlug });
-}
-
-export function getSeriesPosts(
-  seriesId: string,
-  options?: Partial<SortedPostsOptions>,
-) {
-  return getSeriesPostsFn({
-    data: { seriesId, options: normalizeSortedPostsOptions(options) },
-  });
-}
-
-export function getSimilarPosts(
-  currentSlug: string,
-  limit?: number,
-  options?: Partial<SortedPostsOptions>,
-) {
-  return getSimilarPostsFn({
-    data: {
-      currentSlug,
-      limit,
-      options: normalizeSortedPostsOptions(options),
-    },
-  });
-}

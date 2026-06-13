@@ -22,7 +22,7 @@ export const Route = createFileRoute("/$page")({
       return prerendered;
     }
 
-    const page = await getPage(params.page);
+    const page = await getPage({ data: params.page });
     if (!page) {
       throw redirect({ to: "/404" });
     }
