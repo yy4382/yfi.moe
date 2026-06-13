@@ -241,6 +241,27 @@
       "Segoe UI",
       sans-serif;
   }
+
+  .tanstack-loading-indicator {
+    pointer-events: none;
+    position: fixed;
+    z-index: 1031;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: hsl(236, 100%, 81%);
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scaleX(var(--progress, 0));
+    transform-origin: 0;
+    transition:
+      transform 300ms ease-out,
+      opacity 150ms 150ms ease-in;
+  }
+
+  [dir="rtl"] .tanstack-loading-indicator {
+    transform-origin: 100% 0;
+  }
 }
 
 /* #endregion shadcn-style tailwind config */

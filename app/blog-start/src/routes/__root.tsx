@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import markdownCss from "@repo/markdown/style?url";
 import { Analytics } from "@/components/layout/analytics";
+import { LoadingIndicator } from "@/components/layout/loading-indicator";
 import { NoFlashThemeScript } from "@/components/layout/no-flash-theme-script";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { siteConfig } from "@/config/site";
@@ -77,6 +78,7 @@ function RootDocument({
         <Analytics pathname={pathname} />
       </head>
       <body className="m-0 overflow-x-hidden bg-background bg-fixed p-0 text-content">
+        <LoadingIndicator />
         {children}
         <Scripts />
       </body>
