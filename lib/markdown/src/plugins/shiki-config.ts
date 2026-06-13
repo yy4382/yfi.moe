@@ -1,11 +1,12 @@
 import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
-import type { Element } from "hast";
+import type { Element, Root } from "hast";
 import { createHighlighterCore } from "shiki/core";
 import { createOnigurumaEngine } from "shiki/engine/oniguruma";
 import { bundledLanguages, type BundledLanguage } from "shiki/langs";
 import { bundledThemes } from "shiki/themes";
 import type { Pluggable, Plugin, Preset } from "unified";
 import { visit, CONTINUE, SKIP } from "unist-util-visit";
+import type { VFile } from "vfile";
 
 const highlighter = await createHighlighterCore({
   themes: [bundledThemes["catppuccin-macchiato"]],
@@ -27,7 +28,7 @@ export const rehypeShikiPreset: Preset = {
 };
 
 function rehypeCodeLangDetecter(): ReturnType<Plugin> {
-  return async (tree, file) => {
+  return async (tree: Root, file: VFile) => {
     const langs: string[] = [];
     visit(tree, "element", (node: Element) => {
       if (node.tagName !== "code") return CONTINUE;

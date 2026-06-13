@@ -4,7 +4,7 @@ import type { Plugin } from "unified";
 import { SKIP, visit } from "unist-util-visit";
 
 export const rehypeCodeblockCopy: Plugin<[], Root> = function () {
-  return (tree) => {
+  return (tree: Root) => {
     visit(tree, "element", (node, __, parent) => {
       if (node.tagName !== "code") return;
       if (!parent || parent.type !== "element" || parent.tagName !== "pre")

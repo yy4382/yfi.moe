@@ -49,7 +49,7 @@ const rehypeExtendedLinks: Plugin<[Options | null | undefined], Root> =
     const protocols = settings.protocols || defaultProtocols;
     const is = convertElement(settings.test);
 
-    return function (tree) {
+    return function (tree: Root) {
       visit(tree, "element", function (node, index, parent) {
         if (
           node.tagName === "a" &&

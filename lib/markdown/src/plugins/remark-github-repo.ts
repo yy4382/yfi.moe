@@ -2,6 +2,7 @@ import type { Root } from "mdast";
 import type remarkDirective from "remark-directive";
 import type { Plugin } from "unified";
 import { EXIT, visit } from "unist-util-visit";
+import type { VFile } from "vfile";
 
 /**
  * A plugin that transform directive `::github-repo{user="yy4382" repo="yfi.moe"}` to `<github-repo user="yy4382" repo="yfi.moe" />`.
@@ -9,7 +10,7 @@ import { EXIT, visit } from "unist-util-visit";
  * Must use after {@link remarkDirective}
  */
 export function remarkGithubRepo(): ReturnType<Plugin<[], Root>> {
-  return function (tree, file) {
+  return function (tree: Root, file: VFile) {
     visit(tree, function (node) {
       if (
         node.type === "containerDirective" ||

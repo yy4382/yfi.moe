@@ -17,7 +17,7 @@ export interface Options {
 const rehypeReplaceCustomElements: Plugin<[Options], Root> = (options) => {
   const map = options?.map ?? {};
 
-  return (tree) => {
+  return (tree: Root) => {
     visit(tree, "element", (node, index, parent) => {
       if (!parent || index == null) return;
 

@@ -5,4 +5,5 @@ src/components/icons
 **/.next
 **/.turbo
 **/coverage
+app/blog-start/src/routeTree.gen.ts
 pnpm-lock.yaml

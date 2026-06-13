@@ -9,14 +9,17 @@
   "type": "module",
   "scripts": {
     "build:frontend": "turbo run build --filter=blog-astro",
+    "build:start": "turbo run build --filter=blog-start",
     "build:backend": "turbo run build --filter=@repo/backend",
     "check-types": "turbo run check-types",
-    "dev": "turbo watch dev",
+    "dev": "turbo watch dev --filter=blog-astro --filter=@repo/backend",
     "dev:f": "turbo watch dev --filter=blog-astro",
+    "dev:start": "turbo watch dev --filter=blog-start --filter=@repo/backend",
     "dev:b": "turbo watch dev --filter=@repo/backend",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "start": "turbo run start --filter=blog-start --filter=@repo/backend"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",

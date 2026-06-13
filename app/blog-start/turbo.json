@@ -1,0 +1,40 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "env": [
+        "ARTICLE_PAT",
+        "POST_GH_INFO",
+        "PAGE_GH_INFO",
+        "IMAGE_META_SOURCE",
+        "VITE_WALINE_URL",
+        "VITE_POSTHOG_KEY",
+        "VITE_POSTHOG_HOST"
+      ],
+      "cache": false
+    },
+    "dev": {
+      "env": [
+        "ARTICLE_PAT",
+        "POST_GH_INFO",
+        "PAGE_GH_INFO",
+        "IMAGE_META_SOURCE",
+        "VITE_WALINE_URL",
+        "VITE_POSTHOG_KEY",
+        "VITE_POSTHOG_HOST"
+      ]
+    },
+    "start": {
+      "env": [
+        "ARTICLE_PAT",
+        "POST_GH_INFO",
+        "PAGE_GH_INFO",
+        "IMAGE_META_SOURCE",
+        "VITE_WALINE_URL",
+        "VITE_POSTHOG_KEY",
+        "VITE_POSTHOG_HOST"
+      ]
+    }
+  }
+}

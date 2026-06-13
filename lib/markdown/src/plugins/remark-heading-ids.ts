@@ -1,7 +1,8 @@
 import Slugger from "github-slugger";
-import type { Root } from "mdast";
+import type { Content, Root } from "mdast";
 import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
+import type { VFile } from "vfile";
 
 export interface MarkdownHeading {
   depth: number;
@@ -21,7 +22,7 @@ declare module "vfile" {
  * @returns A plugin that adds ids to headings.
  */
 export function remarkHeadingIds(): ReturnType<Plugin<[], Root>> {
-  return (tree, file) => {
+  return (tree: Root, file: VFile) => {
     const slugger = new Slugger();
     const headings: MarkdownHeading[] = [];
     visit(tree, "heading", (node) => {
@@ -29,7 +30,7 @@ export function remarkHeadingIds(): ReturnType<Plugin<[], Root>> {
       const depth = node.depth;
 
       let text = "";
-      visit(node, (child) => {
+      visit(node, (child: Content) => {
         if ("value" in child) {
           text += child.value;
         }
