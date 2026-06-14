@@ -7,6 +7,7 @@ import { SeriesCard } from "@/components/article/series-card";
 import { SimilarPosts } from "@/components/article/similar-posts";
 import { CommentSection } from "@/components/comments/comment-section";
 import { NavLayout } from "@/components/layout/nav-layout";
+import { MarkdownArticle } from "@/components/markdown/markdown-article";
 import { renderMarkdownArticle } from "@/components/markdown/markdown.functions";
 import type { PostListItemData } from "@/components/posts/post-list-item";
 import { PostListLayout } from "@/components/posts/post-list-layout";
@@ -167,7 +168,7 @@ function PostSlugPage() {
         <SeriesCard seriesPosts={data.seriesPosts} currentSlug={post.id} />
       )}
       <ArticleContent headings={data.headings}>
-        {data.markdown.Renderable}
+        <MarkdownArticle html={data.markdown.html} />
       </ArticleContent>
       {post.data.copyright && (
         <>

@@ -1,8 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { markdownToHeadings, markdownToHtml } from "@repo/markdown/parse";
-import { ArticlePresetFast, ArticleRSSPreset } from "@repo/markdown/preset";
-import { getDesc } from "@/lib/content/get-description";
+import {
+  getMarkdownHeadingList,
+  renderPostDescriptionHtmlList,
+  renderRssContentHtmlList,
+} from "@/lib/markdown/markdown.server";
 
 export const renderPostDescriptionHtml = createServerFn({ method: "POST" })
   .validator(
@@ -15,13 +17,7 @@ export const renderPostDescriptionHtml = createServerFn({ method: "POST" })
       ),
     }),
   )
-  .handler(async ({ data }) =>
-    data.posts.map(
-      (post) =>
-        post.description ||
-        markdownToHtml(getDesc(post.body), { preset: ArticlePresetFast }),
-    ),
-  );
+  .handler(({ data }) => renderPostDescriptionHtmlList(data.posts));
 
 export const getMarkdownHeadings = createServerFn({ method: "POST" })
   .validator(
@@ -29,7 +25,7 @@ export const getMarkdownHeadings = createServerFn({ method: "POST" })
       content: z.string(),
     }),
   )
-  .handler(async ({ data }) => markdownToHeadings(data.content));
+  .handler(({ data }) => getMarkdownHeadingList(data.content));
 
 export const renderRssContentHtml = createServerFn({ method: "POST" })
   .validator(
@@ -37,8 +33,4 @@ export const renderRssContentHtml = createServerFn({ method: "POST" })
       bodies: z.array(z.string()),
     }),
   )
-  .handler(async ({ data }) =>
-    data.bodies.map((body) =>
-      markdownToHtml(body, { preset: ArticleRSSPreset }),
-    ),
-  );
+  .handler(({ data }) => renderRssContentHtmlList(data.bodies));

@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { ArticleContent } from "@/components/article/article-content";
 import { ArticleHero } from "@/components/article/article-hero";
 import { NavLayout } from "@/components/layout/nav-layout";
+import { MarkdownArticle } from "@/components/markdown/markdown-article";
 import { renderMarkdownArticle } from "@/components/markdown/markdown.functions";
 import { getImageMeta, getPage } from "@/lib/content/server";
 import type {
@@ -75,7 +76,9 @@ function DynamicPage() {
   return (
     <NavLayout>
       <ArticleHero title={page.data.title} time={page.data} />
-      <ArticleContent headings={headings}>{markdown.Renderable}</ArticleContent>
+      <ArticleContent headings={headings}>
+        <MarkdownArticle html={markdown.html} />
+      </ArticleContent>
     </NavLayout>
   );
 }

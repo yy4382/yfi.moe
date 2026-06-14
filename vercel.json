@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
-      "source": "/_astro/(.*).woff2",
+      "source": "/assets/(.*).woff2",
       "headers": [
         {
           "key": "Cache-Control",
@@ -12,6 +12,5 @@
     }
   ],
   "framework": null,
-  "buildCommand": "pnpm build:frontend",
-  "outputDirectory": "app/blog-astro/dist"
+  "buildCommand": "pnpm build:start"
 }

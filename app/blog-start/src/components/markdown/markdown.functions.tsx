@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { z } from "zod";
-import { MarkdownArticle } from "@/components/markdown/markdown-article.server";
+import { renderMarkdownArticleHtml } from "@/components/markdown/markdown.server";
 
 const imageMetaSchema = z.array(
   z.object({
@@ -19,10 +18,4 @@ export const renderMarkdownArticle = createServerFn({ method: "POST" })
       imageMeta: imageMetaSchema,
     }),
   )
-  .handler(async ({ data }) => {
-    const Renderable = await renderServerComponent(
-      <MarkdownArticle content={data.content} imageMeta={data.imageMeta} />,
-    );
-
-    return { Renderable };
-  });
+  .handler(({ data }) => renderMarkdownArticleHtml(data));
