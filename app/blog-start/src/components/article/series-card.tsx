@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Section } from "@/components/ui/section";
-import type { ContentEntry, PostData } from "@/lib/content/source";
+import type { ContentSummary, PostData } from "@/lib/content/source";
 
 export function SeriesCard({
   seriesPosts,
   currentSlug,
 }: {
-  seriesPosts: ContentEntry<PostData>[];
+  seriesPosts: ContentSummary<PostData>[];
   currentSlug: string;
 }) {
   if (seriesPosts.length <= 1) {

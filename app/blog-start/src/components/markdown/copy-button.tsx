@@ -28,6 +28,7 @@ export function CopyButton() {
     isCopied === "copied" ? CheckIcon : isCopied === "error" ? XIcon : CopyIcon;
   return (
     <motion.button
+      aria-label="复制代码"
       onClick={handleClick}
       ref={buttonRef}
       whileHover={{ scale: 1.05 }}

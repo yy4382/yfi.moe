@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import type { ContentEntry, PostData } from "@/lib/content/source";
+import type { ContentSummary, PostData } from "@/lib/content/source";
 import { cn } from "@/lib/utils/cn";
 
 export function PrevNext({
   prev,
   next,
 }: {
-  prev?: ContentEntry<PostData>;
-  next?: ContentEntry<PostData>;
+  prev?: ContentSummary<PostData>;
+  next?: ContentSummary<PostData>;
 }) {
   if (!prev && !next) {
     return null;

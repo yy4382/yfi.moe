@@ -3,17 +3,30 @@ import { format } from "date-fns";
 import { NavLayout } from "@/components/layout/nav-layout";
 import { Section } from "@/components/ui/section";
 import { getSortedPosts } from "@/lib/content/server";
-import type { ContentEntry, PostData } from "@/lib/content/source";
+import type {
+  ContentEntry,
+  ContentSummary,
+  PostData,
+} from "@/lib/content/source";
 import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { buildSeo } from "@/lib/utils/seo";
 
 type ArchiveLoaderData = {
-  posts: ContentEntry<PostData>[];
+  total: number;
   groupedPosts: {
     year: string;
-    posts: ContentEntry<PostData>[];
+    posts: ContentSummary<PostData>[];
   }[];
 };
+
+function toContentSummary<TData>(
+  entry: ContentEntry<TData>,
+): ContentSummary<TData> {
+  return {
+    id: entry.id,
+    data: entry.data,
+  };
+}
 
 export const Route = createFileRoute("/archive")({
   loader: async () => {
@@ -26,20 +39,21 @@ export const Route = createFileRoute("/archive")({
     const groupedPosts = posts.reduce<
       {
         year: string;
-        posts: ContentEntry<PostData>[];
+        posts: ContentSummary<PostData>[];
       }[]
     >((acc, post) => {
       const year = format(new Date(post.data.publishedDate), "yyyy");
+      const summary = toContentSummary(post);
       const index = acc.findIndex((item) => item.year === year);
       if (index !== -1) {
-        acc[index]!.posts.push(post);
+        acc[index]!.posts.push(summary);
       } else {
-        acc.push({ year, posts: [post] });
+        acc.push({ year, posts: [summary] });
       }
       return acc;
     }, []);
     groupedPosts.sort((a, b) => Number(b.year) - Number(a.year));
-    return { posts, groupedPosts };
+    return { total: posts.length, groupedPosts };
   },
   head: () =>
     buildSeo({
@@ -52,7 +66,7 @@ export const Route = createFileRoute("/archive")({
 });
 
 function ArchivePage() {
-  const { posts, groupedPosts } = Route.useLoaderData();
+  const { total, groupedPosts } = Route.useLoaderData();
   return (
     <NavLayout>
       <Section
@@ -63,9 +77,7 @@ function ArchivePage() {
           <h1 className="text-5xl font-bold text-heading @3xl:text-6xl">
             归档
           </h1>
-          <p className="mt-4 ml-1 text-lg text-content">
-            共有 {posts.length} 篇文章
-          </p>
+          <p className="mt-4 ml-1 text-lg text-content">共有 {total} 篇文章</p>
         </div>
       </Section>
       <Section className="px-4 py-18">

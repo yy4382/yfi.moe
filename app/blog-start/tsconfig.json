@@ -10,7 +10,7 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["vite/client", "node"],
+    "types": ["vite/client", "node", "vite-plugin-font/src/font"],
     "paths": {
       "@/*": ["./src/*"]
     }

@@ -26,7 +26,7 @@ export const Route = createFileRoute("/tags/$tag")({
       throw redirect({ to: "/404" });
     }
     return {
-      page: paginatePosts(posts, 1),
+      page: await paginatePosts(posts, 1),
       tag: params.tag,
     };
   },

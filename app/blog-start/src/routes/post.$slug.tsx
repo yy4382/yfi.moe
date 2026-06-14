@@ -1,5 +1,4 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { markdownToHeadings } from "@repo/markdown/parse";
 import { ArticleContent } from "@/components/article/article-content";
 import { ArticleHero } from "@/components/article/article-hero";
 import { CopyrightCard } from "@/components/article/copyright-card";
@@ -23,7 +22,12 @@ import {
   getSimilarPosts,
   getSortedPosts,
 } from "@/lib/content/server";
-import type { ContentEntry, PostData } from "@/lib/content/source";
+import type {
+  ContentEntry,
+  ContentSummary,
+  PostData,
+} from "@/lib/content/source";
+import { getMarkdownHeadings } from "@/lib/markdown/server-functions";
 import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { buildSeo } from "@/lib/utils/seo";
 
@@ -34,16 +38,26 @@ type PostSlugLoaderData =
     }
   | {
       kind: "post";
-      post: ContentEntry<PostData>;
-      headings: ReturnType<typeof markdownToHeadings>;
+      post: ContentSummary<PostData>;
+      seoDescription: string;
+      headings: Awaited<ReturnType<typeof getMarkdownHeadings>>;
       markdown: Awaited<ReturnType<typeof renderMarkdownArticle>>;
       adjacent: {
-        prev?: ContentEntry<PostData>;
-        next?: ContentEntry<PostData>;
+        prev?: ContentSummary<PostData>;
+        next?: ContentSummary<PostData>;
       };
-      similarPosts: { post: ContentEntry<PostData>; score: number }[];
-      seriesPosts: ContentEntry<PostData>[];
+      similarPosts: { post: ContentSummary<PostData>; score: number }[];
+      seriesPosts: ContentSummary<PostData>[];
     };
+
+function toContentSummary<TData>(
+  entry: ContentEntry<TData>,
+): ContentSummary<TData> {
+  return {
+    id: entry.id,
+    data: entry.data,
+  };
+}
 
 export const Route = createFileRoute("/post/$slug")({
   loader: async ({ params }) => {
@@ -55,7 +69,7 @@ export const Route = createFileRoute("/post/$slug")({
     if (/^\d+$/.test(params.slug)) {
       const currentPage = Number(params.slug);
       const posts = await getSortedPosts();
-      const page = paginatePosts(posts, currentPage);
+      const page = await paginatePosts(posts, currentPage);
       if (currentPage < 1 || currentPage > page.lastPage) {
         throw redirect({ to: "/404" });
       }
@@ -87,12 +101,19 @@ export const Route = createFileRoute("/post/$slug")({
 
     return {
       kind: "post" as const,
-      post,
-      headings: markdownToHeadings(post.body),
+      post: toContentSummary(post),
+      seoDescription: post.data.description || getDesc(post.body),
+      headings: await getMarkdownHeadings({ data: { content: post.body } }),
       markdown,
-      adjacent,
-      similarPosts,
-      seriesPosts,
+      adjacent: {
+        prev: adjacent.prev ? toContentSummary(adjacent.prev) : undefined,
+        next: adjacent.next ? toContentSummary(adjacent.next) : undefined,
+      },
+      similarPosts: similarPosts.map(({ post, score }) => ({
+        post: toContentSummary(post),
+        score,
+      })),
+      seriesPosts: seriesPosts.map(toContentSummary),
     };
   },
   head: ({ loaderData, params }) => {
@@ -107,7 +128,7 @@ export const Route = createFileRoute("/post/$slug")({
     const canonical = `https://yfi.moe/post/${post.id}`;
     return buildSeo({
       title: post.data.title,
-      description: post.data.description || getDesc(post.body),
+      description: loaderData.seoDescription,
       image: post.data.image
         ? new URL(post.data.image, canonical).toString()
         : `${canonical}/og.png`,

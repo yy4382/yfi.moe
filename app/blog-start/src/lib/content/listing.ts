@@ -1,34 +1,42 @@
-import { markdownToHtml } from "@repo/markdown/parse";
-import { ArticlePresetFast } from "@repo/markdown/preset";
 import type { PostListItemData } from "@/components/posts/post-list-item";
 import type { PaginationPage } from "@/components/posts/post-list-layout";
-import { getDesc } from "@/lib/content/get-description";
 import type { ContentEntry, PostData } from "@/lib/content/source";
+import { renderPostDescriptionHtml } from "@/lib/markdown/server-functions";
 
 export const postPageSize = 15;
 
 export function preparePostListItem(
   post: ContentEntry<PostData>,
+  descriptionHtml: string,
 ): PostListItemData {
-  const descriptionHtml =
-    post.data.description ||
-    markdownToHtml(getDesc(post.body), { preset: ArticlePresetFast });
   return {
-    ...post,
+    id: post.id,
+    data: post.data,
     descriptionHtml,
   };
 }
 
-export function paginatePosts(
+export async function paginatePosts(
   posts: ContentEntry<PostData>[],
   currentPage: number,
   pageSize = postPageSize,
-): PaginationPage<PostListItemData> {
+): Promise<PaginationPage<PostListItemData>> {
   const total = posts.length;
   const lastPage = Math.max(1, Math.ceil(total / pageSize));
   const start = (currentPage - 1) * pageSize;
+  const pagePosts = posts.slice(start, start + pageSize);
+  const descriptions = await renderPostDescriptionHtml({
+    data: {
+      posts: pagePosts.map((post) => ({
+        body: post.body,
+        description: post.data.description,
+      })),
+    },
+  });
   return {
-    data: posts.slice(start, start + pageSize).map(preparePostListItem),
+    data: pagePosts.map((post, index) =>
+      preparePostListItem(post, descriptions[index] ?? ""),
+    ),
     currentPage,
     lastPage,
     total,

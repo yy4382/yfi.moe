@@ -67,6 +67,7 @@
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "^7.2.6",
+    "vite-plugin-font": "^5.1.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "catalog:"
   }

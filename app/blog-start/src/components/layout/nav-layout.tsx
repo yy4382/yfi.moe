@@ -17,7 +17,7 @@ export function NavLayout({ postInfo, children }: NavLayoutProps) {
         <Navbar postInfo={postInfo}>
           <img src={logo} alt="logo" className="h-8 w-8 rounded-lg" />
         </Navbar>
-        <div className="w-full">{children}</div>
+        <main className="w-full">{children}</main>
         <section className="bg-grid h-full min-h-12 border-b border-container" />
         <Footer />
       </div>

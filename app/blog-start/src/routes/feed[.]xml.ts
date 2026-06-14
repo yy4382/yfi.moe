@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { markdownToHtml } from "@repo/markdown/parse";
-import { ArticleRSSPreset } from "@repo/markdown/preset";
 import { siteDomain } from "@/config/site";
 import { getSortedPosts } from "@/lib/content/server";
+import { renderRssContentHtml } from "@/lib/markdown/server-functions";
 import { renderRss } from "@/lib/utils/rss";
 
 export const Route = createFileRoute("/feed.xml")({
@@ -10,14 +9,16 @@ export const Route = createFileRoute("/feed.xml")({
     handlers: {
       GET: async () => {
         const entries = await getSortedPosts();
-        const items = entries.slice(0, 8).map((entry) => ({
+        const recentEntries = entries.slice(0, 8);
+        const contentHtml = await renderRssContentHtml({
+          data: { bodies: recentEntries.map((entry) => entry.body) },
+        });
+        const items = recentEntries.map((entry, index) => ({
           title: entry.data.title,
           pubDate: entry.data.publishedDate,
           description: entry.data.description,
           link: `/post/${entry.id}`,
-          content: markdownToHtml(entry.body, {
-            preset: ArticleRSSPreset,
-          }),
+          content: contentHtml[index] ?? "",
         }));
 
         return new Response(

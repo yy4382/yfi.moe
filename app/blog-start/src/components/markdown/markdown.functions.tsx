@@ -23,5 +23,6 @@ export const renderMarkdownArticle = createServerFn({ method: "POST" })
     const Renderable = await renderServerComponent(
       <MarkdownArticle content={data.content} imageMeta={data.imageMeta} />,
     );
+
     return { Renderable };
   });

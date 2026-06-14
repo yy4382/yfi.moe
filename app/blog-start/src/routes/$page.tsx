@@ -1,19 +1,32 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { markdownToHeadings } from "@repo/markdown/parse";
 import { ArticleContent } from "@/components/article/article-content";
 import { ArticleHero } from "@/components/article/article-hero";
 import { NavLayout } from "@/components/layout/nav-layout";
 import { renderMarkdownArticle } from "@/components/markdown/markdown.functions";
 import { getImageMeta, getPage } from "@/lib/content/server";
-import type { ContentEntry, PageData } from "@/lib/content/source";
+import type {
+  ContentEntry,
+  ContentSummary,
+  PageData,
+} from "@/lib/content/source";
+import { getMarkdownHeadings } from "@/lib/markdown/server-functions";
 import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { buildSeo } from "@/lib/utils/seo";
 
 type DynamicPageLoaderData = {
-  page: ContentEntry<PageData>;
+  page: ContentSummary<PageData>;
   markdown: Awaited<ReturnType<typeof renderMarkdownArticle>>;
-  headings: ReturnType<typeof markdownToHeadings>;
+  headings: Awaited<ReturnType<typeof getMarkdownHeadings>>;
 };
+
+function toContentSummary<TData>(
+  entry: ContentEntry<TData>,
+): ContentSummary<TData> {
+  return {
+    id: entry.id,
+    data: entry.data,
+  };
+}
 
 export const Route = createFileRoute("/$page")({
   loader: async ({ params }) => {
@@ -33,9 +46,9 @@ export const Route = createFileRoute("/$page")({
       },
     });
     return {
-      page,
+      page: toContentSummary(page),
       markdown,
-      headings: markdownToHeadings(page.body),
+      headings: await getMarkdownHeadings({ data: { content: page.body } }),
     };
   },
   head: ({ loaderData }) => {

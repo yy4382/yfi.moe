@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { PostAttrTags } from "@/components/posts/post-attr-tags";
 import { PostAttrTime } from "@/components/posts/post-attr-time";
-import type { ContentEntry, PostData } from "@/lib/content/source";
+import type { ContentSummary, PostData } from "@/lib/content/source";
 import { cn } from "@/lib/utils/cn";
 
-export type PostListItemData = ContentEntry<PostData> & {
+export type PostListItemData = ContentSummary<PostData> & {
   descriptionHtml: string;
 };
 

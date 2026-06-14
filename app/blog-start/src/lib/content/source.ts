@@ -65,6 +65,8 @@ export type ContentEntry<TData> = {
   data: TData;
 };
 
+export type ContentSummary<TData> = Pick<ContentEntry<TData>, "id" | "data">;
+
 type GithubDirectoryOptions = {
   owner: string;
   repo: string;

@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import type { ContentEntry, PostData } from "@/lib/content/source";
+import type { ContentSummary, PostData } from "@/lib/content/source";
 import { cn } from "@/lib/utils/cn";
 
 export function SimilarPosts({
   similarPosts,
 }: {
-  similarPosts: { post: ContentEntry<PostData>; score: number }[];
+  similarPosts: { post: ContentSummary<PostData>; score: number }[];
 }) {
   if (similarPosts.length === 0) {
     return null;

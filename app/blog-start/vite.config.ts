@@ -3,6 +3,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
+import font from "vite-plugin-font";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const explicitStaticPaths = [
@@ -31,6 +32,7 @@ export default defineConfig({
   },
   plugins: [
     tsconfigPaths(),
+    font.vite(),
     tanstackStart({
       rsc: {
         enabled: true,

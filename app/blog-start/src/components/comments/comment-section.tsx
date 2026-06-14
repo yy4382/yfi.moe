@@ -1,3 +1,5 @@
+import { Hydrate } from "@tanstack/react-start";
+import { visible } from "@tanstack/react-start/hydration";
 import { Comment } from "@/components/comments/comment";
 import { Section } from "@/components/ui/section";
 
@@ -8,7 +10,9 @@ export function CommentSection({ pathname }: { pathname: string }) {
       : pathname;
   return (
     <Section padding="article" className="mx-auto min-h-72 max-w-2xl py-12">
-      <Comment pathname={normalizedPathname} />
+      <Hydrate when={visible({ rootMargin: "400px" })}>
+        <Comment pathname={normalizedPathname} />
+      </Hydrate>
     </Section>
   );
 }

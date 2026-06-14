@@ -29,7 +29,7 @@ export const Route = createFileRoute("/tags/$tag/$page")({
     if (!posts) {
       throw redirect({ to: "/404" });
     }
-    const page = paginatePosts(posts, currentPage);
+    const page = await paginatePosts(posts, currentPage);
     if (currentPage < 1 || currentPage > page.lastPage) {
       throw redirect({ to: "/404" });
     }

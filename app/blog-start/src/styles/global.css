@@ -10,13 +10,6 @@
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-@font-face {
-  font-family: "MiSans VF";
-  src: url("../assets/fonts/MiSansVF.ttf") format("truetype");
-  font-weight: 100 900;
-  font-display: swap;
-}
-
 /* #region icons in markdown prose (added by the @repo/markdown package, need to be in safe-list) */
 
 /* the @source inline() cannot be split into multiple lines */
@@ -232,8 +225,9 @@
     letter-spacing: var(--tracking-normal);
     text-rendering: optimizeLegibility;
     font-family:
-      "MiSans VF",
+      var(--font-family),
       "SF Pro",
+      var(--font-family-fallback),
       ui-sans-serif,
       system-ui,
       -apple-system,

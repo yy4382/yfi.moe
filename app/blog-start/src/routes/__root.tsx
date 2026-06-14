@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import markdownCss from "@repo/markdown/style?url";
 import { Analytics } from "@/components/layout/analytics";
+import { FontStyle } from "@/components/layout/font-style";
 import { LoadingIndicator } from "@/components/layout/loading-indicator";
 import { NoFlashThemeScript } from "@/components/layout/no-flash-theme-script";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -74,6 +75,7 @@ function RootDocument({
     <html lang="zh-Hans" suppressHydrationWarning>
       <head>
         <NoFlashThemeScript />
+        <FontStyle />
         <HeadContent />
         <Analytics pathname={pathname} />
       </head>

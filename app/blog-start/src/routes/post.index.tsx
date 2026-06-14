@@ -20,7 +20,7 @@ export const Route = createFileRoute("/post/")({
     }
 
     const posts = await getSortedPosts();
-    const page = paginatePosts(posts, 1);
+    const page = await paginatePosts(posts, 1);
     return { page };
   },
   head: () =>
