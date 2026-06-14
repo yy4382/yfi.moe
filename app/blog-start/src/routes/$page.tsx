@@ -5,20 +5,9 @@ import { NavLayout } from "@/components/layout/nav-layout";
 import { MarkdownArticle } from "@/components/markdown/markdown-article";
 import { renderMarkdownArticle } from "@/components/markdown/markdown.functions";
 import { getImageMeta, getPage } from "@/lib/content/server";
-import type {
-  ContentEntry,
-  ContentSummary,
-  PageData,
-} from "@/lib/content/source";
+import type { ContentEntry, ContentSummary } from "@/lib/content/source";
 import { getMarkdownHeadings } from "@/lib/markdown/server-functions";
-import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { buildSeo } from "@/lib/utils/seo";
-
-type DynamicPageLoaderData = {
-  page: ContentSummary<PageData>;
-  markdown: Awaited<ReturnType<typeof renderMarkdownArticle>>;
-  headings: Awaited<ReturnType<typeof getMarkdownHeadings>>;
-};
 
 function toContentSummary<TData>(
   entry: ContentEntry<TData>,
@@ -31,11 +20,6 @@ function toContentSummary<TData>(
 
 export const Route = createFileRoute("/$page")({
   loader: async ({ params }) => {
-    const prerendered = getPrerenderedLoaderData<DynamicPageLoaderData>();
-    if (prerendered) {
-      return prerendered;
-    }
-
     const page = await getPage({ data: params.page });
     if (!page) {
       throw redirect({ to: "/404" });

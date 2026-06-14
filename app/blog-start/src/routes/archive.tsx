@@ -8,16 +8,7 @@ import type {
   ContentSummary,
   PostData,
 } from "@/lib/content/source";
-import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { buildSeo } from "@/lib/utils/seo";
-
-type ArchiveLoaderData = {
-  total: number;
-  groupedPosts: {
-    year: string;
-    posts: ContentSummary<PostData>[];
-  }[];
-};
 
 function toContentSummary<TData>(
   entry: ContentEntry<TData>,
@@ -30,11 +21,6 @@ function toContentSummary<TData>(
 
 export const Route = createFileRoute("/archive")({
   loader: async () => {
-    const prerendered = getPrerenderedLoaderData<ArchiveLoaderData>();
-    if (prerendered) {
-      return prerendered;
-    }
-
     const posts = await getSortedPosts();
     const groupedPosts = posts.reduce<
       {

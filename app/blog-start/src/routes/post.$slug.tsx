@@ -9,9 +9,7 @@ import { CommentSection } from "@/components/comments/comment-section";
 import { NavLayout } from "@/components/layout/nav-layout";
 import { MarkdownArticle } from "@/components/markdown/markdown-article";
 import { renderMarkdownArticle } from "@/components/markdown/markdown.functions";
-import type { PostListItemData } from "@/components/posts/post-list-item";
 import { PostListLayout } from "@/components/posts/post-list-layout";
-import type { PaginationPage } from "@/components/posts/post-list-layout";
 import { Section } from "@/components/ui/section";
 import { getDesc } from "@/lib/content/get-description";
 import { paginatePosts } from "@/lib/content/listing";
@@ -23,33 +21,9 @@ import {
   getSimilarPosts,
   getSortedPosts,
 } from "@/lib/content/server";
-import type {
-  ContentEntry,
-  ContentSummary,
-  PostData,
-} from "@/lib/content/source";
+import type { ContentEntry, ContentSummary } from "@/lib/content/source";
 import { getMarkdownHeadings } from "@/lib/markdown/server-functions";
-import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { buildSeo } from "@/lib/utils/seo";
-
-type PostSlugLoaderData =
-  | {
-      kind: "list";
-      page: PaginationPage<PostListItemData>;
-    }
-  | {
-      kind: "post";
-      post: ContentSummary<PostData>;
-      seoDescription: string;
-      headings: Awaited<ReturnType<typeof getMarkdownHeadings>>;
-      markdown: Awaited<ReturnType<typeof renderMarkdownArticle>>;
-      adjacent: {
-        prev?: ContentSummary<PostData>;
-        next?: ContentSummary<PostData>;
-      };
-      similarPosts: { post: ContentSummary<PostData>; score: number }[];
-      seriesPosts: ContentSummary<PostData>[];
-    };
 
 function toContentSummary<TData>(
   entry: ContentEntry<TData>,
@@ -62,11 +36,6 @@ function toContentSummary<TData>(
 
 export const Route = createFileRoute("/post/$slug")({
   loader: async ({ params }) => {
-    const prerendered = getPrerenderedLoaderData<PostSlugLoaderData>();
-    if (prerendered) {
-      return prerendered;
-    }
-
     if (/^\d+$/.test(params.slug)) {
       const currentPage = Number(params.slug);
       const posts = await getSortedPosts();

@@ -5,26 +5,11 @@ import { NavLayout } from "@/components/layout/nav-layout";
 import { Section } from "@/components/ui/section";
 import { authorName, contactInfo, projects } from "@/config/author";
 import { getSortedPosts } from "@/lib/content/server";
-import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { cn } from "@/lib/utils/cn";
 import { buildSeo } from "@/lib/utils/seo";
 
-type HomeLoaderData = {
-  firstDate: Date;
-  statistics: {
-    articles: number;
-    words: number;
-    tags: number;
-  };
-};
-
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const prerendered = getPrerenderedLoaderData<HomeLoaderData>();
-    if (prerendered) {
-      return prerendered;
-    }
-
     const posts = await getSortedPosts();
     const firstDate = posts.at(-1)!.data.publishedDate;
     return {

@@ -64,12 +64,6 @@ const dynamicPageRouteCollisions = new Set([
 ]);
 
 const appRootPath = fileURLToPath(new URL(".", import.meta.url));
-const shikiEngineCompatPath = fileURLToPath(
-  new URL("./src/lib/markdown/shiki-engine-compat.ts", import.meta.url),
-);
-const shikiWasmStubPath = fileURLToPath(
-  new URL("./src/lib/markdown/shiki-wasm-stub.ts", import.meta.url),
-);
 const vercelOutputPath = fileURLToPath(
   new URL("../../.vercel/output", import.meta.url),
 );
@@ -87,12 +81,6 @@ export default defineConfig(async ({ mode }) => {
     },
     ssr: {
       external: ["sharp"],
-    },
-    resolve: {
-      alias: {
-        "shiki/engine/oniguruma": shikiEngineCompatPath,
-        "shiki/wasm": shikiWasmStubPath,
-      },
     },
     plugins: [
       tsconfigPaths(),

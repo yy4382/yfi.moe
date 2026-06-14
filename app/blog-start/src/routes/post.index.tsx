@@ -1,24 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NavLayout } from "@/components/layout/nav-layout";
-import type { PostListItemData } from "@/components/posts/post-list-item";
-import type { PaginationPage } from "@/components/posts/post-list-layout";
 import { PostListLayout } from "@/components/posts/post-list-layout";
 import { paginatePosts } from "@/lib/content/listing";
 import { getSortedPosts } from "@/lib/content/server";
-import { getPrerenderedLoaderData } from "@/lib/routing/prerender-data";
 import { buildSeo } from "@/lib/utils/seo";
-
-type PostIndexLoaderData = {
-  page: PaginationPage<PostListItemData>;
-};
 
 export const Route = createFileRoute("/post/")({
   loader: async () => {
-    const prerendered = getPrerenderedLoaderData<PostIndexLoaderData>();
-    if (prerendered) {
-      return prerendered;
-    }
-
     const posts = await getSortedPosts();
     const page = await paginatePosts(posts, 1);
     return { page };
