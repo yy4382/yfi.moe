@@ -778,7 +778,7 @@ importers:
         specifier: ^11.1.2
         version: 11.1.2
       shiki:
-        specifier: ^3.13.0
+        specifier: 3.13.0
         version: 3.13.0
       space-separated-tokens:
         specifier: ^2.0.2

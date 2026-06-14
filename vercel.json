@@ -12,5 +12,5 @@
     }
   ],
   "framework": null,
-  "buildCommand": "pnpm build:start"
+  "buildCommand": "TURBO_TELEMETRY_DISABLED=1 pnpm build:start"
 }
