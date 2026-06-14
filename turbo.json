@@ -1,6 +1,19 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalPassThroughEnv": [
+    "ENABLE_EXPERIMENTAL_COREPACK",
+    "ARTICLE_PAT",
+    "POST_GH_INFO",
+    "PAGE_GH_INFO",
+    "IMAGE_META_SOURCE",
+    "WALINE_URL",
+    "POSTHOG_KEY",
+    "POSTHOG_HOST",
+    "VITE_WALINE_URL",
+    "VITE_POSTHOG_KEY",
+    "VITE_POSTHOG_HOST"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
