@@ -2,7 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { client } from "@/lib/hono-client";
+import { getHonoClient } from "@/lib/hono-client";
 
 function UnsubscribeWrapper() {
   const [searchParams, setSearchParams] = useState<URLSearchParams | null>(
@@ -30,10 +30,14 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
   const email = searchParams.get("email");
   const signature = searchParams.get("signature");
   const expiresAtTimestampSec = searchParams.get("expiresAtTimestampSec");
+  const client = getHonoClient();
   const [isUnsubscribed, setIsUnsubscribed] = useState(false);
 
   const unsubscribeMutation = useMutation({
     mutationFn: async () => {
+      if (!client) {
+        throw new Error("邮件通知服务未配置");
+      }
       if (!email || !signature || !expiresAtTimestampSec) {
         throw new Error("请求 URL 不完整");
       }
@@ -57,6 +61,9 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
 
   const resubscribeMutation = useMutation({
     mutationFn: async () => {
+      if (!client) {
+        throw new Error("邮件通知服务未配置");
+      }
       if (!email || !signature || !expiresAtTimestampSec) {
         throw new Error("请求 URL 不完整");
       }
@@ -80,6 +87,10 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
 
   if (!email || !signature || !expiresAtTimestampSec) {
     return <div>请求 URL 不完整</div>;
+  }
+
+  if (!client) {
+    return <div>邮件通知服务未配置</div>;
   }
 
   if (unsubscribeMutation.data && isUnsubscribed) {
