@@ -1,20 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerOnlyFn } from "@tanstack/react-start";
-
-const loadOgDependencies = createServerOnlyFn(async () => {
-  const [{ getPost }, { generateOgImageForPost }] = await Promise.all([
-    import("@/lib/content/source"),
-    import("@/lib/og-image/generate-og-images"),
-  ]);
-
-  return { getPost, generateOgImageForPost };
-});
+import { getPost } from "@/lib/content/source";
+import { generateOgImageForPost } from "@/lib/og-image/generate-og-images";
 
 export const Route = createFileRoute("/post/$slug/og.png")({
   server: {
     handlers: {
       GET: async ({ params }) => {
-        const { getPost, generateOgImageForPost } = await loadOgDependencies();
         const post = await getPost(params.slug);
         if (!post) {
           return new Response("Not found", { status: 404 });

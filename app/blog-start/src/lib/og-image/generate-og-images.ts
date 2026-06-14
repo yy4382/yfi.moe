@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import satori, { type SatoriOptions } from "satori";
+import sharp from "sharp";
 import { postOgImage } from "./og-image-template";
 
 const fontRegularPath = path.resolve(
@@ -66,6 +67,5 @@ export async function generateOgImageForPost(info: OgImageInfo) {
 }
 
 async function svgBufferToPngBuffer(svg: string): Promise<Buffer> {
-  const sharp = (await import("sharp")).default;
   return sharp(Buffer.from(svg)).png().toBuffer();
 }
