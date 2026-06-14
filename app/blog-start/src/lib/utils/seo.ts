@@ -28,6 +28,7 @@ export function buildSeo({
       { property: "og:title", content: title },
       { property: "og:image", content: image },
       { property: "og:site_name", content: siteConfig.title },
+      canonical ? { property: "og:url", content: canonical } : undefined,
       description
         ? { property: "og:description", content: description }
         : undefined,
