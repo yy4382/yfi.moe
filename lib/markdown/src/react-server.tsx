@@ -14,7 +14,9 @@ type MarkdownInput = string | VFile;
 
 export type MarkdownReactComponents = Record<
   string,
-  keyof React.JSX.IntrinsicElements | ComponentType<Record<string, unknown>>
+  // `rehype-react` accepts arbitrary custom element names. Their prop shapes
+  // are supplied by the app component map, so keep this intentionally loose.
+  keyof React.JSX.IntrinsicElements | ComponentType<any>
 >;
 
 export type MarkdownReactOptions = {

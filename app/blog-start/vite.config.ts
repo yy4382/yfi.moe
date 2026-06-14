@@ -67,8 +67,15 @@ const appRootPath = fileURLToPath(new URL(".", import.meta.url));
 const vercelOutputPath = fileURLToPath(
   new URL("../../.vercel/output", import.meta.url),
 );
+const serverEnvKeys = [
+  "ARTICLE_PAT",
+  "POST_GH_INFO",
+  "PAGE_GH_INFO",
+  "IMAGE_META_SOURCE",
+] as const;
 export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, appRootPath, "");
+  applyBuildServerEnv(env);
   const staticPages = await getStaticPrerenderPages(env);
 
   return {
@@ -116,6 +123,14 @@ export default defineConfig(async ({ mode }) => {
     ],
   };
 });
+
+function applyBuildServerEnv(env: Record<string, string>) {
+  for (const key of serverEnvKeys) {
+    const value = env[key];
+    if (!value) continue;
+    process.env[key] ??= value;
+  }
+}
 
 async function getStaticPrerenderPages(env: Record<string, string>) {
   const paths = new Set(explicitStaticPaths);

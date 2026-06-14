@@ -1,38 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { ArticleContent } from "@/components/article/article-content";
-import { ArticleHero } from "@/components/article/article-hero";
-import { CopyrightCard } from "@/components/article/copyright-card";
-import { PrevNext } from "@/components/article/prev-next";
-import { SeriesCard } from "@/components/article/series-card";
-import { SimilarPosts } from "@/components/article/similar-posts";
+import { getPostArticleRoute } from "@/components/article/post-article.functions";
 import { CommentSection } from "@/components/comments/comment-section";
 import { NavLayout } from "@/components/layout/nav-layout";
-import { MarkdownArticle } from "@/components/markdown/markdown-article";
-import { renderMarkdownArticle } from "@/components/markdown/markdown.functions";
 import { PostListLayout } from "@/components/posts/post-list-layout";
-import { Section } from "@/components/ui/section";
-import { getDesc } from "@/lib/content/get-description";
 import { paginatePosts } from "@/lib/content/listing";
-import {
-  getAdjacentPosts,
-  getImageMeta,
-  getPost,
-  getSeriesPosts,
-  getSimilarPosts,
-  getSortedPosts,
-} from "@/lib/content/server";
-import type { ContentEntry, ContentSummary } from "@/lib/content/source";
-import { getMarkdownHeadings } from "@/lib/markdown/server-functions";
+import { getSortedPosts } from "@/lib/content/server";
 import { buildSeo } from "@/lib/utils/seo";
-
-function toContentSummary<TData>(
-  entry: ContentEntry<TData>,
-): ContentSummary<TData> {
-  return {
-    id: entry.id,
-    data: entry.data,
-  };
-}
 
 export const Route = createFileRoute("/post/$slug")({
   loader: async ({ params }) => {
@@ -49,42 +22,12 @@ export const Route = createFileRoute("/post/$slug")({
       };
     }
 
-    const post = await getPost({ data: params.slug });
-    if (!post) {
+    const postRoute = await getPostArticleRoute({ data: params.slug });
+    if (!postRoute) {
       throw redirect({ to: "/404" });
     }
 
-    const [imageMeta, adjacent, similarPosts, seriesPosts] = await Promise.all([
-      getImageMeta(),
-      getAdjacentPosts({ data: post.id }),
-      getSimilarPosts({ data: { currentSlug: post.id } }),
-      post.data.series
-        ? getSeriesPosts({ data: { seriesId: post.data.series.id } })
-        : Promise.resolve([]),
-    ]);
-    const markdown = await renderMarkdownArticle({
-      data: {
-        content: post.body,
-        imageMeta,
-      },
-    });
-
-    return {
-      kind: "post" as const,
-      post: toContentSummary(post),
-      seoDescription: post.data.description || getDesc(post.body),
-      headings: await getMarkdownHeadings({ data: { content: post.body } }),
-      markdown,
-      adjacent: {
-        prev: adjacent.prev ? toContentSummary(adjacent.prev) : undefined,
-        next: adjacent.next ? toContentSummary(adjacent.next) : undefined,
-      },
-      similarPosts: similarPosts.map(({ post, score }) => ({
-        post: toContentSummary(post),
-        score,
-      })),
-      seriesPosts: seriesPosts.map(toContentSummary),
-    };
+    return postRoute;
   },
   head: ({ loaderData, params }) => {
     if (!loaderData || loaderData.kind === "list") {
@@ -128,32 +71,7 @@ function PostSlugPage() {
   const { post } = data;
   return (
     <NavLayout postInfo={{ title: post.data.title, tags: post.data.tags }}>
-      <ArticleHero
-        title={post.data.title}
-        time={post.data}
-        tags={post.data.tags}
-      />
-      {post.data.series && (
-        <SeriesCard seriesPosts={data.seriesPosts} currentSlug={post.id} />
-      )}
-      <ArticleContent headings={data.headings}>
-        <MarkdownArticle html={data.markdown.html} />
-      </ArticleContent>
-      {post.data.copyright && (
-        <>
-          <CopyrightCard />
-          <Section className="bg-grid min-h-12" />
-        </>
-      )}
-      {post.data.series && (
-        <>
-          <SeriesCard seriesPosts={data.seriesPosts} currentSlug={post.id} />
-          <Section className="bg-grid min-h-12" />
-        </>
-      )}
-      <SimilarPosts similarPosts={data.similarPosts} />
-      <Section className="bg-grid min-h-12" />
-      <PrevNext prev={data.adjacent.prev} next={data.adjacent.next} />
+      {data.article}
       <CommentSection pathname={`/post/${post.id}`} />
     </NavLayout>
   );

@@ -1,40 +1,15 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { ArticleContent } from "@/components/article/article-content";
-import { ArticleHero } from "@/components/article/article-hero";
+import { getContentPageRoute } from "@/components/article/content-page.functions";
 import { NavLayout } from "@/components/layout/nav-layout";
-import { MarkdownArticle } from "@/components/markdown/markdown-article";
-import { renderMarkdownArticle } from "@/components/markdown/markdown.functions";
-import { getImageMeta, getPage } from "@/lib/content/server";
-import type { ContentEntry, ContentSummary } from "@/lib/content/source";
-import { getMarkdownHeadings } from "@/lib/markdown/server-functions";
 import { buildSeo } from "@/lib/utils/seo";
-
-function toContentSummary<TData>(
-  entry: ContentEntry<TData>,
-): ContentSummary<TData> {
-  return {
-    id: entry.id,
-    data: entry.data,
-  };
-}
 
 export const Route = createFileRoute("/$page")({
   loader: async ({ params }) => {
-    const page = await getPage({ data: params.page });
-    if (!page) {
+    const pageRoute = await getContentPageRoute({ data: params.page });
+    if (!pageRoute) {
       throw redirect({ to: "/404" });
     }
-    const markdown = await renderMarkdownArticle({
-      data: {
-        content: page.body,
-        imageMeta: await getImageMeta(),
-      },
-    });
-    return {
-      page: toContentSummary(page),
-      markdown,
-      headings: await getMarkdownHeadings({ data: { content: page.body } }),
-    };
+    return pageRoute;
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -56,13 +31,6 @@ export const Route = createFileRoute("/$page")({
 });
 
 function DynamicPage() {
-  const { page, markdown, headings } = Route.useLoaderData();
-  return (
-    <NavLayout>
-      <ArticleHero title={page.data.title} time={page.data} />
-      <ArticleContent headings={headings}>
-        <MarkdownArticle html={markdown.html} />
-      </ArticleContent>
-    </NavLayout>
-  );
+  const { article } = Route.useLoaderData();
+  return <NavLayout>{article}</NavLayout>;
 }
