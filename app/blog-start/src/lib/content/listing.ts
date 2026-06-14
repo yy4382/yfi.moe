@@ -2,8 +2,7 @@ import type { PostListItemData } from "@/components/posts/post-list-item";
 import type { PaginationPage } from "@/components/posts/post-list-layout";
 import type { ContentEntry, PostData } from "@/lib/content/source";
 import { renderPostDescriptionHtml } from "@/lib/markdown/server-functions";
-
-export const postPageSize = 15;
+import { postPageSize } from "./pagination";
 
 export function preparePostListItem(
   post: ContentEntry<PostData>,

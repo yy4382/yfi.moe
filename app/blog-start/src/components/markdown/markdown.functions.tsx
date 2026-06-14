@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
 import { z } from "zod";
 import { renderMarkdownArticleHtml } from "@/components/markdown/markdown.server";
 
@@ -18,4 +19,5 @@ export const renderMarkdownArticle = createServerFn({ method: "POST" })
       imageMeta: imageMetaSchema,
     }),
   )
+  .middleware([staticFunctionMiddleware])
   .handler(({ data }) => renderMarkdownArticleHtml(data));

@@ -11,24 +11,36 @@ const fontBoldPath = path.resolve(
   process.cwd(),
   "src/assets/fonts/MiSans-Bold.ttf",
 );
+const logoPath = path.resolve(process.cwd(), "src/assets/logo.svg");
 
-let fontPromise: Promise<{ fontRegular: Buffer; fontBold: Buffer }> | undefined;
+let assetPromise:
+  | Promise<{
+      fontRegular: Buffer;
+      fontBold: Buffer;
+      logoDataUrl: string;
+    }>
+  | undefined;
 
-const fetchFonts = () => {
-  if (fontPromise) {
-    return fontPromise;
+const fetchAssets = () => {
+  if (assetPromise) {
+    return assetPromise;
   }
 
-  fontPromise = Promise.all([
+  assetPromise = Promise.all([
     readFile(fontRegularPath),
     readFile(fontBoldPath),
-  ]).then(([fontRegular, fontBold]) => ({ fontRegular, fontBold }));
+    readFile(logoPath),
+  ]).then(([fontRegular, fontBold, logo]) => ({
+    fontRegular,
+    fontBold,
+    logoDataUrl: `data:image/svg+xml;base64,${logo.toString("base64")}`,
+  }));
 
-  return fontPromise;
+  return assetPromise;
 };
 
 const getSatoriOptions = async (): Promise<SatoriOptions> => {
-  const { fontRegular, fontBold } = await fetchFonts();
+  const { fontRegular, fontBold } = await fetchAssets();
 
   return {
     width: 1200,
@@ -46,7 +58,8 @@ export type OgImageInfo = {
 };
 
 export async function generateOgImageForPost(info: OgImageInfo) {
-  const node = postOgImage(info);
+  const { logoDataUrl } = await fetchAssets();
+  const node = postOgImage(info, { logoDataUrl });
   const options = await getSatoriOptions();
   const svg = await satori(node, options);
   return svgBufferToPngBuffer(svg);

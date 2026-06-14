@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
 import { z } from "zod";
 import {
   getMarkdownHeadingList,
@@ -17,6 +18,7 @@ export const renderPostDescriptionHtml = createServerFn({ method: "POST" })
       ),
     }),
   )
+  .middleware([staticFunctionMiddleware])
   .handler(({ data }) => renderPostDescriptionHtmlList(data.posts));
 
 export const getMarkdownHeadings = createServerFn({ method: "POST" })
@@ -25,6 +27,7 @@ export const getMarkdownHeadings = createServerFn({ method: "POST" })
       content: z.string(),
     }),
   )
+  .middleware([staticFunctionMiddleware])
   .handler(({ data }) => getMarkdownHeadingList(data.content));
 
 export const renderRssContentHtml = createServerFn({ method: "POST" })
@@ -33,4 +36,5 @@ export const renderRssContentHtml = createServerFn({ method: "POST" })
       bodies: z.array(z.string()),
     }),
   )
+  .middleware([staticFunctionMiddleware])
   .handler(({ data }) => renderRssContentHtmlList(data.bodies));

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { groupPostsByTag, postPageSize } from "@/lib/content/listing";
+import { groupPostsByTag } from "@/lib/content/listing";
+import { postPageSize } from "@/lib/content/pagination";
 import { getPages, getSortedPosts } from "@/lib/content/server";
 import { renderUrlSet } from "@/lib/utils/sitemap";
 

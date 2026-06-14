@@ -1,11 +1,12 @@
 import { format } from "date-fns";
-import logo from "@/assets/logo.svg?raw";
 import type { OgImageInfo } from "./generate-og-images";
 
-const logoDataUrl = `data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`;
 const clickDataUrl = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0xMSAyMUw0IDRsMTcgN2wtNi4yNjUgMi42ODVhMiAyIDAgMCAwLTEuMDUgMS4wNXoiLz48L3N2Zz4=`;
 
-export function postOgImage(info: OgImageInfo) {
+export function postOgImage(
+  info: OgImageInfo,
+  assets: { logoDataUrl: string },
+) {
   return (
     <div
       style={{
@@ -29,7 +30,7 @@ export function postOgImage(info: OgImageInfo) {
         }}
       >
         <img
-          src={logoDataUrl}
+          src={assets.logoDataUrl}
           style={{ borderRadius: "16px", border: "4px solid #555" }}
           alt="logo"
           width={128}

@@ -1,6 +1,18 @@
 import { createServerFn } from "@tanstack/react-start";
+import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
 import { z } from "zod";
 import type { ImageMeta } from "@repo/markdown/plugins/rehype-image-metadata";
+import {
+  getAdjacentPosts as loadAdjacentPosts,
+  getImageMeta as loadImageMeta,
+  getPage as loadPage,
+  getPages as loadPages,
+  getPost as loadPost,
+  getPosts as loadPosts,
+  getSeriesPosts as loadSeriesPosts,
+  getSimilarPosts as loadSimilarPosts,
+  getSortedPosts as loadSortedPosts,
+} from "@/lib/content/source";
 import type { ContentEntry, PageData, PostData } from "@/lib/content/source";
 
 type SortedPostsOptions = {
@@ -19,56 +31,52 @@ const sortedPostsOptionsSchema = z
   })
   .optional();
 
-export const getPosts = createServerFn({ method: "GET" }).handler(
-  async (): Promise<ContentEntry<PostData>[]> => {
-    const { getPosts: loadPosts } = await import("@/lib/content/source");
+export const getPosts = createServerFn({ method: "GET" })
+  .middleware([staticFunctionMiddleware])
+  .handler(async (): Promise<ContentEntry<PostData>[]> => {
     return loadPosts();
-  },
-);
+  });
 
-export const getPages = createServerFn({ method: "GET" }).handler(
-  async (): Promise<ContentEntry<PageData>[]> => {
-    const { getPages: loadPages } = await import("@/lib/content/source");
+export const getPages = createServerFn({ method: "GET" })
+  .middleware([staticFunctionMiddleware])
+  .handler(async (): Promise<ContentEntry<PageData>[]> => {
     return loadPages();
-  },
-);
+  });
 
-export const getImageMeta = createServerFn({ method: "GET" }).handler(
-  async (): Promise<ImageMeta[]> => {
-    const { getImageMeta: loadImageMeta } =
-      await import("@/lib/content/source");
+export const getImageMeta = createServerFn({ method: "GET" })
+  .middleware([staticFunctionMiddleware])
+  .handler(async (): Promise<ImageMeta[]> => {
     return loadImageMeta();
-  },
-);
+  });
 
 export const getSortedPosts = createServerFn({ method: "GET" })
   .validator(sortedPostsOptionsSchema)
+  .middleware([staticFunctionMiddleware])
   .handler(async ({ data: options }): Promise<ContentEntry<PostData>[]> => {
-    const { getSortedPosts: loadSortedPosts } =
-      await import("@/lib/content/source");
     return loadSortedPosts(normalizeSortedPostsOptions(options));
   });
 
 export const getPost = createServerFn({ method: "GET" })
   .validator(z.string())
+  .middleware([staticFunctionMiddleware])
   .handler(
     async ({ data: slug }): Promise<ContentEntry<PostData> | undefined> => {
-      const { getPost: loadPost } = await import("@/lib/content/source");
       return loadPost(slug);
     },
   );
 
 export const getPage = createServerFn({ method: "GET" })
   .validator(z.string())
+  .middleware([staticFunctionMiddleware])
   .handler(
     async ({ data: slug }): Promise<ContentEntry<PageData> | undefined> => {
-      const { getPage: loadPage } = await import("@/lib/content/source");
       return loadPage(slug);
     },
   );
 
 export const getAdjacentPosts = createServerFn({ method: "GET" })
   .validator(z.string())
+  .middleware([staticFunctionMiddleware])
   .handler(
     async ({
       data: currentSlug,
@@ -76,8 +84,6 @@ export const getAdjacentPosts = createServerFn({ method: "GET" })
       prev?: ContentEntry<PostData>;
       next?: ContentEntry<PostData>;
     }> => {
-      const { getAdjacentPosts: loadAdjacentPosts } =
-        await import("@/lib/content/source");
       return loadAdjacentPosts(currentSlug);
     },
   );
@@ -89,9 +95,8 @@ export const getSeriesPosts = createServerFn({ method: "GET" })
       options: sortedPostsOptionsSchema,
     }),
   )
+  .middleware([staticFunctionMiddleware])
   .handler(async ({ data }): Promise<ContentEntry<PostData>[]> => {
-    const { getSeriesPosts: loadSeriesPosts } =
-      await import("@/lib/content/source");
     return loadSeriesPosts(
       data.seriesId,
       normalizeSortedPostsOptions(data.options),
@@ -106,12 +111,11 @@ export const getSimilarPosts = createServerFn({ method: "GET" })
       options: sortedPostsOptionsSchema,
     }),
   )
+  .middleware([staticFunctionMiddleware])
   .handler(
     async ({
       data,
     }): Promise<{ post: ContentEntry<PostData>; score: number }[]> => {
-      const { getSimilarPosts: loadSimilarPosts } =
-        await import("@/lib/content/source");
       return loadSimilarPosts(
         data.currentSlug,
         data.limit,
