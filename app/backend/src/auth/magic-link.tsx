@@ -8,7 +8,7 @@ import {
   Link,
   Preview,
   Text,
-} from "@react-email/components";
+} from "react-email";
 
 interface NotionMagicLinkEmailProps {
   url: string;
@@ -76,7 +76,7 @@ export const NotionMagicLinkEmail = ({ url }: NotionMagicLinkEmailProps) => (
 
 NotionMagicLinkEmail.PreviewProps = {
   url: "https://yunfi.com",
-} as NotionMagicLinkEmailProps;
+} satisfies NotionMagicLinkEmailProps;
 
 export default NotionMagicLinkEmail;
 

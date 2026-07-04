@@ -1,5 +1,5 @@
-import { render } from "@react-email/render";
 import * as nodemailer from "nodemailer";
+import { render } from "react-email";
 import type { Env } from "@/env.js";
 import { logger as rawLogger } from "@/logger.js";
 

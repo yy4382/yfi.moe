@@ -7,7 +7,6 @@ import "@/styles/global.css";
 
 import { ClientRouter } from "astro:transitions";
 import Favicon from "@/components/html-head/Favicon.astro";
-import LoadingIndicator from "astro-loading-indicator/component";
 import TagManagers from "@/components/html-head/TagManager.astro";
 // @ts-expect-error fontFamilyFallback is not correctly typed
 import { css, fontFamilyFallback } from "@/assets/fonts/MiSansVF.ttf";
@@ -38,11 +37,37 @@ const { seoConfig, stopTrack } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter fallback="swap" />
-    <LoadingIndicator color="hsl(236, 100%, 81%)" />
   </head>
   <body class="m-0 overflow-x-hidden bg-background bg-fixed p-0 text-content">
+    <div id="route-progress" aria-hidden="true"></div>
     <slot />
     <Toaster theme="system" client:load />
+    <script>
+      const routeProgressBoundKey = "__yfiRouteProgressBound";
+      const getRouteProgress = () => document.getElementById("route-progress");
+
+      if (!Reflect.get(window, routeProgressBoundKey)) {
+        Reflect.set(window, routeProgressBoundKey, true);
+
+        document.addEventListener("astro:before-preparation", () => {
+          const progress = getRouteProgress();
+          progress?.setAttribute("data-state", "loading");
+        });
+
+        const completeProgress = () => {
+          const progress = getRouteProgress();
+          progress?.setAttribute("data-state", "done");
+          window.setTimeout(() => {
+            if (progress?.getAttribute("data-state") === "done") {
+              progress.removeAttribute("data-state");
+            }
+          }, 280);
+        };
+
+        document.addEventListener("astro:after-swap", completeProgress);
+        document.addEventListener("astro:page-load", completeProgress);
+      }
+    </script>
   </body>
 </html>
 
@@ -55,5 +80,42 @@ const { seoConfig, stopTrack } = Astro.props;
   body {
     text-rendering: optimizeLegibility;
     font-family: var(--font-family), "SF Pro", var(--font-family-fallback);
+  }
+</style>
+
+<style is:global>
+  #route-progress {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 2147483647;
+    height: 2px;
+    width: 100%;
+    pointer-events: none;
+    background: hsl(236, 100%, 81%);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition:
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 180ms ease-out;
+  }
+
+  #route-progress[data-state="loading"] {
+    opacity: 1;
+    transform: scaleX(0.82);
+    transition:
+      transform 900ms cubic-bezier(0.2, 0.7, 0.1, 1),
+      opacity 120ms ease-out;
+  }
+
+  #route-progress[data-state="done"] {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #route-progress {
+      transition: none;
+    }
   }
 </style>

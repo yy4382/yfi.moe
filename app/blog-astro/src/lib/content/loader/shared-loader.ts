@@ -1,6 +1,6 @@
 import type { Loader, LoaderContext, DataStore } from "astro/loaders";
-import { z } from "astro:content";
-import yaml from "js-yaml";
+import { z } from "astro/zod";
+import { load } from "js-yaml";
 import type { ContentTimeData } from "@/content.config";
 
 type DataEntry = Parameters<DataStore["set"]>[0];
@@ -160,6 +160,6 @@ function parseMarkdownFrontmatter(markdown: string) {
   const yamlStr = match[1]!;
   const content = markdown.slice(match[0].length);
 
-  const data = yaml.load(yamlStr) as Record<string, unknown>;
+  const data = load(yamlStr) as Record<string, unknown>;
   return { data, content };
 }

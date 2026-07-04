@@ -19,28 +19,15 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "husky": "^9.1.7",
-    "prettier": "^3.7.3",
+    "prettier": "^3.8.5",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "turbo": "^2.8.17",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "turbo": "^2.10.0",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.32.1",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@tailwindcss/oxide",
-      "cn-font-split",
-      "esbuild",
-      "koffi",
-      "protobufjs",
-      "sharp"
-    ],
-    "patchedDependencies": {
-      "vaul": "patches/vaul.patch"
-    }
-  },
+  "packageManager": "pnpm@11.9.0",
   "lint-staged": {
     "*": "prettier --ignore-unknown --write"
   }

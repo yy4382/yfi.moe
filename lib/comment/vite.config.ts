@@ -1,10 +1,10 @@
 /// <reference types="vitest/config" />
-import react from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import Icons from "unplugin-icons/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 let analyzer;
 if (process.env.ANALYZE === "true") {
@@ -16,18 +16,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    tsconfigPaths(),
-    react({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
+    react(),
+    babel({ presets: [reactCompilerPreset()] }),
     Icons({ compiler: "jsx", jsx: "react" }),
     ...((process.env.ANALYZE === "true" && analyzer
       ? [analyzer()].flat()
       : // eslint-disable-next-line @typescript-eslint/no-explicit-any
         []) as any[]),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
   build: {
     sourcemap: true,
     minify: false,
@@ -40,6 +39,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "react",
+        "react/compiler-runtime",
         "react-dom",
         "react/jsx-runtime",
         "tailwind-merge",

@@ -1,5 +1,5 @@
-import { Text, Link, Section, CodeInline } from "@react-email/components";
 import type { CSSProperties } from "react";
+import { Text, Link, Section, CodeInline } from "react-email";
 import { BaseTemplate } from "@/services/notification/templates/base-template.js";
 
 interface AdminNewCommentEmailProps {

@@ -3,25 +3,45 @@ packages:
   - lib/*
 
 catalog:
-  "@eslint/js": ^9.39.4
-  "@tanstack/react-query": ^5.90.2
-  "@types/react": ^19.2.14
+  "@eslint/js": ^10.0.1
+  "@tanstack/react-query": ^5.101.1
+  "@types/node": 26.0.1
+  "@types/react": ^19.2.17
   "@types/react-dom": ^19.2.3
-  better-auth: ^1.5.5
-  eslint: ^9.39.4
-  hono: ^4.12.8
-  motion: ^12.38.0
-  radix-ui: ^1.4.3
-  react: ^19.2.4
-  react-dom: ^19.2.4
+  better-auth: ^1.6.22
+  eslint: ^10.6.0
+  hono: ^4.12.27
+  motion: ^12.42.0
+  radix-ui: ^1.6.0
+  react: ^19.2.7
+  react-dom: ^19.2.7
   sonner: ^2.0.7
-  typescript: ^5.9.3
-  typescript-eslint: ^8.57.1
-  vitest: ^4.1.0
-  zod: ^4.3.6
-  "@types/node": 24.12.0
+  typescript: ^6.0.3
+  typescript-eslint: ^8.62.0
+  vitest: ^4.1.9
+  zod: ^4.4.3
+
+minimumReleaseAge: 10080
+minimumReleaseAgeStrict: true
+
+allowBuilds:
+  "@tailwindcss/oxide": true
+  cn-font-split: true
+  esbuild: true
+  koffi: true
+  msw: false
+  protobufjs: true
+  sharp: true
 
 overrides:
+  "@types/node": "catalog:"
   better-auth>next: "-"
   cn-font-metrics>fontaine: 0.6.0
-  "@types/node": 24.12.0
+
+packageExtensions:
+  "@standard-community/standard-json@0.3.5":
+    dependencies:
+      quansync: ^0.2.11
+
+patchedDependencies:
+  vaul: patches/vaul.patch

@@ -1,4 +1,6 @@
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import type { infer as zInfer } from "astro/zod";
+import { defineCollection } from "astro:content";
 import {
   ARTICLE_PAT,
   IMAGE_META_SOURCE,
@@ -27,7 +29,7 @@ const baseSchema = z.object({
 });
 
 export type ContentTimeData = Pick<
-  z.infer<typeof baseSchema>,
+  zInfer<typeof baseSchema>,
   "writingDate" | "publishedDate" | "updatedDate"
 >;
 
@@ -43,10 +45,10 @@ const postSchema = baseSchema.extend({
   published: z.boolean(),
 });
 
-export type PostData = z.infer<typeof postSchema>;
+export type PostData = zInfer<typeof postSchema>;
 
 const pageSchema = baseSchema;
-export type PageData = z.infer<typeof pageSchema>;
+export type PageData = zInfer<typeof pageSchema>;
 
 function getLoader(url: string) {
   if (url.startsWith("http")) {

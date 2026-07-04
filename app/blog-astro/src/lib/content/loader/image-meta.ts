@@ -94,6 +94,7 @@ function parseImageMeta(rawContent: string, source: string): ImageMetaEntry[] {
   } catch (error) {
     throw new Error(
       `Invalid JSON in image metadata from ${source}: ${(error as Error).message}`,
+      { cause: error },
     );
   }
   if (!Array.isArray(parsed)) {

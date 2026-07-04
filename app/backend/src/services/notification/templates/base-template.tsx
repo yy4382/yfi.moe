@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Html,
   Head,
@@ -12,8 +13,7 @@ import {
   Column,
   Row,
   Img,
-} from "@react-email/components";
-import React from "react";
+} from "react-email";
 
 interface BaseTemplateProps {
   children: React.ReactNode;
