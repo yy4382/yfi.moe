@@ -27,3 +27,13 @@ index f71a696ed94bc284ee60ae5d819d8ef14dadccec..457689ad0c3f3f4b3b8379f218a5f165
    },
    "scripts": {
      "type-check": "tsc --noEmit",
+diff --git a/style.css b/style.css
+--- a/style.css
++++ b/style.css
+@@ -176,5 +176,5 @@
+ @media (pointer: fine) {
+-  [data-vaul-handle-hitarea]: {
++  [data-vaul-handle-hitarea] {
+     width: 100%;
+     height: 100%;
+   }

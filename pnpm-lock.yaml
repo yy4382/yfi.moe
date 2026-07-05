@@ -63,7 +63,7 @@ overrides:
 packageExtensionsChecksum: sha256-VsnZcXSs+4WJiI4K0pOe1xInLN+jEIlbJF8CPLMMziE=
 
 patchedDependencies:
-  vaul: b82176cc5cc83366b9f66d6bf126cc1b4720e6f39af3af4b465a0be35130048c
+  vaul: 67c15858dbcb6fedffb5b14b03d0eba1f3ce8bb26fd2e388c516d72ab826db5d
 
 importers:
 
@@ -333,7 +333,7 @@ importers:
         version: 6.0.3
       vaul:
         specifier: ^1.1.2
-        version: 1.1.2(patch_hash=b82176cc5cc83366b9f66d6bf126cc1b4720e6f39af3af4b465a0be35130048c)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 1.1.2(patch_hash=67c15858dbcb6fedffb5b14b03d0eba1f3ce8bb26fd2e388c516d72ab826db5d)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@egoist/tailwindcss-icons':
         specifier: ^1.9.2
@@ -14821,7 +14821,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vaul@1.1.2(patch_hash=b82176cc5cc83366b9f66d6bf126cc1b4720e6f39af3af4b465a0be35130048c)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  vaul@1.1.2(patch_hash=67c15858dbcb6fedffb5b14b03d0eba1f3ce8bb26fd2e388c516d72ab826db5d)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
       '@radix-ui/react-dialog': 1.1.17(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
