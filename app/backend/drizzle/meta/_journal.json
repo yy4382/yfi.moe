@@ -15,6 +15,20 @@
       "when": 1758352757945,
       "tag": "0001_spicy_lady_bullseye",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1783781324059,
+      "tag": "0002_motionless_shaman",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1783783178708,
+      "tag": "0003_purple_vivisector",
+      "breakpoints": true
     }
   ]
 }

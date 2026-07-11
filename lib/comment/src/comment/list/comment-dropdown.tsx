@@ -31,8 +31,7 @@ export function CommentDropdown({ comment, onEdit }: CommentDropdownProps) {
   const { mutate: deleteComment } = useDeleteComment();
   const { mutate: toggleSpam } = useToggleSpam();
 
-  const isMine =
-    session && comment.userId && comment.userId === session.user.id;
+  const isMine = comment.ownedByViewer;
   const isAdmin = session?.user.role === "admin";
 
   // Only show dropdown for owners or admins

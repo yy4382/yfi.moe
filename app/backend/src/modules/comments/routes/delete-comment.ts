@@ -20,18 +20,6 @@ export const deleteCommentRoute = factory.createApp().post(
           },
         },
       },
-      401: {
-        description: "Not authorized: if the user is not logged in",
-        content: {
-          "text/plain": {
-            schema: {
-              type: "string",
-              description: "Error message",
-              example: "Unauthorized",
-            },
-          },
-        },
-      },
       403: {
         description:
           "Forbidden: if the user does not have permission to delete the comment",
@@ -62,20 +50,19 @@ export const deleteCommentRoute = factory.createApp().post(
   validator("json", deleteCommentRequest),
   async (c) => {
     const body = c.req.valid("json");
-    const user = c.get("auth")?.user;
-    if (!user) {
-      return c.text("Unauthorized", 401);
-    }
+    const user = c.get("auth")?.user ?? null;
+    const identityScope = c.get("guestIdentity").resolve();
     const deleteOptions = {
       db: c.get("db"),
       user,
+      ownedByViewer: identityScope.ownedByViewer,
       logger: c.get("logger"),
     };
     const result = await deleteComment(body.id, deleteOptions);
     switch (result.result) {
       case "success":
         c.get("logger").info(
-          { deletedIds: result.deletedIds, userId: user.id },
+          { deletedIds: result.deletedIds, userId: user?.id },
           "comments:delete success",
         );
         return c.json(

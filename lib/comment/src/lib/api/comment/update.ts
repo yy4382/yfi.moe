@@ -28,7 +28,7 @@ export type CommentUpdateResponse = z.infer<typeof commentUpdateResponse>;
 export async function updateComment(
   params: CommentUpdateParamsBranded,
   honoClient: HonoClient,
-): Promise<CommentUpdateResponse> {
+) {
   const result = await honoClient.comments.update.$post({
     json: {
       id: params.id,
@@ -38,5 +38,8 @@ export async function updateComment(
   if (!result.ok) {
     throw new Error(await result.text());
   }
-  return commentUpdateResponse.decode(await result.json());
+  return {
+    response: commentUpdateResponse.decode(await result.json()),
+    identityHeaders: result.headers,
+  };
 }

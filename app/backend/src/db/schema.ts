@@ -111,6 +111,7 @@ export const comment = sqliteTable(
 
     visitorName: text("visitor_name"),
     visitorEmail: text("visitor_email"),
+    guestOwnerKey: text("guest_owner_key"),
 
     anonymousName: text("anonymous_name"),
 
@@ -125,6 +126,11 @@ export const comment = sqliteTable(
       "no_visitor_email_if_no_name",
       sql`${table.visitorName} IS NOT NULL OR (${table.visitorEmail} IS NULL)`,
     ),
+    check(
+      "not_both_user_and_guest_owner",
+      sql`${table.userId} IS NULL OR ${table.guestOwnerKey} IS NULL`,
+    ),
+    index("idx_comments_guest_owner").on(table.guestOwnerKey),
   ],
 );
 

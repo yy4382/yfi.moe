@@ -51,5 +51,8 @@ export async function addComment(
   if (!result.ok) {
     throw new Error(await result.text());
   }
-  return commentAddResponse.parse(await result.json());
+  return {
+    response: commentAddResponse.parse(await result.json()),
+    identityHeaders: result.headers,
+  };
 }

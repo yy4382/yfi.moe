@@ -3,11 +3,6 @@ import { postGuestComment } from "./comment-fixture";
 import { signUpViewer } from "./identity-fixture";
 
 test.describe("guest comment ownership refactor contract", () => {
-  test.skip(
-    process.env.GUEST_IDENTITY_REFACTOR !== "1",
-    "Activated as red tests on the dedicated refactor branch",
-  );
-
   test("same-browser guest edits and deletes their comment", async ({
     page,
   }) => {

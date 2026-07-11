@@ -36,6 +36,7 @@ describe("CommentItem", () => {
       createdAt: "2025-08-10T11:30:59.000Z",
       updatedAt: "2025-08-10T11:30:59.000Z",
       path: "/post/test-post",
+      ownedByViewer: false,
       displayName: "Visitor1",
       anonymousName: null,
       userImage: "https://example.com/image.png",

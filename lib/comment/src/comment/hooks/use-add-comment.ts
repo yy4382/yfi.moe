@@ -7,6 +7,7 @@ import {
 } from "@/lib/api/comment/add";
 import { sessionOptions } from "@/lib/auth/session-options";
 import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
+import { useGuestIdentity } from "@/lib/hooks/guest-identity";
 import { sortByAtom } from "../atoms";
 import type { CommentBoxId } from "../types";
 import {
@@ -44,12 +45,14 @@ export function useAddComment({ onSuccess, id }: UseAddCommentOptions) {
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
   const honoClient = useHonoClient();
+  const { synchronize } = useGuestIdentity();
 
   const mutation = useMutation({
     mutationKey: commentKeys.mutations.add(id),
     mutationFn: (params: CommentAddParamsBranded) =>
       addComment(params, honoClient),
-    onSuccess: (data) => {
+    onSuccess: ({ response: data, identityHeaders }) => {
+      synchronize(identityHeaders);
       onSuccess?.();
 
       // Show warning for spam-flagged comments (require admin approval)
