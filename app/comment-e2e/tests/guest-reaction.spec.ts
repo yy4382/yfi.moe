@@ -6,39 +6,52 @@ import {
 } from "./comment-fixture";
 
 const anonymousCookie = "anon_key";
-const anonymousProjection = "commentAnonymousKey";
+const guestProjection = "guestIdentityProjection";
 
-test("first guest reaction creates and reuses a browser identity", async ({
+test("a first guest reaction creates and then reuses a browser identity", async ({
+  browser,
   context,
   page,
 }) => {
   const path = "/e2e/guest-reaction-first";
-  const commentId = await postGuestComment(page, {
+  const seedContext = await browser.newContext();
+  const seedPage = await seedContext.newPage();
+  const commentId = await postGuestComment(seedPage, {
     path,
     content: "React to this as a first-time guest",
   });
+  await seedContext.close();
+  await openCommentFixture(page, path);
 
   expect(
     (await context.cookies()).find((cookie) => cookie.name === anonymousCookie),
   ).toBeUndefined();
   expect(
-    await page.evaluate(
-      (key) => localStorage.getItem(key),
-      anonymousProjection,
-    ),
+    await page.evaluate((key) => localStorage.getItem(key), guestProjection),
   ).toBeNull();
 
   await addThumbsUpReaction(page, commentId);
+
+  const initialCookie = (await context.cookies()).find(
+    (cookie) => cookie.name === anonymousCookie,
+  );
+  expect(initialCookie?.httpOnly).toBe(true);
+  const initialProjectedKey = await page.evaluate(
+    (key) => localStorage.getItem(key),
+    guestProjection,
+  );
+  expect(initialProjectedKey).toBeTruthy();
 
   const cookie = (await context.cookies()).find(
     (candidate) => candidate.name === anonymousCookie,
   );
   expect(cookie?.httpOnly).toBe(true);
+  expect(cookie?.value).toBe(initialCookie?.value);
   const projectedKey = await page.evaluate(
     (key) => localStorage.getItem(key),
-    anonymousProjection,
+    guestProjection,
   );
-  expect(projectedKey).toBeTruthy();
+  expect(projectedKey).toBe(initialProjectedKey);
 
   for (const emoji of ["👍", "👍🏻"]) {
     const response = await page.request.post(
@@ -71,7 +84,7 @@ test("a copied public key cannot remove another browser's reaction", async ({
   await addThumbsUpReaction(victimPage, commentId);
   const victimProjectedKey = await victimPage.evaluate(
     (key) => localStorage.getItem(key),
-    anonymousProjection,
+    guestProjection,
   );
   expect(victimProjectedKey).toBeTruthy();
 
@@ -80,38 +93,28 @@ test("a copied public key cannot remove another browser's reaction", async ({
   await openCommentFixture(attackerPage, path);
   await attackerPage.evaluate(
     ({ key, value }) => localStorage.setItem(key, value!),
-    { key: anonymousProjection, value: victimProjectedKey },
+    { key: guestProjection, value: victimProjectedKey },
   );
   await attackerPage.reload();
 
-  const forgedSelectedReaction = attackerPage.getByRole("button", {
+  const forgedReaction = attackerPage.getByRole("button", {
     name: /👍.*1/,
-    pressed: true,
+    pressed: false,
   });
-  await expect(forgedSelectedReaction).toBeVisible();
-  const removeAttempt = attackerPage.waitForResponse(
-    (response) =>
-      response.request().method() === "POST" &&
-      new URL(response.url()).pathname ===
-        `/api/v1/comments/reaction/${commentId}/remove`,
-  );
-  await forgedSelectedReaction.click();
-  expect((await removeAttempt).status()).toBe(204);
-  await expect(forgedSelectedReaction).toBeVisible();
-
-  await attackerPage.reload();
-  await expect(
-    attackerPage.getByRole("button", { name: /👍.*1/, pressed: true }),
-  ).toBeVisible();
+  await expect(forgedReaction).toBeVisible();
 
   const forgedRequest = await attackerPage.request.post(
     `http://localhost:3101/api/v1/comments/reaction/${commentId}/remove`,
     {
-      data: { emoji: "👍", anonymousKey: victimProjectedKey },
-      headers: { "x-anonymous-key": victimProjectedKey! },
+      data: { emoji: "👍", guestKey: victimProjectedKey },
+      headers: { "x-guest-identity": victimProjectedKey! },
     },
   );
   expect(forgedRequest.status()).toBe(204);
+  await attackerPage.reload();
+  await expect(
+    attackerPage.getByRole("button", { name: /👍.*1/, pressed: false }),
+  ).toBeVisible();
 
   await victimPage.reload();
   await expect(

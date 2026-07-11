@@ -4,15 +4,13 @@ import type { CommentReactionReqBody } from "@repo/api/comment/reaction.model";
 import { type Result, err, ok } from "@repo/helpers/result";
 import type { HonoClient } from "@/lib/api/create-client";
 
-const ANONYMOUS_IDENTITY_HEADER = "x-anonymous-key";
-
 export type CommentReactionResponse = {
   reaction: z.infer<typeof commentReaction>;
-  anonymousKey?: string | undefined;
+  identityHeaders: Headers;
 };
 
 export type CommentReactionRemoveResponse = {
-  anonymousKey?: string | undefined;
+  identityHeaders: Headers;
 };
 
 export async function addCommentReaction(
@@ -26,12 +24,11 @@ export async function addCommentReaction(
   if (!resp.ok) {
     return err(await resp.text());
   }
-  const anonymousKey = resp.headers.get(ANONYMOUS_IDENTITY_HEADER) ?? undefined;
   const parsed = commentReaction.safeParse(await resp.json());
   if (!parsed.success) {
     return err("Invalid response from server");
   }
-  return ok({ reaction: parsed.data, anonymousKey });
+  return ok({ reaction: parsed.data, identityHeaders: resp.headers });
 }
 
 export async function removeCommentReaction(
@@ -45,6 +42,5 @@ export async function removeCommentReaction(
   if (!resp.ok) {
     return err(await resp.text());
   }
-  const anonymousKey = resp.headers.get(ANONYMOUS_IDENTITY_HEADER) ?? undefined;
-  return ok({ anonymousKey });
+  return ok({ identityHeaders: resp.headers });
 }

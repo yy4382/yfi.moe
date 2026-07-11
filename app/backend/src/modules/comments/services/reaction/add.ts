@@ -1,11 +1,11 @@
-import { and, eq, isNull } from "drizzle-orm";
-import SparkMD5 from "spark-md5";
+import { and, eq, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 import { commentReaction } from "@repo/api/comment/comment-data";
 import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
 import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import type { DbClient } from "@/db/db-plugin.js";
 import { comment, reaction, user } from "@/db/schema.js";
+import { guestIdentityPolicy } from "@/modules/identity/guest-identity-policy.js";
 import type { ReactionActor } from "./types.js";
 
 export type AddReactionResult =
@@ -26,7 +26,11 @@ export async function addReaction(
   commentId: number,
   emojiRaw: string,
   actor: ReactionActor,
-  options: { db: DbClient; logger?: import("pino").Logger },
+  options: {
+    db: DbClient;
+    logger?: import("pino").Logger;
+    ownedActors?: ReactionActor[];
+  },
 ): Promise<AddReactionResult> {
   const { db, logger } = options;
   logger?.debug({ commentId }, "reaction:add start");
@@ -42,8 +46,15 @@ export async function addReaction(
   }
 
   const emojiKey = canonicalizeEmoji(emojiRaw);
-
-  const existing = await fetchReaction(db, commentId, emojiKey, actor);
+  const ownedActors = options.ownedActors?.length
+    ? options.ownedActors
+    : [actor];
+  const existing = await fetchOwnedReaction(
+    db,
+    commentId,
+    emojiKey,
+    ownedActors,
+  );
   if (existing) {
     logger?.debug({ commentId }, "reaction:add already exists");
     return { result: "success", data: existing };
@@ -55,7 +66,7 @@ export async function addReaction(
       emojiKey,
       emojiRaw,
       actorId: actor.type === "user" ? actor.id : null,
-      actorAnonKey: actor.type === "anonymous" ? actor.key : null,
+      actorAnonKey: actor.type === "guest" ? actor.key : null,
     });
   } catch (error) {
     logger?.error({ commentId, error }, "reaction:add insert failed");
@@ -84,29 +95,36 @@ async function fetchReaction(
   emojiKey: string,
   actor: ReactionActor,
 ): Promise<z.infer<typeof commentReaction> | null> {
-  const where =
-    actor.type === "user"
-      ? and(
-          eq(reaction.commentId, commentId),
-          eq(reaction.emojiKey, emojiKey),
-          eq(reaction.actorId, actor.id),
-          isNull(reaction.actorAnonKey),
-        )
-      : and(
-          eq(reaction.commentId, commentId),
-          eq(reaction.emojiKey, emojiKey),
-          eq(reaction.actorAnonKey, actor.key),
-          isNull(reaction.actorId),
-        );
+  return fetchOwnedReaction(db, commentId, emojiKey, [actor]);
+}
 
-  const row = await db
+async function fetchOwnedReaction(
+  db: DbClient,
+  commentId: number,
+  emojiKey: string,
+  actors: ReactionActor[],
+): Promise<z.infer<typeof commentReaction> | null> {
+  const actorConditions = actors.map((actor) =>
+    actor.type === "user"
+      ? and(eq(reaction.actorId, actor.id), isNull(reaction.actorAnonKey))
+      : and(eq(reaction.actorAnonKey, actor.key), isNull(reaction.actorId)),
+  );
+
+  const rows = await db
     .select()
     .from(reaction)
     .leftJoin(user, eq(reaction.actorId, user.id))
-    .where(where)
-    .limit(1);
+    .where(
+      and(
+        eq(reaction.commentId, commentId),
+        eq(reaction.emojiKey, emojiKey),
+        or(...actorConditions),
+      ),
+    );
 
-  const data = row[0];
+  // Preserve a browser's guest-owned row across sign-in/sign-out transitions.
+  const data =
+    rows.find((row) => row.reaction.actorAnonKey !== null) ?? rows[0];
   if (!data) {
     return null;
   }
@@ -116,10 +134,10 @@ async function fetchReaction(
       id: data.reaction.id,
       emojiKey: data.reaction.emojiKey,
       emojiRaw: data.reaction.emojiRaw,
-      user: {
-        type: "anonymous",
-        key: SparkMD5.hash(data.reaction.actorAnonKey),
-      },
+      user: guestIdentityPolicy.toPublicOwner({
+        type: "guest",
+        rawKey: data.reaction.actorAnonKey,
+      }),
     });
   }
 

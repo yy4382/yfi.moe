@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/require-await */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import {
-  ANONYMOUS_IDENTITY_COOKIE,
-  ANONYMOUS_IDENTITY_HEADER,
-} from "@/plugins/anonymous-identity.js";
+import { GUEST_IDENTITY_HEADER } from "@repo/guest-identity";
+import { GUEST_IDENTITY_COOKIE } from "@/modules/identity/guest-identity-plugin.js";
 import * as addReactionModule from "./services/reaction/add.js";
 import * as removeReactionModule from "./services/reaction/remove.js";
 import { createTestCommentApp } from "./test-utils.js";
@@ -24,14 +22,14 @@ describe("comment reactions", () => {
       id: 10,
       emojiKey: "👍",
       emojiRaw: "👍🏿",
-      user: { type: "anonymous" as const, key: "generated" },
+      user: { type: "guest" as const, key: "generated" },
     };
     const addSpy = vi
       .spyOn(addReactionModule, "addReaction")
       .mockImplementationOnce(async (commentId, emoji, actor) => {
         expect(commentId).toBe(1);
         expect(emoji).toBe("👍🏿");
-        expect(actor).toMatchObject({ type: "anonymous" });
+        expect(actor).toMatchObject({ type: "guest" });
         return { result: "success", data: mockResponse };
       });
 
@@ -44,8 +42,8 @@ describe("comment reactions", () => {
 
     expect(resp.status).toBe(200);
     expect(await resp.json()).toEqual(mockResponse);
-    expect(resp.headers.get("set-cookie")).toContain(ANONYMOUS_IDENTITY_COOKIE);
-    expect(resp.headers.get(ANONYMOUS_IDENTITY_HEADER)).toBeTruthy();
+    expect(resp.headers.get("set-cookie")).toContain(GUEST_IDENTITY_COOKIE);
+    expect(resp.headers.get(GUEST_IDENTITY_HEADER)).toBeTruthy();
     expect(addSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -64,7 +62,8 @@ describe("comment reactions", () => {
 
     expect(resp.status).toBe(404);
     expect(await resp.text()).toBe("comment not found");
-    expect(resp.headers.get(ANONYMOUS_IDENTITY_HEADER)).toBeTruthy();
+    expect(resp.headers.get("set-cookie")).toBeNull();
+    expect(resp.headers.get(GUEST_IDENTITY_HEADER)).toBeNull();
   });
 
   it("should reject invalid comment id on add", async () => {
@@ -90,7 +89,7 @@ describe("comment reactions", () => {
       body: JSON.stringify({ emoji: "👍" }),
       headers: {
         "Content-Type": "application/json",
-        Cookie: `${ANONYMOUS_IDENTITY_COOKIE}=anon-key`,
+        Cookie: `${GUEST_IDENTITY_COOKIE}=anon-key`,
       },
     });
 
@@ -98,7 +97,7 @@ describe("comment reactions", () => {
     expect(removeSpy).toHaveBeenCalledWith(
       1,
       "👍",
-      expect.objectContaining({ type: "anonymous", key: "anon-key" }),
+      [expect.objectContaining({ type: "guest", key: "anon-key" })],
       expect.any(Object),
     );
   });

@@ -29,5 +29,5 @@ export async function clearGuestCookie(context: BrowserContext) {
 }
 
 export async function clearGuestProjection(page: Page) {
-  await page.evaluate(() => localStorage.removeItem("commentAnonymousKey"));
+  await page.evaluate(() => localStorage.removeItem("guestIdentityProjection"));
 }

@@ -492,7 +492,7 @@ describe("tablesToCommentData", () => {
           emojiKey: "heart",
           emojiRaw: "❤️",
           user: {
-            type: "anonymous",
+            type: "guest",
             key: SparkMD5.hash("anon-key"),
           },
         },

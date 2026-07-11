@@ -1,14 +1,11 @@
-import type { Context } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import { commentReaction } from "@repo/api/comment/comment-data";
 import { commentReactionReqBody } from "@repo/api/comment/reaction.model";
-import { factory, type Variables } from "@/factory.js";
+import type { PersistenceOwner } from "@repo/guest-identity/backend";
+import { factory } from "@/factory.js";
 import { addReaction } from "../services/reaction/add.js";
 import { removeReaction } from "../services/reaction/remove.js";
-import {
-  actorFromUser,
-  type ReactionActor,
-} from "../services/reaction/types.js";
+import type { ReactionActor } from "../services/reaction/types.js";
 
 const parseCommentId = (commentIdRaw: string): number | null => {
   const parsed = Number.parseInt(commentIdRaw, 10);
@@ -18,37 +15,10 @@ const parseCommentId = (commentIdRaw: string): number | null => {
   return parsed;
 };
 
-type ReactionActorResolution = {
-  actor: ReactionActor;
-};
-
-const resolveReactionActor = (
-  c: Context<{ Variables: Variables }>,
-  options: { createIfMissing?: boolean } = {},
-): ReactionActorResolution | null => {
-  const { createIfMissing = false } = options;
-  const auth = c.get("auth");
-  if (auth?.user) {
-    return { actor: actorFromUser(auth.user) };
-  }
-
-  const identity = c.get("anonymousIdentity");
-  if (!identity) {
-    throw new Error("anonymousIdentity plugin is not registered");
-  }
-
-  if (createIfMissing) {
-    const { key } = identity.ensureKey();
-    return { actor: { type: "anonymous", key } };
-  }
-
-  const key = identity.getKey();
-  if (!key) {
-    return null;
-  }
-
-  return { actor: { type: "anonymous", key } };
-};
+const toReactionActor = (owner: PersistenceOwner): ReactionActor =>
+  owner.type === "user"
+    ? { type: "user", id: owner.id }
+    : { type: "guest", key: owner.rawKey };
 
 export const reactionRoutes = factory
   .createApp()
@@ -108,24 +78,24 @@ export const reactionRoutes = factory
         return c.text("invalid comment id", 400);
       }
 
-      const resolution = resolveReactionActor(c, { createIfMissing: true });
-      if (!resolution) {
+      const identity = c.get("guestIdentity");
+      const identityScope = identity.resolve({ createGuestIfMissing: true });
+      if (!identityScope.creationOwner) {
         return c.text("unable to resolve actor", 400);
       }
+      const creationActor = toReactionActor(identityScope.creationOwner);
+      const ownedActors = identityScope.ownedByViewer.map(toReactionActor);
 
       const body = c.req.valid("json");
-      const result = await addReaction(
-        commentId,
-        body.emoji,
-        resolution.actor,
-        {
-          db: c.get("db"),
-          logger: c.get("logger"),
-        },
-      );
+      const result = await addReaction(commentId, body.emoji, creationActor, {
+        db: c.get("db"),
+        logger: c.get("logger"),
+        ownedActors,
+      });
 
       switch (result.result) {
         case "success":
+          identity.commit(identityScope);
           return c.json(result.data, 200);
         case "not_found":
           return c.text(result.message, 404);
@@ -186,8 +156,10 @@ export const reactionRoutes = factory
         return c.text("invalid comment id", 400);
       }
 
-      const resolution = resolveReactionActor(c, { createIfMissing: false });
-      if (!resolution) {
+      const identityScope = c.get("guestIdentity").resolve();
+      const ownedActors = identityScope.ownedByViewer.map(toReactionActor);
+      const [firstActor, ...remainingActors] = ownedActors;
+      if (!firstActor) {
         return c.body(null, 204);
       }
 
@@ -195,7 +167,7 @@ export const reactionRoutes = factory
       const result = await removeReaction(
         commentId,
         body.emoji,
-        resolution.actor,
+        [firstActor, ...remainingActors],
         {
           db: c.get("db"),
           logger: c.get("logger"),

@@ -11,7 +11,7 @@ export const commentReaction = z.object({
       name: z.string(),
       image: z.string(),
     }),
-    z.object({ type: z.literal("anonymous"), key: z.string() }),
+    z.object({ type: z.literal("guest"), key: z.string() }),
   ]),
 });
 

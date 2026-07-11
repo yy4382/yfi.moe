@@ -10,6 +10,7 @@ import { getCommentsResponse } from "@repo/api/comment/get.model";
 import type { HonoClient } from "@/lib/api/create-client";
 import { sessionOptions } from "@/lib/auth/session-options";
 import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
+import { useGuestIdentity } from "@/lib/hooks/guest-identity";
 import { sortByAtom, SORT_BY_OPTIONS } from "../atoms";
 import { PER_PAGE } from "../utils/constants";
 import { commentKeys } from "../utils/query-keys";
@@ -22,6 +23,7 @@ function createListOptions(
   path: string,
   sortBy: (typeof SORT_BY_OPTIONS)[number],
   honoClient: HonoClient,
+  synchronizeIdentity: (headers: Pick<Headers, "get">) => unknown,
 ) {
   return infiniteQueryOptions({
     queryKey: commentKeys.list(user?.id, path, sortBy),
@@ -38,6 +40,7 @@ function createListOptions(
         if (!result.ok) {
           throw new Error(await result.text());
         }
+        synchronizeIdentity(result.headers);
         return getCommentsResponse.decode(await result.json());
       } catch {
         throw new Error("网络请求失败");
@@ -77,8 +80,9 @@ export function useCommentsQuery() {
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
   const honoClient = useHonoClient();
+  const { synchronize } = useGuestIdentity();
 
   return useInfiniteQuery(
-    createListOptions(session?.user, path, sortBy, honoClient),
+    createListOptions(session?.user, path, sortBy, honoClient, synchronize),
   );
 }
