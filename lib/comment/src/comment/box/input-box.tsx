@@ -1,5 +1,6 @@
 import { type MutationStatus, useMutationState } from "@tanstack/react-query";
 import { useAtom, type WritableAtom } from "jotai";
+import { useId } from "react";
 import MingcuteCloseLine from "~icons/mingcute/close-line";
 import MingcuteLoadingLine from "~icons/mingcute/loading-line";
 import MingcuteSendPlaneLine from "~icons/mingcute/send-plane-line";
@@ -33,6 +34,7 @@ export function InputBox({
   onCancel,
 }: InputBoxProps) {
   const [content, setContent] = useAtom(contentAtom);
+  const textareaId = useId();
 
   const status =
     useMutationState({
@@ -53,7 +55,11 @@ export function InputBox({
         </div>
       )}
 
+      <label htmlFor={textareaId} className="sr-only">
+        评论内容
+      </label>
       <textarea
+        id={textareaId}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={(e) => {
@@ -105,6 +111,7 @@ function InputBoxFooter({
         </div>
         {isAnonymousAtom && <AnonymousCheckbox atom={isAnonymousAtom} />}
         <button
+          aria-label="发送评论"
           onClick={() => submit()}
           className="flex items-center gap-0.5 hover:scale-105 active:scale-95 disabled:opacity-50"
           disabled={status === "pending" || !content.trim()}
