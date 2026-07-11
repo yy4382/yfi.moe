@@ -212,7 +212,7 @@ describe("admin / user views", () => {
           id: 2,
           emojiKey: "heart",
           emojiRaw: "❤️",
-          user: { type: "anonymous", key: SparkMD5.hash("anon-key") },
+          user: { type: "guest", key: SparkMD5.hash("anon-key") },
         }),
       ]),
     );

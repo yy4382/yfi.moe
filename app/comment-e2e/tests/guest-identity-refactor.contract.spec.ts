@@ -3,16 +3,12 @@ import { addThumbsUpReaction, postGuestComment } from "./comment-fixture";
 import {
   clearGuestCookie,
   clearGuestProjection,
+  signOutViewer,
   signUpViewer,
 } from "./identity-fixture";
 
 test.describe("Guest Identity refactor contract", () => {
-  test.skip(
-    process.env.GUEST_IDENTITY_REFACTOR !== "1",
-    "Activated as red tests on the dedicated refactor branch",
-  );
-
-  test("sign in retains guest reaction ownership and canonicalizes a later add", async ({
+  test("a signed-in retry keeps the original guest reaction through sign out", async ({
     page,
   }) => {
     const commentId = await postGuestComment(page, {
@@ -21,7 +17,8 @@ test.describe("Guest Identity refactor contract", () => {
     });
     await addThumbsUpReaction(page, commentId);
 
-    await signUpViewer(page, "Inherited Guest User");
+    const userName = "Inherited Guest User";
+    await signUpViewer(page, userName);
     const inheritedReaction = page.getByRole("button", {
       name: /👍.*1/,
       pressed: true,
@@ -38,6 +35,10 @@ test.describe("Guest Identity refactor contract", () => {
       page.getByRole("button", { name: /👍.*1/, pressed: true }),
     ).toBeVisible();
 
+    await signOutViewer(page, userName);
+    await expect(
+      page.getByRole("button", { name: /👍.*1/, pressed: true }),
+    ).toBeVisible();
     await page.getByRole("button", { name: /👍.*1/, pressed: true }).click();
     await expect(page.getByRole("button", { name: /👍/ })).toHaveCount(0);
   });
@@ -57,7 +58,9 @@ test.describe("Guest Identity refactor contract", () => {
       page.getByRole("button", { name: /👍.*1/, pressed: true }),
     ).toBeVisible();
     expect(
-      await page.evaluate(() => localStorage.getItem("commentAnonymousKey")),
+      await page.evaluate(() =>
+        localStorage.getItem("guestIdentityProjection"),
+      ),
     ).toBeTruthy();
   });
 
@@ -77,7 +80,9 @@ test.describe("Guest Identity refactor contract", () => {
       page.getByRole("button", { name: /👍.*1/, pressed: false }),
     ).toBeVisible();
     expect(
-      await page.evaluate(() => localStorage.getItem("commentAnonymousKey")),
+      await page.evaluate(() =>
+        localStorage.getItem("guestIdentityProjection"),
+      ),
     ).toBeNull();
   });
 
@@ -90,14 +95,13 @@ test.describe("Guest Identity refactor contract", () => {
     });
     await addThumbsUpReaction(page, commentId);
 
-    await page.route(/\/api\/v1\/comments\/?$/, async (route) => {
+    await page.route(/\/api\/v1\/comments\/get$/, async (route) => {
       if (route.request().method() !== "POST") {
         await route.continue();
         return;
       }
       const response = await route.fetch();
       const headers = response.headers();
-      delete headers["x-anonymous-key"];
       delete headers["x-guest-identity"];
       delete headers["x-guest-identity-state"];
       await route.fulfill({ response, headers });

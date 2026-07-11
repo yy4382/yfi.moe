@@ -1,6 +1,6 @@
 import pino from "pino";
 import { factory, type Variables } from "@/factory.js";
-import { anonymousIdentityPlugin } from "@/plugins/anonymous-identity.js";
+import { guestIdentityPlugin } from "@/modules/identity/guest-identity-plugin.js";
 import type { NotificationService } from "@/services/notification/types.js";
 import commentApp from "./index.js";
 
@@ -11,7 +11,7 @@ export const createTestCommentApp = (
 ) =>
   factory
     .createApp()
-    .use(anonymousIdentityPlugin())
+    .use(guestIdentityPlugin())
     .use(async (c, next) => {
       c.set("db", db);
       c.set("authClient", authClient);

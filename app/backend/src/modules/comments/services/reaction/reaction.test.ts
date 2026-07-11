@@ -47,14 +47,13 @@ beforeEach(async () => {
 });
 
 const anonymousActor: ReactionActor = {
-  type: "anonymous",
+  type: "guest",
   key: "anon-key",
 };
 
 const userActor: ReactionActor = {
   type: "user",
   id: baseUser.id,
-  role: "user",
 };
 
 describe("addReaction", () => {
@@ -92,7 +91,7 @@ describe("addReaction", () => {
       throw new Error("unexpected result");
     }
     expect(result.data.user).toEqual({
-      type: "anonymous",
+      type: "guest",
       key: SparkMD5.hash(anonymousActor.key),
     });
 
@@ -107,6 +106,47 @@ describe("addReaction", () => {
   it("returns not_found when comment does not exist", async () => {
     const result = await addReaction(999, "👍", userActor, { db });
     expect(result.result).toBe("not_found");
+  });
+
+  it("keeps an owned guest reaction guest-owned on a signed-in retry", async () => {
+    await addReaction(1, "👍", anonymousActor, { db });
+
+    const result = await addReaction(1, "👍", userActor, {
+      db,
+      ownedActors: [userActor, anonymousActor],
+    });
+    expect(result.result).toBe("success");
+
+    expect(await db.select().from(reaction)).toEqual([
+      expect.objectContaining({
+        actorId: null,
+        actorAnonKey: anonymousActor.key,
+        emojiKey: "👍",
+      }),
+    ]);
+  });
+
+  it("treats existing user and guest duplicates as idempotent", async () => {
+    await addReaction(1, "👍", anonymousActor, { db });
+    await addReaction(1, "👍", userActor, { db });
+
+    await addReaction(1, "👍", userActor, {
+      db,
+      ownedActors: [userActor, anonymousActor],
+    });
+
+    expect(await db.select().from(reaction)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          actorId: userActor.id,
+          actorAnonKey: null,
+        }),
+        expect.objectContaining({
+          actorId: null,
+          actorAnonKey: anonymousActor.key,
+        }),
+      ]),
+    );
   });
 });
 
@@ -133,5 +173,31 @@ describe("removeReaction", () => {
   it("returns not_found when comment does not exist", async () => {
     const result = await removeReaction(999, "🔥", userActor, { db });
     expect(result.result).toBe("not_found");
+  });
+
+  it("removes matching reactions for every identity owned by the viewer", async () => {
+    await addReaction(1, "🔥", userActor, { db });
+    await addReaction(1, "🔥", anonymousActor, { db });
+
+    const result = await removeReaction(1, "🔥", [userActor, anonymousActor], {
+      db,
+    });
+    expect(result.result).toBe("success");
+    expect(await db.select().from(reaction)).toEqual([]);
+  });
+
+  it("does not remove anything when called with an empty actor list", async () => {
+    await addReaction(1, "🔥", userActor, { db });
+    await addReaction(1, "🔥", anonymousActor, { db });
+
+    const result = await removeReaction(
+      1,
+      "🔥",
+      [] as unknown as [ReactionActor, ...ReactionActor[]],
+      { db },
+    );
+
+    expect(result.result).toBe("success");
+    expect(await db.select().from(reaction)).toHaveLength(2);
   });
 });

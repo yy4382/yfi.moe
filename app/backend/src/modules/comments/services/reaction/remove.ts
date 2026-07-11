@@ -1,4 +1,4 @@
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, or } from "drizzle-orm";
 import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
 import type { DbClient } from "@/db/db-plugin.js";
 import { comment, reaction } from "@/db/schema.js";
@@ -20,7 +20,7 @@ export type RemoveReactionResult =
 export async function removeReaction(
   commentId: number,
   emojiRaw: string,
-  actor: ReactionActor,
+  actorOrActors: ReactionActor | readonly [ReactionActor, ...ReactionActor[]],
   options: { db: DbClient; logger?: import("pino").Logger },
 ): Promise<RemoveReactionResult> {
   const { db, logger } = options;
@@ -38,20 +38,23 @@ export async function removeReaction(
 
   const emojiKey = canonicalizeEmoji(emojiRaw);
 
-  const where =
+  const actors: readonly ReactionActor[] = Array.isArray(actorOrActors)
+    ? actorOrActors
+    : [actorOrActors as ReactionActor];
+  if (actors.length === 0) {
+    logger?.warn({ commentId, emojiKey }, "reaction:remove empty actor scope");
+    return { result: "success" };
+  }
+  const actorConditions = actors.map((actor) =>
     actor.type === "user"
-      ? and(
-          eq(reaction.commentId, commentId),
-          eq(reaction.emojiKey, emojiKey),
-          eq(reaction.actorId, actor.id),
-          isNull(reaction.actorAnonKey),
-        )
-      : and(
-          eq(reaction.commentId, commentId),
-          eq(reaction.emojiKey, emojiKey),
-          eq(reaction.actorAnonKey, actor.key),
-          isNull(reaction.actorId),
-        );
+      ? and(eq(reaction.actorId, actor.id), isNull(reaction.actorAnonKey))
+      : and(eq(reaction.actorAnonKey, actor.key), isNull(reaction.actorId)),
+  );
+  const where = and(
+    eq(reaction.commentId, commentId),
+    eq(reaction.emojiKey, emojiKey),
+    or(...actorConditions),
+  );
 
   try {
     await db.delete(reaction).where(where);

@@ -14,18 +14,19 @@ import type { ButtonHTMLAttributes } from "react";
 import { toast } from "sonner";
 import MingcuteAddLine from "~icons/mingcute/add-line";
 import MingcuteEmojiLine from "~icons/mingcute/emoji-line";
-import type { User } from "@repo/api/auth/client";
 import type { CommentData } from "@repo/api/comment/comment-data";
 import type { GetCommentsResponse } from "@repo/api/comment/get.model";
 import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
+import type { PublicOwner } from "@repo/guest-identity";
 import {
   addCommentReaction,
   removeCommentReaction,
+  type CommentReactionRemoveResponse,
   type CommentReactionResponse,
 } from "@/lib/api/comment/reaction";
 import { sessionOptions } from "@/lib/auth/session-options";
-import { useAnonymousIdentity } from "@/lib/hooks/anonymous-identity";
 import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
+import { useGuestIdentity } from "@/lib/hooks/guest-identity";
 import { sortByAtom } from "./atoms";
 
 type ReactionGroup = {
@@ -56,8 +57,7 @@ type AddReactionMutationData = CommentReactionResponse & {
   emojiRaw: string;
 };
 
-type RemoveReactionMutationData = {
-  anonymousKey?: string;
+type RemoveReactionMutationData = CommentReactionRemoveResponse & {
   emojiRaw: string;
 };
 
@@ -69,58 +69,39 @@ function isSameReactionUser(left: ReactionUser, right: ReactionUser): boolean {
   switch (left.type) {
     case "user":
       return right.type === "user" && left.id === right.id;
-    case "anonymous":
-      return right.type === "anonymous" && left.key === right.key;
+    case "guest":
+      return right.type === "guest" && left.key === right.key;
     default:
       return false;
   }
 }
 
-function isReactionFromActor(
-  reactionUser: ReactionUser,
-  currentUser: User | undefined,
-  anonymousKey: string | null | undefined,
-): boolean {
-  if (reactionUser.type === "user") {
-    return Boolean(currentUser && reactionUser.id === currentUser.id);
-  }
-  if (currentUser) {
-    return false;
-  }
-  if (!anonymousKey) {
-    return false;
-  }
-  return reactionUser.key === anonymousKey;
-}
+const toPublicOwner = (reactionUser: ReactionUser): PublicOwner =>
+  reactionUser.type === "user"
+    ? { type: "user", id: reactionUser.id }
+    : { type: "guest", key: reactionUser.key };
 
 function groupReactions(
   reactions: CommentData["reactions"],
-  currentUser: User | undefined,
-  anonymousKey: string | null | undefined,
+  isOwnedByViewer: (reactionUser: ReactionUser) => boolean,
 ): ReactionGroup[] {
   const map = new Map<string, ReactionGroup>();
   for (const reaction of reactions) {
     const key = reaction.emojiKey;
+    const isOwned = isOwnedByViewer(reaction.user);
     const existing = map.get(key);
     if (existing) {
-      existing.count += 1;
-      if (
-        !existing.reactedBySelf &&
-        isReactionFromActor(reaction.user, currentUser, anonymousKey)
-      ) {
-        existing.reactedBySelf = true;
+      if (!(existing.reactedBySelf && isOwned)) {
+        existing.count += 1;
       }
+      existing.reactedBySelf ||= isOwned;
       continue;
     }
     map.set(key, {
       emojiKey: key,
       emojiRaw: reaction.emojiRaw,
       count: 1,
-      reactedBySelf: isReactionFromActor(
-        reaction.user,
-        currentUser,
-        anonymousKey,
-      ),
+      reactedBySelf: isOwned,
     });
   }
   return Array.from(map.values());
@@ -190,11 +171,16 @@ export function CommentReactions({
   const { data: session } = useQuery(sessionOptions(authClient));
   const sortBy = useAtomValue(sortByAtom);
   const queryClient = useQueryClient();
-  const { anonymousKey, syncFromHeader } = useAnonymousIdentity();
+  const { owns, synchronize } = useGuestIdentity();
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const currentUser = session?.user;
-  const reactionGroups = groupReactions(reactions, currentUser, anonymousKey);
+  const isOwnedByViewer = useCallback(
+    (reactionUser: ReactionUser) =>
+      owns(toPublicOwner(reactionUser), currentUser?.id),
+    [currentUser?.id, owns],
+  );
+  const reactionGroups = groupReactions(reactions, isOwnedByViewer);
 
   const queryKey = useMemo(
     () => ["comments", { session: currentUser?.id }, path, sortBy] as const,
@@ -220,7 +206,7 @@ export function CommentReactions({
   const handleAddSuccess = useCallback(
     (data: AddReactionMutationData) => {
       const { reaction: nextReaction } = data;
-      syncFromHeader(data.anonymousKey);
+      synchronize(data.identityHeaders);
       setCachedReaction((comment) => {
         comment.reactions = comment.reactions.filter(
           (reaction) =>
@@ -232,30 +218,21 @@ export function CommentReactions({
         comment.reactions.push(nextReaction);
       });
     },
-    [setCachedReaction, syncFromHeader],
+    [setCachedReaction, synchronize],
   );
 
   const handleRemoveSuccess = useCallback(
     (data: RemoveReactionMutationData) => {
       const emojiKey = canonicalizeEmoji(data.emojiRaw);
-      syncFromHeader(data.anonymousKey);
-      const removalAnonymousKey = data.anonymousKey ?? anonymousKey ?? null;
+      synchronize(data.identityHeaders);
       setCachedReaction((comment) => {
         comment.reactions = comment.reactions.filter(
           (reaction) =>
-            !(
-              reaction.emojiKey === emojiKey &&
-              (currentUser
-                ? reaction.user.type === "user" &&
-                  reaction.user.id === currentUser.id
-                : reaction.user.type === "anonymous" &&
-                  removalAnonymousKey !== null &&
-                  reaction.user.key === removalAnonymousKey)
-            ),
+            !(reaction.emojiKey === emojiKey && isOwnedByViewer(reaction.user)),
         );
       });
     },
-    [anonymousKey, currentUser, setCachedReaction, syncFromHeader],
+    [isOwnedByViewer, setCachedReaction, synchronize],
   );
 
   const honoClient = useHonoClient();

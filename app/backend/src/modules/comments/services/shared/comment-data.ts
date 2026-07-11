@@ -1,5 +1,4 @@
 import type { InferSelectModel } from "drizzle-orm";
-import SparkMD5 from "spark-md5";
 import { z } from "zod";
 import {
   commentDataBase,
@@ -13,6 +12,7 @@ import {
 import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import type { User } from "@/auth/auth-plugin.js";
 import { comment, reaction, user } from "@/db/schema.js";
+import { guestIdentityPolicy } from "@/modules/identity/guest-identity-policy.js";
 
 export function tablesToCommentData(
   commentTableData: InferSelectModel<typeof comment>,
@@ -32,7 +32,10 @@ export function tablesToCommentData(
             name: r.user.name,
             image: r.user.image ?? getDiceBearUrl(r.user.id),
           }
-        : { type: "anonymous", key: SparkMD5.hash(r.reaction.actorAnonKey!) };
+        : guestIdentityPolicy.toPublicOwner({
+            type: "guest",
+            rawKey: r.reaction.actorAnonKey!,
+          });
       return {
         id: r.reaction.id,
         emojiKey: r.reaction.emojiKey,

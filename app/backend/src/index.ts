@@ -11,11 +11,11 @@ import { db } from "@/db/instance.js";
 import { factory } from "@/factory.js";
 import { accountApp } from "@/modules/account/index.js";
 import comments from "@/modules/comments/index.js";
+import { guestIdentityPlugin } from "@/modules/identity/guest-identity-plugin.js";
 import { akismetPlugin } from "@/services/akismet-plugin.js";
 import { notificationPlugin } from "@/services/notification/plugin.js";
 import { env } from "./env.js";
 import { pinoMiddleware, logger } from "./logger.js";
-import { anonymousIdentityPlugin } from "./plugins/anonymous-identity.js";
 
 await migrate(db, { migrationsFolder: "./drizzle" });
 
@@ -28,7 +28,7 @@ const app = factory
   .use(betterAuthPlugin)
   .use(notificationPlugin(env))
   .use(akismetPlugin)
-  .use(anonymousIdentityPlugin())
+  .use(guestIdentityPlugin())
   .use(
     "/v1/*",
     cors({
@@ -38,7 +38,12 @@ const app = factory
       ],
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "OPTIONS"],
-      exposeHeaders: ["Content-Length", "X-Request-ID", "x-anonymous-key"],
+      exposeHeaders: [
+        "Content-Length",
+        "X-Request-ID",
+        "x-guest-identity",
+        "x-guest-identity-state",
+      ],
       maxAge: 600,
       credentials: true,
     }),
