@@ -1,7 +1,9 @@
 import { and, or, isNull, eq } from "drizzle-orm";
+import type { PersistenceOwner } from "@repo/guest-identity/backend";
 import type { User } from "@/auth/auth-plugin.js";
 import type { DbClient } from "@/db/db-plugin.js";
 import { comment } from "@/db/schema.js";
+import { isCommentOwnedByViewer } from "./ownership.js";
 
 type DeleteCommentResult =
   | {
@@ -15,11 +17,16 @@ type DeleteCommentResult =
 
 export async function deleteComment(
   id: number,
-  options: { db: DbClient; user: User; logger?: import("pino").Logger },
+  options: {
+    db: DbClient;
+    user: User | null;
+    ownedByViewer?: readonly PersistenceOwner[];
+    logger?: import("pino").Logger;
+  },
 ): Promise<DeleteCommentResult> {
   const { db, user: currentUser, logger } = options;
   logger?.debug(
-    { commentId: id, userId: currentUser.id },
+    { commentId: id, userId: currentUser?.id },
     "deleteComment:start",
   );
   const now = new Date();
@@ -31,12 +38,18 @@ export async function deleteComment(
     logger?.warn({ commentId: id }, "deleteComment:not found");
     return { result: "not_found", message: "没有找到该评论" };
   }
+  const fallbackOwners: PersistenceOwner[] = currentUser
+    ? [{ type: "user", id: currentUser.id }]
+    : [];
   if (
-    commentBeingDeleted.userId !== currentUser.id &&
-    currentUser.role !== "admin"
+    !isCommentOwnedByViewer(
+      commentBeingDeleted,
+      options.ownedByViewer ?? fallbackOwners,
+    ) &&
+    currentUser?.role !== "admin"
   ) {
     logger?.warn(
-      { commentId: id, userId: currentUser.id },
+      { commentId: id, userId: currentUser?.id },
       "deleteComment:forbidden",
     );
     return { result: "forbidden", message: "没有权限删除该评论" };

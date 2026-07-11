@@ -22,6 +22,7 @@ export function tablesToCommentData(
     user: InferSelectModel<typeof user> | null;
   }[],
   isAdmin: boolean,
+  ownedByViewer = false,
 ): CommentData {
   const reactions: z.infer<typeof commentReaction>[] = reactionTableData.map(
     (r) => {
@@ -55,6 +56,7 @@ export function tablesToCommentData(
     reactions,
     createdAt: commentTableData.createdAt.toISOString(),
     updatedAt: commentTableData.updatedAt.toISOString(),
+    ownedByViewer,
   };
 
   function getAvatar() {

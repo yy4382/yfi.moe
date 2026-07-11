@@ -36,6 +36,7 @@ export async function addComment(
     akismet?: AkismetService | null;
     notificationService: NotificationService;
     logger?: import("pino").Logger;
+    guestOwnerKey?: string;
   },
 ): Promise<AddCommentResult> {
   const { db, akismet, user: currentUser, logger } = options;
@@ -53,6 +54,13 @@ export async function addComment(
     return {
       result: "bad_req",
       data: { message: "昵称和邮箱不能为空" },
+    };
+  }
+  if (!currentUser && !options.guestOwnerKey) {
+    logger?.error({ path: body.path }, "addComment:missing guest owner");
+    return {
+      result: "bad_req",
+      data: { message: "unable to resolve guest owner" },
     };
   }
 
@@ -80,6 +88,7 @@ export async function addComment(
     currentUser,
     [],
     currentUser?.role === "admin",
+    true,
   );
   sendNotification(
     {
@@ -120,6 +129,7 @@ async function insertToDb(
     ip?: string;
     ua?: string;
     logger?: import("pino").Logger;
+    guestOwnerKey?: string;
   },
 ): Promise<Result<InferSelectModel<typeof comment>, null>> {
   const { body, user: currentUser } = data;
@@ -139,6 +149,7 @@ async function insertToDb(
           : (body.visitorName ?? "Anonymous"),
         isSpam: data.isSpam,
         userId: currentUser?.id,
+        guestOwnerKey: currentUser ? undefined : data.guestOwnerKey,
         userIp: data.ip,
         userAgent: data.ua,
       })

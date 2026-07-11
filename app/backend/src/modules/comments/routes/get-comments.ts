@@ -29,6 +29,7 @@ export const getCommentsRoute = factory
     validator("json", getCommentsBody),
     async (c) => {
       const body = c.req.valid("json");
+      const identityScope = c.get("guestIdentity").resolve();
       c.get("logger").debug(
         {
           path: body.path,
@@ -43,6 +44,7 @@ export const getCommentsRoute = factory
         db: c.get("db"),
         user: c.get("auth")?.user ?? null,
         logger: c.get("logger"),
+        ownedByViewer: identityScope.ownedByViewer,
       });
       const resp = getCommentsResponse.parse(result);
       c.get("logger").debug(
@@ -71,11 +73,13 @@ export const getCommentsRoute = factory
     validator("json", getCommentsChildrenBody),
     async (c) => {
       const body = c.req.valid("json");
+      const identityScope = c.get("guestIdentity").resolve();
       c.get("logger").debug(body, "comments:get-children request");
       const result = await getCommentsChildren(body, {
         db: c.get("db"),
         user: c.get("auth")?.user ?? null,
         logger: c.get("logger"),
+        ownedByViewer: identityScope.ownedByViewer,
       });
       const resp = getCommentsChildrenResponse.parse(result);
       return c.json(resp, 200);

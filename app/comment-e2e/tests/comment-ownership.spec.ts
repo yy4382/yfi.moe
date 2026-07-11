@@ -93,12 +93,12 @@ test("another viewer cannot see controls or mutate a signed-in comment", async (
     "http://localhost:3101/api/v1/comments/update",
     { data: { id: commentId, rawContent: "Attacker edit" } },
   );
-  expect(update.status()).toBe(401);
+  expect(update.status()).toBe(403);
   const deletion = await otherPage.request.post(
     "http://localhost:3101/api/v1/comments/delete",
     { data: { id: commentId } },
   );
-  expect(deletion.status()).toBe(401);
+  expect(deletion.status()).toBe(403);
 
   await ownerPage.reload();
   await expect(ownerPage.getByText(content)).toBeVisible();

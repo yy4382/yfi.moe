@@ -32,6 +32,7 @@ describe("get comments", () => {
             id: 1,
             parentId: null,
             path: "/",
+            ownedByViewer: false,
             reactions: [],
             replyToId: null,
             updatedAt: "2000-01-01T00:00:00.000Z",
@@ -59,6 +60,7 @@ describe("get comments", () => {
                 id: 1000,
                 parentId: 1,
                 path: "/",
+                ownedByViewer: false,
                 replyToId: 1,
                 reactions: [],
                 updatedAt: "2000-01-01T00:00:00.000Z",
@@ -114,6 +116,7 @@ describe("add comment", () => {
               rawContent: "test",
               parentId: null,
               path: "/",
+              ownedByViewer: true,
               createdAt: "1970-01-01T00:00:10.000Z",
               updatedAt: "2000-01-01T00:00:00.000Z",
               replyToId: null,
@@ -144,6 +147,7 @@ describe("add comment", () => {
     expect(resp.status).toBe(200);
     const respJson = await resp.json();
     expect(respJson.data.id).toBe(1);
+    expect(resp.headers.get("set-cookie")).toContain("anon_key=");
     expect(ipReqGot).toBe("127.0.0.11");
     expect(uaReqGot).toBe("test-ua");
   });
@@ -163,6 +167,7 @@ describe("add comment", () => {
 
     expect(resp.status).toBe(400);
     expect(await resp.text()).toBe("test");
+    expect(resp.headers.get("set-cookie")).toBeNull();
   });
 });
 
@@ -186,12 +191,15 @@ describe("delete comment", () => {
     expect(respJson.deletedIds).toEqual([1]);
   });
 
-  it("should unauthorized", async () => {
+  it("should forbid an unowned guest comment", async () => {
+    vi.spyOn(deleteModule, "deleteComment").mockImplementationOnce(
+      async () => ({ result: "forbidden", message: "forbidden" }),
+    );
     const resp = await testClient(createTestCommentApp()).delete.$post({
       json: { id: 1 },
     });
 
-    expect(resp.status).toBe(401);
+    expect(resp.status).toBe(403);
   });
 
   it("should forbidden", async () => {
@@ -246,6 +254,7 @@ describe("update comment", () => {
             rawContent: "test",
             parentId: null,
             path: "/",
+            ownedByViewer: true,
             createdAt: "1970-01-01T00:00:10.000Z",
             updatedAt: "2000-01-01T00:00:00.000Z",
             replyToId: null,
@@ -272,12 +281,18 @@ describe("update comment", () => {
     expect(respJson.result).toBe("success");
   });
 
-  it("should unauthorized", async () => {
+  it("should forbid an unowned guest comment", async () => {
+    vi.spyOn(updateModule, "updateComment").mockImplementationOnce(
+      async () => ({
+        code: 403,
+        data: "not authorized to update this comment",
+      }),
+    );
     const resp = await testClient(createTestCommentApp()).update.$post({
       json: { id: 1, rawContent: "test" },
     });
 
-    expect(resp.status).toBe(401);
+    expect(resp.status).toBe(403);
   });
 
   it("should forbidden", async () => {

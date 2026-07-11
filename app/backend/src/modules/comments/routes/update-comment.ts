@@ -32,18 +32,6 @@ export const updateCommentRoute = factory.createApp().post(
           },
         },
       },
-      401: {
-        description: "Not authorized: if the user is not logged in",
-        content: {
-          "text/plain": {
-            schema: {
-              type: "string",
-              description: "Error message",
-              example: "Unauthorized",
-            },
-          },
-        },
-      },
       403: {
         description:
           "Forbidden: if the user does not have permission to update the comment",
@@ -74,10 +62,8 @@ export const updateCommentRoute = factory.createApp().post(
   validator("json", updateCommentBody),
   async (c) => {
     const body = c.req.valid("json");
-    const user = c.get("auth")?.user;
-    if (!user) {
-      return c.text("Unauthorized", 401);
-    }
+    const user = c.get("auth")?.user ?? null;
+    const identityScope = c.get("guestIdentity").resolve();
     const result = await updateComment(
       body.id,
       {
@@ -86,6 +72,7 @@ export const updateCommentRoute = factory.createApp().post(
       {
         db: c.get("db"),
         user,
+        ownedByViewer: identityScope.ownedByViewer,
         logger: c.get("logger"),
       },
     );

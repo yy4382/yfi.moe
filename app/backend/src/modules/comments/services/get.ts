@@ -6,9 +6,11 @@ import type {
   GetCommentsChildrenBody,
   GetCommentsChildrenResponse,
 } from "@repo/api/comment/get.model";
+import type { PersistenceOwner } from "@repo/guest-identity/backend";
 import type { User } from "@/auth/auth-plugin.js";
 import type { DbClient } from "@/db/db-plugin.js";
 import { comment, reaction, user } from "@/db/schema.js";
+import { isCommentOwnedByViewer } from "./ownership.js";
 import { tablesToCommentData } from "./shared/comment-data.js";
 
 const DEFAULT_SUB_COMMENT_LIMIT = 3;
@@ -42,6 +44,9 @@ const selectToCommentData = async (
   options: Parameters<typeof getComments>[1],
 ) => {
   const { db, user: currentUser } = options;
+  const ownedByViewer: readonly PersistenceOwner[] =
+    options.ownedByViewer ??
+    (currentUser ? [{ type: "user", id: currentUser.id }] : []);
   const reactions = await db
     .select()
     .from(reaction)
@@ -52,12 +57,18 @@ const selectToCommentData = async (
     c.user,
     reactions,
     currentUser?.role === "admin",
+    isCommentOwnedByViewer(c.comment, ownedByViewer),
   );
 };
 
 export async function getComments(
   body: GetCommentsBody,
-  options: { db: DbClient; user: User | null; logger?: import("pino").Logger },
+  options: {
+    db: DbClient;
+    user: User | null;
+    logger?: import("pino").Logger;
+    ownedByViewer?: readonly PersistenceOwner[];
+  },
 ): Promise<GetCommentsResponse> {
   const { path, limit, cursor, sortBy } = body;
   const { db, user: currentUser, logger } = options;

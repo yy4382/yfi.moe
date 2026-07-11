@@ -49,6 +49,7 @@ export const commentDataBase = z.strictObject({
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
   path: z.string(),
+  ownedByViewer: z.boolean(),
 });
 
 export const commentDataNonAdmin = z.object({

@@ -45,6 +45,12 @@ export const addCommentRoute = factory.createApp().post(
   validator("json", addCommentBody),
   async (c) => {
     const body = c.req.valid("json");
+    const identity = c.get("guestIdentity");
+    const identityScope = identity.resolve({ createGuestIfMissing: true });
+    const guestOwner =
+      identityScope.creationOwner?.type === "guest"
+        ? identityScope.creationOwner
+        : undefined;
 
     const result = await addComment(body, {
       db: c.get("db"),
@@ -54,9 +60,11 @@ export const addCommentRoute = factory.createApp().post(
       akismet: c.get("akismet"),
       notificationService: c.get("notification"),
       logger: c.get("logger"),
+      ...(guestOwner ? { guestOwnerKey: guestOwner.rawKey } : {}),
     });
     switch (result.result) {
       case "success": {
+        identity.commit(identityScope);
         const resp = addCommentResponse.parse(result.data);
         c.get("logger").info(
           {

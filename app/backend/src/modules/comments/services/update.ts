@@ -1,19 +1,26 @@
 import { and, isNull, eq } from "drizzle-orm";
 import type { OneOfKeyValuePair } from "@repo/api/comment/update.model";
+import type { PersistenceOwner } from "@repo/guest-identity/backend";
 import type { User } from "@/auth/auth-plugin.js";
 import type { DbClient } from "@/db/db-plugin.js";
-import { comment } from "@/db/schema.js";
+import { comment, user } from "@/db/schema.js";
+import { isCommentOwnedByViewer } from "./ownership.js";
 import { tablesToCommentData } from "./shared/comment-data.js";
 import { parseMarkdown } from "./shared/parse-markdown.js";
 
 export async function updateComment(
   id: number,
   content: { rawContent: string },
-  options: { db: DbClient; user: User; logger?: import("pino").Logger },
+  options: {
+    db: DbClient;
+    user: User | null;
+    ownedByViewer?: readonly PersistenceOwner[];
+    logger?: import("pino").Logger;
+  },
 ): Promise<OneOfKeyValuePair> {
   const { db, user: currentUser, logger } = options;
   logger?.debug(
-    { commentId: id, userId: currentUser.id },
+    { commentId: id, userId: currentUser?.id },
     "updateComment:start",
   );
   const now = new Date();
@@ -23,6 +30,7 @@ export async function updateComment(
     .select({
       id: comment.id,
       userId: comment.userId,
+      guestOwnerKey: comment.guestOwnerKey,
       deletedAt: comment.deletedAt,
     })
     .from(comment)
@@ -42,12 +50,18 @@ export async function updateComment(
   }
 
   // Check if user is owner or admin
-  const isOwner = commentData.userId === currentUser.id;
-  const isAdmin = currentUser.role === "admin";
+  const fallbackOwners: PersistenceOwner[] = currentUser
+    ? [{ type: "user", id: currentUser.id }]
+    : [];
+  const isOwner = isCommentOwnedByViewer(
+    commentData,
+    options.ownedByViewer ?? fallbackOwners,
+  );
+  const isAdmin = currentUser?.role === "admin";
 
   if (!isOwner && !isAdmin) {
     logger?.warn(
-      { commentId: id, userId: currentUser.id },
+      { commentId: id, userId: currentUser?.id },
       "updateComment:forbidden",
     );
     return { code: 403, data: "not authorized to update this comment" };
@@ -70,12 +84,29 @@ export async function updateComment(
   }
 
   logger?.info({ commentId: id }, "updateComment:success");
+  const ownerUser = updatedComment.userId
+    ? ((currentUser?.id === updatedComment.userId
+        ? currentUser
+        : (
+            await db
+              .select()
+              .from(user)
+              .where(eq(user.id, updatedComment.userId))
+              .limit(1)
+          )[0]) ?? null)
+    : null;
   return {
     code: 200,
     data: {
       result: "success",
       // TODO: maybe need to fetch reactions again, or add documentation that reactions are not included in update response
-      data: tablesToCommentData(updatedComment, currentUser, [], isAdmin),
+      data: tablesToCommentData(
+        updatedComment,
+        ownerUser,
+        [],
+        isAdmin,
+        isOwner,
+      ),
     },
   };
 }

@@ -8,6 +8,7 @@ import {
 } from "@/lib/api/comment/update";
 import { sessionOptions } from "@/lib/auth/session-options";
 import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
+import { useGuestIdentity } from "@/lib/hooks/guest-identity";
 import { sortByAtom } from "../atoms";
 import {
   updateCommentInChildCache,
@@ -46,6 +47,7 @@ export function useUpdateComment({
   const sortBy = useAtomValue(sortByAtom);
   const setContent = useSetAtom(contentAtom);
   const honoClient = useHonoClient();
+  const { synchronize } = useGuestIdentity();
 
   const mutationKey = commentKeys.mutations.edit(editId);
 
@@ -56,7 +58,8 @@ export function useUpdateComment({
     onError(error) {
       toast.error(error.message);
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({ response: { data }, identityHeaders }) => {
+      synchronize(identityHeaders);
       const sessionId = session?.user.id;
 
       // Update in root comments cache

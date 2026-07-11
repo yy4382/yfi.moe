@@ -27,8 +27,7 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
   const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
 
-  const isMine =
-    session && comment.userId && comment.userId === session.user.id;
+  const isMine = comment.ownedByViewer;
 
   return (
     <article
@@ -76,7 +75,7 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
             </span>
           </div>
 
-          {editing && session ? (
+          {editing ? (
             <CommentBoxEdit
               editId={comment.id}
               onCancel={() => setEditing(false)}
