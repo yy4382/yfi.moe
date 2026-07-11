@@ -13,6 +13,7 @@ interface InputBoxProps {
   placeholder?: string;
   mutationKey: readonly unknown[];
   onCancel?: () => void;
+  submitLabel?: string;
 }
 
 /**
@@ -32,6 +33,7 @@ export function InputBox({
   placeholder,
   mutationKey,
   onCancel,
+  submitLabel = "发送评论",
 }: InputBoxProps) {
   const [content, setContent] = useAtom(contentAtom);
   const textareaId = useId();
@@ -47,6 +49,7 @@ export function InputBox({
       {onCancel && (
         <div className="absolute -top-3 -right-2">
           <button
+            aria-label="取消编辑"
             onClick={onCancel}
             className="rounded-full bg-zinc-200 p-1 hover:scale-105 active:scale-95 dark:bg-zinc-800"
           >
@@ -80,6 +83,7 @@ export function InputBox({
         submit={submit}
         isAnonymousAtom={isAnonymousAtom}
         status={status}
+        submitLabel={submitLabel}
       />
     </div>
   );
@@ -90,6 +94,7 @@ interface InputBoxFooterProps {
   submit: () => void;
   isAnonymousAtom?: WritableAtom<boolean, [boolean], void>;
   status: MutationStatus;
+  submitLabel: string;
 }
 
 function InputBoxFooter({
@@ -97,6 +102,7 @@ function InputBoxFooter({
   isAnonymousAtom,
   submit,
   status,
+  submitLabel,
 }: InputBoxFooterProps) {
   return (
     <div className="flex items-center justify-between gap-2 px-1 text-sm text-comment">
@@ -111,7 +117,7 @@ function InputBoxFooter({
         </div>
         {isAnonymousAtom && <AnonymousCheckbox atom={isAnonymousAtom} />}
         <button
-          aria-label="发送评论"
+          aria-label={submitLabel}
           onClick={() => submit()}
           className="flex items-center gap-0.5 hover:scale-105 active:scale-95 disabled:opacity-50"
           disabled={status === "pending" || !content.trim()}

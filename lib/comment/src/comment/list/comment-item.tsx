@@ -31,7 +31,10 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
     session && comment.userId && comment.userId === session.user.id;
 
   return (
-    <div id={`comment-${comment.id}`}>
+    <article
+      id={`comment-${comment.id}`}
+      aria-label={`${comment.displayName}：${comment.rawContent}`}
+    >
       <div className="flex items-start gap-3 border-zinc-100 py-2 last:border-b-0">
         {/* Avatar */}
         <div className="shrink-0">
@@ -150,6 +153,6 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
           )}
         </AnimatePresence>
       </AutoResizeHeight>
-    </div>
+    </article>
   );
 }

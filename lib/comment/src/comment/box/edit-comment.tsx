@@ -54,6 +54,7 @@ export function CommentBoxEdit({
         submit={handleSubmit}
         onCancel={onCancel}
         mutationKey={mutationKey}
+        submitLabel="保存评论"
       />
     </CommentBoxIdContext>
   );

@@ -37,12 +37,12 @@ export function CommentDropdown({ comment, onEdit }: CommentDropdownProps) {
 
   // Only show dropdown for owners or admins
   if (!isMine && !isAdmin) {
-    return <div></div>;
+    return null;
   }
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger aria-label="更多评论操作">
         <MoreIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
