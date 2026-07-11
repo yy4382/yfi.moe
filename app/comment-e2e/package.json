@@ -1,0 +1,26 @@
+{
+  "name": "@repo/comment-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:fixture": "turbo run build --filter=@repo/comment",
+    "check-types": "tsc --noEmit",
+    "host": "vite --host localhost --port 3100",
+    "test:e2e": "pnpm build:fixture && node scripts/reset-database.mjs && playwright test",
+    "test:e2e:ui": "pnpm build:fixture && node scripts/reset-database.mjs && playwright test --ui"
+  },
+  "dependencies": {
+    "@repo/comment": "workspace:*",
+    "@tanstack/react-query": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^6.0.3",
+    "typescript": "catalog:",
+    "vite": "^8.1.0"
+  }
+}

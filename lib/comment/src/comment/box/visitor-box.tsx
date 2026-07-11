@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { motion } from "motion/react";
-import type { PropsWithChildren } from "react";
+import { type PropsWithChildren, useId } from "react";
 import { toast } from "sonner";
 import GitHubIcon from "~icons/mingcute/github-line";
 import MailSendLineIcon from "~icons/mingcute/mail-send-line";
@@ -21,6 +21,8 @@ export function VisitorBox({ children }: PropsWithChildren) {
   const [asVisitor, setAsVisitor] = useAtom(persistentAsVisitorAtom);
   const [visitorName, setVisitorName] = useAtom(persistentNameAtom);
   const [visitorEmail, setVisitorEmail] = useAtom(persistentEmailAtom);
+  const nameId = useId();
+  const emailId = useId();
 
   if (!asVisitor) {
     return <VisitorBoxLogin setAsVisitor={() => setAsVisitor(true)} />;
@@ -29,15 +31,23 @@ export function VisitorBox({ children }: PropsWithChildren) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex w-full justify-between gap-2">
+        <label htmlFor={nameId} className="sr-only">
+          昵称
+        </label>
         <input
+          id={nameId}
           type="text"
           placeholder="昵称*"
           className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
           value={visitorName}
           onChange={(e) => setVisitorName(e.target.value)}
         />
+        <label htmlFor={emailId} className="sr-only">
+          邮箱
+        </label>
         <input
-          type="text"
+          id={emailId}
+          type="email"
           placeholder="邮箱*"
           className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
           value={visitorEmail}
