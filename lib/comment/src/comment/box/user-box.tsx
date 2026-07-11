@@ -53,6 +53,7 @@ export function UserBox({ children, session }: UserBoxProps) {
         />
         <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
           <button
+            aria-label="退出登录"
             onClick={() => void handleSignOut()}
             className="flex size-full items-center justify-center"
           >
