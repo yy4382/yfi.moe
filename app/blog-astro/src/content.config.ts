@@ -7,13 +7,10 @@ import {
   PAGE_GH_INFO,
   POST_GH_INFO,
 } from "astro:env/server";
-import { githubLoader, parseGithubUrl } from "@/lib/content/loader/github";
 import {
-  githubImageMetaLoader,
-  localImageMetaLoader,
-  parseGithubFileUrl,
-} from "./lib/content/loader/image-meta";
-import { localLoader, parseLocalUrl } from "./lib/content/loader/local";
+  imageMetadataFileLoader,
+  markdownFileSetLoader,
+} from "@/lib/content/loader/content-ingestion";
 
 const baseSchema = z.object({
   title: z.string(),
@@ -50,53 +47,34 @@ export type PostData = zInfer<typeof postSchema>;
 const pageSchema = baseSchema;
 export type PageData = zInfer<typeof pageSchema>;
 
-function getLoader(url: string) {
-  if (url.startsWith("http")) {
-    return githubLoader({
-      ...parseGithubUrl(url),
-      pat: ARTICLE_PAT,
-    });
-  } else if (url.startsWith("file://")) {
-    return localLoader(parseLocalUrl(url));
-  }
-  throw new Error(`Invalid URL: ${url}`);
-}
-
-function getImageMetaLoader(url: string) {
-  if (url.startsWith("http")) {
-    return githubImageMetaLoader({
-      ...parseGithubFileUrl(url),
-      pat: ARTICLE_PAT,
-    });
-  } else if (url.startsWith("file://")) {
-    return localImageMetaLoader(parseLocalUrl(url));
-  }
-  throw new Error(`Invalid image metadata URL: ${url}`);
-}
-
 const imageMetaSchema = z.object({
-  entries: z.array(
-    z.object({
-      url: z.string(),
-      width: z.number(),
-      height: z.number(),
-      blurhash: z.string(),
-    }),
-  ),
+  url: z.string(),
+  width: z.number(),
+  height: z.number(),
+  blurhash: z.string(),
 });
 
 const post = defineCollection({
-  loader: getLoader(POST_GH_INFO),
+  loader: markdownFileSetLoader({
+    source: POST_GH_INFO,
+    githubToken: ARTICLE_PAT,
+  }),
   schema: postSchema,
 });
 
 const page = defineCollection({
-  loader: getLoader(PAGE_GH_INFO),
+  loader: markdownFileSetLoader({
+    source: PAGE_GH_INFO,
+    githubToken: ARTICLE_PAT,
+  }),
   schema: pageSchema,
 });
 
 const imageMeta = defineCollection({
-  loader: getImageMetaLoader(IMAGE_META_SOURCE),
+  loader: imageMetadataFileLoader({
+    source: IMAGE_META_SOURCE,
+    githubToken: ARTICLE_PAT,
+  }),
   schema: imageMetaSchema,
 });
 
