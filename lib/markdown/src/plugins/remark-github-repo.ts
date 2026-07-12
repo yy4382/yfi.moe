@@ -36,6 +36,17 @@ export function remarkGithubRepo(): ReturnType<Plugin<[], Root>> {
           file.fail("github-repo directive must have a repo and user", node);
           return EXIT;
         }
+        const attributeKeys = Object.keys(attributes);
+        if (
+          attributeKeys.length !== 2 ||
+          attributeKeys.some((key) => key !== "user" && key !== "repo")
+        ) {
+          file.fail(
+            "github-repo must have only string user and repo properties",
+            node,
+          );
+          return EXIT;
+        }
 
         data.hName = "github-repo";
         data.hProperties = {

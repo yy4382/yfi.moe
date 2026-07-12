@@ -6,6 +6,7 @@ import {
   type AddCommentResponse,
 } from "@repo/api/comment/add.model";
 import { type Result, ok, err } from "@repo/helpers/result";
+import { renderComment } from "@repo/markdown/comment";
 import type { User } from "@/auth/auth-plugin.js";
 import type { DbClient } from "@/db/db-plugin.js";
 import { comment } from "@/db/schema.js";
@@ -13,7 +14,6 @@ import { env } from "@/env.js";
 import type { AkismetService } from "@/services/akismet.js";
 import type { NotificationService } from "@/services/notification/types.js";
 import { tablesToCommentData } from "../shared/comment-data.js";
-import { parseMarkdown } from "../shared/parse-markdown.js";
 import { sendNotification } from "./notify.js";
 
 type AddCommentResult =
@@ -64,7 +64,7 @@ export async function addComment(
     };
   }
 
-  const renderedContent = parseMarkdown(body.content);
+  const renderedContent = await renderComment(body.content);
 
   const isSpam = await checkSpam(body, akismet, options);
 

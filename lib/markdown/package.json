@@ -14,7 +14,6 @@
     "@ungap/structured-clone": "^1.3.2",
     "@unpic/placeholder": "^0.1.2",
     "github-slugger": "^2.0.0",
-    "hast-util-from-html": "^2.0.3",
     "hast-util-is-element": "^3.0.0",
     "hastscript": "^9.0.1",
     "is-absolute-url": "^5.0.0",
@@ -45,9 +44,10 @@
     "vitest": "catalog:"
   },
   "exports": {
-    "./parse": "./dist/parse.js",
-    "./preset": "./dist/preset.js",
-    "./plugins/*": "./dist/plugins/*.js",
+    "./article": "./dist/article.js",
+    "./comment": "./dist/comment.js",
+    "./excerpt": "./dist/excerpt.js",
+    "./feed": "./dist/feed.js",
     "./style": "./src/style/index.css"
   }
 }

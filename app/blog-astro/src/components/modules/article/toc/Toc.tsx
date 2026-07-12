@@ -3,7 +3,7 @@
 import { ListIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from "react";
-import type { MarkdownHeading } from "@repo/markdown/parse";
+import type { ArticleHeading } from "@repo/markdown/article";
 import {
   Popover,
   PopoverPortal,
@@ -46,7 +46,7 @@ const LAYOUT = {
  * Tracks which heading is currently active based on viewport visibility.
  * Uses IntersectionObserver to detect when headings enter/exit the viewport.
  */
-function useActiveHeading(headings: MarkdownHeading[]): number {
+function useActiveHeading(headings: ArticleHeading[]): number {
   const [isVisible, setIsVisible] = useState<boolean[]>(() =>
     new Array(headings.length).fill(false),
   );
@@ -54,13 +54,13 @@ function useActiveHeading(headings: MarkdownHeading[]): number {
 
   useEffect(() => {
     const headers = headings
-      .map((heading) => document.getElementById(heading.slug))
+      .map((heading) => document.getElementById(heading.id))
       .filter((el): el is HTMLElement => el !== null);
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const index = headings.findIndex((h) => h.slug === entry.target.id);
+          const index = headings.findIndex((h) => h.id === entry.target.id);
           if (index === -1) return;
 
           setIsVisible((prev) => {
@@ -93,7 +93,7 @@ function useActiveHeading(headings: MarkdownHeading[]): number {
  * Calculates the median "effective length" of headings.
  * Used to determine if TOC needs extra width for longer text.
  */
-function useMedianHeadingLength(headings: MarkdownHeading[]): number {
+function useMedianHeadingLength(headings: ArticleHeading[]): number {
   return useMemo(() => {
     if (headings.length === 0) return 0;
     const lengths = headings
@@ -116,7 +116,7 @@ interface TocLayout {
  * Measures article layout and determines TOC display mode.
  * Returns positioning values for sidebar mode.
  */
-function useTocLayout(headings: MarkdownHeading[]): TocLayout {
+function useTocLayout(headings: ArticleHeading[]): TocLayout {
   const medianLength = useMedianHeadingLength(headings);
   const requiredWidth =
     medianLength > LAYOUT.longTextThreshold
@@ -195,7 +195,7 @@ function useTocLayout(headings: MarkdownHeading[]): TocLayout {
 // MARK: Components
 
 interface TocPopoverProps {
-  headings: MarkdownHeading[];
+  headings: ArticleHeading[];
 }
 
 function TocPopover({ headings }: TocPopoverProps) {
@@ -225,7 +225,7 @@ function TocPopover({ headings }: TocPopoverProps) {
 }
 
 interface TocSidebarProps {
-  headings: MarkdownHeading[];
+  headings: ArticleHeading[];
   position: TocLayout["sidebar"];
 }
 
@@ -250,7 +250,7 @@ function TocSidebar({ headings, position }: TocSidebarProps) {
 }
 
 interface TocProps {
-  headings: MarkdownHeading[];
+  headings: ArticleHeading[];
 }
 
 function Toc({ headings }: TocProps) {

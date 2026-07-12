@@ -53,3 +53,17 @@ Interpret creatively and make unexpected choices that feel genuinely designed fo
 - Use Conventional Commits (`feat:`, `fix:`, optional scopes) to match the history.
 - Rebase before opening a PR, link related issues, and include screenshots or terminal logs for user-facing updates.
 - Confirm impacted builds and test suites pass locally before requesting review.
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked in GitHub Issues; external PRs are not a triage surface. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Use the default five-role label vocabulary. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This is a single-context repository using root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.

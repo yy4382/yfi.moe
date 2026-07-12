@@ -4,8 +4,7 @@ import PostAttrTime from "./post-attr-time.astro";
 import PostAttrTags from "./post-attr-tags.astro";
 import { cn } from "@/lib/utils/cn";
 import { getDesc } from "@/lib/content/get-description";
-import { markdownToHtml } from "@repo/markdown/parse";
-import { ArticlePresetFast } from "@repo/markdown/preset";
+import { renderExcerpt } from "@repo/markdown/excerpt";
 
 interface Props {
   post: CollectionEntry<"post">;
@@ -14,9 +13,9 @@ interface Props {
 
 const { post, class: className } = Astro.props;
 
-const description =
-  post.data.description ||
-  markdownToHtml(getDesc(post.body!), { preset: ArticlePresetFast });
+const excerptHtml = post.data.description
+  ? undefined
+  : await renderExcerpt(getDesc(post.body!));
 ---
 
 <div
@@ -37,9 +36,17 @@ const description =
       <PostAttrTime {...post.data} />
       <PostAttrTags tags={post.data.tags} />
     </div>
-    <div
-      class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert"
-      set:html={description}
-    />
+    {
+      post.data.description ? (
+        <div class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert">
+          {post.data.description}
+        </div>
+      ) : (
+        <div
+          class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert"
+          set:html={excerptHtml ?? ""}
+        />
+      )
+    }
   </div>
 </div>
