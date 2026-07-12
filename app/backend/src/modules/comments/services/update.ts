@@ -1,12 +1,12 @@
 import { and, isNull, eq } from "drizzle-orm";
 import type { OneOfKeyValuePair } from "@repo/api/comment/update.model";
 import type { PersistenceOwner } from "@repo/guest-identity/backend";
+import { renderComment } from "@repo/markdown/comment";
 import type { User } from "@/auth/auth-plugin.js";
 import type { DbClient } from "@/db/db-plugin.js";
 import { comment, user } from "@/db/schema.js";
 import { isCommentOwnedByViewer } from "./ownership.js";
 import { tablesToCommentData } from "./shared/comment-data.js";
-import { parseMarkdown } from "./shared/parse-markdown.js";
 
 export async function updateComment(
   id: number,
@@ -68,11 +68,12 @@ export async function updateComment(
   }
 
   // Update the comment
+  const renderedContent = await renderComment(content.rawContent);
   const [updatedComment] = await db
     .update(comment)
     .set({
       rawContent: content.rawContent,
-      renderedContent: parseMarkdown(content.rawContent),
+      renderedContent,
       updatedAt: now,
     })
     .where(eq(comment.id, id))

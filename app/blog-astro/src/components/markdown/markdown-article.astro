@@ -1,63 +1,42 @@
 ---
-import { getEntry } from "astro:content";
-import { markdownToHtmlAsync } from "@repo/markdown/parse";
-import { ArticlePreset } from "@repo/markdown/preset";
-import rehypeReplaceCustomElements, {
-  type Options,
-} from "@repo/markdown/plugins/rehype-replace-item";
-import type { ImageMeta } from "@repo/markdown/plugins/rehype-image-metadata";
+import type { ArticleRenderResult } from "@repo/markdown/article";
+import { toHtml } from "hast-util-to-html";
+import { SKIP, visit } from "unist-util-visit";
 
 import "@/styles/global.css";
 import "@repo/markdown/style";
-import { CopyButton } from "@/components/markdown/components/copy-button";
 import { renderToString } from "react-dom/server";
 import { createElement } from "react";
-import { GhCard } from "@/components/markdown/components/gh-card";
+import {
+  createArticleEmbeddedElement,
+  isArticleEmbeddedElementName,
+} from "./article-embedded-elements";
 
 interface Props {
-  content: string;
+  hast: ArticleRenderResult["hast"];
 }
 
-const { content } = Astro.props;
+const { hast } = Astro.props;
 
-const imageMetaEntry = await getEntry("imageMeta", "image-meta");
-const imageMeta = (imageMetaEntry?.data.entries ?? []) as ImageMeta[];
+visit(hast, "element", (node, index, parent) => {
+  if (!parent || index == null || !isArticleEmbeddedElementName(node.tagName)) {
+    return;
+  }
 
-const preset = {
-  plugins: [...ArticlePreset.plugins!],
-  settings: ArticlePreset.settings,
-};
-preset.plugins.push([
-  rehypeReplaceCustomElements,
-  {
-    map: {
-      "copy-button": renderToString(
-        createElement("div", {
-          "data-react-component": "CopyButton",
-          children: createElement(CopyButton),
-        }),
-      ),
-      "github-repo": (_, props) =>
-        renderToString(
-          createElement("div", {
-            "data-react-component": "GhCard",
-            "data-props": JSON.stringify(props),
-            children: createElement(GhCard, {
-              user: props.user as string,
-              repo: props.repo as string,
-            }),
-          }),
-        ),
-    } satisfies Options["map"],
-  },
-]);
-
-const html = await markdownToHtmlAsync(content, {
-  preset,
-  fileData: {
-    imageMeta,
-  },
+  parent.children.splice(index, 1, {
+    type: "raw",
+    value: renderToString(
+      createElement("div", {
+        "data-article-embedded-element": node.tagName,
+        "data-props": JSON.stringify(node.properties),
+        children: createArticleEmbeddedElement(node.tagName, node.properties),
+      }),
+    ),
+  });
+  return SKIP;
 });
+
+const html = toHtml(hast, { allowDangerousHtml: true });
 ---
 
 <article
@@ -68,27 +47,24 @@ const html = await markdownToHtmlAsync(content, {
 
 <script>
   import { hydrateRoot, type Root } from "react-dom/client";
-  import { CopyButton } from "@/components/markdown/components/copy-button";
-  import { createElement } from "react";
-  import { GhCard } from "@/components/markdown/components/gh-card";
+  import {
+    createArticleEmbeddedElement,
+    isArticleEmbeddedElementName,
+  } from "./article-embedded-elements";
 
   const roots: Root[] = [];
 
   function hydrate() {
-    const CopyButtons = document.querySelectorAll(
-      "[data-react-component='CopyButton']",
+    const elements = document.querySelectorAll<HTMLElement>(
+      "[data-article-embedded-element]",
     );
-    CopyButtons.forEach((button) => {
-      const root = hydrateRoot(button, createElement(CopyButton));
-      roots.push(root);
-    });
-    const GhCards = document.querySelectorAll(
-      "[data-react-component='GhCard']",
-    );
-    GhCards.forEach((card) => {
+    elements.forEach((element) => {
+      const name = element.dataset.articleEmbeddedElement;
+      if (!name || !isArticleEmbeddedElementName(name)) return;
+      const properties = JSON.parse(element.dataset.props ?? "{}") as unknown;
       const root = hydrateRoot(
-        card,
-        createElement(GhCard, JSON.parse(card.getAttribute("data-props")!)),
+        element,
+        createArticleEmbeddedElement(name, properties),
       );
       roots.push(root);
     });
