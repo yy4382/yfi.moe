@@ -39,6 +39,7 @@
     "lucide-react": "^1.21.0",
     "motion": "catalog:",
     "ofetch": "^1.5.1",
+    "p-limit": "^7.3.0",
     "radix-ui": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
