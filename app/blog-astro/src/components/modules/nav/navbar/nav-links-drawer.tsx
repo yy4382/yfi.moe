@@ -1,27 +1,25 @@
-import { MenuIcon } from "lucide-react";
+import * as stylex from "@stylexjs/stylex";
 import { VisuallyHidden } from "radix-ui";
 import { useEffect, useState } from "react";
 import { Drawer } from "vaul";
-// https://github.com/emilkowalski/vaul/issues/602#issuecomment-3011987408
-// also, since vaul doesn't export css, we have to patch it (using pnpm patch)
 import "vaul/style.css";
-import { cn } from "@/lib/utils/cn";
+import {
+  colors,
+  radii,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import { MaskIcon } from "@/components/ui/mask-icon";
 import { navLinks } from "./nav-link-list";
 
 export function NavLinksDrawer({ url }: { url: URL }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!open) {
-      return;
-    }
-
+    if (!open) return;
     const root = document.documentElement;
     const previousScrollBehavior = root.style.scrollBehavior;
-
-    // Disable smooth scrolling so Radix's scroll restoration does not animate.
     root.style.scrollBehavior = "auto";
-
     return () => {
       root.style.scrollBehavior = previousScrollBehavior;
     };
@@ -30,41 +28,33 @@ export function NavLinksDrawer({ url }: { url: URL }) {
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
       <Drawer.Trigger
-        className="flex size-8 items-center justify-center rounded-lg border border-container"
-        onClick={(e) => {
-          // https://github.com/shadcn-ui/ui/discussions/5953#discussioncomment-11919155
-          e.currentTarget.blur();
-        }}
+        aria-label="打开导航"
+        {...stylex.props(styles.trigger)}
+        onClick={(event) => event.currentTarget.blur()}
       >
-        <MenuIcon />
+        <MaskIcon name="lucide-menu" style={styles.menuIcon} />
       </Drawer.Trigger>
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-50 bg-black/40">
-          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-60 mt-24 flex h-fit flex-col rounded-t-[10px] bg-background outline-none">
-            <div className="flex-1 rounded-t-[10px] px-8 py-4">
-              <div
-                aria-hidden
-                className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300"
-              />
-              <div className="mx-auto mb-6 max-w-md">
-                <Drawer.Title className="mb-4 text-lg font-medium text-heading">
+        <Drawer.Overlay {...stylex.props(styles.overlay)}>
+          <Drawer.Content {...stylex.props(styles.content)}>
+            <div {...stylex.props(styles.panel)}>
+              <div aria-hidden {...stylex.props(styles.handle)} />
+              <div {...stylex.props(styles.nav)}>
+                <Drawer.Title {...stylex.props(styles.title)}>
                   前往……
                 </Drawer.Title>
                 <VisuallyHidden.Root>
                   <Drawer.Description>导航链接</Drawer.Description>
                 </VisuallyHidden.Root>
-                <ul className="flex flex-col">
+                <ul {...stylex.props(styles.list)}>
                   {navLinks.map((link) => (
-                    <li
-                      key={link.href}
-                      className="flex items-center justify-start"
-                    >
+                    <li key={link.href} {...stylex.props(styles.item)}>
                       <a
                         href={link.href}
-                        className={cn([
-                          "data-[active=true]:text-accent-foreground",
-                          "py-1.5 text-muted-foreground transition-colors hover:text-accent-foreground",
-                        ])}
+                        {...stylex.props(
+                          styles.link,
+                          link.active(url) && styles.active,
+                        )}
                         data-active={link.active(url)}
                       >
                         {link.label}
@@ -80,3 +70,80 @@ export function NavLinksDrawer({ url }: { url: URL }) {
     </Drawer.Root>
   );
 }
+
+const styles = stylex.create({
+  trigger: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    borderColor: colors.borderDefault,
+    borderRadius: radii.lg,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    color: colors.textPrimary,
+    cursor: "pointer",
+    display: "flex",
+    height: "2rem",
+    justifyContent: "center",
+    width: "2rem",
+  },
+  menuIcon: { height: "1.25rem", width: "1.25rem" },
+  overlay: {
+    backgroundColor: colors.overlayScrim,
+    inset: 0,
+    position: "fixed",
+    zIndex: 50,
+  },
+  content: {
+    backgroundColor: colors.canvas,
+    borderStartEndRadius: "10px",
+    borderStartStartRadius: "10px",
+    bottom: 0,
+    display: "flex",
+    flexDirection: "column",
+    height: "fit-content",
+    left: 0,
+    marginTop: "6rem",
+    outline: "none",
+    position: "fixed",
+    right: 0,
+    zIndex: 60,
+  },
+  panel: {
+    borderStartEndRadius: "10px",
+    borderStartStartRadius: "10px",
+    flex: 1,
+    paddingBlock: spacing.lg,
+    paddingInline: spacing.xxl,
+  },
+  handle: {
+    backgroundColor: colors.borderStrong,
+    borderRadius: radii.round,
+    flexShrink: 0,
+    height: "0.375rem",
+    marginBottom: spacing.xxl,
+    marginInline: "auto",
+    width: "3rem",
+  },
+  nav: { marginBottom: spacing.xl, marginInline: "auto", maxWidth: "28rem" },
+  title: {
+    color: colors.textPrimary,
+    fontSize: typography.sizeLg,
+    fontWeight: typography.weightMedium,
+    marginBottom: spacing.lg,
+  },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+  },
+  item: { alignItems: "center", display: "flex", justifyContent: "flex-start" },
+  link: {
+    color: colors.textMuted,
+    paddingBlock: "0.375rem",
+    textDecoration: "none",
+    ":hover": { color: colors.accentText },
+  },
+  active: { color: colors.accentText },
+});

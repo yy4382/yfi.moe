@@ -3,6 +3,10 @@ import { getSeo } from "@/lib/utils/SEO";
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import ArticleHero from "@/components/modules/article/article-hero.astro";
 import Comment from "@/components/modules/comments/comment.astro";
+import "@/styles/article-prose.css";
+import { spacing } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
 import type { MarkdownLayoutProps } from "astro";
 
@@ -20,15 +24,21 @@ const seoConfig = getSeo({
   description: page.description,
   type: "article",
 });
+
+const styles = stylex.create({
+  content: { paddingBlock: "4.5rem", paddingInline: spacing.lg },
+});
+const articleAttrs = stylex.attrs(layout.articleWidth);
 ---
 
 <NavLayout seoConfig={seoConfig}>
   <ArticleHero title={page.title} />
-  <div class="border-b border-container">
-    <div class="main-container h-full">
-      <div class="px-4 py-18">
+  <div {...stylex.attrs(layout.sectionBorder)}>
+    <div {...stylex.attrs(layout.mainContainer)}>
+      <div {...stylex.attrs(styles.content)}>
         <div
-          class="mx-auto prose wrap-break-word prose-gray dark:prose-invert prose-headings:scroll-mt-8"
+          class:list={["article-prose", articleAttrs.class]}
+          style={articleAttrs.style}
         >
           <slot />
         </div>

@@ -1,46 +1,38 @@
+import * as stylex from "@stylexjs/stylex";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
 
 interface AnimateChangeInHeightProps {
   children: React.ReactNode;
-  className?: string;
   duration?: number;
+  stylexStyle?: stylex.StyleXStyles;
 }
 
-/**
- * A component that automatically adjusts its height based on the content inside it,
- * with smooth transitions when the height changes.
- *
- * Caveats:
- * - The content inside should not use `margin-top` or `margin-bottom`, as this can interfere with height calculations.
- */
-export const AutoResizeHeight: React.FC<AnimateChangeInHeightProps> = ({
+/** Smoothly follows the measured height of its content. */
+export function AutoResizeHeight({
   children,
-  className,
   duration = 0.6,
-}) => {
+  stylexStyle,
+}: AnimateChangeInHeightProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [height, setHeight] = useState<number | "auto">("auto");
 
   useEffect(() => {
-    if (containerRef.current) {
-      const resizeObserver = new ResizeObserver((entries) => {
-        const observedHeight = entries[0].contentRect.height;
-        setHeight(observedHeight);
-      });
+    const container = containerRef.current;
+    if (!container) return;
 
-      resizeObserver.observe(containerRef.current);
+    const resizeObserver = new ResizeObserver((entries) => {
+      const observedHeight = entries[0]?.contentRect.height;
+      if (observedHeight !== undefined) setHeight(observedHeight);
+    });
 
-      return () => {
-        resizeObserver.disconnect();
-      };
-    }
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
   }, []);
 
   return (
     <motion.div
-      className={cn("overflow-hidden", className)}
+      {...stylex.props(styles.root, stylexStyle)}
       style={{ height }}
       initial={false}
       animate={{ height }}
@@ -49,4 +41,6 @@ export const AutoResizeHeight: React.FC<AnimateChangeInHeightProps> = ({
       <div ref={containerRef}>{children}</div>
     </motion.div>
   );
-};
+}
+
+const styles = stylex.create({ root: { overflow: "hidden" } });

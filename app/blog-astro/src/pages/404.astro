@@ -3,38 +3,70 @@ import Section from "@/components/ui/section.astro";
 import { getSeo } from "@/lib/utils/SEO";
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import { contactInfo } from "@/config/author";
+import {
+  colors,
+  radii,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+
 const seoConfig = getSeo({ title: "404" });
 const mailToLink = contactInfo.find((info) =>
   info.link.startsWith("mailto:"),
 )?.link;
+const styles = stylex.create({
+  section: {
+    color: colors.textPrimary,
+    marginBlock: "6rem",
+    marginInline: "auto",
+    maxWidth: "36rem",
+    paddingInline: spacing.xxl,
+  },
+  root: { display: "flex", flexDirection: "column", gap: "3rem" },
+  stack: { display: "flex", flexDirection: "column", gap: spacing.lg },
+  title: { fontSize: "3rem", fontWeight: typography.weightSemibold, margin: 0 },
+  actions: { display: "flex", flexDirection: "column", gap: spacing.sm },
+  actionRow: { display: "flex", gap: spacing.lg },
+  action: {
+    backgroundColor: colors.accent,
+    border: 0,
+    borderRadius: radii.md,
+    color: colors.textOnAccent,
+    cursor: "pointer",
+    display: "block",
+    padding: spacing.sm,
+    textDecoration: "none",
+  },
+  reasons: { display: "flex", flexDirection: "column", gap: spacing.md },
+  subtitle: { fontSize: typography.sizeXl, margin: 0 },
+  list: { margin: 0, paddingInlineStart: spacing.xl },
+});
 ---
 
 <NavLayout seoConfig={seoConfig} stopTrack>
-  <Section class="mx-auto my-24 max-w-xl px-8 text-heading">
-    <div class="flex flex-col gap-12">
-      <div class="flex flex-col gap-4">
-        <h1 class="text-5xl font-semibold">哎呀！网页走丢啦</h1>
-        <p>您遇到了一个 404 错误。</p>
+  <Section style={styles.section}>
+    <div {...stylex.attrs(styles.root)}>
+      <div {...stylex.attrs(styles.stack)}>
+        <h1 {...stylex.attrs(styles.title)}>哎呀！网页走丢啦</h1><p>
+          您遇到了一个 404 错误。
+        </p>
       </div>
-      <div class="flex flex-col gap-2">
-        您可以：
-        <div class="flex gap-4">
-          <a class="block rounded-md bg-primary/80 p-2 text-black" href="/"
-            >返回首页</a
-          >
-          <button
-            class="rounded-md bg-primary/80 p-2 text-black"
-            id="contact-me">通过邮件联系我</button
+      <div {...stylex.attrs(styles.actions)}>
+        您可以：<div {...stylex.attrs(styles.actionRow)}>
+          <a {...stylex.attrs(styles.action)} href="/">返回首页</a>
+          <button {...stylex.attrs(styles.action)} id="contact-me"
+            >通过邮件联系我</button
           >
         </div>
       </div>
-      <div class="prose dark:prose-invert">
-        <h2>为什么会遇到这个错误？</h2>
-        <p>这可能是因为：</p>
-        <ul>
-          <li>您输入的网址有误</li>
-          <li>您访问的页面已被删除或移动</li>
-          <li>其他地方给出的本站网址有误</li>
+      <div {...stylex.attrs(styles.reasons)}>
+        <h2 {...stylex.attrs(styles.subtitle)}>为什么会遇到这个错误？</h2><p>
+          这可能是因为：
+        </p><ul {...stylex.attrs(styles.list)}>
+          <li>您输入的网址有误</li><li>您访问的页面已被删除或移动</li><li>
+            其他地方给出的本站网址有误
+          </li>
         </ul>
       </div>
     </div>
@@ -45,27 +77,15 @@ const mailToLink = contactInfo.find((info) =>
   function constructMailToLink() {
     if (!mailToLink) {
       alert("站长未设置联系邮箱");
-      throw new Error(
-        "Email not set: to solve, add a new entry to the contactInfo array in `configs/author.ts` with a link property that starts with `mailto:`",
-      );
+      throw new Error("Email not set: add a mailto entry to contactInfo");
     }
     const subject = `404 问题反馈：${window.location.href}`;
-    const body =
-      `在该 URL 中遇到了 404 问题：${window.location.href}\n\n` +
-      `可以告诉我们您在哪里发现了这个 404 的 URL 吗？\n\n\n` +
-      `有其他需要反馈的相关信息吗？\n\n\n` +
-      `自动生成的诊断信息：\n` +
-      `UA: ${navigator.userAgent}\n` +
-      `上一个页面：${document.referrer}\n` +
-      `*如果您不愿意与我们分享该信息，可以自行删除\n`;
-    return (
-      `${mailToLink}` +
-      `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    );
+    const body = `在该 URL 中遇到了 404 问题：${window.location.href}\n\n可以告诉我们您在哪里发现了这个 404 的 URL 吗？\n\n\n有其他需要反馈的相关信息吗？\n\n\n自动生成的诊断信息：\nUA: ${navigator.userAgent}\n上一个页面：${document.referrer}\n*如果您不愿意与我们分享该信息，可以自行删除\n`;
+    return `${mailToLink}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
-  const contactMeBtn = document.getElementById("contact-me");
-  // open in new tab
-  contactMeBtn.addEventListener("click", () => {
-    window.open(constructMailToLink(), "_blank");
-  });
+  document
+    .getElementById("contact-me")
+    ?.addEventListener("click", () =>
+      window.open(constructMailToLink(), "_blank"),
+    );
 </script>

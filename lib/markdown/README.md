@@ -10,7 +10,6 @@ All modes are asynchronous. Each mode defines the result shape needed by its cal
 
 ```ts
 import { renderArticle } from "@repo/markdown/article";
-import "@repo/markdown/style";
 
 const { hast, outline } = await renderArticle(markdown, {
   imageMetadata,
@@ -26,7 +25,7 @@ The destination works directly with HAST to realize the closed catalog of embedd
 
 A malformed recognized embedded element fails rendering. Adding an element requires coordinated catalog and destination changes.
 
-Article mode currently requires the exported `@repo/markdown/style` stylesheet. Required styles for every mode must be listed in this README as the module evolves; importing them remains the caller's responsibility.
+Article mode emits semantic markup and presentation hooks, but owns no UI stylesheet. Each destination owns its prose, alert, code-block, and generated-icon presentation.
 
 ### Comment mode
 

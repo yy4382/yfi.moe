@@ -1,4 +1,12 @@
+import * as stylex from "@stylexjs/stylex";
 import { format, isSameDay } from "date-fns";
+import {
+  colors,
+  shadows,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import { MaskIcon } from "@/components/ui/mask-icon";
 import {
   Popover,
   PopoverPopup,
@@ -11,21 +19,16 @@ import type { ContentTimeData } from "@/content.config";
 export function PostAttrTimeTooltip({ time }: { time: ContentTimeData }) {
   const updateDateMatters =
     time.updatedDate && !isSameDay(time.publishedDate, time.updatedDate);
+  const trigger = <DateWithIcon date={time.publishedDate} />;
 
-  const trigger = (
-    <DateWithIcon date={time.publishedDate} icon="i-lucide-calendar" />
-  );
-
-  if (!time.writingDate && !updateDateMatters) {
-    return trigger;
-  }
+  if (!time.writingDate && !updateDateMatters) return trigger;
   return (
     <Popover>
       <PopoverTrigger openOnHover>{trigger}</PopoverTrigger>
       <PopoverPortal>
-        <PopoverPositioner sideOffset={4} className="z-50">
-          <PopoverPopup className="z-50 w-fit origin-(--transform-origin) border bg-zinc-100 px-3 py-1.5 text-xs text-balance text-comment tabular-nums will-change-transform dark:bg-zinc-800">
-            <div className="flex flex-col gap-2">
+        <PopoverPositioner sideOffset={4} stylexStyle={styles.positioner}>
+          <PopoverPopup stylexStyle={styles.popup}>
+            <div {...stylex.props(styles.stack)}>
               {time.writingDate && (
                 <div>
                   于 {format(time.writingDate, "yyyy-MM-dd HH:mm")} 开始写作
@@ -49,17 +52,39 @@ export function PostAttrTimeTooltip({ time }: { time: ContentTimeData }) {
 
 function DateWithIcon({
   date,
-  icon,
   formatTemplate = "yyyy-MM-dd",
 }: {
   date: Date;
-  icon: string;
   formatTemplate?: string;
 }) {
   return (
-    <div className="flex items-center select-none">
-      <span className={`mr-1 size-4 ${icon}`} />
+    <div {...stylex.props(styles.date)}>
+      <MaskIcon name="lucide-calendar" style={styles.icon} />
       {format(date, formatTemplate)}
     </div>
   );
 }
+
+const styles = stylex.create({
+  positioner: { zIndex: 50 },
+  popup: {
+    backgroundColor: colors.surfaceMuted,
+    borderColor: colors.borderDefault,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    boxShadow: shadows.sm,
+    color: colors.textSecondary,
+    fontSize: typography.sizeXs,
+    fontVariantNumeric: "tabular-nums",
+    paddingBlock: "0.375rem",
+    paddingInline: spacing.md,
+    textWrap: "balance",
+    transformOrigin: "var(--transform-origin)",
+    width: "fit-content",
+    willChange: "transform",
+    zIndex: 50,
+  },
+  stack: { display: "flex", flexDirection: "column", gap: spacing.sm },
+  date: { alignItems: "center", display: "flex", userSelect: "none" },
+  icon: { height: "1rem", marginInlineEnd: spacing.xs, width: "1rem" },
+});

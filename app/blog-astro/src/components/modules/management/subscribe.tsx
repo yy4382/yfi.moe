@@ -1,7 +1,48 @@
+import * as stylex from "@stylexjs/stylex";
 import { QueryClientProvider, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import {
+  colors,
+  motion,
+  radii,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
 import { client } from "@/lib/hono-client";
 import { queryClient } from "@/lib/query-client";
+
+const styles = stylex.create({
+  stack: { display: "flex", flexDirection: "column", gap: spacing.lg },
+  copy: {
+    color: colors.textSecondary,
+    fontSize: typography.sizeSm,
+    lineHeight: typography.lineRelaxed,
+    margin: 0,
+  },
+  success: { color: colors.success, fontWeight: typography.weightSemibold },
+  error: { color: colors.danger },
+  button: {
+    border: 0,
+    borderRadius: radii.md,
+    color: colors.textOnAccent,
+    cursor: "pointer",
+    fontWeight: typography.weightMedium,
+    paddingBlock: spacing.sm,
+    paddingInline: spacing.lg,
+    transitionDuration: motion.durationFast,
+    transitionProperty: "background-color, opacity",
+    transitionTimingFunction: motion.easeStandard,
+    ":disabled": { cursor: "wait", opacity: 0.5 },
+  },
+  dangerButton: {
+    backgroundColor: colors.danger,
+    ":hover": { backgroundColor: colors.dangerText },
+  },
+  restoreButton: {
+    backgroundColor: colors.accentText,
+    ":hover": { opacity: 0.86 },
+  },
+});
 
 function UnsubscribeWrapper() {
   const [searchParams, setSearchParams] = useState<URLSearchParams | null>(
@@ -83,20 +124,20 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
 
   if (unsubscribeMutation.data && isUnsubscribed) {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-green-600">取消订阅成功</div>
-        <p className="text-sm text-gray-600">
+      <div {...stylex.props(styles.stack)}>
+        <div {...stylex.props(styles.success)}>取消订阅成功</div>
+        <p {...stylex.props(styles.copy)}>
           如果您后悔了，可以点击下面的按钮重新订阅邮件通知。
         </p>
         <button
           onClick={() => resubscribeMutation.mutate()}
           disabled={resubscribeMutation.isPending}
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
+          {...stylex.props(styles.button, styles.restoreButton)}
         >
           {resubscribeMutation.isPending ? "重新订阅中..." : "重新订阅"}
         </button>
         {resubscribeMutation.error && (
-          <div className="text-red-600">
+          <div {...stylex.props(styles.error)}>
             重新订阅失败: {resubscribeMutation.error.message}
           </div>
         )}
@@ -106,20 +147,20 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
 
   if (resubscribeMutation.data && !isUnsubscribed) {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-green-600">重新订阅成功</div>
-        <p className="text-sm text-gray-600">
+      <div {...stylex.props(styles.stack)}>
+        <div {...stylex.props(styles.success)}>重新订阅成功</div>
+        <p {...stylex.props(styles.copy)}>
           您已重新订阅邮件通知，将会收到新评论的邮件提醒。
         </p>
         <button
           onClick={() => unsubscribeMutation.mutate()}
           disabled={unsubscribeMutation.isPending}
-          className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50"
+          {...stylex.props(styles.button, styles.dangerButton)}
         >
           {unsubscribeMutation.isPending ? "取消订阅中..." : "取消订阅"}
         </button>
         {unsubscribeMutation.error && (
-          <div className="text-red-600">
+          <div {...stylex.props(styles.error)}>
             取消订阅失败: {unsubscribeMutation.error.message}
           </div>
         )}
@@ -129,7 +170,7 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
 
   if (unsubscribeMutation.error) {
     return (
-      <div className="text-red-600">
+      <div {...stylex.props(styles.error)}>
         取消订阅失败: {unsubscribeMutation.error.message}
       </div>
     );
@@ -140,13 +181,13 @@ function Unsubscribe({ searchParams }: { searchParams: URLSearchParams }) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <p className="text-sm text-gray-600">
+    <div {...stylex.props(styles.stack)}>
+      <p {...stylex.props(styles.copy)}>
         点击下面的按钮来取消邮件通知订阅，您将不再收到新评论的邮件提醒。
       </p>
       <button
         onClick={() => unsubscribeMutation.mutate()}
-        className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+        {...stylex.props(styles.button, styles.dangerButton)}
       >
         取消订阅
       </button>

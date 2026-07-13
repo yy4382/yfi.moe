@@ -4,7 +4,7 @@ title: 关于
 useComment: true
 ---
 
-import { contactInfo } from "@/config/author";
+import ContactLinks from "@/components/modules/about/contact-links.astro";
 
 ## 关于我
 
@@ -18,26 +18,7 @@ import { contactInfo } from "@/config/author";
 
 ### 链接 🔗
 
-<div class="not-prose my-4 flex gap-4">
-  {contactInfo.map((c) => {
-    return (
-      <a
-        href={c.link}
-        target="_blank"
-        class="group inline-flex items-center gap-2"
-      >
-        <div
-          aria-label={c.name}
-          style={`background-color: ${c.color}`}
-          class="size-8.5 rounded-full p-1.5 transition-transform group-hover:scale-105 group-active:scale-95"
-        >
-          <span class:list={[c.icon, "size-full! text-white!"]} />
-        </div>
-        <span class="group-hover:text-primary-foreground]">{c.name}</span>
-      </a>
-    );
-  })}
-</div>
+<ContactLinks />
 
 ## 关于本站
 

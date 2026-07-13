@@ -1,13 +1,13 @@
-import { type PropsWithChildren, useRef, useEffect } from "react";
-import type { CommentYulineProps } from "@/comment";
-import { createHonoClient, type HonoClient } from "@/lib/api/create-client";
-import { createAuthClient, type AuthClient } from "@/lib/auth/create-auth";
+import type { CommentYulineProps } from "#/comment";
+import { createHonoClient, type HonoClient } from "#/lib/api/create-client";
+import { createAuthClient, type AuthClient } from "#/lib/auth/create-auth";
 import {
   ServerURLContext,
   AuthClientRefContext,
   HonoClientRefContext,
   PathnameContext,
-} from "@/lib/hooks/context";
+} from "#/lib/hooks/context";
+import { type PropsWithChildren, useRef, useEffect } from "react";
 
 export function CommentProvider({
   serverURL,

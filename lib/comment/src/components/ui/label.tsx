@@ -1,23 +1,35 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Label as LabelPrimitive } from "radix-ui";
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { spacing, typography } from "@repo/design-tokens/tokens.stylex";
 
-function Label({
-  className,
-  ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+type LabelProps = Omit<
+  React.ComponentProps<typeof LabelPrimitive.Root>,
+  "className"
+> & { stylexStyle?: stylex.StyleXStyles };
+
+function Label({ stylexStyle, ...props }: LabelProps) {
   return (
     <LabelPrimitive.Root
       data-slot="label"
-      className={cn(
-        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-        className,
-      )}
+      {...stylex.props(styles.root, stylexStyle)}
       {...props}
     />
   );
 }
+
+const styles = stylex.create({
+  root: {
+    alignItems: "center",
+    display: "flex",
+    fontSize: typography.sizeSm,
+    fontWeight: typography.weightMedium,
+    gap: spacing.sm,
+    lineHeight: 1,
+    userSelect: "none",
+  },
+});
 
 export { Label };

@@ -4,33 +4,44 @@ import { renderArticle, type ImageMetadata } from "@repo/markdown/article";
 import MarkdownArticle from "@/components/markdown/markdown-article.astro";
 import Toc from "./toc/Toc";
 import ReadingProgress from "./reading-progress";
+import { spacing } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
-interface Props {
-  text: string;
-}
-
-const { text } = Astro.props;
+const { text } = Astro.props as { text: string };
 const imageMetadata = (await getCollection("imageMeta")).map(
   (entry) => entry.data,
 ) as ImageMetadata[];
 const { hast, outline } = await renderArticle(text, { imageMetadata });
+const styles = stylex.create({
+  container: {
+    containerType: "inline-size",
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    height: "100%",
+    position: "relative",
+  },
+  overlay: { gridColumnStart: 1, gridRowStart: 1, pointerEvents: "none" },
+  article: {
+    gridColumnStart: 1,
+    gridRowStart: 1,
+    paddingBlock: "4.5rem",
+    paddingInline: spacing.lg,
+  },
+});
 ---
 
-<div class="border-b border-container">
+<div {...stylex.attrs(layout.sectionBorder)}>
   <div
-    class="@container relative main-container grid h-full grid-cols-1"
     id="article-container"
+    {...stylex.attrs(layout.mainContainer, styles.container)}
   >
-    <div class="pointer-events-none col-start-1 row-start-1">
+    <div {...stylex.attrs(styles.overlay)}>
       <ReadingProgress client:load client:only="react" />
     </div>
-
-    <div class="pointer-events-none col-start-1 row-start-1">
+    <div {...stylex.attrs(styles.overlay)}>
       <Toc headings={outline} client:load client:only="react" />
     </div>
-
-    <div class="col-start-1 row-start-1 px-4 py-18">
-      <MarkdownArticle hast={hast} />
-    </div>
+    <div {...stylex.attrs(styles.article)}><MarkdownArticle hast={hast} /></div>
   </div>
 </div>

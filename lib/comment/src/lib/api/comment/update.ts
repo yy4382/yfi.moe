@@ -1,6 +1,6 @@
+import type { HonoClient } from "#/lib/api/create-client";
 import { z } from "zod";
 import { commentData } from "@repo/api/comment/comment-data";
-import type { HonoClient } from "@/lib/api/create-client";
 import { commentContentSchema } from "./add";
 
 // inputting params

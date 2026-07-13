@@ -1,22 +1,54 @@
 ---
+import { colors, motion, spacing } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+
 interface Props {
   tags: string[];
 }
 
 const { tags } = Astro.props;
+
+const styles = stylex.create({
+  root: {
+    alignItems: "center",
+    display: "flex",
+    userSelect: "none",
+  },
+  icon: {
+    flexShrink: 0,
+    height: "1rem",
+    marginInlineEnd: spacing.xs,
+    width: "1rem",
+  },
+  tags: {
+    display: "flex",
+    gap: spacing.xxs,
+  },
+  separator: {
+    color: colors.textMuted,
+  },
+  link: {
+    transitionDuration: motion.durationNormal,
+    transitionProperty: "color",
+    transitionTimingFunction: motion.easeStandard,
+    ":hover": {
+      color: colors.accentText,
+    },
+  },
+});
+
+const iconAttrs = stylex.attrs(styles.icon);
 ---
 
-<div class="flex items-center select-none">
-  <span class="mr-1 i-lucide-hash size-4"></span>
-  <span class="space-x-0.5">
+<div {...stylex.attrs(styles.root)}>
+  <span class:list={[iconAttrs.class, "i-lucide-hash"]} style={iconAttrs.style}
+  ></span>
+  <span {...stylex.attrs(styles.tags)}>
     {
       tags.map((tag, index) => (
         <>
-          {index !== 0 && <span class="text-comment">|</span>}
-          <a
-            href={`/tags/${tag}`}
-            class="transition hover:text-accent-foreground"
-          >
+          {index !== 0 && <span {...stylex.attrs(styles.separator)}>|</span>}
+          <a href={`/tags/${tag}`} {...stylex.attrs(styles.link)}>
             {tag}
           </a>
         </>

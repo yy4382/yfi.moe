@@ -1,11 +1,15 @@
 "use client";
 
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
+import * as stylex from "@stylexjs/stylex";
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import * as React from "react";
+import {
+  colors,
+  motion as motionTokens,
+} from "@repo/design-tokens/tokens.stylex";
 import { getStrictContext } from "@/lib/hooks/get-strict-context";
 import { useControlledState } from "@/lib/hooks/use-controlled-state";
-import { cn } from "@/lib/utils/cn";
 
 type PopoverContextType = {
   isOpen: boolean;
@@ -35,12 +39,19 @@ function Popover(props: PopoverProps) {
   );
 }
 
-type PopoverTriggerProps = React.ComponentProps<
-  typeof PopoverPrimitive.Trigger
->;
+type PopoverTriggerProps = Omit<
+  React.ComponentProps<typeof PopoverPrimitive.Trigger>,
+  "className"
+> & { stylexStyle?: stylex.StyleXStyles };
 
-function PopoverTrigger(props: PopoverTriggerProps) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
+function PopoverTrigger({ stylexStyle, ...props }: PopoverTriggerProps) {
+  return (
+    <PopoverPrimitive.Trigger
+      data-slot="popover-trigger"
+      {...stylex.props(stylexStyle)}
+      {...props}
+    />
+  );
 }
 
 type PopoverPortalProps = Omit<
@@ -64,41 +75,47 @@ function PopoverPortal(props: PopoverPortalProps) {
   );
 }
 
-type PopoverBackdropProps = React.ComponentProps<
-  typeof PopoverPrimitive.Backdrop
->;
+type PopoverBackdropProps = Omit<
+  React.ComponentProps<typeof PopoverPrimitive.Backdrop>,
+  "className"
+> & { stylexStyle?: stylex.StyleXStyles };
 
-function PopoverBackdrop({ className, ...props }: PopoverBackdropProps) {
+function PopoverBackdrop({ stylexStyle, ...props }: PopoverBackdropProps) {
   return (
     <PopoverPrimitive.Backdrop
       data-slot="popover-backdrop"
-      className={cn(
-        "fixed inset-0 isolate z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:bg-black/50",
-        className,
-      )}
+      {...stylex.props(styles.backdrop, stylexStyle)}
       {...props}
     />
   );
 }
 
-type PopoverPositionerProps = React.ComponentProps<
-  typeof PopoverPrimitive.Positioner
->;
+type PopoverPositionerProps = Omit<
+  React.ComponentProps<typeof PopoverPrimitive.Positioner>,
+  "className"
+> & { stylexStyle?: stylex.StyleXStyles };
 
-function PopoverPositioner(props: PopoverPositionerProps) {
+function PopoverPositioner({ stylexStyle, ...props }: PopoverPositionerProps) {
   return (
-    <PopoverPrimitive.Positioner data-slot="popover-positioner" {...props} />
+    <PopoverPrimitive.Positioner
+      data-slot="popover-positioner"
+      {...stylex.props(stylexStyle)}
+      {...props}
+    />
   );
 }
 
 type PopoverPopupProps = Omit<
   React.ComponentProps<typeof PopoverPrimitive.Popup>,
-  "render"
+  "render" | "className"
 > &
-  HTMLMotionProps<"div">;
+  Omit<HTMLMotionProps<"div">, "className"> & {
+    stylexStyle?: stylex.StyleXStyles;
+  };
 
 function PopoverPopup({
   transition = { ease: "easeOut", duration: 0.15 },
+  stylexStyle,
   ...props
 }: PopoverPopupProps) {
   return (
@@ -111,12 +128,28 @@ function PopoverPopup({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={transition}
+          {...stylex.props(stylexStyle)}
           {...props}
         />
       }
     />
   );
 }
+
+const styles = stylex.create({
+  backdrop: {
+    backgroundColor: colors.overlayScrim,
+    inset: 0,
+    isolation: "isolate",
+    opacity: 0.25,
+    position: "fixed",
+    transitionDuration: motionTokens.durationFast,
+    transitionProperty: "opacity",
+    zIndex: 50,
+    ":is([data-ending-style])": { opacity: 0 },
+    ":is([data-starting-style])": { opacity: 0 },
+  },
+});
 
 type PopoverArrowProps = React.ComponentProps<typeof PopoverPrimitive.Arrow>;
 

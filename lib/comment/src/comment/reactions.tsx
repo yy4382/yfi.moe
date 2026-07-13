@@ -1,32 +1,39 @@
+import { MaskIcon } from "#/components/ui/mask-icon";
+import {
+  addCommentReaction,
+  removeCommentReaction,
+  type CommentReactionRemoveResponse,
+  type CommentReactionResponse,
+} from "#/lib/api/comment/reaction";
+import { sessionOptions } from "#/lib/auth/session-options";
+import { useAuthClient, useHonoClient, usePathname } from "#/lib/hooks/context";
+import { useGuestIdentity } from "#/lib/hooks/guest-identity";
+import * as stylex from "@stylexjs/stylex";
 import {
   useMutation,
   useQuery,
   useQueryClient,
   type InfiniteData,
 } from "@tanstack/react-query";
-import clsx from "clsx";
 import { EmojiPicker } from "frimousse";
 import { produce } from "immer";
 import { useAtomValue } from "jotai";
 import { Popover } from "radix-ui";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, type ComponentProps } from "react";
 import type { ButtonHTMLAttributes } from "react";
 import { toast } from "sonner";
-import MingcuteAddLine from "~icons/mingcute/add-line";
-import MingcuteEmojiLine from "~icons/mingcute/emoji-line";
 import type { CommentData } from "@repo/api/comment/comment-data";
 import type { GetCommentsResponse } from "@repo/api/comment/get.model";
 import { canonicalizeEmoji } from "@repo/api/comment/reaction.model";
-import type { PublicOwner } from "@repo/guest-identity";
 import {
-  addCommentReaction,
-  removeCommentReaction,
-  type CommentReactionRemoveResponse,
-  type CommentReactionResponse,
-} from "@/lib/api/comment/reaction";
-import { sessionOptions } from "@/lib/auth/session-options";
-import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
-import { useGuestIdentity } from "@/lib/hooks/guest-identity";
+  colors,
+  motion,
+  radii,
+  shadows,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import type { PublicOwner } from "@repo/guest-identity";
 import { sortByAtom } from "./atoms";
 
 type ReactionGroup = {
@@ -136,28 +143,25 @@ function updateCommentReactions(
 }
 
 function ReactionChip(
-  props: ButtonHTMLAttributes<HTMLButtonElement> & {
+  props: Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & {
     active?: boolean;
     count: number;
     emoji: string;
   },
 ) {
-  const { active, count, emoji, className, ...rest } = props;
+  const { active, count, emoji, ...rest } = props;
   return (
     <button
       type="button"
-      className={clsx(
-        "flex h-7 items-center gap-1 rounded-md border px-2 py-0.5 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-        active
-          ? "text-blue-70 border-blue-200 bg-blue-100 dark:border-blue-200/50 dark:bg-blue-100/30 dark:text-blue-300"
-          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700",
-        className,
+      {...stylex.props(
+        styles.chip,
+        active ? styles.chipActive : styles.chipIdle,
       )}
       aria-pressed={active}
       {...rest}
     >
-      <span className="text-base leading-none">{emoji}</span>
-      <span className="text-xs leading-none tabular-nums">{count}</span>
+      <span {...stylex.props(styles.emoji)}>{emoji}</span>
+      <span {...stylex.props(styles.count)}>{count}</span>
     </button>
   );
 }
@@ -308,80 +312,55 @@ export function CommentReactions({
     addReactionMutation.isPending || removeReactionMutation.isPending;
 
   return (
-    <div className="flex flex-wrap items-center gap-1">
+    <div {...stylex.props(styles.root)}>
       <Popover.Root open={pickerOpen} onOpenChange={setPickerOpen}>
         <Popover.Trigger asChild>
           <button
             type="button"
-            className={clsx(
-              "inline-flex h-7 items-center gap-0.5 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-sm text-comment transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800",
-              isBusy && "pointer-events-none opacity-60",
-            )}
+            {...stylex.props(styles.addButton, isBusy && styles.busy)}
             aria-label="添加表情"
           >
-            <MingcuteEmojiLine className="size-5" />
-            <MingcuteAddLine className="size-4" />
+            <MaskIcon name="emoji-line" stylexStyle={styles.emojiIcon} />
+            <MaskIcon name="add-line" stylexStyle={styles.addIcon} />
           </button>
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content
             align="start"
             sideOffset={6}
-            className="z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+            {...stylex.props(styles.popover)}
             collisionPadding={12}
           >
             <EmojiPicker.Root
               onEmojiSelect={({ emoji }) => handleEmojiSelect(emoji)}
-              className="isolate flex h-[368px] w-fit flex-col rounded-md bg-popover"
+              {...stylex.props(styles.picker)}
             >
-              <div className="flex flex-wrap gap-1 px-2 pt-2">
+              <div {...stylex.props(styles.quickActions)}>
                 {QUICK_ACTION_EMOJIS.map(({ label, emoji }) => (
                   <button
                     key={label}
                     type="button"
                     onClick={() => handleEmojiSelect(emoji)}
-                    className="flex size-8 items-center justify-center rounded-md text-lg transition hover:bg-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:hover:bg-neutral-700"
+                    {...stylex.props(styles.quickButton)}
                     aria-label={label}
                     title={label}
                   >
                     <span aria-hidden>{emoji}</span>
-                    <span className="sr-only">{label}</span>
+                    <span {...stylex.props(styles.srOnly)}>{label}</span>
                   </button>
                 ))}
               </div>
-              <EmojiPicker.Search className="z-10 mx-2 mt-2 appearance-none rounded-md bg-neutral-200 px-2.5 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:bg-neutral-700" />
-              <EmojiPicker.Viewport className="relative flex-1 outline-hidden">
-                <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400 dark:text-neutral-500">
+              <EmojiPicker.Search {...stylex.props(styles.search)} />
+              <EmojiPicker.Viewport {...stylex.props(styles.viewport)}>
+                <EmojiPicker.Loading {...stylex.props(styles.pickerStatus)}>
                   Loading…
                 </EmojiPicker.Loading>
-                <EmojiPicker.Empty className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400 dark:text-neutral-500">
+                <EmojiPicker.Empty {...stylex.props(styles.pickerStatus)}>
                   No emoji found.
                 </EmojiPicker.Empty>
                 <EmojiPicker.List
-                  className="w-full pb-1.5 select-none"
-                  components={{
-                    CategoryHeader: ({ category, ...props }) => (
-                      <div
-                        className="bg-popover px-3 pt-3 pb-1.5 text-xs font-medium text-neutral-600 dark:text-neutral-400"
-                        {...props}
-                      >
-                        {category.label}
-                      </div>
-                    ),
-                    Row: ({ children, ...props }) => (
-                      <div className="scroll-my-1.5 px-1.5" {...props}>
-                        {children}
-                      </div>
-                    ),
-                    Emoji: ({ emoji, ...props }) => (
-                      <button
-                        className="flex size-8 items-center justify-center rounded-md text-lg data-active:bg-neutral-200 dark:data-active:bg-neutral-700"
-                        {...props}
-                      >
-                        {emoji.emoji}
-                      </button>
-                    ),
-                  }}
+                  {...stylex.props(styles.pickerList)}
+                  components={pickerComponents}
                 />
               </EmojiPicker.Viewport>
             </EmojiPicker.Root>
@@ -401,3 +380,216 @@ export function CommentReactions({
     </div>
   );
 }
+
+const popoverIn = stylex.keyframes({
+  from: { opacity: 0, transform: "scale(0.96) translateY(-0.25rem)" },
+  to: { opacity: 1, transform: "scale(1) translateY(0)" },
+});
+const popoverOut = stylex.keyframes({
+  from: { opacity: 1, transform: "scale(1) translateY(0)" },
+  to: { opacity: 0, transform: "scale(0.96) translateY(-0.25rem)" },
+});
+
+const styles = stylex.create({
+  root: {
+    alignItems: "center",
+    display: "flex",
+    flexWrap: "wrap",
+    gap: spacing.xs,
+  },
+  chip: {
+    alignItems: "center",
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    cursor: "pointer",
+    display: "flex",
+    fontSize: typography.sizeSm,
+    gap: spacing.xs,
+    height: "1.75rem",
+    paddingBlock: spacing.xxs,
+    paddingInline: spacing.sm,
+    transitionDuration: motion.durationFast,
+    transitionProperty: "background-color, border-color, color, opacity",
+    ":focus-visible": {
+      outlineColor: colors.focusRing,
+      outlineStyle: "solid",
+      outlineWidth: "2px",
+    },
+    ":disabled": { cursor: "not-allowed", opacity: 0.6 },
+  },
+  chipActive: {
+    backgroundColor: colors.surfaceInteractiveHover,
+    borderColor: colors.focusRing,
+    color: colors.accentText,
+  },
+  chipIdle: {
+    backgroundColor: colors.surfaceInteractive,
+    borderColor: colors.borderDefault,
+    color: colors.textSecondary,
+    ":hover": { backgroundColor: colors.surfaceInteractiveHover },
+  },
+  emoji: { fontSize: typography.sizeMd, lineHeight: 1 },
+  count: {
+    fontSize: typography.sizeXs,
+    fontVariantNumeric: "tabular-nums",
+    lineHeight: 1,
+  },
+  addButton: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceInteractive,
+    borderColor: colors.borderDefault,
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    color: colors.textSecondary,
+    cursor: "pointer",
+    display: "inline-flex",
+    gap: spacing.xxs,
+    height: "1.75rem",
+    paddingBlock: spacing.xxs,
+    paddingInline: spacing.sm,
+    transitionDuration: motion.durationFast,
+    ":hover": { backgroundColor: colors.surfaceInteractiveHover },
+  },
+  busy: { opacity: 0.6, pointerEvents: "none" },
+  emojiIcon: { height: "1.25rem", width: "1.25rem" },
+  addIcon: { height: "1rem", width: "1rem" },
+  popover: {
+    animationDuration: motion.durationFast,
+    animationFillMode: "both",
+    backgroundColor: colors.surfaceOverlay,
+    borderColor: colors.borderDefault,
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    boxShadow: shadows.md,
+    color: colors.textPrimary,
+    maxHeight: "var(--radix-popover-content-available-height)",
+    minWidth: "8rem",
+    overflow: "hidden auto",
+    padding: spacing.xs,
+    transformOrigin: "var(--radix-popover-content-transform-origin)",
+    zIndex: 50,
+    ":is([data-state='open'])": { animationName: popoverIn },
+    ":is([data-state='closed'])": { animationName: popoverOut },
+  },
+  picker: {
+    backgroundColor: colors.surfaceOverlay,
+    borderRadius: radii.md,
+    display: "flex",
+    flexDirection: "column",
+    height: "23rem",
+    isolation: "isolate",
+    width: "fit-content",
+  },
+  quickActions: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: spacing.xs,
+    paddingInline: spacing.sm,
+    paddingTop: spacing.sm,
+  },
+  quickButton: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    border: 0,
+    borderRadius: radii.md,
+    cursor: "pointer",
+    display: "flex",
+    fontSize: typography.sizeLg,
+    height: "2rem",
+    justifyContent: "center",
+    outline: "none",
+    transitionDuration: motion.durationFast,
+    width: "2rem",
+    ":hover": { backgroundColor: colors.surfaceInteractiveHover },
+    ":focus-visible": {
+      outlineColor: colors.focusRing,
+      outlineStyle: "solid",
+      outlineWidth: "2px",
+    },
+  },
+  search: {
+    appearance: "none",
+    backgroundColor: colors.surfaceMuted,
+    border: 0,
+    borderRadius: radii.md,
+    color: colors.textPrimary,
+    fontSize: typography.sizeSm,
+    marginInline: spacing.sm,
+    marginTop: spacing.sm,
+    outline: "none",
+    paddingBlock: spacing.sm,
+    paddingInline: "0.625rem",
+    zIndex: 10,
+    ":focus-visible": {
+      outlineColor: colors.focusRing,
+      outlineStyle: "solid",
+      outlineWidth: "2px",
+    },
+  },
+  viewport: { flex: 1, outline: "none", position: "relative" },
+  pickerStatus: {
+    alignItems: "center",
+    color: colors.textMuted,
+    display: "flex",
+    fontSize: typography.sizeSm,
+    inset: 0,
+    justifyContent: "center",
+    position: "absolute",
+  },
+  pickerList: { paddingBottom: "0.375rem", userSelect: "none", width: "100%" },
+  categoryHeader: {
+    backgroundColor: colors.surfaceOverlay,
+    color: colors.textSecondary,
+    fontSize: typography.sizeXs,
+    fontWeight: typography.weightMedium,
+    paddingBottom: "0.375rem",
+    paddingInline: spacing.md,
+    paddingTop: spacing.md,
+  },
+  pickerRow: { paddingInline: "0.375rem", scrollMarginBlock: "0.375rem" },
+  pickerEmoji: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    border: 0,
+    borderRadius: radii.md,
+    cursor: "pointer",
+    display: "flex",
+    fontSize: typography.sizeLg,
+    height: "2rem",
+    justifyContent: "center",
+    width: "2rem",
+    ":is([data-active='true'])": {
+      backgroundColor: colors.surfaceInteractiveHover,
+    },
+  },
+  srOnly: {
+    clipPath: "inset(50%)",
+    height: "1px",
+    overflow: "hidden",
+    position: "absolute",
+    whiteSpace: "nowrap",
+    width: "1px",
+  },
+});
+
+const pickerComponents: ComponentProps<typeof EmojiPicker.List>["components"] =
+  {
+    CategoryHeader: ({ category, ...props }) => (
+      <div {...stylex.props(styles.categoryHeader)} {...props}>
+        {category.label}
+      </div>
+    ),
+    Row: ({ children, ...props }) => (
+      <div {...stylex.props(styles.pickerRow)} {...props}>
+        {children}
+      </div>
+    ),
+    Emoji: ({ emoji, ...props }) => (
+      <button {...stylex.props(styles.pickerEmoji)} {...props}>
+        {emoji.emoji}
+      </button>
+    ),
+  };

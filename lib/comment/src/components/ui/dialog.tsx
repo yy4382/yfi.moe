@@ -1,77 +1,88 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import * as React from "react";
-import MingcuteCloseLine from "~icons/mingcute/close-line";
-import { cn } from "@/lib/utils";
+import {
+  colors,
+  motion,
+  radii,
+  shadows,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import { MaskIcon } from "./mask-icon";
 
-function Dialog({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+type StyledProps<T> = Omit<T, "className"> & {
+  stylexStyle?: stylex.StyleXStyles;
+};
+
+const fadeIn = stylex.keyframes({ from: { opacity: 0 }, to: { opacity: 1 } });
+const fadeOut = stylex.keyframes({ from: { opacity: 1 }, to: { opacity: 0 } });
+const contentIn = stylex.keyframes({
+  from: { opacity: 0, transform: "translate(-50%, -48%) scale(0.95)" },
+  to: { opacity: 1, transform: "translate(-50%, -50%) scale(1)" },
+});
+const contentOut = stylex.keyframes({
+  from: { opacity: 1, transform: "translate(-50%, -50%) scale(1)" },
+  to: { opacity: 0, transform: "translate(-50%, -48%) scale(0.95)" },
+});
+
+function Dialog(props: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
 
-function DialogTrigger({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+function DialogTrigger(
+  props: React.ComponentProps<typeof DialogPrimitive.Trigger>,
+) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
 }
 
-function DialogPortal({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Portal>) {
+function DialogPortal(
+  props: React.ComponentProps<typeof DialogPrimitive.Portal>,
+) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
 }
 
-function DialogClose({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Close>) {
-  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
-}
-
 function DialogOverlay({
-  className,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+}: StyledProps<React.ComponentProps<typeof DialogPrimitive.Overlay>>) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
-      className={cn(
-        "fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0",
-        className,
-      )}
+      {...stylex.props(styles.overlay, stylexStyle)}
       {...props}
     />
   );
 }
 
+type DialogContentProps = StyledProps<
+  React.ComponentProps<typeof DialogPrimitive.Content>
+> & { showCloseButton?: boolean };
+
 function DialogContent({
-  className,
   children,
   showCloseButton = true,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
-  showCloseButton?: boolean;
-}) {
+}: DialogContentProps) {
   return (
-    <DialogPortal data-slot="dialog-portal">
+    <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
-        className={cn(
-          "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 sm:max-w-lg",
-          className,
-        )}
+        {...stylex.props(styles.content, stylexStyle)}
         {...props}
       >
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            aria-label="关闭"
+            {...stylex.props(styles.close)}
           >
-            <MingcuteCloseLine />
-            <span className="sr-only">Close</span>
+            <MaskIcon name="close-line" />
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>
@@ -79,61 +90,125 @@ function DialogContent({
   );
 }
 
-function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
+function DialogHeader({
+  stylexStyle,
+  ...props
+}: StyledProps<React.ComponentProps<"div">>) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
-      {...props}
-    />
-  );
-}
-
-function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="dialog-footer"
-      className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
-        className,
-      )}
+      {...stylex.props(styles.header, stylexStyle)}
       {...props}
     />
   );
 }
 
 function DialogTitle({
-  className,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+}: StyledProps<React.ComponentProps<typeof DialogPrimitive.Title>>) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      {...stylex.props(styles.title, stylexStyle)}
       {...props}
     />
   );
 }
 
 function DialogDescription({
-  className,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
+}: StyledProps<React.ComponentProps<typeof DialogPrimitive.Description>>) {
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      {...stylex.props(styles.description, stylexStyle)}
       {...props}
     />
   );
 }
 
+const styles = stylex.create({
+  overlay: {
+    animationDuration: motion.durationNormal,
+    animationFillMode: "both",
+    backgroundColor: colors.overlayScrim,
+    inset: 0,
+    position: "fixed",
+    zIndex: 50,
+    ":is([data-state='open'])": { animationName: fadeIn },
+    ":is([data-state='closed'])": { animationName: fadeOut },
+  },
+  content: {
+    animationDuration: motion.durationNormal,
+    animationFillMode: "both",
+    backgroundColor: colors.surfaceOverlay,
+    borderColor: colors.borderDefault,
+    borderRadius: radii.lg,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    boxShadow: shadows.xl,
+    display: "grid",
+    gap: spacing.lg,
+    left: "50%",
+    maxWidth: "min(28rem, calc(100% - 2rem))",
+    padding: spacing.xl,
+    position: "fixed",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "100%",
+    zIndex: 50,
+    ":is([data-state='open'])": { animationName: contentIn },
+    ":is([data-state='closed'])": { animationName: contentOut },
+  },
+  close: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    border: 0,
+    borderRadius: radii.sm,
+    color: colors.textMuted,
+    cursor: "pointer",
+    display: "inline-flex",
+    height: "1.5rem",
+    justifyContent: "center",
+    opacity: 0.7,
+    position: "absolute",
+    right: spacing.lg,
+    top: spacing.lg,
+    transitionDuration: motion.durationFast,
+    transitionProperty: "opacity",
+    width: "1.5rem",
+    ":hover": { opacity: 1 },
+    ":focus-visible": {
+      outlineColor: colors.focusRing,
+      outlineOffset: "2px",
+      outlineStyle: "solid",
+      outlineWidth: "2px",
+    },
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.sm,
+    textAlign: "center",
+    "@media (min-width: 40rem)": { textAlign: "left" },
+  },
+  title: {
+    fontSize: typography.sizeLg,
+    fontWeight: typography.weightSemibold,
+    lineHeight: 1,
+  },
+  description: {
+    color: colors.textMuted,
+    fontSize: typography.sizeSm,
+  },
+});
+
 export {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogOverlay,
   DialogPortal,

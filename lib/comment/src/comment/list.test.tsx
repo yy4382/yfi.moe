@@ -1,8 +1,8 @@
+import { CommentProvider } from "#/components/provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import type { CommentData } from "@repo/api/comment/comment-data";
-import { CommentProvider } from "@/components/provider";
 import { CommentItem } from "./list";
 
 function Provider({

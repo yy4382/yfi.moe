@@ -1,3 +1,7 @@
+import type { HonoClient } from "#/lib/api/create-client";
+import { sessionOptions } from "#/lib/auth/session-options";
+import { useAuthClient, useHonoClient, usePathname } from "#/lib/hooks/context";
+import { useGuestIdentity } from "#/lib/hooks/guest-identity";
 import {
   infiniteQueryOptions,
   useInfiniteQuery,
@@ -7,10 +11,6 @@ import { produce } from "immer";
 import { useAtomValue } from "jotai";
 import type { User } from "@repo/api/auth/client";
 import { getCommentsResponse } from "@repo/api/comment/get.model";
-import type { HonoClient } from "@/lib/api/create-client";
-import { sessionOptions } from "@/lib/auth/session-options";
-import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
-import { useGuestIdentity } from "@/lib/hooks/guest-identity";
 import { sortByAtom, SORT_BY_OPTIONS } from "../atoms";
 import { PER_PAGE } from "../utils/constants";
 import { commentKeys } from "../utils/query-keys";

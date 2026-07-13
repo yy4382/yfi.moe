@@ -1,65 +1,129 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Tabs as TabsPrimitive } from "radix-ui";
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import {
+  colors,
+  radii,
+  shadows,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+
+type StyledProps<T> = Omit<T, "className"> & {
+  stylexStyle?: stylex.StyleXStyles;
+};
 
 function Tabs({
-  className,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+}: StyledProps<React.ComponentProps<typeof TabsPrimitive.Root>>) {
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
+      {...stylex.props(styles.root, stylexStyle)}
       {...props}
     />
   );
 }
 
 function TabsList({
-  className,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.List>) {
+}: StyledProps<React.ComponentProps<typeof TabsPrimitive.List>>) {
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
-      className={cn(
-        "inline-flex h-9 w-fit items-center justify-center rounded-lg bg-muted p-[3px] text-muted-foreground",
-        className,
-      )}
+      {...stylex.props(styles.list, stylexStyle)}
       {...props}
     />
   );
 }
 
 function TabsTrigger({
-  className,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+}: StyledProps<React.ComponentProps<typeof TabsPrimitive.Trigger>>) {
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
-      className={cn(
-        "inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-foreground transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:shadow-sm dark:text-muted-foreground dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 dark:data-[state=active]:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
+      {...stylex.props(styles.trigger, stylexStyle)}
       {...props}
     />
   );
 }
 
 function TabsContent({
-  className,
+  stylexStyle,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+}: StyledProps<React.ComponentProps<typeof TabsPrimitive.Content>>) {
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
+      {...stylex.props(styles.content, stylexStyle)}
       {...props}
     />
   );
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent };
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.sm,
+  },
+  list: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: radii.lg,
+    color: colors.textMuted,
+    display: "inline-flex",
+    height: "2.25rem",
+    justifyContent: "center",
+    padding: "3px",
+    width: "fit-content",
+  },
+  trigger: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    color: colors.textSecondary,
+    display: "inline-flex",
+    flex: 1,
+    fontSize: typography.sizeSm,
+    fontWeight: typography.weightMedium,
+    gap: "0.375rem",
+    height: "calc(100% - 1px)",
+    justifyContent: "center",
+    outline: "none",
+    paddingBlock: spacing.xs,
+    paddingInline: spacing.sm,
+    whiteSpace: "nowrap",
+    ":focus-visible": {
+      borderColor: colors.focusRing,
+      outlineColor: colors.focusRing,
+      outlineOffset: "1px",
+      outlineStyle: "solid",
+      outlineWidth: "2px",
+    },
+    ":disabled": {
+      opacity: 0.5,
+      pointerEvents: "none",
+    },
+    ":is([data-state='active'])": {
+      backgroundColor: colors.surface,
+      boxShadow: shadows.sm,
+      color: colors.textPrimary,
+    },
+  },
+  content: {
+    flex: 1,
+    outline: "none",
+  },
+});
+
+export { Tabs, TabsContent, TabsList, TabsTrigger };

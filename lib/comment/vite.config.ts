@@ -3,7 +3,6 @@ import babel from "@rolldown/plugin-babel";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import Icons from "unplugin-icons/vite";
 import { defineConfig } from "vite";
 
 let analyzer;
@@ -18,7 +17,6 @@ export default defineConfig({
   plugins: [
     react(),
     babel({ presets: [reactCompilerPreset()] }),
-    Icons({ compiler: "jsx", jsx: "react" }),
     ...((process.env.ANALYZE === "true" && analyzer
       ? [analyzer()].flat()
       : // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,7 +40,6 @@ export default defineConfig({
         "react/compiler-runtime",
         "react-dom",
         "react/jsx-runtime",
-        "tailwind-merge",
         "sonner",
         "@tanstack/react-query",
         "zod",

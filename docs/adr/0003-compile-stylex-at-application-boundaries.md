@@ -1,0 +1,3 @@
+# Compile StyleX at application boundaries
+
+Applications own the final StyleX transform and CSS extraction. Internal UI libraries, including the comment widget and shared design-token package, expose transformable source modules with StyleX calls intact and do not build or publish compiled stylesheets; each application compiles the library styles it imports so composition, theming, and CSS emission are resolved once at the application boundary. Consumers import the component API once: co-located StyleX sources and narrowly scoped source CSS, such as generated-markup presentation, enter the application bundle transitively rather than through a separate library CSS entry point.

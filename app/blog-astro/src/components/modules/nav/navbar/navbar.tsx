@@ -1,10 +1,13 @@
+import * as stylex from "@stylexjs/stylex";
 import { useMediaQuery } from "foxact/use-media-query";
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import { useMemo, type PropsWithChildren } from "react";
+import { colors, spacing, typography } from "@repo/design-tokens/tokens.stylex";
 import {
   usePageIsOver,
   usePageScrollDirection,
 } from "@/components/providers/scroll-detect";
+import { layout } from "@/styles/shared.stylex";
 import { Logo } from "./logo";
 import { NavLinkList } from "./nav-link-list";
 import { NavLinksDrawer } from "./nav-links-drawer";
@@ -77,9 +80,9 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
   }, [isDesktop, shouldShow, children, url]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 h-(--navbar-height) border-b border-container bg-background/70 backdrop-blur-lg">
-      <section className="main-container flex h-full items-center justify-between px-6 py-4 text-content">
-        <div className="flex min-w-0 shrink grow items-center gap-4">
+    <header {...stylex.props(styles.header)}>
+      <section {...stylex.props(layout.mainContainer, styles.section)}>
+        <div {...stylex.props(styles.leading)}>
           <AnimatePresence initial={false} mode="popLayout">
             <motion.div
               key={isDesktop ? String(false) : String(shouldShow)}
@@ -87,6 +90,7 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
               animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
               exit={{ opacity: 0, filter: "blur(4px)", scale: 0.9 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
+              {...stylex.props(styles.motionItem)}
             >
               {logoPart}
             </motion.div>
@@ -94,22 +98,22 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
           <AnimatePresence mode="popLayout" initial={false} custom={direction}>
             <motion.div
               key={String(shouldShow)}
-              className="min-w-0 shrink grow"
+              {...stylex.props(styles.titleArea)}
               {...animateConfig}
             >
               {shouldShow ? (
-                <div className="flex flex-col">
-                  <small className="min-w-0 truncate text-xs">
-                    <span className="text-gray-600/60 dark:text-gray-300/60">
+                <div {...stylex.props(styles.postInfo)}>
+                  <small {...stylex.props(styles.ellipsis, styles.tags)}>
+                    <span>
                       {postInfo!.tags.map((tag) => `#${tag}`).join(" / ")}
                     </span>
                   </small>
-                  <h2 className="min-w-0 truncate text-[1.1rem] leading-normal font-medium">
+                  <h2 {...stylex.props(styles.ellipsis, styles.postTitle)}>
                     {postInfo!.title}
                   </h2>
                 </div>
               ) : (
-                <a href="/" className="text-2xl font-bold">
+                <a href="/" {...stylex.props(styles.brand)}>
                   <span>Yunfi</span>
                 </a>
               )}
@@ -128,3 +132,56 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
     </header>
   );
 }
+
+const styles = stylex.create({
+  header: {
+    backdropFilter: "blur(16px)",
+    backgroundColor: "color-mix(in srgb, var(--color-canvas) 70%, transparent)",
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    height: "var(--navbar-height)",
+    insetInline: 0,
+    position: "fixed",
+    top: 0,
+    zIndex: 30,
+  },
+  section: {
+    alignItems: "center",
+    color: colors.textPrimary,
+    display: "flex",
+    height: "100%",
+    justifyContent: "space-between",
+    paddingBlock: spacing.lg,
+    paddingInline: spacing.xl,
+  },
+  leading: {
+    alignItems: "center",
+    display: "flex",
+    flexGrow: 1,
+    flexShrink: 1,
+    gap: spacing.lg,
+    minWidth: 0,
+  },
+  motionItem: { flexShrink: 0 },
+  titleArea: { flexGrow: 1, flexShrink: 1, minWidth: 0 },
+  postInfo: { display: "flex", flexDirection: "column" },
+  ellipsis: {
+    minWidth: 0,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  tags: { color: colors.textMuted, fontSize: typography.sizeXs, opacity: 0.7 },
+  postTitle: {
+    fontSize: "1.1rem",
+    fontWeight: typography.weightMedium,
+    lineHeight: typography.lineNormal,
+    margin: 0,
+  },
+  brand: {
+    fontSize: typography.sizeXxl,
+    fontWeight: typography.weightBold,
+    textDecoration: "none",
+  },
+});

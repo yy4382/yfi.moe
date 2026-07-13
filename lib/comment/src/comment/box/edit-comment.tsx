@@ -1,8 +1,8 @@
+import { commentUpdateParamsBranded } from "#/lib/api/comment/update";
+import { usePathname } from "#/lib/hooks/context";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 import { z } from "zod";
-import { commentUpdateParamsBranded } from "@/lib/api/comment/update";
-import { usePathname } from "@/lib/hooks/context";
 import { useCommentFormAtoms } from "../hooks/use-comment-form";
 import { useUpdateComment } from "../hooks/use-update-comment";
 import { CommentBoxIdContext } from "./context";

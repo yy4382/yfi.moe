@@ -5,77 +5,149 @@ import { getSortedPosts } from "@/lib/utils/content";
 import { getSeo } from "@/lib/utils/SEO";
 import type { CollectionEntry } from "astro:content";
 import { format } from "date-fns";
+import {
+  colors,
+  motion,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
 const posts = await getSortedPosts();
-
-const groupedPosts = posts.reduce<
-  {
-    year: string;
-    posts: CollectionEntry<"post">[];
-  }[]
->((acc, post) => {
-  const year = format(post.data.publishedDate, "yyyy");
-  const index = acc.findIndex((item) => item.year === year);
-  if (index !== -1) {
-    acc[index].posts.push(post);
-  } else {
-    acc.push({ year, posts: [post] });
-  }
-  return acc;
-}, []);
-groupedPosts.sort((a, b) => Number(b.year) - Number(a.year));
-
+const groupedPosts = posts
+  .reduce<{ year: string; posts: CollectionEntry<"post">[] }[]>(
+    (groups, post) => {
+      const year = format(post.data.publishedDate, "yyyy");
+      const group = groups.find((item) => item.year === year);
+      if (group) group.posts.push(post);
+      else groups.push({ year, posts: [post] });
+      return groups;
+    },
+    [],
+  )
+  .sort((a, b) => Number(b.year) - Number(a.year));
 const seoConfig = getSeo({
   title: "归档",
   description: "文章归档",
   noindex: true,
 });
+const styles = stylex.create({
+  hero: {
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    height: "13rem",
+    justifyContent: "center",
+    paddingInline: spacing.lg,
+    "@media (min-width: 64rem)": { height: "24rem" },
+  },
+  heroTitle: {
+    color: colors.textPrimary,
+    fontSize: "3rem",
+    fontWeight: typography.weightBold,
+    margin: 0,
+    "@container (min-width: 48rem)": { fontSize: "3.75rem" },
+  },
+  heroDescription: {
+    color: colors.textPrimary,
+    fontSize: typography.sizeLg,
+    marginBlock: `${spacing.lg} 0`,
+    marginInlineStart: spacing.xs,
+  },
+  archive: { paddingBlock: "4.5rem", paddingInline: spacing.lg },
+  groups: { display: "flex", flexDirection: "column", gap: spacing.xxl },
+  group: { display: "flex", flexDirection: "column", gap: spacing.lg },
+  year: {
+    fontSize: typography.sizeXxl,
+    fontWeight: typography.weightBold,
+    margin: 0,
+  },
+  count: {
+    color: colors.textSecondary,
+    fontSize: typography.sizeSm,
+    fontWeight: typography.weightRegular,
+  },
+  list: {
+    fontSize: typography.sizeSm,
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    "@media (min-width: 64rem)": { fontSize: typography.sizeMd },
+  },
+  row: {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  rowMain: {
+    alignItems: "center",
+    display: "flex",
+    flexShrink: 1,
+    minWidth: 0,
+  },
+  date: {
+    display: "inline-block",
+    fontVariantNumeric: "tabular-nums",
+    fontWeight: "300",
+    paddingInlineEnd: spacing.sm,
+    width: "3rem",
+    "@media (min-width: 64rem)": { width: "4rem" },
+  },
+  link: {
+    lineHeight: "1.5rem",
+    minWidth: 0,
+    overflow: "hidden",
+    paddingBlock: spacing.xxs,
+    textDecoration: "none",
+    textOverflow: "ellipsis",
+    transitionDuration: motion.durationFast,
+    transitionProperty: "color",
+    whiteSpace: "nowrap",
+    ":hover": { color: colors.accentText },
+    "@media (pointer: coarse)": { paddingBlock: spacing.xs },
+  },
+});
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <Section
-    class="flex h-52 flex-col items-start justify-center px-4 lg:h-96"
-    bg="grid"
+  <Section style={styles.hero} bg="grid"
+    ><div {...stylex.attrs(layout.articleWidth)}>
+      <h1 {...stylex.attrs(styles.heroTitle)}>归档</h1><p
+        {...stylex.attrs(styles.heroDescription)}
+      >
+        共有 {posts.length} 篇文章
+      </p>
+    </div></Section
   >
-    <div class="mx-auto w-full max-w-prose">
-      <h1 class="text-5xl font-bold text-heading @3xl:text-6xl">归档</h1>
-      <p class="mt-4 ml-1 text-lg text-content">共有 {posts.length} 篇文章</p>
-    </div>
-  </Section>
-  <Section class="px-4 py-18">
-    <div class="mx-auto flex max-w-prose flex-col gap-8">
+  <Section style={styles.archive}
+    ><div {...stylex.attrs(layout.articleWidth, styles.groups)}>
       {
         groupedPosts.map((group) => (
-          <div class="flex flex-col gap-4">
-            <h2 class="text-2xl font-bold">
+          <div {...stylex.attrs(styles.group)}>
+            <h2 {...stylex.attrs(styles.year)}>
               {group.year}{" "}
-              <span class="text-sm font-normal text-comment">
+              <span {...stylex.attrs(styles.count)}>
                 ({group.posts.length})
               </span>
             </h2>
-            <ul class="list-none text-sm lg:text-base">
+            <ul {...stylex.attrs(styles.list)}>
               {group.posts.map((post) => (
-                <li class="flex items-center justify-between">
-                  <span class="flex min-w-0 shrink items-center">
-                    <span class="inline-block w-12 pr-2 font-light tabular-nums lg:w-16">
+                <li {...stylex.attrs(styles.row)}>
+                  <span {...stylex.attrs(styles.rowMain)}>
+                    <time {...stylex.attrs(styles.date)}>
                       {format(post.data.publishedDate, "MM/dd")}
-                    </span>
-                    <a
-                      class="min-w-0 truncate py-0.5 leading-6 transition-colors hover:text-accent-foreground pointer-coarse:py-1"
-                      href={`/post/${post.id}`}
-                    >
+                    </time>
+                    <a {...stylex.attrs(styles.link)} href={`/post/${post.id}`}>
                       {post.data.title}
                     </a>
                   </span>
-                  {/* <span class="hidden font-light text-xs lg:inline max-w-24 truncate">
-                    {post.data.tags.map((tag) => `#${tag}`).join("/")}
-                  </span> */}
                 </li>
               ))}
             </ul>
           </div>
         ))
       }
-    </div>
-  </Section>
+    </div></Section
+  >
 </NavLayout>

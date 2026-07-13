@@ -3,6 +3,7 @@ import { type SEOProps, SEO } from "astro-seo";
 import { siteConfig } from "@/config/site";
 
 import "@/styles/global.css";
+import "@/styles/icons.css";
 
 import { ClientRouter } from "astro:transitions";
 import Favicon from "@/components/html-head/Favicon.astro";
@@ -10,13 +11,50 @@ import TagManagers from "@/components/html-head/TagManager.astro";
 // @ts-expect-error fontFamilyFallback is not correctly typed
 import { css, fontFamilyFallback } from "@/assets/fonts/MiSansVF.ttf";
 import { Toaster } from "sonner";
+import { colors, typography } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
 
 interface Props {
   seoConfig: SEOProps;
   stopTrack?: boolean;
 }
 
+const styles = stylex.create({
+  body: {
+    backgroundColor: colors.canvas,
+    backgroundAttachment: "fixed",
+    color: colors.textPrimary,
+    letterSpacing: typography.trackingNormal,
+    margin: 0,
+    overflowX: "hidden",
+    padding: 0,
+  },
+  progress: {
+    backgroundColor: "hsl(236 100% 81%)",
+    height: "2px",
+    inset: "0 auto auto 0",
+    opacity: 0,
+    pointerEvents: "none",
+    position: "fixed",
+    transform: "scaleX(0)",
+    transformOrigin: "left",
+    transitionDuration: "280ms, 180ms",
+    transitionProperty: "transform, opacity",
+    transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1), ease-out",
+    width: "100%",
+    zIndex: 2147483647,
+    ":is([data-state='loading'])": {
+      opacity: 1,
+      transform: "scaleX(0.82)",
+      transitionDuration: "900ms, 120ms",
+    },
+    ":is([data-state='done'])": { opacity: 0, transform: "scaleX(1)" },
+    "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+  },
+});
+
 const { seoConfig, stopTrack } = Astro.props;
+const bodyAttrs = stylex.attrs(styles.body);
 ---
 
 <html lang="zh-Hans">
@@ -37,8 +75,16 @@ const { seoConfig, stopTrack } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <ClientRouter fallback="swap" />
   </head>
-  <body class="m-0 overflow-x-hidden bg-background bg-fixed p-0 text-content">
-    <div id="route-progress" aria-hidden="true"></div>
+  <body
+    class={bodyAttrs.class}
+    style={`--app-font-family: ${css.family}; --app-font-fallback: ${fontFamilyFallback}`}
+  >
+    <div
+      id="route-progress"
+      aria-hidden="true"
+      {...stylex.attrs(styles.progress)}
+    >
+    </div>
     <slot />
     <Toaster theme="system" client:load />
     <script>
@@ -69,52 +115,3 @@ const { seoConfig, stopTrack } = Astro.props;
     </script>
   </body>
 </html>
-
-<style
-  define:vars={{
-    "font-family": css.family,
-    "font-family-fallback": fontFamilyFallback,
-  }}
->
-  body {
-    text-rendering: optimizeLegibility;
-    font-family: var(--font-family), "SF Pro", var(--font-family-fallback);
-  }
-</style>
-
-<style is:global>
-  #route-progress {
-    position: fixed;
-    inset: 0 auto auto 0;
-    z-index: 2147483647;
-    height: 2px;
-    width: 100%;
-    pointer-events: none;
-    background: hsl(236, 100%, 81%);
-    opacity: 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition:
-      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 180ms ease-out;
-  }
-
-  #route-progress[data-state="loading"] {
-    opacity: 1;
-    transform: scaleX(0.82);
-    transition:
-      transform 900ms cubic-bezier(0.2, 0.7, 0.1, 1),
-      opacity 120ms ease-out;
-  }
-
-  #route-progress[data-state="done"] {
-    opacity: 0;
-    transform: scaleX(1);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    #route-progress {
-      transition: none;
-    }
-  }
-</style>

@@ -4,6 +4,8 @@ import ListHero from "./list-hero.astro";
 import PostListItem from "./post-list-item.astro";
 import Pagination from "./pagination.astro";
 import type { Page as PaginationPage } from "astro";
+import { colors } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
 
 interface Props {
   paginationPage: PaginationPage<CollectionEntry<"post">>;
@@ -13,16 +15,24 @@ interface Props {
 }
 
 const { paginationPage, baseUrl, title, desc } = Astro.props;
+const styles = stylex.create({
+  list: {
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+  },
+  noBorder: { borderBottomWidth: 0 },
+});
 ---
 
 <div>
-  <div class="border-b border-container">
+  <div {...stylex.attrs(styles.list)}>
     <ListHero title={title} desc={desc} />
     {
       paginationPage.data.map((post, i) => (
         <PostListItem
           post={post}
-          class={i === paginationPage.data.length - 1 ? "border-b-0" : ""}
+          style={i === paginationPage.data.length - 1 && styles.noBorder}
         />
       ))
     }

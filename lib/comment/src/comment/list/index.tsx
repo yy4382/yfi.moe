@@ -1,23 +1,20 @@
-import clsx from "clsx";
+import { MaskIcon } from "#/components/ui/mask-icon";
+import * as stylex from "@stylexjs/stylex";
 import { useAtom } from "jotai";
-import { Fragment } from "react";
 import { z, ZodError } from "zod";
-import MingcuteLoadingLine from "~icons/mingcute/loading-line";
+import {
+  colors,
+  radii,
+  shadows,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
 import { SORT_BY_LABELS, SORT_BY_OPTIONS, sortByAtom } from "../atoms";
 import { useCommentsQuery } from "../hooks/use-comments-query";
 import { CommentParent } from "./comment-parent";
 
-// Re-export for tests
 export { CommentItem } from "./comment-item";
 
-/**
- * Renders the paginated list of comments for the current page.
- *
- * Features:
- * - Sort order toggle (newest/oldest first)
- * - Infinite scroll with "load more" button
- * - Loading and error states
- */
 export function CommentList() {
   const [sortBy, setSortBy] = useAtom(sortByAtom);
   const {
@@ -33,19 +30,18 @@ export function CommentList() {
   } = useCommentsQuery();
 
   if (isPending) {
-    return (
-      <div className="mt-6 p-4 text-center text-zinc-500">加载评论中...</div>
-    );
+    return <div {...stylex.props(styles.status)}>加载评论中...</div>;
   }
 
   if (isError) {
     return (
-      <div className="mt-6 flex items-center justify-center-safe gap-2 p-4 text-center text-red-500">
+      <div {...stylex.props(styles.status, styles.error)}>
         加载评论失败:{" "}
         {error instanceof ZodError ? z.prettifyError(error) : error.message}
         <button
+          type="button"
           onClick={() => void refetch()}
-          className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
+          {...stylex.props(styles.loadButton)}
         >
           重试
         </button>
@@ -53,34 +49,31 @@ export function CommentList() {
     );
   }
 
-  if (
-    !data ||
-    data.pages.length === 0 ||
-    data.pages[0]!.comments.length === 0
-  ) {
-    return <div className="mt-6 p-4 text-center text-zinc-500">暂无留言</div>;
+  if (!data?.pages[0]?.comments.length) {
+    return <div {...stylex.props(styles.status)}>暂无留言</div>;
   }
 
   return (
-    <div className="mt-10">
-      {/* Header with count and sort options */}
-      <div className="mb-6 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-comment">
-          <span>共{data.pages[0]!.total}条留言</span>
+    <div {...stylex.props(styles.root)}>
+      <div {...stylex.props(styles.header)}>
+        <div {...stylex.props(styles.count)}>
+          <span>共{data.pages[0].total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
-            <span>
-              <MingcuteLoadingLine className="size-6 animate-spin" />
-            </span>
+            <MaskIcon
+              name="loading-line"
+              stylexStyle={[styles.loadingIcon, styles.spin]}
+            />
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div {...stylex.props(styles.sort)}>
           {SORT_BY_OPTIONS.map((option) => (
             <button
+              type="button"
               key={option}
               onClick={() => setSortBy(option)}
-              className={clsx(
-                "py-1 text-sm text-accent-foreground hover:scale-105 active:scale-95",
-                sortBy !== option && "text-muted-foreground",
+              {...stylex.props(
+                styles.sortButton,
+                sortBy !== option && styles.sortInactive,
               )}
             >
               {SORT_BY_LABELS[option]}
@@ -89,34 +82,104 @@ export function CommentList() {
         </div>
       </div>
 
-      {/* Comment list */}
-      <div className="flex flex-col gap-4">
+      <div {...stylex.props(styles.list)}>
         {data.pages
-          .map((page) => page.comments)
-          .flat()
+          .flatMap((page) => page.comments)
           .map((comment) => (
-            <Fragment key={comment.data.id}>
-              <CommentParent parentComment={comment} />
-            </Fragment>
+            <CommentParent key={comment.data.id} parentComment={comment} />
           ))}
       </div>
 
-      {/* Load more button */}
       {hasNextPage && (
-        <div className="flex justify-center">
+        <div {...stylex.props(styles.center)}>
           <button
+            type="button"
             onClick={() => void fetchNextPage()}
             disabled={isFetching}
-            className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
+            {...stylex.props(styles.loadButton)}
           >
             {isFetchingNextPage ? "正在加载..." : "加载更多"}
           </button>
         </div>
       )}
 
-      <div className="mt-6 text-center text-zinc-500">
+      <div {...stylex.props(styles.fetching)}>
         {isFetching && !isFetchingNextPage ? "加载中..." : null}
       </div>
     </div>
   );
 }
+
+const spin = stylex.keyframes({ to: { transform: "rotate(360deg)" } });
+
+const styles = stylex.create({
+  root: { marginTop: "2.5rem" },
+  status: {
+    color: colors.textMuted,
+    marginTop: spacing.xl,
+    padding: spacing.lg,
+    textAlign: "center",
+  },
+  error: {
+    alignItems: "center",
+    color: colors.danger,
+    display: "flex",
+    gap: spacing.sm,
+    justifyContent: "safe center",
+  },
+  header: {
+    alignItems: "center",
+    display: "flex",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+    marginBottom: spacing.xl,
+  },
+  count: {
+    alignItems: "center",
+    color: colors.textSecondary,
+    display: "flex",
+    gap: spacing.sm,
+  },
+  sort: { alignItems: "center", display: "flex", gap: spacing.sm },
+  sortButton: {
+    backgroundColor: "transparent",
+    border: 0,
+    color: colors.accentText,
+    cursor: "pointer",
+    fontSize: typography.sizeSm,
+    paddingBlock: spacing.xs,
+    ":hover": { transform: "scale(1.05)" },
+    ":active": { transform: "scale(0.95)" },
+  },
+  sortInactive: { color: colors.textMuted },
+  list: { display: "flex", flexDirection: "column", gap: spacing.lg },
+  center: { display: "flex", justifyContent: "center" },
+  loadButton: {
+    backgroundColor: "transparent",
+    borderColor: colors.borderDefault,
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    boxShadow: shadows.md,
+    color: colors.textSecondary,
+    cursor: "pointer",
+    paddingBlock: spacing.xs,
+    paddingInline: spacing.sm,
+    ":hover": { transform: "scale(1.05)" },
+    ":active": { transform: "scale(0.95)" },
+    ":disabled": { opacity: 0.5 },
+  },
+  fetching: {
+    color: colors.textMuted,
+    marginTop: spacing.xl,
+    minHeight: "1.5rem",
+    textAlign: "center",
+  },
+  loadingIcon: { height: "1.5rem", width: "1.5rem" },
+  spin: {
+    animationDuration: "800ms",
+    animationIterationCount: "infinite",
+    animationName: spin,
+    animationTimingFunction: "linear",
+  },
+});

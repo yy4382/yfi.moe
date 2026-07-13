@@ -2,20 +2,44 @@
 import BaseLayout from "./BaseLayout.astro";
 import Navbar from "@/components/modules/nav/navbar.astro";
 import Footer from "@/components/modules/nav/footer.astro";
+import { colors } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
 type Props = Parameters<typeof BaseLayout>[0];
+
+const styles = stylex.create({
+  root: {
+    backgroundAttachment: "fixed",
+    backgroundColor: colors.canvas,
+    color: colors.textPrimary,
+    margin: 0,
+    padding: 0,
+  },
+  page: {
+    display: "grid",
+    gridTemplateRows: "var(--navbar-height) auto 1fr auto",
+    minHeight: "100lvh",
+  },
+  content: { width: "100%" },
+  gridFooter: { height: "100%", minHeight: "3rem" },
+});
 ---
 
 <BaseLayout {...Astro.props}>
-  <div class="m-0 bg-background bg-fixed p-0 text-content">
-    <div
-      class="grid min-h-[100lvh] grid-rows-[var(--navbar-height)_auto_1fr_auto]"
-    >
+  <div {...stylex.attrs(styles.root)}>
+    <div {...stylex.attrs(styles.page)}>
       <Navbar />
-      <div class="w-full">
+      <div {...stylex.attrs(styles.content)}>
         <slot />
       </div>
-      <section class="bg-grid h-full min-h-12 border-b border-container">
+      <section
+        {...stylex.attrs(
+          layout.gridBackground,
+          layout.sectionBorder,
+          styles.gridFooter,
+        )}
+      >
       </section>
       <Footer />
     </div>

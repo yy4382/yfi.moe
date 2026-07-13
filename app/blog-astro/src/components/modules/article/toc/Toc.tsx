@@ -1,9 +1,11 @@
 "use client";
 
-import { ListIcon } from "lucide-react";
+import * as stylex from "@stylexjs/stylex";
 import { motion } from "motion/react";
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from "react";
+import { colors, spacing, typography } from "@repo/design-tokens/tokens.stylex";
 import type { ArticleHeading } from "@repo/markdown/article";
+import { MaskIcon } from "@/components/ui/mask-icon";
 import {
   Popover,
   PopoverPortal,
@@ -40,6 +42,71 @@ const LAYOUT = {
   longTextThreshold: 15,
 } as const;
 
+const styles = stylex.create({
+  popoverRoot: {
+    display: "flex",
+    isolation: "isolate",
+    justifyContent: "flex-end",
+    position: "sticky",
+    top: "var(--navbar-height)",
+    zIndex: 10,
+  },
+  trigger: {
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    borderLeftColor: colors.borderDefault,
+    borderLeftStyle: "solid",
+    borderLeftWidth: "1px",
+    display: "flex",
+    height: "2.5rem",
+    justifyContent: "center",
+    pointerEvents: "auto",
+    width: "2.5rem",
+  },
+  triggerIcon: { color: colors.textPrimary, height: "1.5rem", width: "1.5rem" },
+  positioner: { zIndex: 50 },
+  popupContent: {
+    backgroundColor: colors.surface,
+    borderColor: colors.borderDefault,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    color: colors.textSecondary,
+    maxWidth: "calc(100vw - 2rem)",
+    paddingBlock: spacing.xxl,
+    paddingInline: spacing.xl,
+    pointerEvents: "auto",
+    width: "19rem",
+  },
+  sidebarRoot: {
+    isolation: "isolate",
+    paddingBlock: spacing.xxl,
+    position: "sticky",
+    top: "var(--navbar-height)",
+    zIndex: 10,
+  },
+  sidebar: {
+    backgroundColor: colors.surface,
+    borderBlockColor: colors.borderDefault,
+    borderBlockStyle: "dashed",
+    borderBlockWidth: "1px",
+    color: colors.textSecondary,
+    fontSize: typography.sizeSm,
+    paddingBlockStart: spacing.lg,
+    paddingBlockEnd: spacing.xxl,
+    paddingInline: spacing.sm,
+    pointerEvents: "auto",
+    width: "fit-content",
+  },
+  title: {
+    color: colors.textPrimary,
+    fontSize: typography.sizeXl,
+    marginBlockEnd: spacing.sm,
+  },
+});
+
 // MARK: Hooks
 
 /**
@@ -74,7 +141,7 @@ function useActiveHeading(headings: ArticleHeading[]): number {
     );
 
     headers.forEach((header) => observer.observe(header));
-    return () => headers.forEach((header) => observer.unobserve(header));
+    return () => observer.disconnect();
   }, [headings]);
 
   return useMemo(() => {
@@ -202,18 +269,18 @@ function TocPopover({ headings }: TocPopoverProps) {
   const activeIndex = useActiveHeading(headings);
 
   return (
-    <div className="sticky top-(--navbar-height) isolate z-10 flex justify-end">
+    <div {...stylex.props(styles.popoverRoot)}>
       <Popover modal={true}>
-        <PopoverTrigger className="pointer-events-auto flex size-10 center border-b border-l border-container bg-background">
+        <PopoverTrigger stylexStyle={styles.trigger} aria-label="打开文章目录">
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <ListIcon className="size-6 text-heading" />
+            <MaskIcon name="lucide-list" style={styles.triggerIcon} />
           </motion.span>
         </PopoverTrigger>
         <PopoverPortal>
           <PopoverBackdrop />
-          <PopoverPositioner sideOffset={5} className="z-50">
+          <PopoverPositioner sideOffset={5} stylexStyle={styles.positioner}>
             <PopoverPopup>
-              <div className="pointer-events-auto w-76 border border-container bg-background px-6 py-8 text-comment">
+              <div {...stylex.props(styles.popupContent)}>
                 <TocEntry headings={headings} activeIndex={activeIndex} />
               </div>
             </PopoverPopup>
@@ -233,16 +300,16 @@ function TocSidebar({ headings, position }: TocSidebarProps) {
   const activeIndex = useActiveHeading(headings);
 
   return (
-    <div className="sticky top-(--navbar-height) isolate z-10 py-8">
+    <div {...stylex.props(styles.sidebarRoot)}>
       <div
-        className="pointer-events-auto w-fit border-t border-b border-dashed border-container bg-background px-2 pt-4 pb-8 text-sm text-comment/75 dark:text-comment/90"
+        {...stylex.props(styles.sidebar)}
         style={{
           transform: `translateX(${position.left}px)`,
           minWidth: `${position.minWidth}px`,
           maxWidth: `${position.maxWidth}px`,
         }}
       >
-        <div className="mb-2 text-xl">文章目录</div>
+        <div {...stylex.props(styles.title)}>文章目录</div>
         <TocEntry headings={headings} activeIndex={activeIndex} />
       </div>
     </div>

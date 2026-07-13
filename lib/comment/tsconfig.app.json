@@ -23,10 +23,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "types": ["unplugin-icons/types/react", "@testing-library/jest-dom"],
+    "types": ["@testing-library/jest-dom"],
 
     "paths": {
-      "@/*": ["./src/*"]
+      "#/*": ["./src/*"]
     }
   },
   "include": ["src", "test"]

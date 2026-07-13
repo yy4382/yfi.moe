@@ -3,6 +3,12 @@ import { getEntry } from "astro:content";
 import { Navbar as NavbarReact, type NavbarProps } from "./navbar/index.tsx";
 import { Image } from "astro:assets";
 import logo from "@/assets/logo.png";
+import { radii } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+
+const styles = stylex.create({
+  logo: { borderRadius: radii.lg, height: "2rem", width: "2rem" },
+});
 
 let postInfo: NavbarProps["postInfo"] = undefined;
 if (Astro.routePattern === "/post/[slug]") {
@@ -21,7 +27,7 @@ if (Astro.routePattern === "/post/[slug]") {
   <Image
     src={logo}
     alt="logo"
-    class="h-8 w-8 rounded-lg"
+    {...stylex.attrs(styles.logo)}
     width={32}
     height={32}
   />

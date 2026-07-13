@@ -1,7 +1,9 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { motion, useMotionValue, animate } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { colors, radii } from "@repo/design-tokens/tokens.stylex";
 
 const ELEMENT_IDS = {
   articleContent: "article-content",
@@ -12,6 +14,30 @@ const PADDING = 8;
 const NAVBAR_HEIGHT = 80;
 const MIN_GAP_FOR_BORDER = 64;
 const INDICATOR_HEIGHT = 8; // h-2 = 0.5rem = 8px
+
+const styles = stylex.create({
+  root: {
+    display: "none",
+    insetBlock: 0,
+    insetInlineStart: 0,
+    pointerEvents: "none",
+    position: "absolute",
+    zIndex: 10,
+    "@media (min-width: 40rem)": { display: "block" },
+  },
+  sticky: {
+    height: "calc(100vh - var(--navbar-height))",
+    paddingBlock: "8px",
+    position: "sticky",
+    top: "var(--navbar-height)",
+  },
+  indicator: {
+    backgroundColor: colors.borderDefault,
+    borderBottomRightRadius: radii.round,
+    borderTopRightRadius: radii.round,
+    width: "1.25rem",
+  },
+});
 
 /**
  * Calculates reading progress based on scroll position within the article.
@@ -137,28 +163,24 @@ function ReadingProgress() {
     if (!hasInitialized.current) {
       y.set(targetY);
       hasInitialized.current = true;
-    } else {
-      animate(y, targetY, {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      });
+      return;
     }
+
+    const controls = animate(y, targetY, {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
+    });
+    return () => controls.stop();
   }, [targetY, trackHeight, y]);
 
   if (!visible) return null;
 
   return (
-    <div
-      className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden sm:block"
-      aria-hidden="true"
-    >
-      <div
-        className="sticky top-(--navbar-height) h-[calc(100vh-var(--navbar-height))]"
-        style={{ padding: `${PADDING}px 0` }}
-      >
+    <div {...stylex.props(styles.root)} aria-hidden="true">
+      <div {...stylex.props(styles.sticky)}>
         <motion.div
-          className="w-5 rounded-r-full bg-(--container-border)"
+          {...stylex.props(styles.indicator)}
           style={{ y, x: leftOffset, height: INDICATOR_HEIGHT }}
         />
       </div>

@@ -4,34 +4,34 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "vite build",
     "lint": "eslint .",
     "test": "vitest run",
-    "preview": "vite preview",
     "check-types": "tsc -b --noEmit",
     "clean": "rm -rf dist"
   },
   "exports": {
     ".": {
-      "import": "./dist/yuline.js",
+      "import": "./src/comment/index.tsx",
       "types": "./comment.d.ts"
-    },
-    "./css": "./dist/yuline.css"
+    }
+  },
+  "imports": {
+    "#/*": "./src/*"
   },
   "peerDependencies": {
+    "@stylexjs/stylex": "catalog:",
     "@tanstack/react-query": "catalog:",
     "@types/react": "catalog:",
     "better-auth": "catalog:",
     "radix-ui": "catalog:",
     "react": "catalog:",
-    "sonner": "catalog:",
-    "tailwind-merge": "^3.3.1"
+    "sonner": "catalog:"
   },
   "dependencies": {
     "@repo/api": "workspace:*",
+    "@repo/design-tokens": "workspace:*",
     "@repo/guest-identity": "workspace:*",
     "@repo/helpers": "workspace:*",
-    "clsx": "^2.1.1",
     "frimousse": "^0.3.0",
     "hono": "catalog:",
     "immer": "^11.1.8",
@@ -42,8 +42,8 @@
   "devDependencies": {
     "@babel/core": "^8.0.1",
     "@eslint/js": "catalog:",
-    "@iconify-json/mingcute": "^1.2.7",
     "@repo/backend": "workspace:*",
+    "@stylexjs/stylex": "catalog:",
     "@rolldown/plugin-babel": "^0.2.3",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
@@ -58,7 +58,6 @@
     "jsdom": "^29.1.1",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
-    "unplugin-icons": "^23.0.1",
     "vite": "^8.1.0",
     "vite-bundle-analyzer": "^1.3.8",
     "vitest": "catalog:"

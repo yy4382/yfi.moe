@@ -3,22 +3,49 @@ import Section from "@/components/ui/section.astro";
 import PostAttrTime from "@/components/modules/posts/post-attr-time.astro";
 import PostAttrTags from "@/components/modules/posts/post-attr-tags.astro";
 import type { ContentTimeData } from "@/content.config";
+import { colors, spacing, typography } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
 
 interface Props {
   title: string;
   time?: ContentTimeData;
   tags?: string[];
 }
-
 const { title, time, tags } = Astro.props;
+const styles = stylex.create({
+  root: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.xl,
+    justifyContent: "center",
+    marginInline: "auto",
+    paddingBlock: "6rem",
+  },
+  title: {
+    color: colors.textPrimary,
+    fontSize: "1.875rem",
+    fontWeight: typography.weightBold,
+    margin: 0,
+    textAlign: "center",
+  },
+  meta: {
+    alignItems: "center",
+    color: colors.textSecondary,
+    display: "flex",
+    flexDirection: "column",
+    fontSize: "0.8rem",
+    gap: spacing.sm,
+    "@media (min-width: 48rem)": { flexDirection: "row" },
+    "@media (min-width: 64rem)": { gap: spacing.md },
+  },
+});
 ---
 
-<Section class="mx-auto flex flex-col center gap-6 py-24" padding="article">
-  <h1 class="text-center text-3xl font-bold text-heading">{title}</h1>
-  <div
-    class="flex flex-col items-center gap-2 text-[0.8rem] text-comment md:flex-row lg:gap-3"
+<Section style={styles.root} padding="article"
+  ><h1 {...stylex.attrs(styles.title)}>{title}</h1><div
+    {...stylex.attrs(styles.meta)}
   >
-    {time && <PostAttrTime {...time} />}
-    {tags && <PostAttrTags tags={tags} />}
-  </div>
-</Section>
+    {time && <PostAttrTime {...time} />}{tags && <PostAttrTags tags={tags} />}
+  </div></Section
+>
