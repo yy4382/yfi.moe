@@ -11,8 +11,8 @@
   },
   "exports": {
     ".": {
-      "import": "./src/comment/index.tsx",
-      "types": "./comment.d.ts"
+      "types": "./src/comment/index.tsx",
+      "import": "./src/comment/index.tsx"
     }
   },
   "imports": {

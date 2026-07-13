@@ -103,7 +103,7 @@ const colorValues = {
     default: "oklch(0 0 0 / 0.4)",
     [DARK]: "oklch(0 0 0 / 0.64)",
   },
-} as const;
+};
 
 export const colors = stylex.defineVars({
   ...colorValues,
@@ -167,7 +167,7 @@ const typographyValues = {
   lineNormal: "1.5",
   lineRelaxed: "1.75",
   trackingNormal: "0.025em",
-} as const;
+};
 
 export const typography = stylex.defineVars({
   ...typographyValues,

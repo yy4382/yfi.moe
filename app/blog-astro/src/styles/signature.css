@@ -1,6 +1,5 @@
 .article-signature {
   --signature-length: 2550px;
-  float: inline-end;
 }
 
 .article-signature > svg {

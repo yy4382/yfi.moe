@@ -53,8 +53,15 @@ const styles = stylex.create({
   },
 });
 
+const appFontStack =
+  'var(--app-font-family), "SF Pro", var(--app-font-fallback)';
+const appTypography = stylex.createTheme(typography, {
+  bodyFamily: appFontStack,
+  "--font-body": appFontStack,
+});
+
 const { seoConfig, stopTrack } = Astro.props;
-const bodyAttrs = stylex.attrs(styles.body);
+const bodyAttrs = stylex.attrs(styles.body, appTypography);
 ---
 
 <html lang="zh-Hans">

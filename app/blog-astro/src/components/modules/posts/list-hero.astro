@@ -33,7 +33,7 @@ const styles = stylex.create({
 });
 ---
 
-<Section style={styles.hero} padding="postList" bg="grid">
+<Section contentStyle={styles.hero} padding="postList" bg="grid">
   <h1 {...stylex.attrs(styles.title)}>{title}</h1>
   {desc && <p {...stylex.attrs(styles.description)}>{desc}</p>}
 </Section>

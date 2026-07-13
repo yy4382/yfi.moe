@@ -64,7 +64,16 @@ function astroStylexTransform({ dev }: { dev: boolean }) {
     },
     async transform(code: string, id: string) {
       const filename = cleanFilename(id);
-      if (!filename.endsWith(".astro") || !code.includes("@stylexjs/stylex")) {
+      if (!filename.endsWith(".astro")) {
+        return null;
+      }
+      if (!code.includes("@stylexjs/stylex")) {
+        const store = getStyleXStore();
+        const removedTrackedId = transformedIds.delete(id);
+        const removedRules = store.rulesById.delete(id);
+        if (removedTrackedId || removedRules) {
+          store.version += 1;
+        }
         return null;
       }
 

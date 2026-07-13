@@ -111,7 +111,7 @@ const styles = stylex.create({
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <Section style={styles.hero} bg="grid"
+  <Section contentStyle={styles.hero} bg="grid"
     ><div {...stylex.attrs(layout.articleWidth)}>
       <h1 {...stylex.attrs(styles.heroTitle)}>归档</h1><p
         {...stylex.attrs(styles.heroDescription)}
@@ -120,7 +120,7 @@ const styles = stylex.create({
       </p>
     </div></Section
   >
-  <Section style={styles.archive}
+  <Section contentStyle={styles.archive}
     ><div {...stylex.attrs(layout.articleWidth, styles.groups)}>
       {
         groupedPosts.map((group) => (

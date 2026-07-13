@@ -128,15 +128,3 @@
 .copy-code-pre {
   position: relative;
 }
-
-.article-prose--excerpt {
-  display: none;
-  margin-top: 1rem;
-  max-width: 90ch;
-}
-
-@container (min-width: 56rem) {
-  .article-prose--excerpt {
-    display: block;
-  }
-}

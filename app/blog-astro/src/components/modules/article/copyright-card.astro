@@ -16,6 +16,7 @@ const styles = stylex.create({
   },
   paragraph: { marginBlock: 0 },
   firstParagraph: { marginBlockEnd: spacing.sm },
+  signature: { float: "inline-end" },
   link: {
     color: colors.textPrimary,
     textDecoration: "underline",
@@ -24,11 +25,17 @@ const styles = stylex.create({
     ":hover": { color: colors.accentText },
   },
 });
+const signatureAttrs = stylex.attrs(styles.signature);
 ---
 
-<Section style={styles.section} padding="article">
+<Section contentStyle={styles.section} padding="article">
   <div {...stylex.attrs(styles.content)}>
-    <div class="article-signature"><Fragment set:html={Sign} /></div>
+    <div
+      class:list={["article-signature", signatureAttrs.class]}
+      style={signatureAttrs.style}
+    >
+      <Fragment set:html={Sign} />
+    </div>
     <p {...stylex.attrs(styles.paragraph, styles.firstParagraph)}>
       本文使用“<a
         {...stylex.attrs(styles.link)}

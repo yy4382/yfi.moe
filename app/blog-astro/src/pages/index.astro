@@ -295,7 +295,7 @@ const projectIconAttrs = stylex.attrs(styles.projectIcon);
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <Section style={styles.hero} bg="grid"
+  <Section contentStyle={styles.hero} bg="grid"
     ><div {...stylex.attrs(styles.heroRow)}>
       <Image
         src={logo}
@@ -306,8 +306,8 @@ const projectIconAttrs = stylex.attrs(styles.projectIcon);
       /><h1 {...stylex.attrs(styles.heroTitle)}>{authorName}</h1>
     </div></Section
   >
-  <Section style={styles.spacer} />
-  <Section style={styles.featureSection}>
+  <Section contentStyle={styles.spacer} />
+  <Section contentStyle={styles.featureSection}>
     <span {...stylex.attrs(styles.sectionNumber)}>01</span><h2
       {...stylex.attrs(styles.sectionTitle)}
     >
@@ -344,8 +344,8 @@ const projectIconAttrs = stylex.attrs(styles.projectIcon);
       >
     </div>
   </Section>
-  <Section style={styles.spacer} />
-  <Section style={styles.featureSection}>
+  <Section contentStyle={styles.spacer} />
+  <Section contentStyle={styles.featureSection}>
     <span {...stylex.attrs(styles.sectionNumber)}>02</span><h2
       {...stylex.attrs(styles.sectionTitle)}
     >
@@ -407,8 +407,8 @@ const projectIconAttrs = stylex.attrs(styles.projectIcon);
       >
     </div>
   </Section>
-  <Section style={styles.spacer} />
-  <Section style={styles.contactSection}>
+  <Section contentStyle={styles.spacer} />
+  <Section contentStyle={styles.contactSection}>
     <span {...stylex.attrs(styles.sectionNumber)}>03</span><div
       {...stylex.attrs(styles.contact)}
     >

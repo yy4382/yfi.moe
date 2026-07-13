@@ -98,6 +98,7 @@ const styles = stylex.create({
   current: { backgroundColor: colors.accent, color: colors.textOnAccent },
   more: { height: "1.25rem", marginInline: spacing.xs, width: "1.25rem" },
 });
+const moreAttrs = stylex.attrs(styles.more);
 ---
 
 <Section padding="sm">
@@ -117,8 +118,8 @@ const styles = stylex.create({
         pages.map((page) =>
           page === HIDDEN ? (
             <span
-              class="i-lucide-more-horizontal"
-              {...stylex.attrs(styles.more)}
+              class:list={["i-lucide-more-horizontal", moreAttrs.class]}
+              style={moreAttrs.style}
             />
           ) : page === currentPage ? (
             <span {...stylex.attrs(styles.page, styles.current)}>{page}</span>

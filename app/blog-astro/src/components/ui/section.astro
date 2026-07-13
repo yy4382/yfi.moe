@@ -5,10 +5,9 @@ import { layout } from "@/styles/shared.stylex";
 
 interface Props {
   style?: stylex.StyleXStyles;
+  contentStyle?: stylex.StyleXStyles;
   padding?: "sm" | "article" | "postList";
   bg?: "grid";
-  outerStyle?: stylex.StyleXStyles;
-  containerStyle?: stylex.StyleXStyles;
 }
 
 const styles = stylex.create({
@@ -23,20 +22,18 @@ const styles = stylex.create({
   },
 });
 
-const { style, padding, bg, outerStyle, containerStyle } = Astro.props;
+const { style, contentStyle, padding, bg } = Astro.props;
 ---
 
-<section {...stylex.attrs(layout.sectionBorder, outerStyle)}>
-  <div
-    {...stylex.attrs(layout.mainContainer, styles.container, containerStyle)}
-  >
+<section {...stylex.attrs(layout.sectionBorder, style)}>
+  <div {...stylex.attrs(layout.mainContainer, styles.container)}>
     <div
       {...stylex.attrs(
         padding === "sm" && styles.paddingSm,
         padding === "article" && styles.paddingArticle,
         padding === "postList" && styles.paddingPostList,
         bg === "grid" && layout.gridBackground,
-        style,
+        contentStyle,
       )}
     >
       <slot />

@@ -60,7 +60,14 @@ const styles = stylex.create({
     gap: spacing.sm,
     "@media (min-width: 64rem)": { gap: spacing.md },
   },
+  excerpt: {
+    display: "none",
+    marginTop: spacing.lg,
+    maxWidth: "90ch",
+    "@container (min-width: 56rem)": { display: "block" },
+  },
 });
+const excerptAttrs = stylex.attrs(styles.excerpt);
 ---
 
 <div {...stylex.attrs(layout.mainContainer, styles.root, style)}>
@@ -73,12 +80,16 @@ const styles = stylex.create({
     </div>
     {
       post.data.description ? (
-        <div class="article-prose article-prose--excerpt">
+        <div
+          class:list={["article-prose", excerptAttrs.class]}
+          style={excerptAttrs.style}
+        >
           {post.data.description}
         </div>
       ) : (
         <div
-          class="article-prose article-prose--excerpt"
+          class:list={["article-prose", excerptAttrs.class]}
+          style={excerptAttrs.style}
           set:html={excerptHtml ?? ""}
         />
       )

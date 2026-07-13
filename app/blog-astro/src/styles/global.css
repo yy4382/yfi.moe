@@ -17,7 +17,7 @@ body {
 }
 
 body {
-  font-family: var(--app-font-family), "SF Pro", var(--app-font-fallback);
+  font-family: var(--font-body);
   text-rendering: optimizeLegibility;
 }
 
