@@ -4,6 +4,7 @@ import { load } from "js-yaml";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { ofetch } from "ofetch";
+import pLimit from "p-limit";
 
 type LoaderOptions = {
   source: string;
@@ -38,6 +39,7 @@ type SourceAcquirer<T> = {
 
 const SOURCE_REVISION_KEY = "sourceRevision";
 const LEGACY_SOURCE_REVISION_KEY = "lastSha";
+const GITHUB_FILE_FETCH_CONCURRENCY = 6;
 
 export function markdownFileSetLoader(options: LoaderOptions): Loader {
   const fileToId = new Map<string, string>();
@@ -289,13 +291,16 @@ async function fetchGithubFiles(
     throw new Error(`GitHub path ${location.path} is not a directory`);
   }
 
+  const limit = pLimit(GITHUB_FILE_FETCH_CONCURRENCY);
   const files = await Promise.all(
     contents
       .filter((entry) => entry.type === "file")
-      .map(async (entry) => ({
-        path: entry.path,
-        content: await fetchGithubFile(request, location, entry.path),
-      })),
+      .map((entry) =>
+        limit(async () => ({
+          path: entry.path,
+          content: await fetchGithubFile(request, location, entry.path),
+        })),
+      ),
   );
   return files;
 }
@@ -324,6 +329,10 @@ function githubRequest(token: string) {
     retry: 3,
     retryDelay: 500,
     timeout: 5000,
+    onRequest({ options }) {
+      // Let ofetch create a new timeout controller for every retry attempt.
+      options.signal = undefined;
+    },
   });
 }
 

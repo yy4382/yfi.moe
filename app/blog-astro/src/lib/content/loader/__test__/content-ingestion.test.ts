@@ -1,6 +1,6 @@
 import type { LoaderContext } from "astro/loaders";
 import { fs, vol } from "memfs";
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import {
   afterAll,
@@ -91,6 +91,7 @@ describe("content ingestion", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     githubServer.resetHandlers();
   });
 
@@ -350,6 +351,103 @@ Body`,
     expect(requestedRefPath.endsWith("/git/ref/main/content")).toBe(true);
     expect(requestedContentRef).toBe("main/content");
     expect(authorization).toBe("Bearer secret");
+  });
+
+  it("bounds concurrent GitHub file acquisition", async () => {
+    let activeRequests = 0;
+    let maxActiveRequests = 0;
+    const remoteFiles = Array.from({ length: 12 }, (_, index) => ({
+      type: "file",
+      path: `posts/post-${index}.md`,
+    }));
+    githubServer.use(
+      http.get("https://api.github.com/repos/:owner/:repo/git/ref/*", () =>
+        HttpResponse.json({ object: { sha: "concurrency-sha" } }),
+      ),
+      http.get(
+        "https://api.github.com/repos/:owner/:repo/contents/*",
+        async ({ request }) => {
+          const requestedPath = new URL(request.url).pathname.split(
+            "/contents/",
+          )[1];
+          if (requestedPath === "posts") {
+            return HttpResponse.json(remoteFiles);
+          }
+
+          activeRequests += 1;
+          maxActiveRequests = Math.max(maxActiveRequests, activeRequests);
+          await delay(20);
+          activeRequests -= 1;
+          const slug = requestedPath!.split("/").at(-1)!.replace(".md", "");
+          return HttpResponse.json({
+            name: `${slug}.md`,
+            encoding: "base64",
+            content: Buffer.from(markdown(slug, slug, "Body")).toString(
+              "base64",
+            ),
+          });
+        },
+      ),
+    );
+    const { context, entries } = createContext();
+    const loader = markdownFileSetLoader({
+      source: "https://github.com/owner/repo/tree/main/posts",
+      githubToken: "secret",
+    });
+
+    await loader.load(context);
+
+    expect(entries.size).toBe(12);
+    expect(maxActiveRequests).toBeLessThanOrEqual(6);
+  });
+
+  it("retries a timed-out GitHub request with a fresh abort signal", async () => {
+    vi.useFakeTimers();
+    let fileRequests = 0;
+    githubServer.use(
+      http.get("https://api.github.com/repos/:owner/:repo/git/ref/*", () =>
+        HttpResponse.json({ object: { sha: "retry-sha" } }),
+      ),
+      http.get(
+        "https://api.github.com/repos/:owner/:repo/contents/*",
+        async ({ request }) => {
+          const requestedPath = new URL(request.url).pathname.split(
+            "/contents/",
+          )[1];
+          if (requestedPath === "posts") {
+            return HttpResponse.json([
+              { type: "file", path: "posts/resilient.md" },
+            ]);
+          }
+
+          fileRequests += 1;
+          if (fileRequests === 1) {
+            await delay(5_001);
+          }
+          return HttpResponse.json({
+            name: "resilient.md",
+            encoding: "base64",
+            content: Buffer.from(
+              markdown("resilient", "Resilient", "Body"),
+            ).toString("base64"),
+          });
+        },
+      ),
+    );
+    const { context, entries } = createContext();
+    const loader = markdownFileSetLoader({
+      source: "https://github.com/owner/repo/tree/main/posts",
+      githubToken: "secret",
+    });
+
+    const loadExpectation = expect(
+      loader.load(context),
+    ).resolves.toBeUndefined();
+    await vi.advanceTimersByTimeAsync(7_000);
+    await loadExpectation;
+
+    expect(fileRequests).toBe(2);
+    expect([...entries.keys()]).toEqual(["resilient"]);
   });
 
   it("does not reacquire GitHub files when the ref SHA is unchanged", async () => {
