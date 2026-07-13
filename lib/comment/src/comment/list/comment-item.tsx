@@ -1,12 +1,19 @@
+import { AutoResizeHeight } from "#/components/transitions/auto-resize-height";
+import { MaskIcon } from "#/components/ui/mask-icon";
+import { sessionOptions } from "#/lib/auth/session-options";
+import { useAuthClient } from "#/lib/hooks/context";
+import * as stylex from "@stylexjs/stylex";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import CommentIcon from "~icons/mingcute/comment-line";
 import type { CommentData } from "@repo/api/comment/comment-data";
-import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
-import { sessionOptions } from "@/lib/auth/session-options";
-import { useAuthClient } from "@/lib/hooks/context";
-import { cn } from "@/lib/utils";
+import {
+  colors,
+  motion as motionTokens,
+  radii,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
 import { CommentBoxNew } from "../box";
 import { CommentBoxEdit } from "../box/edit-comment";
 import { CommentReactions } from "../reactions";
@@ -18,61 +25,47 @@ interface CommentItemProps {
   replyToName?: string;
 }
 
-/**
- * Renders a single comment with user info, content, reactions, and actions.
- */
 export function CommentItem({ comment, replyToName }: CommentItemProps) {
   const [replying, setReplying] = useState(false);
   const [editing, setEditing] = useState(false);
   const authClient = useAuthClient();
   const { data: session } = useQuery(sessionOptions(authClient));
 
-  const isMine = comment.ownedByViewer;
-
   return (
     <article
       id={`comment-${comment.id}`}
       aria-label={`${comment.displayName}：${comment.rawContent}`}
     >
-      <div className="flex items-start gap-3 border-zinc-100 py-2 last:border-b-0">
-        {/* Avatar */}
-        <div className="shrink-0">
-          <img
-            src={comment.userImage}
-            alt={comment.displayName}
-            width={36}
-            height={36}
-            className="size-9 rounded-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = `https://avatar.vercel.sh/anonymous`;
-            }}
-          />
-        </div>
+      <div {...stylex.props(styles.row)}>
+        <img
+          src={comment.userImage}
+          alt={comment.displayName}
+          width={36}
+          height={36}
+          {...stylex.props(styles.avatar)}
+          onError={(event) => {
+            event.currentTarget.src = "https://avatar.vercel.sh/anonymous";
+          }}
+        />
 
-        {/* Content */}
-        <div className="group mt-0.5 mb-1 flex min-w-0 flex-1 flex-col">
-          <div className="mb-1 flex items-center gap-2">
-            <span className="text-sm text-content/80">
-              {comment.displayName}
-            </span>
-
-            {isMine && (
-              <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-600 dark:bg-blue-800/60 dark:text-blue-100">
-                我
-              </span>
+        <div {...stylex.props(styles.content)}>
+          <div {...stylex.props(styles.meta)}>
+            <span {...stylex.props(styles.name)}>{comment.displayName}</span>
+            {comment.ownedByViewer && (
+              <span {...stylex.props(styles.badge, styles.mineBadge)}>我</span>
             )}
             {session?.user.role === "admin" && comment.isSpam === true && (
-              <span className="rounded bg-red-100 px-1.5 py-0.5 text-xs text-red-600 dark:bg-red-800/60 dark:text-red-100">
+              <span {...stylex.props(styles.badge, styles.spamBadge)}>
                 垃圾评论
               </span>
             )}
-            <span
-              className="text-xs text-zinc-500"
+            <time
+              {...stylex.props(styles.time)}
+              dateTime={new Date(comment.createdAt).toISOString()}
               title={new Date(comment.createdAt).toLocaleString("zh-CN")}
             >
               {formatRelativeTime(new Date(comment.createdAt))}
-            </span>
+            </time>
           </div>
 
           {editing ? (
@@ -83,27 +76,28 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
               initialContent={comment.rawContent}
             />
           ) : (
-            <div className="">
+            <div>
               {replyToName && (
                 <a
-                  className="py-1 text-xs text-zinc-500"
+                  {...stylex.props(styles.replyTo)}
                   href={`#comment-${comment.replyToId}`}
                 >
-                  <span className="text-zinc-500">回复 </span>
-                  {replyToName}:
+                  回复 {replyToName}:
                 </a>
               )}
               <div
-                className="prose prose-sm wrap-break-word text-content dark:prose-invert prose-p:my-1"
+                className="comment-prose"
                 dangerouslySetInnerHTML={{ __html: comment.content }}
               />
             </div>
           )}
 
           <div
-            className={cn(
-              "mt-1 flex items-center",
-              comment.reactions.length > 0 ? "gap-4" : "gap-2",
+            {...stylex.props(
+              styles.actions,
+              comment.reactions.length > 0
+                ? styles.actionsWithReactions
+                : styles.actionsWithoutReactions,
             )}
           >
             <CommentReactions
@@ -111,10 +105,12 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
               reactions={comment.reactions}
             />
             <button
-              onClick={() => setReplying(!replying)}
-              className="inline-flex h-7 shrink-0 items-center gap-1 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-sm text-comment transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+              type="button"
+              onClick={() => setReplying((current) => !current)}
+              {...stylex.props(styles.replyButton)}
             >
-              <CommentIcon /> 回复
+              <MaskIcon name="comment-line" />
+              回复
             </button>
             <CommentDropdown
               comment={comment}
@@ -124,12 +120,11 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
         </div>
       </div>
 
-      {/* Reply form */}
       <AutoResizeHeight duration={0.1}>
         <AnimatePresence initial={false}>
           {replying && (
             <motion.div
-              className="ml-8 p-0.5 pt-2"
+              {...stylex.props(styles.replyForm)}
               initial={{ opacity: 0, filter: "blur(4px)" }}
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{
@@ -141,7 +136,7 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
             >
               <CommentBoxNew
                 reply={{
-                  parentId: comment.parentId ? comment.parentId : comment.id,
+                  parentId: comment.parentId ?? comment.id,
                   replyToId: comment.id,
                   at: comment.displayName,
                   onCancel: () => setReplying(false),
@@ -155,3 +150,84 @@ export function CommentItem({ comment, replyToName }: CommentItemProps) {
     </article>
   );
 }
+
+const styles = stylex.create({
+  row: {
+    alignItems: "flex-start",
+    display: "flex",
+    gap: spacing.md,
+    paddingBlock: spacing.sm,
+  },
+  avatar: {
+    borderRadius: radii.round,
+    flexShrink: 0,
+    height: "2.25rem",
+    objectFit: "cover",
+    width: "2.25rem",
+  },
+  content: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    marginBlock: "0.125rem 0.25rem",
+    minWidth: 0,
+  },
+  meta: {
+    alignItems: "center",
+    display: "flex",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+    marginBottom: spacing.xs,
+  },
+  name: { color: colors.textPrimary, fontSize: typography.sizeSm },
+  badge: {
+    borderRadius: radii.sm,
+    fontSize: typography.sizeXs,
+    paddingBlock: spacing.xxs,
+    paddingInline: "0.375rem",
+  },
+  mineBadge: {
+    backgroundColor: colors.surfaceInteractive,
+    color: colors.accentText,
+  },
+  spamBadge: {
+    backgroundColor: colors.dangerSurface,
+    color: colors.dangerText,
+  },
+  time: { color: colors.textMuted, fontSize: typography.sizeXs },
+  replyTo: {
+    color: colors.textMuted,
+    display: "inline-block",
+    fontSize: typography.sizeXs,
+    paddingBlock: spacing.xs,
+    textDecoration: "none",
+  },
+  actions: { alignItems: "center", display: "flex", marginTop: spacing.xs },
+  actionsWithReactions: { gap: spacing.lg },
+  actionsWithoutReactions: { gap: spacing.sm },
+  replyButton: {
+    alignItems: "center",
+    backgroundColor: colors.surfaceInteractive,
+    borderColor: colors.borderDefault,
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    color: colors.textSecondary,
+    cursor: "pointer",
+    display: "inline-flex",
+    flexShrink: 0,
+    fontSize: typography.sizeSm,
+    gap: spacing.xs,
+    height: "1.75rem",
+    paddingBlock: spacing.xxs,
+    paddingInline: spacing.sm,
+    transitionDuration: motionTokens.durationFast,
+    transitionProperty: "background-color",
+    ":hover": { backgroundColor: colors.surfaceInteractiveHover },
+  },
+  replyForm: {
+    marginInlineStart: spacing.xxl,
+    padding: "0.125rem",
+    paddingTop: spacing.sm,
+  },
+});

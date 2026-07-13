@@ -1,48 +1,90 @@
 ---
 import { getSeriesPosts } from "@/lib/utils/content";
 import Section from "@/components/ui/section.astro";
+import {
+  colors,
+  motion,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
-interface Props {
+const { seriesId, currentSlug } = Astro.props as {
   seriesId: string;
   currentSlug: string;
-}
-
-const { seriesId, currentSlug } = Astro.props;
+};
 const seriesPosts = await getSeriesPosts(seriesId);
-
-// Don't render if there's only one post in the series
-if (seriesPosts.length <= 1) {
-  return null;
-}
+if (seriesPosts.length <= 1) return null;
+const iconAttrs = stylex.attrs(layout.iconSm);
+const styles = stylex.create({
+  section: { paddingBlock: "2.5rem" },
+  heading: {
+    alignItems: "center",
+    display: "flex",
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  title: {
+    fontSize: typography.sizeMd,
+    fontWeight: typography.weightSemibold,
+    margin: 0,
+  },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.md,
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+  },
+  item: { margin: 0, padding: 0 },
+  entry: {
+    alignItems: "flex-start",
+    display: "flex",
+    gap: spacing.sm,
+    lineHeight: typography.lineRelaxed,
+    textDecoration: "none",
+  },
+  active: { color: colors.accentText, fontWeight: typography.weightMedium },
+  link: {
+    transitionDuration: motion.durationFast,
+    transitionProperty: "color",
+    ":hover": { color: colors.accentText },
+  },
+  number: {
+    color: colors.textSecondary,
+    flexShrink: 0,
+    fontWeight: typography.weightRegular,
+  },
+});
 ---
 
-<Section class="py-10" padding="article">
-  <div class="mx-auto max-w-prose">
-    <div class="mb-4 flex items-center gap-2">
-      <span class="i-lucide-list size-4 shrink-0"></span>
-      <h3 class="text-base font-semibold">
-        {"系列文章"}
+<Section contentStyle={styles.section} padding="article"
+  ><div {...stylex.attrs(layout.articleWidth)}>
+    <div {...stylex.attrs(styles.heading)}>
+      <span
+        class:list={[iconAttrs.class, "i-lucide-list"]}
+        style={iconAttrs.style}></span><h3 {...stylex.attrs(styles.title)}>
+        系列文章
       </h3>
-    </div>
-    <ol class="m-0 list-none space-y-3 p-0">
+    </div><ol {...stylex.attrs(styles.list)}>
       {
         seriesPosts.map((post, index) => {
-          const isCurrent = post.id === currentSlug;
+          const current = post.id === currentSlug;
           return (
-            <li class="m-0 p-0">
-              {isCurrent ? (
-                <div class="flex items-start gap-2 leading-relaxed font-medium text-accent-foreground">
-                  <span class="shrink-0 font-normal text-comment">
-                    {index + 1}.
-                  </span>
+            <li {...stylex.attrs(styles.item)}>
+              {current ? (
+                <div {...stylex.attrs(styles.entry, styles.active)}>
+                  <span {...stylex.attrs(styles.number)}>{index + 1}.</span>
                   <span>{post.data.title}</span>
                 </div>
               ) : (
                 <a
                   href={`/post/${post.id}`}
-                  class="flex items-start gap-2 leading-relaxed no-underline transition-colors hover:text-accent-foreground"
+                  {...stylex.attrs(styles.entry, styles.link)}
                 >
-                  <span class="shrink-0 text-comment">{index + 1}.</span>
+                  <span {...stylex.attrs(styles.number)}>{index + 1}.</span>
                   <span>{post.data.title}</span>
                 </a>
               )}
@@ -51,5 +93,5 @@ if (seriesPosts.length <= 1) {
         })
       }
     </ol>
-  </div>
-</Section>
+  </div></Section
+>

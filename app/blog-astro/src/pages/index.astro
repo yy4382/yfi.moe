@@ -6,126 +6,392 @@ import logo from "@/assets/logo.png";
 import { authorName, contactInfo, projects } from "@/config/author";
 import { getSortedPosts } from "@/lib/utils/content";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils/cn";
 import readingTime from "reading-time";
 import { getSeo } from "@/lib/utils/SEO";
+import {
+  colors,
+  motion,
+  radii,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
 const posts = await getSortedPosts();
 const firstDate = posts.at(-1)!.data.publishedDate;
 const statistics = {
   articles: posts.length,
-  words: posts.reduce((acc, post) => {
-    const readingTimeResult = readingTime(post.body!);
-    return acc + readingTimeResult.words;
-  }, 0),
-  tags: [...new Set(posts.map((post) => post.data.tags).flat())].length,
+  words: posts.reduce(
+    (total, post) => total + readingTime(post.body!).words,
+    0,
+  ),
+  tags: new Set(posts.flatMap((post) => post.data.tags)).size,
 };
-
 const seoConfig = getSeo({
   title: "首页",
   description: "笔记与分享，代码和生活",
 });
+const styles = stylex.create({
+  hero: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.lg,
+    justifyContent: "center",
+    minHeight: "24rem",
+    "@media (min-width: 48rem)": { minHeight: "40rem" },
+  },
+  heroRow: {
+    alignItems: "center",
+    display: "flex",
+    gap: spacing.lg,
+    justifyContent: "center",
+    "@media (min-width: 48rem)": { gap: spacing.xxl },
+  },
+  logo: { borderRadius: radii.md },
+  heroTitle: {
+    fontSize: "3rem",
+    fontWeight: typography.weightBold,
+    margin: 0,
+    "@media (min-width: 64rem)": { fontSize: "6rem" },
+  },
+  spacer: { minHeight: "4.5rem" },
+  featureSection: {
+    paddingBottom: "4rem",
+    paddingTop: "5rem",
+    position: "relative",
+    "@media (min-width: 40rem)": { paddingTop: spacing.xxl },
+  },
+  contactSection: {
+    paddingBottom: spacing.xxl,
+    paddingTop: "4.5rem",
+    position: "relative",
+    "@media (min-width: 40rem)": { paddingTop: spacing.xxl },
+  },
+  sectionNumber: {
+    alignItems: "center",
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    borderRightColor: colors.borderDefault,
+    borderRightStyle: "solid",
+    borderRightWidth: "1px",
+    boxSizing: "border-box",
+    cursor: "default",
+    display: "flex",
+    fontFamily: typography.monoFamily,
+    fontSize: typography.sizeLg,
+    fontVariantNumeric: "slashed-zero",
+    fontWeight: typography.weightSemibold,
+    height: "3.125rem",
+    justifyContent: "center",
+    left: 0,
+    lineHeight: "1.4375rem",
+    margin: 0,
+    pointerEvents: "none",
+    position: "absolute",
+    top: 0,
+    width: "3.125rem",
+    "@media (min-width: 40rem)": {
+      borderRightWidth: 0,
+      transform: "translateX(-100%)",
+    },
+    "@media (min-width: 80rem)": {
+      borderLeftColor: colors.borderDefault,
+      borderLeftStyle: "solid",
+      borderLeftWidth: "1px",
+    },
+  },
+  sectionTitle: {
+    fontSize: "1.875rem",
+    fontWeight: typography.weightBold,
+    marginBlock: `0 ${spacing.sm}`,
+    paddingInline: spacing.xxl,
+    "@media (min-width: 40rem)": { paddingInline: "2.5rem" },
+  },
+  sectionDescription: {
+    marginBottom: "3rem",
+    marginTop: 0,
+    maxWidth: "65ch",
+    paddingInline: spacing.xxl,
+    "@media (min-width: 40rem)": { paddingInline: "2.5rem" },
+  },
+  dashed: {
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
+    "::before": {
+      backgroundImage:
+        "repeating-linear-gradient(90deg, var(--color-border-default) 0 15px, transparent 0 30px)",
+      content: "''",
+      height: "1px",
+      inset: "0 0 auto",
+      pointerEvents: "none",
+      position: "absolute",
+    },
+    "::after": {
+      backgroundImage:
+        "repeating-linear-gradient(90deg, var(--color-border-default) 0 15px, transparent 0 30px)",
+      content: "''",
+      height: "1px",
+      inset: "auto 0 0",
+      pointerEvents: "none",
+      position: "absolute",
+    },
+  },
+  stats: {
+    borderBlockColor: colors.borderDefault,
+    borderBlockStyle: "solid",
+    borderBlockWidth: "1px",
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    placeItems: "stretch",
+    position: "relative",
+    "@media (min-width: 40rem)": { gridTemplateColumns: "repeat(3, 1fr)" },
+  },
+  stat: {
+    alignItems: "center",
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    paddingBlock: spacing.xxl,
+    "@media (min-width: 40rem)": {
+      borderBottomWidth: 0,
+      borderRightColor: colors.borderDefault,
+      borderRightStyle: "solid",
+      borderRightWidth: "1px",
+    },
+  },
+  statLast: { "@media (min-width: 40rem)": { borderRightWidth: 0 } },
+  statValue: {
+    color: colors.textPrimary,
+    fontSize: "1.875rem",
+    fontWeight: typography.weightBold,
+  },
+  statLabel: { color: colors.textSecondary },
+  cardButton: {
+    alignItems: "center",
+    display: "flex",
+    fontWeight: typography.weightSemibold,
+    gap: spacing.xs,
+    justifyContent: "center",
+    paddingBlock: spacing.xl,
+    textDecoration: "none",
+  },
+  inlineIcon: { height: "1.25rem", width: "1.25rem" },
+  projectCard: {
+    borderBottomColor: colors.borderSubtle,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    display: "grid",
+    gridTemplateColumns: "1fr 5rem",
+    gridTemplateRows: "1fr",
+    minHeight: "12rem",
+    "@media (min-width: 40rem) and (max-width: 63.999rem)": {
+      gridTemplateColumns: "1fr 10rem",
+    },
+    "@media (min-width: 64rem)": { gridTemplateColumns: "12rem 1fr 10rem" },
+  },
+  projectArtwork: {
+    alignItems: "center",
+    borderRightColor: colors.borderSubtle,
+    borderRightStyle: "solid",
+    borderRightWidth: "1px",
+    display: "none",
+    justifyContent: "center",
+    paddingBlock: spacing.xxl,
+    "@media (min-width: 64rem)": { display: "flex" },
+  },
+  projectBody: {
+    borderRightColor: colors.borderSubtle,
+    borderRightStyle: "solid",
+    borderRightWidth: "1px",
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.sm,
+    justifyContent: "center",
+    paddingBlock: spacing.xxl,
+    paddingInline: spacing.xxl,
+    "@media (min-width: 40rem)": { paddingInline: "3rem" },
+  },
+  projectArtworkMobile: {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "flex-start",
+    marginBottom: spacing.lg,
+    "@media (min-width: 64rem)": { display: "none" },
+  },
+  projectDescription: { color: colors.textSecondary, margin: 0 },
+  projectTitle: {
+    fontSize: typography.sizeXl,
+    fontWeight: typography.weightBold,
+    margin: 0,
+  },
+  projectLinks: {
+    color: colors.textSecondary,
+    display: "grid",
+    fontWeight: typography.weightBold,
+    gridTemplateColumns: "1fr",
+  },
+  projectLink: {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+    textDecoration: "none",
+    transitionDuration: motion.durationFast,
+    transitionProperty: "background-color, color",
+    ":hover": {
+      backgroundColor: colors.surfaceInteractiveHover,
+      color: colors.textPrimary,
+    },
+  },
+  projectLinkBorder: {
+    borderBottomColor: colors.borderSubtle,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+  },
+  linkContent: { display: "inline-flex", gap: spacing.sm },
+  linkText: {
+    display: "none",
+    "@media (min-width: 40rem)": { display: "inline" },
+  },
+  projectIcon: { height: "1.5rem", width: "1.5rem" },
+  contact: {
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.xl,
+    justifyContent: "center",
+    paddingInline: spacing.xxl,
+    position: "relative",
+    "@media (min-width: 40rem)": {
+      alignItems: "center",
+      flexDirection: "row",
+      paddingInline: "2.5rem",
+    },
+  },
+  contactTitle: {
+    fontSize: "1.875rem",
+    fontWeight: typography.weightBold,
+    margin: 0,
+  },
+  contactList: { display: "flex", gap: spacing.lg },
+  contactLink: {
+    borderRadius: radii.round,
+    height: "2.5rem",
+    padding: spacing.sm,
+    width: "2.5rem",
+  },
+  contactIcon: { color: "white", height: "1.5rem", width: "1.5rem" },
+});
+const iconAttrs = stylex.attrs(styles.inlineIcon);
+const contactIconAttrs = stylex.attrs(styles.contactIcon);
+const contactLinkAttrs = stylex.attrs(styles.contactLink);
+const projectIconAttrs = stylex.attrs(styles.projectIcon);
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <Section
-    class="flex min-h-96 flex-col center gap-4 md:min-h-[40rem]"
-    bg="grid"
+  <Section contentStyle={styles.hero} bg="grid"
+    ><div {...stylex.attrs(styles.heroRow)}>
+      <Image
+        src={logo}
+        alt="logo"
+        width={80}
+        height={80}
+        {...stylex.attrs(styles.logo)}
+      /><h1 {...stylex.attrs(styles.heroTitle)}>{authorName}</h1>
+    </div></Section
   >
-    <div class="flex center gap-4 md:gap-8">
-      <Image src={logo} alt="logo" width={80} height={80} class="rounded-md" />
-      <h1 class="text-5xl font-bold lg:text-8xl">{authorName}</h1>
-    </div>
-  </Section>
-  <Section class="min-h-18" />
-  <Section class="relative pt-20 pb-16 sm:pt-8">
-    <span class="section-number">01</span>
-    <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
-    <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
+  <Section contentStyle={styles.spacer} />
+  <Section contentStyle={styles.featureSection}>
+    <span {...stylex.attrs(styles.sectionNumber)}>01</span><h2
+      {...stylex.attrs(styles.sectionTitle)}
+    >
+      文章
+    </h2>
+    <p {...stylex.attrs(styles.sectionDescription)}>
       从 {
         format(firstDate, "yyyy 年 M 月 d 日")
       }的第一篇文章开始，本站已经更新了……
     </p>
-    <div class="dashed flex flex-col">
-      <div
-        class="grid-row-3 sm:grid-row-1 relative grid place-items-stretch border-y border-container sm:grid-cols-3"
-      >
-        <div
-          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
-        >
-          <div class="text-3xl font-bold text-heading">
+    <div {...stylex.attrs(styles.dashed)}>
+      <div {...stylex.attrs(styles.stats)}>
+        <div {...stylex.attrs(styles.stat)}>
+          <div {...stylex.attrs(styles.statValue)}>
             {statistics.articles} 篇
-          </div>
-          <div class="text-comment">文章</div>
+          </div><div {...stylex.attrs(styles.statLabel)}>文章</div>
         </div>
-        <div
-          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
-        >
-          <div class="text-3xl font-bold text-heading">
+        <div {...stylex.attrs(styles.stat)}>
+          <div {...stylex.attrs(styles.statValue)}>
             {(statistics.words / 10000).toFixed(2)} 万
-          </div>
-          <div class="text-comment">字数</div>
+          </div><div {...stylex.attrs(styles.statLabel)}>字数</div>
         </div>
-        <div class="flex flex-col center border-container py-8">
-          <div class="text-3xl font-bold text-heading">
+        <div {...stylex.attrs(styles.stat, styles.statLast)}>
+          <div {...stylex.attrs(styles.statValue)}>
             {statistics.tags} 个
-          </div>
-          <div class="text-comment">标签</div>
+          </div><div {...stylex.attrs(styles.statLabel)}>标签</div>
         </div>
-      </div>
-      <a
-        class="flex center gap-1 color-transition-card-btn py-6 font-semibold"
+      </div><a
+        {...stylex.attrs(styles.cardButton, layout.interactiveCard)}
         href="/post"
+        >文章列表 <span
+          class:list={[iconAttrs.class, "i-mingcute-external-link-line"]}
+          style={iconAttrs.style}></span></a
       >
-        文章列表 <span class="i-mingcute-external-link-line size-5"></span>
-      </a>
     </div>
   </Section>
-  <Section class="min-h-18" />
-  {/* projects info */}
-  <Section class="relative pt-20 pb-16 sm:pt-8">
-    <span class="section-number">02</span>
-    <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">项目</h2>
-    <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
-      在 <a href="https://github.com/yy4382" class="underline">GitHub</a> 上有更多开源项目，不妨点个
-      Star 吧。
+  <Section contentStyle={styles.spacer} />
+  <Section contentStyle={styles.featureSection}>
+    <span {...stylex.attrs(styles.sectionNumber)}>02</span><h2
+      {...stylex.attrs(styles.sectionTitle)}
+    >
+      项目
+    </h2>
+    <p {...stylex.attrs(styles.sectionDescription)}>
+      在 <a href="https://github.com/yy4382" {...stylex.attrs(layout.underline)}
+        >GitHub</a
+      > 上有更多开源项目，不妨点个 Star 吧。
     </p>
-    <div class="dashed flex flex-col">
+    <div {...stylex.attrs(styles.dashed)}>
       {
-        projects.map((p) => (
-          <div
-            class={cn(
-              "group grid min-h-48 grid-cols-[1fr_5rem] grid-rows-1 *:py-8 sm:grid-cols-[1fr_10rem] lg:grid-cols-[12rem_1fr_10rem]",
-              "border-b border-container-light",
-            )}
-          >
-            <div class="hidden center border-r border-container-light lg:flex">
-              {/* <Icon name={p.icon} size={100} /> */}
-              <p.icon width={100} height={100} />
+        projects.map((project) => (
+          <div {...stylex.attrs(styles.projectCard)}>
+            <div {...stylex.attrs(styles.projectArtwork)}>
+              <project.icon width={100} height={100} />
             </div>
-            <div class="flex flex-col justify-center gap-2 border-r border-container-light px-8 sm:px-12">
-              <div class="mb-4 flex items-center justify-start lg:hidden">
-                {/* <Icon name={p.icon} size={64} /> */}
-                <p.icon width={64} height={64} />
-              </div>
-              <p class="text-comment">{p.desc}</p>
-              <h3 class="text-xl font-bold">{p.title}</h3>
+            <div {...stylex.attrs(styles.projectBody)}>
+              <>
+                <div {...stylex.attrs(styles.projectArtworkMobile)}>
+                  <project.icon width={64} height={64} />
+                </div>
+                <p {...stylex.attrs(styles.projectDescription)}>
+                  {project.desc}
+                </p>
+                <h3 {...stylex.attrs(styles.projectTitle)}>{project.title}</h3>
+              </>
             </div>
-            <div class="grid grid-cols-1 place-items-stretch !py-0 font-bold text-comment/80 group-hover:text-content">
-              {p.links.map((l, i) => (
+            <div {...stylex.attrs(styles.projectLinks)}>
+              {project.links.map((link, index) => (
                 <a
-                  href={l.href}
+                  href={link.href}
                   target="_blank"
-                  class={cn(
-                    "flex center color-transition-card-btn",
-                    i !== p.links.length - 1 &&
-                      "border-b border-container-light",
+                  {...stylex.attrs(
+                    styles.projectLink,
+                    index !== project.links.length - 1 &&
+                      styles.projectLinkBorder,
                   )}
                 >
-                  <div class="inline-flex gap-2">
-                    <span class:list={[l.icon, "size-6!"]} />{" "}
-                    <span class="hidden sm:inline">{l.text}</span>
-                  </div>
+                  <span {...stylex.attrs(styles.linkContent)}>
+                    <span
+                      class:list={[link.icon, projectIconAttrs.class]}
+                      style={projectIconAttrs.style}
+                    />
+                    <span {...stylex.attrs(styles.linkText)}>{link.text}</span>
+                  </span>
                 </a>
               ))}
             </div>
@@ -133,108 +399,39 @@ const seoConfig = getSeo({
         ))
       }
       <a
-        class="flex center gap-1 color-transition-card-btn py-6 font-semibold"
+        {...stylex.attrs(styles.cardButton, layout.interactiveCard)}
         href="https://github.com/yy4382"
+        >更多 <span
+          class:list={[iconAttrs.class, "i-mingcute-external-link-line"]}
+          style={iconAttrs.style}></span></a
       >
-        更多 <span class="i-mingcute-external-link-line size-5"></span>
-      </a>
     </div>
   </Section>
-  <Section class="min-h-18" />
-  {/* contact info */}
-  <Section class="relative pt-18 pb-8 sm:pt-8">
-    <span class="section-number">03</span>
-    <div
-      class="relative flex size-full flex-col items-start justify-center gap-6 px-8 sm:flex-row sm:items-center sm:px-10"
+  <Section contentStyle={styles.spacer} />
+  <Section contentStyle={styles.contactSection}>
+    <span {...stylex.attrs(styles.sectionNumber)}>03</span><div
+      {...stylex.attrs(styles.contact)}
     >
-      <h2 class="text-3xl font-bold">联系我</h2>
-      <div class="flex gap-4">
+      <h2 {...stylex.attrs(styles.contactTitle)}>联系我</h2><div
+        {...stylex.attrs(styles.contactList)}
+      >
         {
-          contactInfo.map((c) => {
-            return (
-              <a
-                href={c.link}
-                target="_blank"
-                aria-label={c.name}
-                style={`background-color: ${c.color}`}
-                class="size-10 rounded-full p-2"
-              >
-                {/* <Icon name={c.icon} size={24} class="text-white" /> */}
-                <span class:list={[c.icon, "size-6! text-white!"]} />
-              </a>
-            );
-          })
+          contactInfo.map((contact) => (
+            <a
+              href={contact.link}
+              target="_blank"
+              aria-label={contact.name}
+              class={contactLinkAttrs.class}
+              style={`background-color: ${contact.color}`}
+            >
+              <span
+                class:list={[contact.icon, contactIconAttrs.class]}
+                style={contactIconAttrs.style}
+              />
+            </a>
+          ))
         }
       </div>
     </div>
   </Section>
 </NavLayout>
-
-<style>
-  @reference "../styles/global.css";
-  .dashed {
-    position: relative;
-    @variant before {
-      content: "";
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      height: 1px;
-      background-image: repeating-linear-gradient(
-        90deg,
-        var(--container-border) 0 15px,
-        transparent 0 30px
-      );
-    }
-    @variant after {
-      content: "";
-      pointer-events: none;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      height: 1px;
-      background-image: repeating-linear-gradient(
-        90deg,
-        var(--container-border) 0 15px,
-        transparent 0 30px
-      );
-    }
-  }
-  .section-number {
-    position: absolute;
-    border-color: var(--border-color-container);
-    border-style: solid;
-    border-bottom-width: 1px;
-    border-right-width: 1px;
-    @variant sm {
-      border-right-width: 0px;
-      transform: translateX(-100%);
-    }
-    @variant xl {
-      border-left-width: 1px;
-    }
-
-    top: 0;
-    left: 0;
-
-    text-align: center;
-    font-family: monospace;
-    font-variant-numeric: slashed-zero;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 23px;
-    letter-spacing: -0.3px;
-    cursor: default;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    margin: 0;
-    box-sizing: border-box;
-  }
-</style>

@@ -1,6 +1,6 @@
+import type { HonoClient } from "#/lib/api/create-client";
 import { z } from "zod";
 import { addCommentResponse } from "@repo/api/comment/add.model";
-import type { HonoClient } from "@/lib/api/create-client";
 
 // inputting params
 export const commentContentSchema = z.preprocess(

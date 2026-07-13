@@ -1,6 +1,6 @@
+import type { HonoClient } from "#/lib/api/create-client";
+import type { AuthClient } from "#/lib/auth/create-auth";
 import { createContext, useContext, type RefObject } from "react";
-import type { HonoClient } from "@/lib/api/create-client";
-import type { AuthClient } from "@/lib/auth/create-auth";
 
 export const PathnameContext = createContext<string>("");
 

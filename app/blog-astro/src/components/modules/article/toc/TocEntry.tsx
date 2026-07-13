@@ -1,43 +1,75 @@
-import React from "react";
+import * as stylex from "@stylexjs/stylex";
+import {
+  colors,
+  motion,
+  radii,
+  spacing,
+} from "@repo/design-tokens/tokens.stylex";
 import type { ArticleHeading } from "@repo/markdown/article";
-import { cn } from "@/lib/utils/cn";
 
 interface TableOfContentsProps {
   headings: ArticleHeading[];
   activeIndex: number;
 }
 
-const TableOfContents: React.FC<TableOfContentsProps> = ({
+const styles = stylex.create({
+  list: { listStyle: "none", margin: 0, padding: 0 },
+  item: {
+    borderInlineStartColor: "transparent",
+    borderInlineStartStyle: "solid",
+    borderInlineStartWidth: "2px",
+    borderRadius: radii.sm,
+    minWidth: 0,
+    paddingBlock: spacing.xs,
+    paddingInlineStart: spacing.sm,
+    transitionDuration: motion.durationFast,
+    transitionProperty: "border-color",
+  },
+  activeItem: { borderInlineStartColor: colors.accent },
+  link: {
+    color: colors.textSecondary,
+    display: "inline-block",
+    minWidth: 0,
+    overflow: "hidden",
+    textDecoration: "none",
+    textOverflow: "ellipsis",
+    transitionDuration: motion.durationFast,
+    transitionProperty: "color, margin-left, transform",
+    userSelect: "none",
+    verticalAlign: "middle",
+    whiteSpace: "nowrap",
+    width: "100%",
+    ":hover": { color: colors.textPrimary },
+  },
+  activeLink: { color: colors.textPrimary },
+});
+
+export default function TocEntry({
   headings,
   activeIndex,
-}) => {
+}: TableOfContentsProps) {
   return (
-    <ul>
-      {headings.map((heading, index) => (
-        <li
-          key={heading.id}
-          className={cn(
-            `relative min-w-0 py-1 before:absolute before:top-1/2 before:-left-1 before:h-4 before:w-[2px] before:-translate-y-1/2 before:rounded-md before:bg-primary/80 before:opacity-0 before:transition-opacity before:content-['']`,
-            activeIndex === index && "before:opacity-100",
-          )}
-        >
-          <a
-            href={`#${heading.id}`}
-            className={cn(
-              `inline-block w-full min-w-0 truncate align-middle transition-[color,margin-left,transform] select-none hover:text-content`,
-              activeIndex === index && "text-heading!",
-            )}
-            style={{
-              marginLeft: `calc(0.75rem * ${heading.depth - 2})`,
-              transform: `translateX(${Number(activeIndex === index) * 0.7 * 0.75}rem)`,
-            }}
+    <ul {...stylex.props(styles.list)}>
+      {headings.map((heading, index) => {
+        const isActive = activeIndex === index;
+        return (
+          <li
+            key={heading.id}
+            {...stylex.props(styles.item, isActive && styles.activeItem)}
           >
-            {heading.text}
-          </a>
-        </li>
-      ))}
+            <a
+              href={`#${heading.id}`}
+              {...stylex.props(styles.link, isActive && styles.activeLink)}
+              style={{
+                marginLeft: `calc(0.75rem * ${heading.depth - 2})`,
+                transform: `translateX(${Number(isActive) * 0.525}rem)`,
+              }}
+            >
+              {heading.text}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   );
-};
-
-export default TableOfContents;
+}

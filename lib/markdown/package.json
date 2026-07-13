@@ -47,7 +47,6 @@
     "./article": "./dist/article.js",
     "./comment": "./dist/comment.js",
     "./excerpt": "./dist/excerpt.js",
-    "./feed": "./dist/feed.js",
-    "./style": "./src/style/index.css"
+    "./feed": "./dist/feed.js"
   }
 }

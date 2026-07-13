@@ -2,103 +2,205 @@
 import { siteConfig, siteDomain } from "@/config/site";
 import { Image } from "astro:assets";
 import logo from "@/assets/logo.png";
+import {
+  colors,
+  radii,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
+
+const iconAttrs = stylex.attrs(layout.iconSm);
+const styles = stylex.create({
+  root: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column-reverse",
+    gap: spacing.xl,
+    justifyContent: "space-between",
+    paddingBlock: spacing.lg,
+    paddingInline: spacing.xl,
+    "@media (min-width: 48rem)": { flexDirection: "row" },
+  },
+  brand: {
+    display: "flex",
+    fontSize: typography.sizeXxl,
+    fontWeight: typography.weightBold,
+    gap: spacing.lg,
+    textDecoration: "none",
+  },
+  logo: { borderRadius: radii.lg, height: "2rem", width: "2rem" },
+  content: {
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+    flexShrink: 1,
+    gap: spacing.xxl,
+    width: "100%",
+    "@media (min-width: 48rem)": {
+      alignItems: "flex-end",
+      gap: spacing.sm,
+      width: "auto",
+    },
+  },
+  links: {
+    alignItems: "flex-start",
+    alignSelf: "center",
+    color: colors.textSecondary,
+    display: "flex",
+    flexDirection: "column",
+    columnGap: spacing.xl,
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    rowGap: spacing.xs,
+    "@media (min-width: 48rem)": { alignSelf: "flex-end" },
+    "@media (min-width: 64rem)": {
+      alignItems: "flex-end",
+      flexDirection: "row",
+    },
+  },
+  linkGroup: {
+    alignItems: "center",
+    display: "inline-flex",
+    fontWeight: typography.weightMedium,
+  },
+  inlineLinks: {
+    display: "inline-flex",
+    gap: spacing.sm,
+    marginInlineStart: spacing.xs,
+  },
+  copyButton: {
+    background: "transparent",
+    border: 0,
+    color: "inherit",
+    cursor: "pointer",
+    padding: 0,
+  },
+  legal: {
+    alignItems: "center",
+    alignSelf: "center",
+    display: "flex",
+    flexDirection: "column",
+    fontSize: typography.sizeSm,
+    "@media (min-width: 48rem)": {
+      alignItems: "flex-end",
+      alignSelf: "flex-end",
+    },
+  },
+  legalRow: {
+    alignItems: "center",
+    color: colors.textSecondary,
+    display: "inline-flex",
+    gap: spacing.xs,
+  },
+  legalPiece: {
+    alignItems: "center",
+    display: "inline-flex",
+    gap: spacing.xxs,
+  },
+  separator: { opacity: 0.7 },
+  muted: { color: colors.textSecondary },
+});
 ---
 
-<div
-  class="main-container flex flex-col-reverse items-center justify-between gap-6 px-6 py-4 md:flex-row"
->
-  <a href="/" class="flex gap-4 text-2xl font-bold">
+<div {...stylex.attrs(layout.mainContainer, styles.root)}>
+  <a href="/" {...stylex.attrs(styles.brand)}>
     <Image
       src={logo}
       alt="logo"
-      class="h-8 w-8 rounded-lg"
+      {...stylex.attrs(styles.logo)}
       width="32"
       height="32"
     />
     Yunfi
   </a>
-  <div
-    class="flex w-full flex-shrink flex-grow flex-col items-start gap-8 md:w-[unset] md:items-end md:gap-2"
-  >
-    <ul
-      class="flex flex-col items-start gap-x-6 gap-y-1 self-center text-comment md:self-end lg:flex-row lg:items-end"
-    >
+  <div {...stylex.attrs(styles.content)}>
+    <ul {...stylex.attrs(styles.links)}>
       <li>
-        <span class="inline-flex items-center font-medium text-content">
-          关于
-          <span class="i-lucide-chevron-right size-4"></span>
+        <span {...stylex.attrs(styles.linkGroup)}>
+          关于 <span
+            class:list={[iconAttrs.class, "i-lucide-chevron-right"]}
+            style={iconAttrs.style}></span>
         </span>
-        <span class="inline-flex gap-2">
-          <a href="/about">关于我</a>
-          <a href="/about#关于本站">关于本站</a>
-          <a href="https://github.com/yy4382/yfi.moe">本站源码</a>
+        <span {...stylex.attrs(styles.inlineLinks)}>
+          <a href="/about">关于我</a><a href="/about#关于本站">关于本站</a><a
+            href="https://github.com/yy4382/yfi.moe">本站源码</a
+          >
         </span>
       </li>
       <li>
-        <span class="inline-flex items-center font-medium text-content">
-          联系
-          <span class="i-lucide-chevron-right size-4"></span>
+        <span {...stylex.attrs(styles.linkGroup)}>
+          联系 <span
+            class:list={[iconAttrs.class, "i-lucide-chevron-right"]}
+            style={iconAttrs.style}></span>
         </span>
-        <span class="inline-flex gap-2">
-          <button class="copy-email" data-email="yy4382@gmail.com"
-            >发邮件</button
+        <span {...stylex.attrs(styles.inlineLinks)}>
+          <button
+            {...stylex.attrs(styles.copyButton)}
+            data-copy-email
+            data-email="yy4382@gmail.com">发邮件</button
           >
-          <a href="https://t.me/YunfiDiscuz">Telegram</a>
-          <a href="https://github.com/yy4382">GitHub</a>
+          <a href="https://t.me/YunfiDiscuz">Telegram</a><a
+            href="https://github.com/yy4382">GitHub</a
+          >
         </span>
       </li>
     </ul>
-    <div
-      class="flex flex-col items-center self-center text-sm md:items-end md:self-end"
-    >
-      <span class="inline-flex items-center gap-x-1 text-comment">
-        <span class="inline-flex items-center gap-0.5">
-          <span class="i-lucide-copyright size-4"></span>
-          2023-2024
-          <span>
-            <a href={siteDomain} class="underline"> {siteConfig.title}</a>.
-          </span>
+    <div {...stylex.attrs(styles.legal)}>
+      <span {...stylex.attrs(styles.legalRow)}>
+        <span {...stylex.attrs(styles.legalPiece)}>
+          <span
+            class:list={[iconAttrs.class, "i-lucide-copyright"]}
+            style={iconAttrs.style}></span>
+          2023-2024 <span
+            ><a href={siteDomain} {...stylex.attrs(layout.underline)}>
+              {siteConfig.title}</a
+            >.</span
+          >
         </span>
-        <span class="opacity-70">|</span>
-        <a href="/feed.xml" class="inline-flex items-center gap-0.5">
-          <span class="i-lucide-rss size-4"></span>
-          RSS
-        </a>
-        <span class="opacity-70">|</span>
-        <a href="/sitemap-index.xml" class="inline-flex items-center gap-0.5">
-          <span class="i-lucide-map size-4"></span>
-          Site Map
-        </a>
+        <span {...stylex.attrs(styles.separator)}>|</span>
+        <a href="/feed.xml" {...stylex.attrs(styles.legalPiece)}
+          ><span
+            class:list={[iconAttrs.class, "i-lucide-rss"]}
+            style={iconAttrs.style}></span>RSS</a
+        >
+        <span {...stylex.attrs(styles.separator)}>|</span>
+        <a href="/sitemap-index.xml" {...stylex.attrs(styles.legalPiece)}
+          ><span
+            class:list={[iconAttrs.class, "i-lucide-map"]}
+            style={iconAttrs.style}></span>Site Map</a
+        >
       </span>
-      <span class="text-comment">
-        Powered by{" "}
-        <a href="https://astro.build" class="underline"> Astro</a>. See all{" "}
-        <a href="/credits" class="underline"> Credits</a>.
-      </span>
+      <span {...stylex.attrs(styles.muted)}
+        >Powered by <a
+          href="https://astro.build"
+          {...stylex.attrs(layout.underline)}
+        >
+          Astro</a
+        >. See all <a href="/credits" {...stylex.attrs(layout.underline)}>
+          Credits</a
+        >.</span
+      >
     </div>
   </div>
 </div>
 
 <script>
   import { toast } from "sonner";
-
   function initCopyEmail() {
-    document.querySelectorAll(".copy-email").forEach((button) => {
+    document.querySelectorAll("[data-copy-email]").forEach((button) => {
       button.addEventListener("click", () => {
         const email = button.getAttribute("data-email");
-        if (email) {
-          navigator.clipboard
-            .writeText(email)
-            .then(() => {
-              toast.success("复制邮箱成功");
-            })
-            .catch(() => {
-              toast.error("复制失败，可能您没有使用 HTTPS 访问");
-            });
-        }
+        if (!email) return;
+        navigator.clipboard.writeText(email).then(
+          () => toast.success("复制邮箱成功"),
+          () => toast.error("复制失败，可能您没有使用 HTTPS 访问"),
+        );
       });
     });
   }
-
   document.addEventListener("astro:page-load", initCopyEmail);
 </script>

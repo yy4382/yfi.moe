@@ -3,6 +3,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import CommentYuline from "@repo/comment";
 
+if (import.meta.env.DEV) {
+  void import("virtual:stylex:css-only");
+}
+
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },
 });

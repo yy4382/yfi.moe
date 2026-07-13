@@ -2,48 +2,94 @@
 import type { CollectionEntry } from "astro:content";
 import PostAttrTime from "./post-attr-time.astro";
 import PostAttrTags from "./post-attr-tags.astro";
-import { cn } from "@/lib/utils/cn";
 import { getDesc } from "@/lib/content/get-description";
 import { renderExcerpt } from "@repo/markdown/excerpt";
+import {
+  colors,
+  motion,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
+import "@/styles/article-prose.css";
 
 interface Props {
   post: CollectionEntry<"post">;
-  class?: string;
+  style?: stylex.StyleXStyles;
 }
-
-const { post, class: className } = Astro.props;
-
+const { post, style } = Astro.props;
 const excerptHtml = post.data.description
   ? undefined
   : await renderExcerpt(getDesc(post.body!));
+const styles = stylex.create({
+  root: {
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    containerType: "inline-size",
+    height: "100%",
+  },
+  inner: {
+    paddingBlock: spacing.xxl,
+    paddingInline: spacing.xl,
+    "@container (min-width: 24rem)": { paddingInline: "2.5rem" },
+    "@container (min-width: 56rem)": {
+      paddingBlock: "3rem",
+      paddingInline: "4rem",
+    },
+    "@container (min-width: 72rem)": { paddingInline: "8rem" },
+  },
+  title: {
+    color: colors.textPrimary,
+    fontSize: typography.sizeLg,
+    fontWeight: typography.weightBold,
+    marginBlock: `0 ${spacing.sm}`,
+    transitionDuration: motion.durationFast,
+    transitionProperty: "color",
+    "@container (min-width: 24rem)": { fontSize: typography.sizeXl },
+    "@container (min-width: 56rem)": { fontSize: "1.875rem" },
+    ":hover": { color: colors.accentText },
+  },
+  titleLink: { textDecoration: "none" },
+  meta: {
+    color: colors.textSecondary,
+    display: "flex",
+    flexWrap: "wrap",
+    fontSize: "0.8rem",
+    gap: spacing.sm,
+    "@media (min-width: 64rem)": { gap: spacing.md },
+  },
+  excerpt: {
+    display: "none",
+    marginTop: spacing.lg,
+    maxWidth: "90ch",
+    "@container (min-width: 56rem)": { display: "block" },
+  },
+});
+const excerptAttrs = stylex.attrs(styles.excerpt);
 ---
 
-<div
-  class={cn(
-    "main-container border-container @container h-full border-b",
-    className,
-  )}
->
-  <div class="px-6 py-8 @xl:px-10 @4xl:px-16 @4xl:py-12 @6xl:px-32">
-    <a href={`/post/${post.id}`}>
-      <h2
-        class="mb-2 text-lg font-bold transition-colors hover:text-accent-foreground @xl:text-xl @4xl:text-3xl"
-      >
-        {post.data.title}
-      </h2>
-    </a>
-    <div class="flex flex-wrap gap-2 text-[0.8rem] text-comment lg:gap-3">
-      <PostAttrTime {...post.data} />
-      <PostAttrTags tags={post.data.tags} />
+<div {...stylex.attrs(layout.mainContainer, styles.root, style)}>
+  <div {...stylex.attrs(styles.inner)}>
+    <a href={`/post/${post.id}`} {...stylex.attrs(styles.titleLink)}
+      ><h2 {...stylex.attrs(styles.title)}>{post.data.title}</h2></a
+    >
+    <div {...stylex.attrs(styles.meta)}>
+      <PostAttrTime {...post.data} /><PostAttrTags tags={post.data.tags} />
     </div>
     {
       post.data.description ? (
-        <div class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert">
+        <div
+          class:list={["article-prose", excerptAttrs.class]}
+          style={excerptAttrs.style}
+        >
           {post.data.description}
         </div>
       ) : (
         <div
-          class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert"
+          class:list={["article-prose", excerptAttrs.class]}
+          style={excerptAttrs.style}
           set:html={excerptHtml ?? ""}
         />
       )

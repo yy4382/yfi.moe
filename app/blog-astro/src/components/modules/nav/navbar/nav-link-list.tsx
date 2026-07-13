@@ -1,12 +1,8 @@
-import { cn } from "@/lib/utils/cn";
+import * as stylex from "@stylexjs/stylex";
+import { colors, motion, spacing } from "@repo/design-tokens/tokens.stylex";
 
 const navLinks = [
-  {
-    href: "/",
-    label: "Home",
-    active: (url: URL) => url.pathname === "/",
-  },
-
+  { href: "/", label: "Home", active: (url: URL) => url.pathname === "/" },
   {
     href: "/post",
     label: "Posts",
@@ -21,16 +17,13 @@ const navLinks = [
 
 export function NavLinkList({ url }: { url: URL }) {
   return (
-    <ul className="flex list-none flex-nowrap gap-4">
+    <ul {...stylex.props(styles.list)}>
       {navLinks.map((link) => (
         <li key={link.href}>
           <a
             href={link.href}
             data-active={link.active(url)}
-            className={cn([
-              "data-[active=true]:text-accent-foreground",
-              "text-muted-foreground transition-colors hover:text-accent-foreground",
-            ])}
+            {...stylex.props(styles.link, link.active(url) && styles.active)}
           >
             {link.label}
           </a>
@@ -39,5 +32,24 @@ export function NavLinkList({ url }: { url: URL }) {
     </ul>
   );
 }
+
+const styles = stylex.create({
+  list: {
+    display: "flex",
+    flexWrap: "nowrap",
+    gap: spacing.lg,
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+  },
+  link: {
+    color: colors.textMuted,
+    textDecoration: "none",
+    transitionDuration: motion.durationFast,
+    transitionProperty: "color",
+    ":hover": { color: colors.accentText },
+  },
+  active: { color: colors.accentText },
+});
 
 export { navLinks };

@@ -3,8 +3,7 @@ import type { ArticleRenderResult } from "@repo/markdown/article";
 import { toHtml } from "hast-util-to-html";
 import { SKIP, visit } from "unist-util-visit";
 
-import "@/styles/global.css";
-import "@repo/markdown/style";
+import "@/styles/article-prose.css";
 import { renderToString } from "react-dom/server";
 import { createElement } from "react";
 import {
@@ -39,11 +38,7 @@ visit(hast, "element", (node, index, parent) => {
 const html = toHtml(hast, { allowDangerousHtml: true });
 ---
 
-<article
-  set:html={html}
-  id="article-content"
-  class="mx-auto prose wrap-break-word prose-gray dark:prose-invert prose-headings:scroll-mt-8"
-/>
+<article set:html={html} id="article-content" class="article-prose" />
 
 <script>
   import { hydrateRoot, type Root } from "react-dom/client";

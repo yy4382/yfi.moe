@@ -1,8 +1,8 @@
+import type { HonoClient } from "#/lib/api/create-client";
 import { z } from "zod";
 import { commentReaction } from "@repo/api/comment/comment-data";
 import type { CommentReactionReqBody } from "@repo/api/comment/reaction.model";
 import { type Result, err, ok } from "@repo/helpers/result";
-import type { HonoClient } from "@/lib/api/create-client";
 
 export type CommentReactionResponse = {
   reaction: z.infer<typeof commentReaction>;

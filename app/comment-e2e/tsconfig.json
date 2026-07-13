@@ -5,8 +5,12 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "strict": true,
+    "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "#/*": ["../../lib/comment/src/*"]
+    }
   },
   "include": [
     "playwright.config.ts",

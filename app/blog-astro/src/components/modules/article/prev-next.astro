@@ -1,6 +1,13 @@
 ---
 import { getAdjacentPosts } from "@/lib/utils/content";
-import { cn } from "@/lib/utils/cn";
+import {
+  colors,
+  motion,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
 interface Props {
   currentSlug: string;
@@ -8,58 +15,136 @@ interface Props {
 
 const { currentSlug } = Astro.props;
 const { prev, next } = await getAdjacentPosts(currentSlug);
+
+const styles = stylex.create({
+  grid: { display: "grid", gridTemplateColumns: "1fr" },
+  container: { containerType: "inline-size" },
+  pairedGrid: {
+    "@media (min-width: 64rem)": {
+      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+    },
+  },
+  card: {
+    alignItems: "center",
+    display: "flex",
+    gap: spacing.lg,
+    height: "100%",
+    paddingBlock: spacing.xl,
+    paddingInline: spacing.xl,
+    textDecoration: "none",
+    transitionDuration: motion.durationFast,
+    transitionProperty: "background-color, color",
+    transitionTimingFunction: motion.easeStandard,
+    ":hover": {
+      backgroundColor: colors.surfaceInteractiveHover,
+      color: colors.accentText,
+    },
+    "@container (min-width: 32rem)": {
+      gap: spacing.xxl,
+      paddingBlock: spacing.xxl,
+      paddingInline: "4rem",
+    },
+  },
+  prevPaired: {
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    "@media (min-width: 64rem)": {
+      borderBottomWidth: 0,
+      borderRightColor: colors.borderDefault,
+      borderRightStyle: "solid",
+      borderRightWidth: "1px",
+    },
+  },
+  nextCard: { flexDirection: "row-reverse" },
+  iconCircle: {
+    alignItems: "center",
+    backgroundColor: "color-mix(in srgb, var(--color-accent) 10%, transparent)",
+    borderColor: "color-mix(in srgb, var(--color-accent) 20%, transparent)",
+    borderRadius: "9999px",
+    borderStyle: "solid",
+    borderWidth: "1px",
+    display: "flex",
+    flexShrink: 0,
+    height: "3rem",
+    justifyContent: "center",
+    transitionDuration: motion.durationNormal,
+    transitionProperty: "background-color, border-color",
+    width: "3rem",
+  },
+  icon: {
+    height: "2.25rem",
+    transitionDuration: motion.durationNormal,
+    transitionProperty: "transform",
+    width: "2.25rem",
+    ":hover": { transform: "scale(1.2)" },
+    ":active": { transform: "scale(0.95)" },
+  },
+  text: { minWidth: 0 },
+  nextText: {
+    alignItems: "flex-end",
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "end",
+  },
+  eyebrow: {
+    color: colors.textSecondary,
+    fontSize: typography.sizeSm,
+    margin: 0,
+  },
+  title: {
+    margin: 0,
+    "@container (min-width: 32rem)": { fontSize: typography.sizeLg },
+  },
+});
+
+const iconAttrs = stylex.attrs(styles.icon);
 ---
 
 {
   (prev || next) && (
-    <div class="border-b border-container">
+    <div {...stylex.attrs(layout.sectionBorder)}>
       <div
-        class={cn(
-          "main-container grid items-stretch",
-          prev && next && "grid-cols-1 lg:grid-cols-2",
-          prev && !next && "grid-cols-1",
-          !prev && next && "grid-cols-1",
+        {...stylex.attrs(
+          layout.mainContainer,
+          styles.grid,
+          prev && next && styles.pairedGrid,
         )}
       >
         {prev && (
-          <div class="group @container">
+          <div {...stylex.attrs(styles.container)}>
             <a
-              class={cn([
-                "flex h-full items-center",
-                "border-container",
-                "color-transition-card-btn",
-                "gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8",
-                "border-b lg:border-r lg:border-b-0",
-              ])}
+              {...stylex.attrs(styles.card, next && styles.prevPaired)}
               href={`/post/${prev.id}`}
             >
-              <div class="flex size-12 items-center justify-center rounded-full border border-accent/20 bg-accent/10 transition-all duration-200 group-hover:border-accent/30 group-hover:bg-accent/20">
-                <span class="i-lucide-chevron-left size-9 shrink-0 transition-transform group-hover:scale-120 group-active:scale-95" />
+              <div {...stylex.attrs(styles.iconCircle)}>
+                <span
+                  class:list={[iconAttrs.class, "i-lucide-chevron-left"]}
+                  style={iconAttrs.style}
+                />
               </div>
-              <div>
-                <p class="text-sm text-comment">上一篇</p>
-                <p class="@lg:text-lg">{prev.data.title}</p>
+              <div {...stylex.attrs(styles.text)}>
+                <p {...stylex.attrs(styles.eyebrow)}>上一篇</p>
+                <p {...stylex.attrs(styles.title)}>{prev.data.title}</p>
               </div>
             </a>
           </div>
         )}
         {next && (
-          <div class="group @container">
+          <div {...stylex.attrs(styles.container)}>
             <a
-              class={cn([
-                "flex h-full flex-row-reverse items-center",
-                "border-container",
-                "color-transition-card-btn",
-                "gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8",
-              ])}
+              {...stylex.attrs(styles.card, styles.nextCard)}
               href={`/post/${next.id}`}
             >
-              <div class="flex size-12 items-center justify-center rounded-full border border-accent/20 bg-accent/10 transition-all duration-200 group-hover:border-accent/30 group-hover:bg-accent/20">
-                <span class="i-lucide-chevron-right size-9 shrink-0 transition-transform group-hover:scale-120 group-active:scale-95" />
+              <div {...stylex.attrs(styles.iconCircle)}>
+                <span
+                  class:list={[iconAttrs.class, "i-lucide-chevron-right"]}
+                  style={iconAttrs.style}
+                />
               </div>
-              <div class="flex flex-col items-end">
-                <p class="text-sm text-comment">下一篇</p>
-                <p class="@lg:text-lg">{next.data.title}</p>
+              <div {...stylex.attrs(styles.text, styles.nextText)}>
+                <p {...stylex.attrs(styles.eyebrow)}>下一篇</p>
+                <p {...stylex.attrs(styles.title)}>{next.data.title}</p>
               </div>
             </a>
           </div>

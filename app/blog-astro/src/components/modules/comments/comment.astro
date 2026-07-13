@@ -1,6 +1,16 @@
 ---
 import Section from "@/components/ui/section.astro";
 import { Comment as CommentComponent } from "./comment";
+import * as stylex from "@stylexjs/stylex";
+
+const styles = stylex.create({
+  content: {
+    marginInline: "auto",
+    maxWidth: "42rem",
+    minHeight: "18rem",
+    paddingBlock: "3rem",
+  },
+});
 
 let normalizedPathname = Astro.url.pathname;
 if (normalizedPathname.endsWith("/") && normalizedPathname !== "/") {
@@ -8,6 +18,6 @@ if (normalizedPathname.endsWith("/") && normalizedPathname !== "/") {
 }
 ---
 
-<Section padding="article" class="mx-auto min-h-72 max-w-2xl py-12">
+<Section padding="article" contentStyle={styles.content}>
   <CommentComponent pathname={normalizedPathname} client:visible />
 </Section>

@@ -39,7 +39,7 @@ Interpret creatively and make unexpected choices that feel genuinely designed fo
 
 ### Coding Style & Naming Conventions
 
-- Prettier (2-space indent, Tailwind plugin) with lint-staged enforces formatting; run `pnpm exec prettier --check .` if needed.
+- Prettier (2-space indent) with lint-staged enforces formatting; run `pnpm exec prettier --check .` if needed.
 - Follow existing naming: `camelCase` for functions, `PascalCase` for React components, kebab-case for all filenames.
 - Respect configured TS path aliases (`@/`, `~/`) and resolve ESLint warnings before review.
 

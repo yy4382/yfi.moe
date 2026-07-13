@@ -1,10 +1,6 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { useState } from "react";
-import { toast } from "sonner";
-import MailSendLineIcon from "~icons/mingcute/mail-send-line";
-import { Button } from "@/components/ui/button";
+import { Button } from "#/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,12 +8,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { getRefetchSessionUrl } from "@/lib/auth/refetch-session-url";
-import { useAuthClient } from "@/lib/hooks/context";
+} from "#/components/ui/dialog";
+import { Input } from "#/components/ui/input";
+import { Label } from "#/components/ui/label";
+import { MaskIcon } from "#/components/ui/mask-icon";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "#/components/ui/tabs";
+import { getRefetchSessionUrl } from "#/lib/auth/refetch-session-url";
+import { useAuthClient } from "#/lib/hooks/context";
+import * as stylex from "@stylexjs/stylex";
+import { useAtom } from "jotai";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import {
+  colors,
+  radii,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
 import { persistentEmailAtom, persistentNameAtom } from "../atoms";
 import { DIALOG_CLOSE_DELAY } from "../utils/constants";
 
@@ -27,10 +34,6 @@ interface MagicLinkDialogProps {
 
 type AuthMode = "login" | "signup";
 
-/**
- * Dialog for email-based authentication via magic link.
- * Supports both login (existing users) and signup (new users).
- */
 export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useAtom(persistentEmailAtom);
@@ -39,9 +42,15 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
   const [emailSent, setEmailSent] = useState(false);
   const [activeTab, setActiveTab] = useState<AuthMode>("login");
   const [submittedEmail, setSubmittedEmail] = useState("");
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
   const authClient = useAuthClient();
 
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
+
   const resetForm = () => {
+    clearTimeout(closeTimer.current);
     setEmail("");
     setSignupName("");
     setEmailSent(false);
@@ -50,9 +59,6 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
     setActiveTab("login");
   };
 
-  /**
-   * Unified handler for both login and signup magic link requests.
-   */
   const handleMagicLink = async (mode: AuthMode) => {
     if (!email) {
       toast.error("请输入邮箱地址");
@@ -65,7 +71,6 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
 
     setIsLoading(true);
     setSubmittedEmail(email);
-
     try {
       const callbackURL = getRefetchSessionUrl();
       const { error } = await authClient.signIn.magicLink({
@@ -73,7 +78,6 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
         ...(mode === "signup" && { name: signupName }),
         callbackURL: callbackURL.href,
       });
-
       if (error) {
         toast.error(error.message || "发送邮件失败");
         return;
@@ -81,9 +85,8 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
 
       setEmailSent(true);
       toast.success(mode === "login" ? "登录链接已发送！" : "注册链接已发送！");
-
       if (mode === "signup") {
-        setTimeout(() => {
+        closeTimer.current = setTimeout(() => {
           setOpen(false);
           resetForm();
         }, DIALOG_CLOSE_DELAY);
@@ -107,10 +110,10 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent stylexStyle={styles.dialogContent}>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <MailSendLineIcon className="size-5" />
+          <DialogTitle stylexStyle={styles.title}>
+            <MaskIcon name="mail-send-line" stylexStyle={styles.titleIcon} />
             邮箱登录/注册
           </DialogTitle>
           <DialogDescription>
@@ -123,21 +126,21 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
         ) : (
           <Tabs
             value={activeTab}
-            onValueChange={(v) => setActiveTab(v as AuthMode)}
-            className="w-full"
+            onValueChange={(value) => setActiveTab(value as AuthMode)}
+            stylexStyle={styles.fullWidth}
           >
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList stylexStyle={styles.tabList}>
               <TabsTrigger value="login">登录</TabsTrigger>
               <TabsTrigger value="signup">注册</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="login" className="mt-4 space-y-4">
+            <TabsContent value="login" stylexStyle={styles.tabContent}>
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
+                onSubmit={(event) => {
+                  event.preventDefault();
                   void handleMagicLink("login");
                 }}
-                className="space-y-4"
+                {...stylex.props(styles.form)}
               >
                 <EmailField
                   id="login-email"
@@ -153,25 +156,24 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
               </form>
             </TabsContent>
 
-            <TabsContent value="signup" className="mt-4 space-y-4">
+            <TabsContent value="signup" stylexStyle={styles.tabContent}>
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
+                onSubmit={(event) => {
+                  event.preventDefault();
                   void handleMagicLink("signup");
                 }}
-                className="space-y-4"
+                {...stylex.props(styles.form)}
               >
-                <div className="space-y-2">
+                <div {...stylex.props(styles.field)}>
                   <Label htmlFor="signup-name">昵称</Label>
                   <Input
                     id="signup-name"
                     type="text"
                     placeholder="请输入您的昵称"
                     value={signupName}
-                    onChange={(e) => setSignupName(e.target.value)}
+                    onChange={(event) => setSignupName(event.target.value)}
                     required
                     disabled={isLoading}
-                    className="w-full"
                   />
                 </div>
                 <EmailField
@@ -206,17 +208,16 @@ function EmailField({
   disabled: boolean;
 }) {
   return (
-    <div className="space-y-2">
+    <div {...stylex.props(styles.field)}>
       <Label htmlFor={id}>邮箱地址</Label>
       <Input
         id={id}
         type="email"
         placeholder="请输入您的邮箱地址"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(event) => onChange(event.target.value)}
         required
         disabled={disabled}
-        className="w-full"
       />
     </div>
   );
@@ -232,12 +233,16 @@ function SubmitButton({
   label: string;
 }) {
   return (
-    <Button type="submit" className="w-full" disabled={isLoading || disabled}>
+    <Button
+      type="submit"
+      stylexStyle={styles.fullWidth}
+      disabled={isLoading || disabled}
+    >
       {isLoading ? (
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        <span {...stylex.props(styles.loadingLabel)}>
+          <span {...stylex.props(styles.spinner)} />
           发送中...
-        </div>
+        </span>
       ) : (
         label
       )}
@@ -247,38 +252,80 @@ function SubmitButton({
 
 function EmailSentMessage({ mode, email }: { mode: AuthMode; email: string }) {
   const modeText = mode === "login" ? "登录" : "注册";
-
   return (
-    <div className="space-y-4 text-center">
-      <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
-        <div className="flex items-center justify-center">
-          <div className="shrink-0">
-            <svg
-              className="h-5 w-5 text-green-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-green-800 dark:text-green-200">
-              {modeText}链接已发送！
-            </p>
-            <p className="text-sm text-green-700 dark:text-green-300">
+    <div {...stylex.props(styles.sentRoot)}>
+      <div {...stylex.props(styles.sentPanel)}>
+        <div {...stylex.props(styles.sentRow)}>
+          <MaskIcon name="check-line" stylexStyle={styles.sentIcon} />
+          <div>
+            <p {...stylex.props(styles.sentTitle)}>{modeText}链接已发送！</p>
+            <p {...stylex.props(styles.sentDescription)}>
               请检查您的邮箱 ({email}) 并点击链接
               {mode === "login" ? "登录" : "完成注册"}
             </p>
           </div>
         </div>
       </div>
-      <p className="text-sm text-muted-foreground">
+      <p {...stylex.props(styles.help)}>
         如果几分钟内没有收到邮件，请检查垃圾邮件文件夹
       </p>
     </div>
   );
 }
+
+const spin = stylex.keyframes({ to: { transform: "rotate(360deg)" } });
+
+const styles = stylex.create({
+  dialogContent: { maxWidth: "28rem" },
+  title: { alignItems: "center", display: "flex", gap: spacing.sm },
+  titleIcon: { height: "1.25rem", width: "1.25rem" },
+  fullWidth: { width: "100%" },
+  tabList: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    width: "100%",
+  },
+  tabContent: { marginTop: spacing.lg },
+  form: { display: "flex", flexDirection: "column", gap: spacing.lg },
+  field: { display: "flex", flexDirection: "column", gap: spacing.sm },
+  loadingLabel: { alignItems: "center", display: "flex", gap: spacing.sm },
+  spinner: {
+    animationDuration: "800ms",
+    animationIterationCount: "infinite",
+    animationName: spin,
+    animationTimingFunction: "linear",
+    borderColor: colors.textOnAccent,
+    borderRadius: radii.round,
+    borderStyle: "solid",
+    borderTopColor: "transparent",
+    borderWidth: "2px",
+    height: "1rem",
+    width: "1rem",
+  },
+  sentRoot: {
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.lg,
+    textAlign: "center",
+  },
+  sentPanel: {
+    backgroundColor: colors.successSurface,
+    borderRadius: radii.lg,
+    padding: spacing.lg,
+  },
+  sentRow: { alignItems: "center", display: "flex", justifyContent: "center" },
+  sentIcon: {
+    color: colors.success,
+    flexShrink: 0,
+    height: "1.25rem",
+    marginInlineEnd: spacing.md,
+    width: "1.25rem",
+  },
+  sentTitle: {
+    color: colors.success,
+    fontSize: typography.sizeSm,
+    fontWeight: typography.weightMedium,
+  },
+  sentDescription: { color: colors.textSecondary, fontSize: typography.sizeSm },
+  help: { color: colors.textMuted, fontSize: typography.sizeSm },
+});

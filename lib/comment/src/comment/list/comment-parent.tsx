@@ -1,36 +1,34 @@
+import * as stylex from "@stylexjs/stylex";
 import type { LayeredCommentData } from "@repo/api/comment/get.model";
+import {
+  colors,
+  radii,
+  shadows,
+  spacing,
+} from "@repo/design-tokens/tokens.stylex";
 import { useChildrenQuery } from "../hooks/use-children-query";
 import { CommentItem } from "./comment-item";
 
-interface CommentParentProps {
+export function CommentParent({
+  parentComment,
+}: {
   parentComment: LayeredCommentData;
-}
-
-/**
- * Renders a parent comment with its child replies.
- * Supports loading more children with pagination.
- */
-export function CommentParent({ parentComment }: CommentParentProps) {
-  const {
-    data: childrenData,
-    hasNextPage,
-    fetchNextPage,
-  } = useChildrenQuery(parentComment);
+}) {
+  const { data, hasNextPage, fetchNextPage } = useChildrenQuery(parentComment);
 
   return (
-    <div className="flex flex-col">
+    <div {...stylex.props(styles.root)}>
       <CommentItem comment={parentComment.data} />
       {parentComment.children.total > 0 && (
-        <div className="ml-6 pl-4">
-          {childrenData.pages
-            .map((page) => page.data)
-            .flat()
+        <div {...stylex.props(styles.children)}>
+          {data.pages
+            .flatMap((page) => page.data)
             .map((child) => {
               const replyToName =
                 child.replyToId === parentComment.data.id
                   ? parentComment.data.displayName
                   : parentComment.children.data.find(
-                      (c) => c.id === child.replyToId,
+                      (candidate) => candidate.id === child.replyToId,
                     )?.displayName;
               return (
                 <CommentItem
@@ -41,10 +39,11 @@ export function CommentParent({ parentComment }: CommentParentProps) {
               );
             })}
           {hasNextPage && (
-            <div className="flex justify-center">
+            <div {...stylex.props(styles.center)}>
               <button
+                type="button"
                 onClick={() => void fetchNextPage()}
-                className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
+                {...stylex.props(styles.loadButton)}
               >
                 加载更多回复
               </button>
@@ -55,3 +54,23 @@ export function CommentParent({ parentComment }: CommentParentProps) {
     </div>
   );
 }
+
+const styles = stylex.create({
+  root: { display: "flex", flexDirection: "column" },
+  children: { marginInlineStart: spacing.xl, paddingInlineStart: spacing.lg },
+  center: { display: "flex", justifyContent: "center" },
+  loadButton: {
+    backgroundColor: "transparent",
+    borderColor: colors.borderDefault,
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: "1px",
+    boxShadow: shadows.md,
+    color: colors.textSecondary,
+    cursor: "pointer",
+    paddingBlock: spacing.xs,
+    paddingInline: spacing.sm,
+    ":hover": { transform: "scale(1.05)" },
+    ":active": { transform: "scale(0.95)" },
+  },
+});

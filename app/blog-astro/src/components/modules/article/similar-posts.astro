@@ -1,6 +1,13 @@
 ---
 import { getSimilarPosts } from "@/lib/utils/content";
-import { cn } from "@/lib/utils/cn";
+import {
+  colors,
+  motion,
+  spacing,
+  typography,
+} from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
+import { layout } from "@/styles/shared.stylex";
 
 interface Props {
   currentSlug: string;
@@ -9,39 +16,110 @@ interface Props {
 
 const { currentSlug, limit = 3 } = Astro.props;
 const similarPosts = await getSimilarPosts(currentSlug, limit);
+
+const styles = stylex.create({
+  headingRow: {
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    paddingBlock: spacing.lg,
+    paddingInline: spacing.xl,
+  },
+  heading: {
+    fontSize: typography.sizeLg,
+    fontWeight: typography.weightMedium,
+    margin: 0,
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    "@media (min-width: 48rem)": {
+      gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    },
+  },
+  card: {
+    containerType: "inline-size",
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.sm,
+    paddingBlock: spacing.xl,
+    paddingInline: spacing.xl,
+    textDecoration: "none",
+    transitionDuration: motion.durationFast,
+    transitionProperty: "background-color, color",
+    transitionTimingFunction: motion.easeStandard,
+    ":hover": {
+      backgroundColor: colors.surfaceInteractiveHover,
+      color: colors.accentText,
+    },
+    "@container (min-width: 20rem)": {
+      paddingBlock: spacing.xxl,
+      paddingInline: spacing.xxl,
+    },
+  },
+  divider: {
+    borderBottomColor: colors.borderDefault,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    "@media (min-width: 48rem)": {
+      borderBottomWidth: 0,
+      borderRightColor: colors.borderDefault,
+      borderRightStyle: "solid",
+      borderRightWidth: "1px",
+    },
+  },
+  title: {
+    fontWeight: typography.weightMedium,
+    lineHeight: typography.lineNormal,
+    margin: 0,
+    transitionDuration: motion.durationFast,
+    transitionProperty: "color",
+  },
+  tags: {
+    alignItems: "center",
+    color: colors.textSecondary,
+    display: "flex",
+    fontSize: typography.sizeSm,
+    marginBlockStart: "auto",
+    paddingBlockStart: spacing.sm,
+    userSelect: "none",
+  },
+  hash: { height: "1rem", marginInlineEnd: spacing.xs, width: "1rem" },
+  tagList: { display: "inline-flex", gap: spacing.xs },
+});
+
+const hashAttrs = stylex.attrs(styles.hash);
 ---
 
 {
   similarPosts.length > 0 && (
-    <div class="border-b border-container">
-      <div class="main-container">
-        <div class="border-b border-container px-6 py-4">
-          <h2 class="text-lg font-medium">相关推荐</h2>
+    <div {...stylex.attrs(layout.sectionBorder)}>
+      <div {...stylex.attrs(layout.mainContainer)}>
+        <div {...stylex.attrs(styles.headingRow)}>
+          <h2 {...stylex.attrs(styles.heading)}>相关推荐</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3">
+        <div {...stylex.attrs(styles.grid)}>
           {similarPosts.map(({ post }, index) => (
             <a
               href={`/post/${post.id}`}
-              class={cn([
-                "group @container",
-                "border-container color-transition-card-btn",
-                "flex flex-col gap-2 px-6 py-6 @lg:px-8 @lg:py-8",
-                index < similarPosts.length - 1 &&
-                  "border-b md:border-r md:border-b-0",
-              ])}
+              {...stylex.attrs(
+                styles.card,
+                index < similarPosts.length - 1 && styles.divider,
+              )}
             >
-              <h3 class="leading-snug font-medium transition-colors group-hover:text-accent-foreground">
-                {post.data.title}
-              </h3>
+              <h3 {...stylex.attrs(styles.title)}>{post.data.title}</h3>
               {post.data.tags.length > 0 && (
-                <div class="mt-auto flex items-center pt-2 text-sm text-comment select-none">
-                  <span class="mr-1 i-lucide-hash size-4" />
-                  <span class="space-x-0.5">
+                <div {...stylex.attrs(styles.tags)}>
+                  <span
+                    class:list={[hashAttrs.class, "i-lucide-hash"]}
+                    style={hashAttrs.style}
+                  />
+                  <span {...stylex.attrs(styles.tagList)}>
                     {post.data.tags.slice(0, 3).map((tag, tagIndex) => (
-                      <>
+                      <Fragment>
                         {tagIndex !== 0 && <span>|</span>}
                         <span>{tag}</span>
-                      </>
+                      </Fragment>
                     ))}
                   </span>
                 </div>

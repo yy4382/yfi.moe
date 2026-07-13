@@ -2,20 +2,20 @@
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 import font from "vite-plugin-font";
 import { siteDomain } from "./src/config/site";
+import { stylexIntegration } from "./stylex-integration";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), sitemap(), mdx()],
+  integrations: [stylexIntegration(), react(), sitemap(), mdx()],
   output: "static",
 
   site: siteDomain,
 
   vite: {
-    plugins: [tailwindcss(), fileSystemPath(), font.vite()],
+    plugins: [fileSystemPath(), font.vite()],
   },
 
   env: {

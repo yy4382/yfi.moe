@@ -1,0 +1,3 @@
+# Use StyleX for components and CSS for global markup
+
+Tailwind and its plugins are removed completely, with StyleX owning component-local styles, variants, states, and animations. Plain CSS remains a narrow application-bundled escape hatch for document resets, root and browser behavior, vendor styles, finite icon masks, and descendant selectors over externally generated markup such as rendered Markdown; it must not become a parallel component styling system. After migration, ordinary Astro `<style>` blocks are prohibited and every plain-CSS exception lives in a named source file owned by and imported from the relevant module.

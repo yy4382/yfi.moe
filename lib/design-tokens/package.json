@@ -1,0 +1,19 @@
+{
+  "name": "@repo/design-tokens",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "exports": {
+    "./tokens.stylex": "./src/tokens.stylex.ts"
+  },
+  "peerDependencies": {
+    "@stylexjs/stylex": "catalog:"
+  },
+  "devDependencies": {
+    "@stylexjs/stylex": "catalog:",
+    "typescript": "catalog:"
+  }
+}

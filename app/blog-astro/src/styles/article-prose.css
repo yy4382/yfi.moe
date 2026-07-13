@@ -1,0 +1,130 @@
+@import "remark-github-alerts/styles/github-base.css";
+@import "remark-github-alerts/styles/github-colors-light.css";
+@import "remark-github-alerts/styles/github-colors-dark-media.css";
+
+.article-prose {
+  color: var(--color-text-primary);
+  line-height: var(--line-height-relaxed);
+  margin-inline: auto;
+  max-width: 40em;
+  overflow-wrap: break-word;
+}
+
+.article-prose a:not([data-unstyled-link]) {
+  border-bottom: 2px solid
+    color-mix(in srgb, var(--color-text-primary) 35%, transparent);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 120ms ease-out,
+    color 120ms ease-out;
+}
+
+.article-prose a:not([data-unstyled-link]):hover {
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--color-text-primary) 65%,
+    transparent
+  );
+  color: var(--color-accent-text);
+}
+
+.article-prose :is(h1, h2, h3, h4) {
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  scroll-margin-top: calc(var(--navbar-height) + 2rem);
+}
+
+.article-prose h1 {
+  font-size: 2.25rem;
+  margin-block: 0 0.9em;
+}
+
+.article-prose h2 {
+  border-bottom: 1px solid var(--color-border-default);
+  font-size: 1.75rem;
+  margin-block: 1.6em 0.75em;
+  padding-bottom: 0.3em;
+}
+
+.article-prose h3 {
+  font-size: 1.35rem;
+  margin-block: 1.5em 0.6em;
+}
+
+.article-prose h4 {
+  font-size: 1.1rem;
+  margin-block: 1.4em 0.5em;
+}
+
+.article-prose :is(p, ul, ol, blockquote, pre, table) {
+  margin-block: 1.25em;
+}
+
+.article-prose :is(ul, ol) {
+  padding-inline-start: 1.625em;
+}
+
+.article-prose code:not(pre code) {
+  background: var(--color-surface-muted);
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+  padding: 0.15em 0.35em;
+  white-space: pre-wrap;
+}
+
+.article-prose blockquote {
+  border-inline-start: 0.25rem solid var(--color-border-strong);
+  margin-inline: 0;
+  padding-inline-start: 1rem;
+}
+
+.article-prose pre {
+  border: 1px solid var(--color-border-default);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.article-prose pre code {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  padding: 1rem;
+}
+
+.article-prose hr {
+  border: 0;
+  border-top: 1px solid var(--color-border-default);
+  margin-block: 2.5rem;
+}
+
+.article-prose table {
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.article-prose :is(th, td) {
+  border: 1px solid var(--color-border-default);
+  padding: 0.5rem 0.75rem;
+}
+
+.article-prose th {
+  background: var(--color-surface-muted);
+  text-align: start;
+}
+
+.article-prose img {
+  height: auto;
+  max-width: 100%;
+}
+
+.article-prose [data-article-embedded-element] {
+  margin-block: 1.5rem;
+}
+
+.copy-code-pre {
+  position: relative;
+}

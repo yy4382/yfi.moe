@@ -1,19 +1,39 @@
 ---
 import Section from "@/components/ui/section.astro";
+import { colors, spacing, typography } from "@repo/design-tokens/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
 
 interface Props {
   title: string;
   desc?: string;
 }
-
 const { title, desc } = Astro.props;
+const styles = stylex.create({
+  hero: {
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    height: "13rem",
+    justifyContent: "center",
+    "@media (min-width: 64rem)": { height: "24rem" },
+  },
+  title: {
+    color: colors.textPrimary,
+    fontSize: "3rem",
+    fontWeight: typography.weightBold,
+    margin: 0,
+    "@container (min-width: 48rem)": { fontSize: "3.75rem" },
+  },
+  description: {
+    color: colors.textPrimary,
+    fontSize: typography.sizeLg,
+    marginBlock: `${spacing.lg} 0`,
+    marginInlineStart: spacing.xs,
+  },
+});
 ---
 
-<Section
-  class="flex h-52 flex-col items-start justify-center lg:h-96"
-  padding="postList"
-  bg="grid"
->
-  <h1 class="text-5xl font-bold text-heading @3xl:text-6xl">{title}</h1>
-  {desc && <p class="mt-4 ml-1 text-lg text-content">{desc}</p>}
+<Section contentStyle={styles.hero} padding="postList" bg="grid">
+  <h1 {...stylex.attrs(styles.title)}>{title}</h1>
+  {desc && <p {...stylex.attrs(styles.description)}>{desc}</p>}
 </Section>
