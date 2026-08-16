@@ -1,0 +1,3 @@
+interface:
+  display_name: "Motion Brief"
+  short_description: "Interview the user into a motion brief before any animation gets built"

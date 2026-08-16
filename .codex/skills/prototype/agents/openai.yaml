@@ -1,0 +1,3 @@
+interface:
+  display_name: "Prototype"
+  short_description: "Build several genuinely different versions of a UI piece behind a visual picker"
