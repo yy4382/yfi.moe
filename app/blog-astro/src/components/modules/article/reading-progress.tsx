@@ -1,7 +1,9 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { motion, useMotionValue, animate } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { styles } from "./reading-progress.stylex";
 
 const ELEMENT_IDS = {
   articleContent: "article-content",
@@ -149,16 +151,13 @@ function ReadingProgress() {
   if (!visible) return null;
 
   return (
-    <div
-      className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden sm:block"
-      aria-hidden="true"
-    >
+    <div {...stylex.props(styles.root)} aria-hidden="true">
       <div
-        className="sticky top-(--navbar-height) h-[calc(100vh-var(--navbar-height))]"
+        {...stylex.props(styles.track)}
         style={{ padding: `${PADDING}px 0` }}
       >
         <motion.div
-          className="w-5 rounded-r-full bg-(--container-border)"
+          {...stylex.props(styles.indicator)}
           style={{ y, x: leftOffset, height: INDICATOR_HEIGHT }}
         />
       </div>

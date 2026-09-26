@@ -1,6 +1,8 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import { getSimilarPosts } from "@/lib/utils/content";
-import { cn } from "@/lib/utils/cn";
+import { layout } from "@/styles/layout.stylex";
+import { cardMarker, styles } from "./similar-posts.stylex";
 
 interface Props {
   currentSlug: string;
@@ -13,34 +15,43 @@ const similarPosts = await getSimilarPosts(currentSlug, limit);
 
 {
   similarPosts.length > 0 && (
-    <div class="border-b border-container">
-      <div class="main-container">
-        <div class="border-b border-container px-6 py-4">
-          <h2 class="text-lg font-medium">相关推荐</h2>
+    <div {...stylex.attrs(layout.divider)}>
+      <div {...stylex.attrs(layout.container)}>
+        <div {...stylex.attrs(styles.headingContainer)}>
+          <h2 {...stylex.attrs(styles.heading)}>相关推荐</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3">
+        <div {...stylex.attrs(styles.grid)}>
           {similarPosts.map(({ post }, index) => (
             <a
               href={`/post/${post.id}`}
-              class={cn([
-                "group @container",
-                "border-container color-transition-card-btn",
-                "flex flex-col gap-2 px-6 py-6 @lg:px-8 @lg:py-8",
-                index < similarPosts.length - 1 &&
-                  "border-b md:border-r md:border-b-0",
-              ])}
+              {...stylex.attrs(
+                cardMarker,
+                styles.card,
+                index < similarPosts.length - 1 && styles.separatedCard,
+              )}
             >
-              <h3 class="leading-snug font-medium transition-colors group-hover:text-accent-foreground">
-                {post.data.title}
-              </h3>
+              <h3 {...stylex.attrs(styles.title)}>{post.data.title}</h3>
               {post.data.tags.length > 0 && (
-                <div class="mt-auto flex items-center pt-2 text-sm text-comment select-none">
-                  <span class="mr-1 i-lucide-hash size-4" />
-                  <span class="space-x-0.5">
+                <div {...stylex.attrs(styles.tags)}>
+                  <span
+                    class={`i-lucide-hash ${stylex.attrs(styles.tagIcon).class}`}
+                  />
+                  <span>
                     {post.data.tags.slice(0, 3).map((tag, tagIndex) => (
                       <>
-                        {tagIndex !== 0 && <span>|</span>}
-                        <span>{tag}</span>
+                        {tagIndex !== 0 && (
+                          <span {...stylex.attrs(styles.tagPiece)}>|</span>
+                        )}
+                        <span
+                          {...stylex.attrs(
+                            styles.tagPiece,
+                            tagIndex ===
+                              Math.min(post.data.tags.length, 3) - 1 &&
+                              styles.lastTagPiece,
+                          )}
+                        >
+                          {tag}
+                        </span>
                       </>
                     ))}
                   </span>

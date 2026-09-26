@@ -1,0 +1,171 @@
+import * as stylex from "@stylexjs/stylex";
+
+export const projectMarker = stylex.defineMarker();
+export const styles = stylex.create({
+  hero: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "1rem",
+    minHeight: { default: "24rem", "@media (min-width: 48rem)": "40rem" },
+  },
+  brand: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: { default: "1rem", "@media (min-width: 48rem)": "2rem" },
+  },
+  logo: { borderRadius: "calc(var(--radius) - 2px)" },
+  name: {
+    fontSize: { default: "3rem", "@media (min-width: 64rem)": "6rem" },
+    lineHeight: 1,
+    fontWeight: 700,
+  },
+  spacer: { minHeight: "4.5rem" },
+  section: {
+    position: "relative",
+    paddingTop: { default: "5rem", "@media (min-width: 40rem)": "2rem" },
+    paddingBottom: "4rem",
+  },
+  heading: { fontSize: "1.875rem", lineHeight: "2.25rem", fontWeight: 700 },
+  sectionHeading: {
+    marginBottom: "0.5rem",
+    paddingInline: { default: "2rem", "@media (min-width: 40rem)": "2.5rem" },
+  },
+  description: {
+    marginBottom: "3rem",
+    maxWidth: "65ch",
+    paddingInline: { default: "2rem", "@media (min-width: 40rem)": "2.5rem" },
+  },
+  stack: { display: "flex", flexDirection: "column" },
+  statistics: {
+    position: "relative",
+    display: "grid",
+    placeItems: "stretch",
+    borderBlockWidth: "1px",
+    borderColor: "var(--border-color-container)",
+    gridTemplateColumns: {
+      default: null,
+      "@media (min-width: 40rem)": "repeat(3, minmax(0, 1fr))",
+    },
+  },
+  statistic: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBlock: "2rem",
+    borderColor: "var(--border-color-container)",
+  },
+  statisticDivider: {
+    borderBottomWidth: { default: "1px", "@media (min-width: 40rem)": 0 },
+    borderRightWidth: { default: 0, "@media (min-width: 40rem)": "1px" },
+  },
+  headingColor: { color: "var(--color-heading)" },
+  muted: { color: "var(--color-comment)" },
+  cardAction: {
+    backgroundColor: {
+      default: null,
+      "@media (hover: hover)": { ":hover": "var(--accent)" },
+    },
+    color: {
+      default: null,
+      "@media (hover: hover)": { ":hover": "var(--accent-foreground)" },
+    },
+    transitionProperty:
+      "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke",
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    transitionDuration: "150ms",
+  },
+  centered: { display: "flex", alignItems: "center", justifyContent: "center" },
+  more: { gap: "0.25rem", paddingBlock: "1.5rem", fontWeight: 600 },
+  externalIcon: { width: "1.25rem", height: "1.25rem" },
+  underline: { textDecorationLine: "underline" },
+  project: {
+    display: "grid",
+    minHeight: "12rem",
+    gridTemplateColumns: {
+      default: "1fr 5rem",
+      "@media (40rem <= width < 64rem)": "1fr 10rem",
+      "@media (min-width: 64rem)": "12rem 1fr 10rem",
+    },
+    gridTemplateRows: "repeat(1, minmax(0, 1fr))",
+    borderBottomWidth: "1px",
+    borderColor: "var(--border-color-container-light)",
+  },
+  projectIcon: {
+    display: { default: "none", "@media (min-width: 64rem)": "flex" },
+    alignItems: "center",
+    justifyContent: "center",
+    borderRightWidth: "1px",
+    borderColor: "var(--border-color-container-light)",
+    paddingBlock: "2rem",
+  },
+  projectDescription: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: "0.5rem",
+    borderRightWidth: "1px",
+    borderColor: "var(--border-color-container-light)",
+    paddingBlock: "2rem",
+    paddingInline: { default: "2rem", "@media (min-width: 40rem)": "3rem" },
+  },
+  compactProjectIcon: {
+    marginBottom: "1rem",
+    display: { default: "flex", "@media (min-width: 64rem)": "none" },
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  projectTitle: { fontSize: "1.25rem", lineHeight: "1.75rem", fontWeight: 700 },
+  projectLinks: {
+    display: "grid",
+    gridTemplateColumns: "repeat(1, minmax(0, 1fr))",
+    placeItems: "stretch",
+    paddingBlock: 0,
+    fontWeight: 700,
+    color: {
+      default: "color-mix(in oklab, var(--color-comment) 80%, transparent)",
+      "@media (hover: hover)": {
+        [stylex.when.ancestor(":hover", projectMarker)]: "var(--color-content)",
+      },
+    },
+  },
+  projectLinkDivider: {
+    borderBottomWidth: "1px",
+    borderColor: "var(--border-color-container-light)",
+  },
+  projectLinkContent: { display: "inline-flex", gap: "0.5rem" },
+  linkIcon: { width: "1.5rem", height: "1.5rem" },
+  linkText: {
+    display: { default: "none", "@media (min-width: 40rem)": "inline" },
+  },
+  contactSection: {
+    position: "relative",
+    paddingTop: { default: "4.5rem", "@media (min-width: 40rem)": "2rem" },
+    paddingBottom: "2rem",
+  },
+  contact: {
+    position: "relative",
+    display: "flex",
+    width: "100%",
+    height: "100%",
+    flexDirection: { default: "column", "@media (min-width: 40rem)": "row" },
+    alignItems: {
+      default: "flex-start",
+      "@media (min-width: 40rem)": "center",
+    },
+    justifyContent: "center",
+    gap: "1.5rem",
+    paddingInline: { default: "2rem", "@media (min-width: 40rem)": "2.5rem" },
+  },
+  contactLinks: { display: "flex", gap: "1rem" },
+  contactLink: {
+    width: "2.5rem",
+    height: "2.5rem",
+    borderRadius: "calc(infinity * 1px)",
+    padding: "0.5rem",
+  },
+  contactIcon: { width: "1.5rem", height: "1.5rem", color: "white" },
+});

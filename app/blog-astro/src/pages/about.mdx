@@ -4,6 +4,9 @@ title: 关于
 useComment: true
 ---
 
+import * as stylex from "@stylexjs/stylex";
+import { styles, contactMarker } from "@/styles/pages/about.stylex";
+
 import { contactInfo } from "@/config/author";
 
 ## 关于我
@@ -18,22 +21,22 @@ import { contactInfo } from "@/config/author";
 
 ### 链接 🔗
 
-<div class="not-prose my-4 flex gap-4">
+<div class={`not-prose ${stylex.attrs(styles.contacts).class}`}>
   {contactInfo.map((c) => {
     return (
       <a
         href={c.link}
         target="_blank"
-        class="group inline-flex items-center gap-2"
+        {...stylex.attrs(styles.link, contactMarker)}
       >
         <div
           aria-label={c.name}
           style={`background-color: ${c.color}`}
-          class="size-8.5 rounded-full p-1.5 transition-transform group-hover:scale-105 group-active:scale-95"
+          class={stylex.attrs(styles.badge).class}
         >
-          <span class:list={[c.icon, "size-full! text-white!"]} />
+          <span class:list={[c.icon, stylex.attrs(styles.icon).class]} />
         </div>
-        <span class="group-hover:text-primary-foreground]">{c.name}</span>
+        <span>{c.name}</span>
       </a>
     );
   })}

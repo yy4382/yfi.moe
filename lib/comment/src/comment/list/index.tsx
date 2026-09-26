@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import * as stylex from "@stylexjs/stylex";
 import { useAtom } from "jotai";
 import { Fragment } from "react";
 import { z, ZodError } from "zod";
@@ -6,6 +6,7 @@ import MingcuteLoadingLine from "~icons/mingcute/loading-line";
 import { SORT_BY_LABELS, SORT_BY_OPTIONS, sortByAtom } from "../atoms";
 import { useCommentsQuery } from "../hooks/use-comments-query";
 import { CommentParent } from "./comment-parent";
+import { styles } from "./index.stylex";
 
 // Re-export for tests
 export { CommentItem } from "./comment-item";
@@ -33,20 +34,15 @@ export function CommentList() {
   } = useCommentsQuery();
 
   if (isPending) {
-    return (
-      <div className="mt-6 p-4 text-center text-zinc-500">加载评论中...</div>
-    );
+    return <div {...stylex.props(styles.message)}>加载评论中...</div>;
   }
 
   if (isError) {
     return (
-      <div className="mt-6 flex items-center justify-center-safe gap-2 p-4 text-center text-red-500">
+      <div {...stylex.props(styles.error)}>
         加载评论失败:{" "}
         {error instanceof ZodError ? z.prettifyError(error) : error.message}
-        <button
-          onClick={() => void refetch()}
-          className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
-        >
+        <button onClick={() => void refetch()} {...stylex.props(styles.retry)}>
           重试
         </button>
       </div>
@@ -58,29 +54,29 @@ export function CommentList() {
     data.pages.length === 0 ||
     data.pages[0]!.comments.length === 0
   ) {
-    return <div className="mt-6 p-4 text-center text-zinc-500">暂无留言</div>;
+    return <div {...stylex.props(styles.message)}>暂无留言</div>;
   }
 
   return (
-    <div className="mt-10">
+    <div {...stylex.props(styles.root)}>
       {/* Header with count and sort options */}
-      <div className="mb-6 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-comment">
+      <div {...stylex.props(styles.header)}>
+        <div {...stylex.props(styles.inline, styles.commentCount)}>
           <span>共{data.pages[0]!.total}条留言</span>
           {(isFetching || isFetchingNextPage) && (
             <span>
-              <MingcuteLoadingLine className="size-6 animate-spin" />
+              <MingcuteLoadingLine {...stylex.props(styles.loadingIcon)} />
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div {...stylex.props(styles.inline)}>
           {SORT_BY_OPTIONS.map((option) => (
             <button
               key={option}
               onClick={() => setSortBy(option)}
-              className={clsx(
-                "py-1 text-sm text-accent-foreground hover:scale-105 active:scale-95",
-                sortBy !== option && "text-muted-foreground",
+              {...stylex.props(
+                styles.sort,
+                sortBy !== option && styles.inactiveSort,
               )}
             >
               {SORT_BY_LABELS[option]}
@@ -90,7 +86,7 @@ export function CommentList() {
       </div>
 
       {/* Comment list */}
-      <div className="flex flex-col gap-4">
+      <div {...stylex.props(styles.list)}>
         {data.pages
           .map((page) => page.comments)
           .flat()
@@ -103,18 +99,18 @@ export function CommentList() {
 
       {/* Load more button */}
       {hasNextPage && (
-        <div className="flex justify-center">
+        <div {...stylex.props(styles.loadMoreContainer)}>
           <button
             onClick={() => void fetchNextPage()}
             disabled={isFetching}
-            className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
+            {...stylex.props(styles.loadMore)}
           >
             {isFetchingNextPage ? "正在加载..." : "加载更多"}
           </button>
         </div>
       )}
 
-      <div className="mt-6 text-center text-zinc-500">
+      <div {...stylex.props(styles.footer)}>
         {isFetching && !isFetchingNextPage ? "加载中..." : null}
       </div>
     </div>

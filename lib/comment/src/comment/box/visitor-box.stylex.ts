@@ -1,0 +1,87 @@
+import * as stylex from "@stylexjs/stylex";
+
+const bordered = {
+  borderWidth: "1px",
+  borderColor: "var(--border-color-container)",
+  backgroundColor: "var(--background)",
+  boxShadow: "var(--shadow)",
+} as const;
+
+export const styles = stylex.create({
+  root: { display: "flex", flexDirection: "column", gap: "0.5rem" },
+  fields: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
+    gap: "0.5rem",
+  },
+  visuallyHidden: {
+    position: "absolute",
+    width: "1px",
+    height: "1px",
+    margin: "-1px",
+    overflow: "hidden",
+    clipPath: "inset(50%)",
+    whiteSpace: "nowrap",
+  },
+  input: {
+    flex: 1,
+    padding: "0.25rem",
+    borderWidth: "1px",
+    borderColor: "var(--border-color-container)",
+    borderRadius: "var(--radius-md)",
+    outline: "none",
+    boxShadow: { default: null, ":focus": "0 0 0 3px var(--primary)" },
+  },
+  loginButton: {
+    ...bordered,
+    paddingInline: "0.5rem",
+    paddingBlock: "0.25rem",
+    borderRadius: "var(--radius-md)",
+    fontSize: "var(--text-sm)",
+    lineHeight: "var(--text-sm-line-height)",
+  },
+  login: {
+    display: "flex",
+    width: "100%",
+    minHeight: "9rem",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "0.5rem",
+    paddingBlock: "1rem",
+    borderWidth: "1px",
+    borderColor: "var(--border-color-container)",
+    borderRadius: "var(--radius-sm)",
+    backgroundColor: "var(--card)",
+  },
+  loginMethods: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  hint: {
+    color: "var(--color-comment)",
+    fontSize: "var(--text-xs)",
+    lineHeight: "var(--text-xs-line-height)",
+  },
+  providers: { display: "flex", gap: "0.5rem" },
+  providerButton: {
+    ...bordered,
+    display: "flex",
+    alignItems: "center",
+    gap: "0.25rem",
+    padding: "0.5rem",
+    borderRadius: "3.40282e38px",
+  },
+  providerIcon: { width: "1rem", height: "1rem" },
+  visitorButton: {
+    ...bordered,
+    paddingInline: "0.75rem",
+    paddingBlock: "0.375rem",
+    borderRadius: "3.40282e38px",
+    fontSize: "var(--text-sm)",
+    lineHeight: "var(--text-sm-line-height)",
+  },
+});

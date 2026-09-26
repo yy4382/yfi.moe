@@ -1,9 +1,9 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import type { ArticleRenderResult } from "@repo/markdown/article";
 import { toHtml } from "hast-util-to-html";
 import { SKIP, visit } from "unist-util-visit";
 
-import "@/styles/global.css";
 import "@repo/markdown/style";
 import { renderToString } from "react-dom/server";
 import { createElement } from "react";
@@ -11,6 +11,7 @@ import {
   createArticleEmbeddedElement,
   isArticleEmbeddedElementName,
 } from "./article-embedded-elements";
+import { styles } from "./markdown-article.stylex";
 
 interface Props {
   hast: ArticleRenderResult["hast"];
@@ -42,7 +43,7 @@ const html = toHtml(hast, { allowDangerousHtml: true });
 <article
   set:html={html}
   id="article-content"
-  class="mx-auto prose wrap-break-word prose-gray dark:prose-invert prose-headings:scroll-mt-8"
+  class={`prose prose-gray prose-theme article-prose ${stylex.attrs(styles.root).class}`}
 />
 
 <script>

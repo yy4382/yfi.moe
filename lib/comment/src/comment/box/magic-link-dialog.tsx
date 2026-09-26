@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -20,6 +21,7 @@ import { getRefetchSessionUrl } from "@/lib/auth/refetch-session-url";
 import { useAuthClient } from "@/lib/hooks/context";
 import { persistentEmailAtom, persistentNameAtom } from "../atoms";
 import { DIALOG_CLOSE_DELAY } from "../utils/constants";
+import { styles } from "./magic-link-dialog.stylex";
 
 interface MagicLinkDialogProps {
   children: React.ReactNode;
@@ -107,10 +109,10 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent styles={styles.dialog}>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <MailSendLineIcon className="size-5" />
+          <DialogTitle styles={styles.title}>
+            <MailSendLineIcon {...stylex.props(styles.titleIcon)} />
             邮箱登录/注册
           </DialogTitle>
           <DialogDescription>
@@ -124,20 +126,20 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
           <Tabs
             value={activeTab}
             onValueChange={(v) => setActiveTab(v as AuthMode)}
-            className="w-full"
+            styles={styles.fullWidth}
           >
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList styles={styles.tabsList}>
               <TabsTrigger value="login">登录</TabsTrigger>
               <TabsTrigger value="signup">注册</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="login" className="mt-4 space-y-4">
+            <TabsContent value="login" styles={styles.tabsContent}>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   void handleMagicLink("login");
                 }}
-                className="space-y-4"
+                {...stylex.props(styles.stack4)}
               >
                 <EmailField
                   id="login-email"
@@ -153,15 +155,15 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
               </form>
             </TabsContent>
 
-            <TabsContent value="signup" className="mt-4 space-y-4">
+            <TabsContent value="signup" styles={styles.tabsContent}>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   void handleMagicLink("signup");
                 }}
-                className="space-y-4"
+                {...stylex.props(styles.stack4)}
               >
-                <div className="space-y-2">
+                <div {...stylex.props(styles.stack2)}>
                   <Label htmlFor="signup-name">昵称</Label>
                   <Input
                     id="signup-name"
@@ -171,7 +173,7 @@ export function MagicLinkDialog({ children }: MagicLinkDialogProps) {
                     onChange={(e) => setSignupName(e.target.value)}
                     required
                     disabled={isLoading}
-                    className="w-full"
+                    styles={styles.fullWidth}
                   />
                 </div>
                 <EmailField
@@ -206,7 +208,7 @@ function EmailField({
   disabled: boolean;
 }) {
   return (
-    <div className="space-y-2">
+    <div {...stylex.props(styles.stack2)}>
       <Label htmlFor={id}>邮箱地址</Label>
       <Input
         id={id}
@@ -216,7 +218,7 @@ function EmailField({
         onChange={(e) => onChange(e.target.value)}
         required
         disabled={disabled}
-        className="w-full"
+        styles={styles.fullWidth}
       />
     </div>
   );
@@ -232,10 +234,14 @@ function SubmitButton({
   label: string;
 }) {
   return (
-    <Button type="submit" className="w-full" disabled={isLoading || disabled}>
+    <Button
+      type="submit"
+      styles={styles.fullWidth}
+      disabled={isLoading || disabled}
+    >
       {isLoading ? (
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        <div {...stylex.props(styles.loading)}>
+          <div {...stylex.props(styles.spinner)} />
           发送中...
         </div>
       ) : (
@@ -249,12 +255,12 @@ function EmailSentMessage({ mode, email }: { mode: AuthMode; email: string }) {
   const modeText = mode === "login" ? "登录" : "注册";
 
   return (
-    <div className="space-y-4 text-center">
-      <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
-        <div className="flex items-center justify-center">
-          <div className="shrink-0">
+    <div {...stylex.props(styles.sent)}>
+      <div {...stylex.props(styles.success)}>
+        <div {...stylex.props(styles.successRow)}>
+          <div {...stylex.props(styles.iconContainer)}>
             <svg
-              className="h-5 w-5 text-green-400"
+              {...stylex.props(styles.successIcon)}
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -265,18 +271,16 @@ function EmailSentMessage({ mode, email }: { mode: AuthMode; email: string }) {
               />
             </svg>
           </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-green-800 dark:text-green-200">
-              {modeText}链接已发送！
-            </p>
-            <p className="text-sm text-green-700 dark:text-green-300">
+          <div {...stylex.props(styles.successCopy)}>
+            <p {...stylex.props(styles.successTitle)}>{modeText}链接已发送！</p>
+            <p {...stylex.props(styles.successDescription)}>
               请检查您的邮箱 ({email}) 并点击链接
               {mode === "login" ? "登录" : "完成注册"}
             </p>
           </div>
         </div>
       </div>
-      <p className="text-sm text-muted-foreground">
+      <p {...stylex.props(styles.note)}>
         如果几分钟内没有收到邮件，请检查垃圾邮件文件夹
       </p>
     </div>

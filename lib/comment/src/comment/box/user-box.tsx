@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, type PropsWithChildren } from "react";
 import { toast } from "sonner";
@@ -7,6 +8,7 @@ import { getDiceBearUrl } from "@repo/helpers/get-gravatar-url";
 import type { AuthClient } from "@/lib/auth/create-auth";
 import { sessionOptionsKey } from "@/lib/auth/session-options";
 import { useAuthClient } from "@/lib/hooks/context";
+import { styles, userMarker } from "./user-box.stylex";
 
 type UserBoxProps = PropsWithChildren<{
   session: AuthClient["$Infer"]["Session"];
@@ -42,22 +44,22 @@ export function UserBox({ children, session }: UserBoxProps) {
   }, [queryClient, authClient]);
 
   return (
-    <div className="flex w-full items-end gap-4">
-      <div className="group relative mb-2 shrink-0">
+    <div {...stylex.props(styles.root)}>
+      <div {...stylex.props(userMarker, styles.avatarContainer)}>
         <img
           src={session.user.image ?? getDiceBearUrl(session.user.email)}
           alt={session.user.name}
           width={56}
           height={56}
-          className="aspect-square size-14 rounded-full ring-2 ring-black dark:ring-white"
+          {...stylex.props(styles.avatar)}
         />
-        <div className="absolute -top-1 -right-1 z-10 hidden size-4 rounded-md bg-zinc-500/50 p-0.5 group-hover:block">
+        <div {...stylex.props(styles.signOut)}>
           <button
             aria-label="退出登录"
             onClick={() => void handleSignOut()}
-            className="flex size-full items-center justify-center"
+            {...stylex.props(styles.center)}
           >
-            <MingcuteCloseLine className="size-2.5" />
+            <MingcuteCloseLine {...stylex.props(styles.signOutIcon)} />
           </button>
         </div>
         {!isAccountsError &&
@@ -65,8 +67,8 @@ export function UserBox({ children, session }: UserBoxProps) {
           accounts?.data?.find(
             (account) => account.providerId === "github",
           ) && (
-            <span className="absolute -right-1 -bottom-1 z-10 flex items-center justify-center rounded-full bg-white p-0.5 pb-0 ring-1 dark:ring-black">
-              <GitHubIcon className="size-3.5 text-black" />
+            <span {...stylex.props(styles.githubBadge)}>
+              <GitHubIcon {...stylex.props(styles.githubIcon)} />
             </span>
           )}
       </div>

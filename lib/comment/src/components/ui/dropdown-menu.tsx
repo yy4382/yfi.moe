@@ -1,11 +1,14 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import * as React from "react";
 import MingcuteCheckLine from "~icons/mingcute/check-line";
 import MingcuteRightLine from "~icons/mingcute/right-line";
 import MingcuteRoundLine from "~icons/mingcute/round-line";
 import { cn } from "@/lib/utils";
+import { styles as dropdownStyles } from "./dropdown-menu.stylex";
+import "./ui.css";
 
 function DropdownMenu({
   ...props
@@ -22,11 +25,18 @@ function DropdownMenuPortal({
 }
 
 function DropdownMenuTrigger({
+  className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(styles);
   return (
     <DropdownMenuPrimitive.Trigger
+      {...styleProps}
       data-slot="dropdown-menu-trigger"
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -34,18 +44,20 @@ function DropdownMenuTrigger({
 
 function DropdownMenuContent({
   className,
+  styles,
   sideOffset = 4,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dropdownStyles.content, styles);
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
+        {...styleProps}
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
-        className={cn(
-          "z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
-          className,
-        )}
+        className={cn(styleProps.className, className)}
         {...props}
       />
     </DropdownMenuPrimitive.Portal>
@@ -53,31 +65,46 @@ function DropdownMenuContent({
 }
 
 function DropdownMenuGroup({
+  className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Group> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(styles);
   return (
-    <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
+    <DropdownMenuPrimitive.Group
+      {...styleProps}
+      data-slot="dropdown-menu-group"
+      className={cn(styleProps.className, className)}
+      {...props}
+    />
   );
 }
 
 function DropdownMenuItem({
   className,
+  styles,
   inset,
   variant = "default",
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
+  styles?: stylex.StyleXStyles;
   inset?: boolean;
   variant?: "default" | "destructive";
 }) {
+  const styleProps = stylex.props(
+    dropdownStyles.item,
+    variant === "destructive" && dropdownStyles.destructiveItem,
+    styles,
+  );
   return (
     <DropdownMenuPrimitive.Item
+      {...styleProps}
       data-slot="dropdown-menu-item"
       data-inset={inset}
       data-variant={variant}
-      className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground data-[variant=destructive]:*:[svg]:!text-destructive",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -87,21 +114,23 @@ function DropdownMenuCheckboxItem({
   className,
   children,
   checked,
+  styles,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dropdownStyles.selectionItem, styles);
   return (
     <DropdownMenuPrimitive.CheckboxItem
+      {...styleProps}
       data-slot="dropdown-menu-checkbox-item"
-      className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       checked={checked}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span {...stylex.props(dropdownStyles.indicator)}>
         <DropdownMenuPrimitive.ItemIndicator>
-          <MingcuteCheckLine className="size-4" />
+          <MingcuteCheckLine {...stylex.props(dropdownStyles.icon)} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -110,11 +139,18 @@ function DropdownMenuCheckboxItem({
 }
 
 function DropdownMenuRadioGroup({
+  className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(styles);
   return (
     <DropdownMenuPrimitive.RadioGroup
+      {...styleProps}
       data-slot="dropdown-menu-radio-group"
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -123,20 +159,24 @@ function DropdownMenuRadioGroup({
 function DropdownMenuRadioItem({
   className,
   children,
+  styles,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dropdownStyles.selectionItem, styles);
   return (
     <DropdownMenuPrimitive.RadioItem
+      {...styleProps}
       data-slot="dropdown-menu-radio-item"
-      className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span {...stylex.props(dropdownStyles.indicator)}>
         <DropdownMenuPrimitive.ItemIndicator>
-          <MingcuteRoundLine className="size-2 fill-current" />
+          <MingcuteRoundLine
+            {...stylex.props(dropdownStyles.icon, dropdownStyles.radioIcon)}
+          />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -146,19 +186,20 @@ function DropdownMenuRadioItem({
 
 function DropdownMenuLabel({
   className,
+  styles,
   inset,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & {
+  styles?: stylex.StyleXStyles;
   inset?: boolean;
 }) {
+  const styleProps = stylex.props(dropdownStyles.label, styles);
   return (
     <DropdownMenuPrimitive.Label
+      {...styleProps}
       data-slot="dropdown-menu-label"
       data-inset={inset}
-      className={cn(
-        "px-2 py-1.5 text-sm font-medium data-[inset]:pl-8",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -166,12 +207,17 @@ function DropdownMenuLabel({
 
 function DropdownMenuSeparator({
   className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Separator> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dropdownStyles.separator, styles);
   return (
     <DropdownMenuPrimitive.Separator
+      {...styleProps}
       data-slot="dropdown-menu-separator"
-      className={cn("-mx-1 my-1 h-px bg-border", className)}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -179,15 +225,15 @@ function DropdownMenuSeparator({
 
 function DropdownMenuShortcut({
   className,
+  styles,
   ...props
-}: React.ComponentProps<"span">) {
+}: React.ComponentProps<"span"> & { styles?: stylex.StyleXStyles }) {
+  const styleProps = stylex.props(dropdownStyles.shortcut, styles);
   return (
     <span
+      {...styleProps}
       data-slot="dropdown-menu-shortcut"
-      className={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -201,39 +247,42 @@ function DropdownMenuSub({
 
 function DropdownMenuSubTrigger({
   className,
+  styles,
   inset,
   children,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & {
+  styles?: stylex.StyleXStyles;
   inset?: boolean;
 }) {
+  const styleProps = stylex.props(dropdownStyles.subTrigger, styles);
   return (
     <DropdownMenuPrimitive.SubTrigger
+      {...styleProps}
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset}
-      className={cn(
-        "flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[inset]:pl-8 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     >
       {children}
-      <MingcuteRightLine className="ml-auto size-4" />
+      <MingcuteRightLine {...stylex.props(dropdownStyles.subTriggerIcon)} />
     </DropdownMenuPrimitive.SubTrigger>
   );
 }
 
 function DropdownMenuSubContent({
   className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dropdownStyles.subContent, styles);
   return (
     <DropdownMenuPrimitive.SubContent
+      {...styleProps}
       data-slot="dropdown-menu-sub-content"
-      className={cn(
-        "z-50 min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );

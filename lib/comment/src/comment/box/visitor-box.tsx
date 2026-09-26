@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { useAtom } from "jotai";
 import { motion } from "motion/react";
 import { type PropsWithChildren, useId } from "react";
@@ -12,6 +13,7 @@ import {
   persistentNameAtom,
 } from "../atoms";
 import { MagicLinkDialog } from "./magic-link-dialog";
+import { styles } from "./visitor-box.stylex";
 
 /**
  * Container for guest users with name/email inputs.
@@ -29,33 +31,33 @@ export function VisitorBox({ children }: PropsWithChildren) {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex w-full justify-between gap-2">
-        <label htmlFor={nameId} className="sr-only">
+    <div {...stylex.props(styles.root)}>
+      <div {...stylex.props(styles.fields)}>
+        <label htmlFor={nameId} {...stylex.props(styles.visuallyHidden)}>
           昵称
         </label>
         <input
           id={nameId}
           type="text"
           placeholder="昵称*"
-          className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
+          {...stylex.props(styles.input)}
           value={visitorName}
           onChange={(e) => setVisitorName(e.target.value)}
         />
-        <label htmlFor={emailId} className="sr-only">
+        <label htmlFor={emailId} {...stylex.props(styles.visuallyHidden)}>
           邮箱
         </label>
         <input
           id={emailId}
           type="email"
           placeholder="邮箱*"
-          className="flex-1 rounded-md border border-container p-1 focus:ring focus:ring-primary focus:outline-none"
+          {...stylex.props(styles.input)}
           value={visitorEmail}
           onChange={(e) => setVisitorEmail(e.target.value)}
         />
         <button
           onClick={() => setAsVisitor(false)}
-          className="rounded-md border border-container bg-background px-2 py-1 text-sm shadow"
+          {...stylex.props(styles.loginButton)}
         >
           登录/注册
         </button>
@@ -87,33 +89,33 @@ function VisitorBoxLogin({ setAsVisitor }: VisitorBoxLoginProps) {
   };
 
   return (
-    <div className="flex min-h-36 w-full flex-col items-center justify-between gap-2 rounded-sm border border-container bg-card py-4">
-      <div className="flex flex-col items-center gap-2">
-        <span className="text-xs text-comment">使用社交账号登录</span>
-        <div className="flex gap-2">
+    <div {...stylex.props(styles.login)}>
+      <div {...stylex.props(styles.loginMethods)}>
+        <span {...stylex.props(styles.hint)}>使用社交账号登录</span>
+        <div {...stylex.props(styles.providers)}>
           <motion.button
             onClick={() => void handleGitHubLogin()}
-            className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow"
+            {...stylex.props(styles.providerButton)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <GitHubIcon className="size-4" />
+            <GitHubIcon {...stylex.props(styles.providerIcon)} />
           </motion.button>
 
           <MagicLinkDialog>
             <motion.button
-              className="flex items-center gap-1 rounded-full border border-container bg-background p-2 shadow"
+              {...stylex.props(styles.providerButton)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <MailSendLineIcon className="size-4" />
+              <MailSendLineIcon {...stylex.props(styles.providerIcon)} />
             </motion.button>
           </MagicLinkDialog>
         </div>
       </div>
       <motion.button
         onClick={setAsVisitor}
-        className="rounded-full border border-container bg-background px-3 py-1.5 text-sm shadow"
+        {...stylex.props(styles.visitorButton)}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.95 }}
       >

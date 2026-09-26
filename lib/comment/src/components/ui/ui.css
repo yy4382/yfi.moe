@@ -1,0 +1,65 @@
+/*
+ * Structural pseudo-element and descendant rules for comment UI primitives.
+ * These are bounded by data-slot rather than recreating a utility selector set.
+ */
+
+@layer base {
+  [data-slot="button"] svg,
+  [data-slot="tabs-trigger"] svg,
+  [data-slot="dialog-close"] svg,
+  [data-slot="dropdown-menu-item"] svg,
+  [data-slot="dropdown-menu-checkbox-item"] svg,
+  [data-slot="dropdown-menu-radio-item"] svg {
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  [data-slot="button"] svg,
+  [data-slot="tabs-trigger"] svg,
+  [data-slot="dialog-close"] svg,
+  [data-slot="dropdown-menu-item"] svg,
+  [data-slot="dropdown-menu-checkbox-item"] svg,
+  [data-slot="dropdown-menu-radio-item"] svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  [data-slot="dropdown-menu-item"] svg {
+    color: var(--muted-foreground);
+  }
+
+  [data-slot="dropdown-menu-item"][data-variant="destructive"] svg {
+    color: var(--destructive);
+  }
+
+  [data-slot="input"]::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  [data-slot="input"]::placeholder {
+    color: var(--color-zinc-400);
+  }
+
+  [data-slot="input"]::file-selector-button {
+    display: inline-flex;
+    height: 1.75rem;
+    border-width: 0;
+    background-color: transparent;
+    color: var(--foreground);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--text-sm-line-height);
+  }
+
+  [data-disabled="true"] [data-slot="label"],
+  [data-slot="label"][data-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  [data-slot="label"]:has(~ :disabled) {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}

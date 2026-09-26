@@ -1,49 +1,53 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import type { CollectionEntry } from "astro:content";
 import PostAttrTime from "./post-attr-time.astro";
 import PostAttrTags from "./post-attr-tags.astro";
-import { cn } from "@/lib/utils/cn";
+import { layout } from "@/styles/layout.stylex";
 import { getDesc } from "@/lib/content/get-description";
 import { renderExcerpt } from "@repo/markdown/excerpt";
+import { styles } from "./post-list-item.stylex";
 
 interface Props {
   post: CollectionEntry<"post">;
   class?: string;
+  last?: boolean;
 }
 
-const { post, class: className } = Astro.props;
+const { post, class: className, last = false } = Astro.props;
 
 const excerptHtml = post.data.description
   ? undefined
   : await renderExcerpt(getDesc(post.body!));
+
+const rootClass = stylex.attrs(
+  layout.container,
+  layout.queryContainer,
+  layout.divider,
+  styles.root,
+  last && styles.lastItem,
+).class;
 ---
 
-<div
-  class={cn(
-    "main-container border-container @container h-full border-b",
-    className,
-  )}
->
-  <div class="px-6 py-8 @xl:px-10 @4xl:px-16 @4xl:py-12 @6xl:px-32">
+<div class={`${rootClass}${className ? ` ${className}` : ""}`}>
+  <div {...stylex.attrs(styles.content)}>
     <a href={`/post/${post.id}`}>
-      <h2
-        class="mb-2 text-lg font-bold transition-colors hover:text-accent-foreground @xl:text-xl @4xl:text-3xl"
-      >
+      <h2 {...stylex.attrs(styles.title)}>
         {post.data.title}
       </h2>
     </a>
-    <div class="flex flex-wrap gap-2 text-[0.8rem] text-comment lg:gap-3">
+    <div {...stylex.attrs(styles.attributes)}>
       <PostAttrTime {...post.data} />
       <PostAttrTags tags={post.data.tags} />
     </div>
     {
       post.data.description ? (
-        <div class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert">
+        <div class={`prose prose-theme ${stylex.attrs(styles.excerpt).class}`}>
           {post.data.description}
         </div>
       ) : (
         <div
-          class="prose mt-4 hidden max-w-[90ch] @4xl:block dark:prose-invert"
+          class={`prose prose-theme ${stylex.attrs(styles.excerpt).class}`}
           set:html={excerptHtml ?? ""}
         />
       )

@@ -1,5 +1,7 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import Section from "@/components/ui/section.astro";
+import { styles } from "./list-hero.stylex";
 
 interface Props {
   title: string;
@@ -9,11 +11,7 @@ interface Props {
 const { title, desc } = Astro.props;
 ---
 
-<Section
-  class="flex h-52 flex-col items-start justify-center lg:h-96"
-  padding="postList"
-  bg="grid"
->
-  <h1 class="text-5xl font-bold text-heading @3xl:text-6xl">{title}</h1>
-  {desc && <p class="mt-4 ml-1 text-lg text-content">{desc}</p>}
+<Section styles={styles.section} padding="postList" bg="grid">
+  <h1 {...stylex.attrs(styles.title)}>{title}</h1>
+  {desc && <p {...stylex.attrs(styles.description)}>{desc}</p>}
 </Section>

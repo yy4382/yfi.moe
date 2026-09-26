@@ -1,5 +1,7 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import Section from "@/components/ui/section.astro";
+import { styles } from "./pagination.stylex";
 
 interface Props {
   currentPage: number;
@@ -59,47 +61,50 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
 ---
 
 <Section padding="sm">
-  <div class={`flex flex-row justify-center gap-3 ${className}`}>
+  <div
+    class={`${stylex.attrs(styles.root).class}${className ? ` ${className}` : ""}`}
+  >
     <a
       href={prevPage ? buildPageUrl(prevPage) : undefined}
       aria-label={prevPage ? "Previous Page" : undefined}
-      class={`flex size-12 items-center justify-center overflow-hidden rounded-full transition-colors ${
-        prevPage
-          ? "text-content hover:bg-accent hover:text-accent-foreground"
-          : "text-content/50 cursor-not-allowed"
-      }`}
+      {...stylex.attrs(
+        styles.navigation,
+        prevPage ? styles.navigationEnabled : styles.navigationDisabled,
+      )}
     >
       {
         prevPage ? (
-          <span class="i-lucide-chevron-left size-6" />
+          <span
+            class={`i-lucide-chevron-left ${stylex.attrs(styles.navigationIcon).class}`}
+          />
         ) : (
-          <span class="i-lucide-chevron-left size-6 opacity-50" />
+          <span
+            class={`i-lucide-chevron-left ${stylex.attrs(styles.navigationIcon, styles.disabledIcon).class}`}
+          />
         )
       }
     </a>
 
-    <div
-      class="flex flex-row items-center gap-2 bg-none font-bold text-content"
-    >
+    <div {...stylex.attrs(styles.pages)}>
       {
         pages.map((p, _index) => {
           if (p === HIDDEN) {
-            return <span class="mx-1 i-lucide-more-horizontal size-5" />;
+            return (
+              <span
+                class={`i-lucide-more-horizontal ${stylex.attrs(styles.ellipsis).class}`}
+              />
+            );
           }
 
           if (p === currentPage) {
-            return (
-              <div class="flex size-9 items-center justify-center rounded-full bg-primary/90 text-primary-foreground">
-                {p}
-              </div>
-            );
+            return <div {...stylex.attrs(styles.currentPage)}>{p}</div>;
           }
 
           return (
             <a
               href={buildPageUrl(p)}
               aria-label={`Page ${p}`}
-              class="flex size-9 items-center justify-center rounded-full transition-colors hover:bg-accent hover:text-accent-foreground"
+              {...stylex.attrs(styles.page)}
             >
               {p}
             </a>
@@ -111,17 +116,20 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : undefined;
     <a
       href={nextPage ? buildPageUrl(nextPage) : undefined}
       aria-label={nextPage ? "Next Page" : undefined}
-      class={`flex size-12 items-center justify-center overflow-hidden rounded-full transition-colors ${
-        nextPage
-          ? "text-content hover:bg-accent hover:text-accent-foreground"
-          : "text-content/50 cursor-not-allowed"
-      }`}
+      {...stylex.attrs(
+        styles.navigation,
+        nextPage ? styles.navigationEnabled : styles.navigationDisabled,
+      )}
     >
       {
         nextPage ? (
-          <span class="i-lucide-chevron-right size-6" />
+          <span
+            class={`i-lucide-chevron-right ${stylex.attrs(styles.navigationIcon).class}`}
+          />
         ) : (
-          <span class="i-lucide-chevron-right size-6 opacity-50" />
+          <span
+            class={`i-lucide-chevron-right ${stylex.attrs(styles.navigationIcon, styles.disabledIcon).class}`}
+          />
         )
       }
     </a>

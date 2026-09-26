@@ -1,8 +1,10 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import { getEntry } from "astro:content";
 import { Navbar as NavbarReact, type NavbarProps } from "./navbar/index.tsx";
 import { Image } from "astro:assets";
 import logo from "@/assets/logo.png";
+import { styles } from "./navbar.stylex";
 
 let postInfo: NavbarProps["postInfo"] = undefined;
 if (Astro.routePattern === "/post/[slug]") {
@@ -21,8 +23,8 @@ if (Astro.routePattern === "/post/[slug]") {
   <Image
     src={logo}
     alt="logo"
-    class="h-8 w-8 rounded-lg"
     width={32}
     height={32}
+    {...stylex.attrs(styles.logo)}
   />
 </NavbarReact>

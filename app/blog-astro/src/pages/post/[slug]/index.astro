@@ -1,4 +1,5 @@
 ---
+import { layout } from "@/styles/layout.stylex";
 import { getCollection, getEntry } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import NavLayout from "@/components/layouts/NavLayout.astro";
@@ -52,7 +53,7 @@ const seoConfig = getSeo({
     data.copyright && (
       <>
         <CopyrightCard />
-        <Section class="bg-grid min-h-12" />
+        <Section bg="grid" styles={layout.spacer} />
       </>
     )
   }
@@ -60,12 +61,12 @@ const seoConfig = getSeo({
     data.series && (
       <>
         <SeriesCard seriesId={data.series.id} currentSlug={slug} />
-        <Section class="bg-grid min-h-12" />
+        <Section bg="grid" styles={layout.spacer} />
       </>
     )
   }
   <SimilarPosts currentSlug={slug} />
-  <Section class="bg-grid min-h-12" />
+  <Section bg="grid" styles={layout.spacer} />
   <PrevNext currentSlug={slug} />
   <Comment />
 </NavLayout>

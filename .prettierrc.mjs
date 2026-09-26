@@ -1,10 +1,6 @@
-/** @type {import("prettier").Config & import('prettier-plugin-tailwindcss').PluginOptions} */
+/** @type {import("prettier").Config} */
 export default {
-  plugins: [
-    "prettier-plugin-astro",
-    "@trivago/prettier-plugin-sort-imports",
-    "prettier-plugin-tailwindcss",
-  ],
+  plugins: ["prettier-plugin-astro", "@trivago/prettier-plugin-sort-imports"],
   overrides: [
     {
       files: "*.astro",
@@ -13,6 +9,5 @@ export default {
       },
     },
   ],
-  tailwindStylesheet: "./app/blog-astro/src/styles/global.css",
   importOrder: ["<THIRD_PARTY_MODULES>", "^@repo/(.*)$", "^@/(.*)$", "^[./]"],
 };

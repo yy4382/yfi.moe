@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { useMediaQuery } from "foxact/use-media-query";
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import { useMemo, type PropsWithChildren } from "react";
@@ -5,9 +6,11 @@ import {
   usePageIsOver,
   usePageScrollDirection,
 } from "@/components/providers/scroll-detect";
+import { layout } from "@/styles/layout.stylex";
 import { Logo } from "./logo";
 import { NavLinkList } from "./nav-link-list";
 import { NavLinksDrawer } from "./nav-links-drawer";
+import { styles } from "./navbar.stylex";
 
 const variants = {
   appear: (direction: "up" | "down") => {
@@ -77,9 +80,9 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
   }, [isDesktop, shouldShow, children, url]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 h-(--navbar-height) border-b border-container bg-background/70 backdrop-blur-lg">
-      <section className="main-container flex h-full items-center justify-between px-6 py-4 text-content">
-        <div className="flex min-w-0 shrink grow items-center gap-4">
+    <header {...stylex.props(styles.header)}>
+      <section {...stylex.props(layout.container, styles.container)}>
+        <div {...stylex.props(styles.main)}>
           <AnimatePresence initial={false} mode="popLayout">
             <motion.div
               key={isDesktop ? String(false) : String(shouldShow)}
@@ -94,22 +97,22 @@ export function Navbar({ url, postInfo, children }: NavbarProps) {
           <AnimatePresence mode="popLayout" initial={false} custom={direction}>
             <motion.div
               key={String(shouldShow)}
-              className="min-w-0 shrink grow"
+              {...stylex.props(styles.flexible)}
               {...animateConfig}
             >
               {shouldShow ? (
-                <div className="flex flex-col">
-                  <small className="min-w-0 truncate text-xs">
-                    <span className="text-gray-600/60 dark:text-gray-300/60">
+                <div {...stylex.props(styles.postInfo)}>
+                  <small {...stylex.props(styles.truncate, styles.postTags)}>
+                    <span>
                       {postInfo!.tags.map((tag) => `#${tag}`).join(" / ")}
                     </span>
                   </small>
-                  <h2 className="min-w-0 truncate text-[1.1rem] leading-normal font-medium">
+                  <h2 {...stylex.props(styles.truncate, styles.postTitle)}>
                     {postInfo!.title}
                   </h2>
                 </div>
               ) : (
-                <a href="/" className="text-2xl font-bold">
+                <a href="/" {...stylex.props(styles.siteTitle)}>
                   <span>Yunfi</span>
                 </a>
               )}
