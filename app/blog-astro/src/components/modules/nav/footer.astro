@@ -1,45 +1,46 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import { siteConfig, siteDomain } from "@/config/site";
 import { Image } from "astro:assets";
 import logo from "@/assets/logo.png";
+import { layout } from "@/styles/layout.stylex";
+import { styles } from "./footer.stylex";
 ---
 
-<div
-  class="main-container flex flex-col-reverse items-center justify-between gap-6 px-6 py-4 md:flex-row"
->
-  <a href="/" class="flex gap-4 text-2xl font-bold">
+<div {...stylex.attrs(layout.container, styles.root)}>
+  <a href="/" {...stylex.attrs(styles.brand)}>
     <Image
       src={logo}
       alt="logo"
-      class="h-8 w-8 rounded-lg"
       width="32"
       height="32"
+      {...stylex.attrs(styles.logo)}
     />
     Yunfi
   </a>
-  <div
-    class="flex w-full flex-shrink flex-grow flex-col items-start gap-8 md:w-[unset] md:items-end md:gap-2"
-  >
-    <ul
-      class="flex flex-col items-start gap-x-6 gap-y-1 self-center text-comment md:self-end lg:flex-row lg:items-end"
-    >
+  <div {...stylex.attrs(styles.content)}>
+    <ul {...stylex.attrs(styles.groups)}>
       <li>
-        <span class="inline-flex items-center font-medium text-content">
+        <span {...stylex.attrs(styles.groupTitle)}>
           关于
-          <span class="i-lucide-chevron-right size-4"></span>
+          <span
+            class={`i-lucide-chevron-right ${stylex.attrs(styles.icon).class}`}
+          ></span>
         </span>
-        <span class="inline-flex gap-2">
+        <span {...stylex.attrs(styles.links)}>
           <a href="/about">关于我</a>
           <a href="/about#关于本站">关于本站</a>
           <a href="https://github.com/yy4382/yfi.moe">本站源码</a>
         </span>
       </li>
       <li>
-        <span class="inline-flex items-center font-medium text-content">
+        <span {...stylex.attrs(styles.groupTitle)}>
           联系
-          <span class="i-lucide-chevron-right size-4"></span>
+          <span
+            class={`i-lucide-chevron-right ${stylex.attrs(styles.icon).class}`}
+          ></span>
         </span>
-        <span class="inline-flex gap-2">
+        <span {...stylex.attrs(styles.links)}>
           <button class="copy-email" data-email="yy4382@gmail.com"
             >发邮件</button
           >
@@ -48,32 +49,37 @@ import logo from "@/assets/logo.png";
         </span>
       </li>
     </ul>
-    <div
-      class="flex flex-col items-center self-center text-sm md:items-end md:self-end"
-    >
-      <span class="inline-flex items-center gap-x-1 text-comment">
-        <span class="inline-flex items-center gap-0.5">
-          <span class="i-lucide-copyright size-4"></span>
+    <div {...stylex.attrs(styles.legal)}>
+      <span {...stylex.attrs(styles.legalRow)}>
+        <span {...stylex.attrs(styles.inlineGroup)}>
+          <span class={`i-lucide-copyright ${stylex.attrs(styles.icon).class}`}
+          ></span>
           2023-2024
           <span>
-            <a href={siteDomain} class="underline"> {siteConfig.title}</a>.
+            <a href={siteDomain} {...stylex.attrs(styles.underline)}>
+              {" "}{siteConfig.title}</a
+            >.
           </span>
         </span>
-        <span class="opacity-70">|</span>
-        <a href="/feed.xml" class="inline-flex items-center gap-0.5">
-          <span class="i-lucide-rss size-4"></span>
+        <span {...stylex.attrs(styles.mutedSeparator)}>|</span>
+        <a href="/feed.xml" {...stylex.attrs(styles.inlineGroup)}>
+          <span class={`i-lucide-rss ${stylex.attrs(styles.icon).class}`}
+          ></span>
           RSS
         </a>
-        <span class="opacity-70">|</span>
-        <a href="/sitemap-index.xml" class="inline-flex items-center gap-0.5">
-          <span class="i-lucide-map size-4"></span>
+        <span {...stylex.attrs(styles.mutedSeparator)}>|</span>
+        <a href="/sitemap-index.xml" {...stylex.attrs(styles.inlineGroup)}>
+          <span class={`i-lucide-map ${stylex.attrs(styles.icon).class}`}
+          ></span>
           Site Map
         </a>
       </span>
-      <span class="text-comment">
+      <span {...stylex.attrs(styles.mutedText)}>
         Powered by{" "}
-        <a href="https://astro.build" class="underline"> Astro</a>. See all{" "}
-        <a href="/credits" class="underline"> Credits</a>.
+        <a href="https://astro.build" {...stylex.attrs(styles.underline)}>
+          Astro</a
+        >. See all{" "}
+        <a href="/credits" {...stylex.attrs(styles.underline)}> Credits</a>.
       </span>
     </div>
   </div>

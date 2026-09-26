@@ -1,6 +1,8 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import { getSeriesPosts } from "@/lib/utils/content";
 import Section from "@/components/ui/section.astro";
+import { styles } from "./series-card.stylex";
 
 interface Props {
   seriesId: string;
@@ -16,23 +18,23 @@ if (seriesPosts.length <= 1) {
 }
 ---
 
-<Section class="py-10" padding="article">
-  <div class="mx-auto max-w-prose">
-    <div class="mb-4 flex items-center gap-2">
-      <span class="i-lucide-list size-4 shrink-0"></span>
-      <h3 class="text-base font-semibold">
+<Section styles={styles.section} padding="article">
+  <div {...stylex.attrs(styles.content)}>
+    <div {...stylex.attrs(styles.heading)}>
+      <span class={`i-lucide-list ${stylex.attrs(styles.icon).class}`}></span>
+      <h3 {...stylex.attrs(styles.title)}>
         {"系列文章"}
       </h3>
     </div>
-    <ol class="m-0 list-none space-y-3 p-0">
+    <ol {...stylex.attrs(styles.list)}>
       {
         seriesPosts.map((post, index) => {
           const isCurrent = post.id === currentSlug;
           return (
-            <li class="m-0 p-0">
+            <li {...stylex.attrs(styles.listItem)}>
               {isCurrent ? (
-                <div class="flex items-start gap-2 leading-relaxed font-medium text-accent-foreground">
-                  <span class="shrink-0 font-normal text-comment">
+                <div {...stylex.attrs(styles.row, styles.current)}>
+                  <span {...stylex.attrs(styles.index, styles.currentIndex)}>
                     {index + 1}.
                   </span>
                   <span>{post.data.title}</span>
@@ -40,9 +42,9 @@ if (seriesPosts.length <= 1) {
               ) : (
                 <a
                   href={`/post/${post.id}`}
-                  class="flex items-start gap-2 leading-relaxed no-underline transition-colors hover:text-accent-foreground"
+                  {...stylex.attrs(styles.row, styles.link)}
                 >
-                  <span class="shrink-0 text-comment">{index + 1}.</span>
+                  <span {...stylex.attrs(styles.index)}>{index + 1}.</span>
                   <span>{post.data.title}</span>
                 </a>
               )}

@@ -1,6 +1,8 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import { getAdjacentPosts } from "@/lib/utils/content";
-import { cn } from "@/lib/utils/cn";
+import { layout } from "@/styles/layout.stylex";
+import { groupMarker, styles } from "./prev-next.stylex";
 
 interface Props {
   currentSlug: string;
@@ -12,54 +14,46 @@ const { prev, next } = await getAdjacentPosts(currentSlug);
 
 {
   (prev || next) && (
-    <div class="border-b border-container">
+    <div {...stylex.attrs(layout.divider)}>
       <div
-        class={cn(
-          "main-container grid items-stretch",
-          prev && next && "grid-cols-1 lg:grid-cols-2",
-          prev && !next && "grid-cols-1",
-          !prev && next && "grid-cols-1",
+        {...stylex.attrs(
+          layout.container,
+          styles.grid,
+          prev && next ? styles.doubleGrid : styles.singleGrid,
         )}
       >
         {prev && (
-          <div class="group @container">
+          <div {...stylex.attrs(groupMarker, styles.cardContainer)}>
             <a
-              class={cn([
-                "flex h-full items-center",
-                "border-container",
-                "color-transition-card-btn",
-                "gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8",
-                "border-b lg:border-r lg:border-b-0",
-              ])}
+              {...stylex.attrs(styles.link, styles.previousLink)}
               href={`/post/${prev.id}`}
             >
-              <div class="flex size-12 items-center justify-center rounded-full border border-accent/20 bg-accent/10 transition-all duration-200 group-hover:border-accent/30 group-hover:bg-accent/20">
-                <span class="i-lucide-chevron-left size-9 shrink-0 transition-transform group-hover:scale-120 group-active:scale-95" />
+              <div {...stylex.attrs(styles.iconCircle)}>
+                <span
+                  class={`i-lucide-chevron-left ${stylex.attrs(styles.icon).class}`}
+                />
               </div>
               <div>
-                <p class="text-sm text-comment">上一篇</p>
-                <p class="@lg:text-lg">{prev.data.title}</p>
+                <p {...stylex.attrs(styles.label)}>上一篇</p>
+                <p {...stylex.attrs(styles.title)}>{prev.data.title}</p>
               </div>
             </a>
           </div>
         )}
         {next && (
-          <div class="group @container">
+          <div {...stylex.attrs(groupMarker, styles.cardContainer)}>
             <a
-              class={cn([
-                "flex h-full flex-row-reverse items-center",
-                "border-container",
-                "color-transition-card-btn",
-                "gap-4 px-6 py-6 @lg:gap-8 @lg:px-16 @lg:py-8",
-              ])}
+              {...stylex.attrs(styles.link, styles.nextLink)}
               href={`/post/${next.id}`}
             >
-              <div class="flex size-12 items-center justify-center rounded-full border border-accent/20 bg-accent/10 transition-all duration-200 group-hover:border-accent/30 group-hover:bg-accent/20">
-                <span class="i-lucide-chevron-right size-9 shrink-0 transition-transform group-hover:scale-120 group-active:scale-95" />
+              <div {...stylex.attrs(styles.iconCircle)}>
+                <span
+                  class={`i-lucide-chevron-right ${stylex.attrs(styles.icon).class}`}
+                />
               </div>
-              <div class="flex flex-col items-end">
-                <p class="text-sm text-comment">下一篇</p>
-                <p class="@lg:text-lg">{next.data.title}</p>
+              <div {...stylex.attrs(styles.nextText)}>
+                <p {...stylex.attrs(styles.label)}>下一篇</p>
+                <p {...stylex.attrs(styles.title)}>{next.data.title}</p>
               </div>
             </a>
           </div>

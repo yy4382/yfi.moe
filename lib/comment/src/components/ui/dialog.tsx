@@ -1,9 +1,12 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import * as React from "react";
 import MingcuteCloseLine from "~icons/mingcute/close-line";
 import { cn } from "@/lib/utils";
+import { styles as dialogStyles } from "./dialog.stylex";
+import "./ui.css";
 
 function Dialog({
   ...props
@@ -12,9 +15,21 @@ function Dialog({
 }
 
 function DialogTrigger({
+  className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
-  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
+}: React.ComponentProps<typeof DialogPrimitive.Trigger> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(styles);
+  return (
+    <DialogPrimitive.Trigger
+      {...styleProps}
+      data-slot="dialog-trigger"
+      className={cn(styleProps.className, className)}
+      {...props}
+    />
+  );
 }
 
 function DialogPortal({
@@ -24,22 +39,37 @@ function DialogPortal({
 }
 
 function DialogClose({
+  className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Close>) {
-  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
+}: React.ComponentProps<typeof DialogPrimitive.Close> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(styles);
+  return (
+    <DialogPrimitive.Close
+      {...styleProps}
+      data-slot="dialog-close"
+      className={cn(styleProps.className, className)}
+      {...props}
+    />
+  );
 }
 
 function DialogOverlay({
   className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+}: React.ComponentProps<typeof DialogPrimitive.Overlay> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dialogStyles.overlay, styles);
+
   return (
     <DialogPrimitive.Overlay
+      {...styleProps}
       data-slot="dialog-overlay"
-      className={cn(
-        "fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -48,30 +78,32 @@ function DialogOverlay({
 function DialogContent({
   className,
   children,
+  styles,
   showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
+  styles?: stylex.StyleXStyles;
   showCloseButton?: boolean;
 }) {
+  const styleProps = stylex.props(dialogStyles.content, styles);
+
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
       <DialogPrimitive.Content
+        {...styleProps}
         data-slot="dialog-content"
-        className={cn(
-          "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 sm:max-w-lg",
-          className,
-        )}
+        className={cn(styleProps.className, className)}
         {...props}
       >
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
+            {...stylex.props(dialogStyles.close)}
             data-slot="dialog-close"
-            className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
-            <MingcuteCloseLine />
-            <span className="sr-only">Close</span>
+            <MingcuteCloseLine {...stylex.props(dialogStyles.closeIcon)} />
+            <span {...stylex.props(dialogStyles.visuallyHidden)}>Close</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>
@@ -79,24 +111,33 @@ function DialogContent({
   );
 }
 
-function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
+function DialogHeader({
+  className,
+  styles,
+  ...props
+}: React.ComponentProps<"div"> & { styles?: stylex.StyleXStyles }) {
+  const styleProps = stylex.props(dialogStyles.header, styles);
   return (
     <div
+      {...styleProps}
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
 }
 
-function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
+function DialogFooter({
+  className,
+  styles,
+  ...props
+}: React.ComponentProps<"div"> & { styles?: stylex.StyleXStyles }) {
+  const styleProps = stylex.props(dialogStyles.footer, styles);
   return (
     <div
+      {...styleProps}
       data-slot="dialog-footer"
-      className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
-        className,
-      )}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -104,12 +145,17 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 function DialogTitle({
   className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+}: React.ComponentProps<typeof DialogPrimitive.Title> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dialogStyles.title, styles);
   return (
     <DialogPrimitive.Title
+      {...styleProps}
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );
@@ -117,12 +163,17 @@ function DialogTitle({
 
 function DialogDescription({
   className,
+  styles,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
+}: React.ComponentProps<typeof DialogPrimitive.Description> & {
+  styles?: stylex.StyleXStyles;
+}) {
+  const styleProps = stylex.props(dialogStyles.description, styles);
   return (
     <DialogPrimitive.Description
+      {...styleProps}
       data-slot="dialog-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(styleProps.className, className)}
       {...props}
     />
   );

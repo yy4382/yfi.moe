@@ -1,10 +1,10 @@
+import * as stylex from "@stylexjs/stylex";
 import {
   useMutation,
   useQuery,
   useQueryClient,
   type InfiniteData,
 } from "@tanstack/react-query";
-import clsx from "clsx";
 import { EmojiPicker } from "frimousse";
 import { produce } from "immer";
 import { useAtomValue } from "jotai";
@@ -28,6 +28,8 @@ import { sessionOptions } from "@/lib/auth/session-options";
 import { useAuthClient, useHonoClient, usePathname } from "@/lib/hooks/context";
 import { useGuestIdentity } from "@/lib/hooks/guest-identity";
 import { sortByAtom } from "./atoms";
+import "./reactions.css";
+import { styles } from "./reactions.stylex";
 
 type ReactionGroup = {
   emojiKey: string;
@@ -143,21 +145,20 @@ function ReactionChip(
   },
 ) {
   const { active, count, emoji, className, ...rest } = props;
+  const chipProps = stylex.props(
+    styles.chip,
+    active ? styles.activeChip : styles.inactiveChip,
+  );
   return (
     <button
       type="button"
-      className={clsx(
-        "flex h-7 items-center gap-1 rounded-md border px-2 py-0.5 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-        active
-          ? "text-blue-70 border-blue-200 bg-blue-100 dark:border-blue-200/50 dark:bg-blue-100/30 dark:text-blue-300"
-          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700",
-        className,
-      )}
+      {...chipProps}
+      className={`${chipProps.className}${className ? ` ${className}` : ""}`}
       aria-pressed={active}
       {...rest}
     >
-      <span className="text-base leading-none">{emoji}</span>
-      <span className="text-xs leading-none tabular-nums">{count}</span>
+      <span {...stylex.props(styles.emoji)}>{emoji}</span>
+      <span {...stylex.props(styles.count)}>{count}</span>
     </button>
   );
 }
@@ -308,75 +309,77 @@ export function CommentReactions({
     addReactionMutation.isPending || removeReactionMutation.isPending;
 
   return (
-    <div className="flex flex-wrap items-center gap-1">
+    <div {...stylex.props(styles.root)}>
       <Popover.Root open={pickerOpen} onOpenChange={setPickerOpen}>
         <Popover.Trigger asChild>
           <button
             type="button"
-            className={clsx(
-              "inline-flex h-7 items-center gap-0.5 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-sm text-comment transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800",
-              isBusy && "pointer-events-none opacity-60",
-            )}
+            {...stylex.props(styles.addButton, isBusy && styles.busy)}
             aria-label="添加表情"
           >
-            <MingcuteEmojiLine className="size-5" />
-            <MingcuteAddLine className="size-4" />
+            <MingcuteEmojiLine {...stylex.props(styles.emojiIcon)} />
+            <MingcuteAddLine {...stylex.props(styles.addIcon)} />
           </button>
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content
             align="start"
             sideOffset={6}
-            className="z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+            className={`comment-reaction-popover ${stylex.props(styles.popover).className}`}
             collisionPadding={12}
           >
             <EmojiPicker.Root
               onEmojiSelect={({ emoji }) => handleEmojiSelect(emoji)}
-              className="isolate flex h-[368px] w-fit flex-col rounded-md bg-popover"
+              {...stylex.props(styles.picker)}
             >
-              <div className="flex flex-wrap gap-1 px-2 pt-2">
+              <div {...stylex.props(styles.quickActions)}>
                 {QUICK_ACTION_EMOJIS.map(({ label, emoji }) => (
                   <button
                     key={label}
                     type="button"
                     onClick={() => handleEmojiSelect(emoji)}
-                    className="flex size-8 items-center justify-center rounded-md text-lg transition hover:bg-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:hover:bg-neutral-700"
+                    {...stylex.props(styles.quickAction)}
                     aria-label={label}
                     title={label}
                   >
                     <span aria-hidden>{emoji}</span>
-                    <span className="sr-only">{label}</span>
+                    <span {...stylex.props(styles.visuallyHidden)}>
+                      {label}
+                    </span>
                   </button>
                 ))}
               </div>
-              <EmojiPicker.Search className="z-10 mx-2 mt-2 appearance-none rounded-md bg-neutral-200 px-2.5 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:bg-neutral-700" />
-              <EmojiPicker.Viewport className="relative flex-1 outline-hidden">
-                <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400 dark:text-neutral-500">
+              <EmojiPicker.Search {...stylex.props(styles.search)} />
+              <EmojiPicker.Viewport {...stylex.props(styles.viewport)}>
+                <EmojiPicker.Loading {...stylex.props(styles.pickerState)}>
                   Loading…
                 </EmojiPicker.Loading>
-                <EmojiPicker.Empty className="absolute inset-0 flex items-center justify-center text-sm text-neutral-400 dark:text-neutral-500">
+                <EmojiPicker.Empty {...stylex.props(styles.pickerState)}>
                   No emoji found.
                 </EmojiPicker.Empty>
                 <EmojiPicker.List
-                  className="w-full pb-1.5 select-none"
+                  {...stylex.props(styles.list)}
                   components={{
-                    CategoryHeader: ({ category, ...props }) => (
+                    CategoryHeader: ({ category, className, ...props }) => (
                       <div
-                        className="bg-popover px-3 pt-3 pb-1.5 text-xs font-medium text-neutral-600 dark:text-neutral-400"
                         {...props}
+                        className={`${stylex.props(styles.category).className}${className ? ` ${className}` : ""}`}
                       >
                         {category.label}
                       </div>
                     ),
-                    Row: ({ children, ...props }) => (
-                      <div className="scroll-my-1.5 px-1.5" {...props}>
+                    Row: ({ children, className, ...props }) => (
+                      <div
+                        {...props}
+                        className={`${stylex.props(styles.row).className}${className ? ` ${className}` : ""}`}
+                      >
                         {children}
                       </div>
                     ),
-                    Emoji: ({ emoji, ...props }) => (
+                    Emoji: ({ emoji, className, ...props }) => (
                       <button
-                        className="flex size-8 items-center justify-center rounded-md text-lg data-active:bg-neutral-200 dark:data-active:bg-neutral-700"
                         {...props}
+                        className={`${stylex.props(styles.pickerEmoji).className}${className ? ` ${className}` : ""}`}
                       >
                         {emoji.emoji}
                       </button>

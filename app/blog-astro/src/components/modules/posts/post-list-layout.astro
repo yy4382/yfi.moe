@@ -1,5 +1,7 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import type { CollectionEntry } from "astro:content";
+import { layout } from "@/styles/layout.stylex";
 import ListHero from "./list-hero.astro";
 import PostListItem from "./post-list-item.astro";
 import Pagination from "./pagination.astro";
@@ -16,14 +18,11 @@ const { paginationPage, baseUrl, title, desc } = Astro.props;
 ---
 
 <div>
-  <div class="border-b border-container">
+  <div {...stylex.attrs(layout.divider)}>
     <ListHero title={title} desc={desc} />
     {
       paginationPage.data.map((post, i) => (
-        <PostListItem
-          post={post}
-          class={i === paginationPage.data.length - 1 ? "border-b-0" : ""}
-        />
+        <PostListItem post={post} last={i === paginationPage.data.length - 1} />
       ))
     }
   </div>

@@ -1,4 +1,7 @@
 ---
+import * as stylex from "@stylexjs/stylex";
+import { styles } from "./layouts.stylex";
+import { layout } from "@/styles/layout.stylex";
 import { getSeo } from "@/lib/utils/SEO";
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import ArticleHero from "@/components/modules/article/article-hero.astro";
@@ -24,11 +27,11 @@ const seoConfig = getSeo({
 
 <NavLayout seoConfig={seoConfig}>
   <ArticleHero title={page.title} />
-  <div class="border-b border-container">
-    <div class="main-container h-full">
-      <div class="px-4 py-18">
+  <div {...stylex.attrs(layout.divider)}>
+    <div {...stylex.attrs(layout.container, styles.fullHeight)}>
+      <div {...stylex.attrs(styles.articlePadding)}>
         <div
-          class="mx-auto prose wrap-break-word prose-gray dark:prose-invert prose-headings:scroll-mt-8"
+          class={`prose prose-gray prose-theme article-prose ${stylex.attrs(styles.prose).class}`}
         >
           <slot />
         </div>

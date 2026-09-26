@@ -1,0 +1,13 @@
+{
+  "name": "stylex-astro-probe",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "astro": "7.0.3",
+    "@astrojs/react": "6.0.0",
+    "@stylexjs/stylex": "0.19.0",
+    "@stylexjs/unplugin": "0.19.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  }
+}

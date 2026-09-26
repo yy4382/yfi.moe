@@ -1,6 +1,8 @@
+import * as stylex from "@stylexjs/stylex";
 import type { LayeredCommentData } from "@repo/api/comment/get.model";
 import { useChildrenQuery } from "../hooks/use-children-query";
 import { CommentItem } from "./comment-item";
+import { styles } from "./comment-parent.stylex";
 
 interface CommentParentProps {
   parentComment: LayeredCommentData;
@@ -18,10 +20,10 @@ export function CommentParent({ parentComment }: CommentParentProps) {
   } = useChildrenQuery(parentComment);
 
   return (
-    <div className="flex flex-col">
+    <div {...stylex.props(styles.root)}>
       <CommentItem comment={parentComment.data} />
       {parentComment.children.total > 0 && (
-        <div className="ml-6 pl-4">
+        <div {...stylex.props(styles.children)}>
           {childrenData.pages
             .map((page) => page.data)
             .flat()
@@ -41,10 +43,10 @@ export function CommentParent({ parentComment }: CommentParentProps) {
               );
             })}
           {hasNextPage && (
-            <div className="flex justify-center">
+            <div {...stylex.props(styles.loadMoreContainer)}>
               <button
                 onClick={() => void fetchNextPage()}
-                className="rounded-md border border-container px-2 py-1 text-comment shadow-md hover:scale-105 active:scale-95"
+                {...stylex.props(styles.loadMore)}
               >
                 加载更多回复
               </button>

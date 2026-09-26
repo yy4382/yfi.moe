@@ -1,11 +1,12 @@
 "use client";
 
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
+import * as stylex from "@stylexjs/stylex";
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import * as React from "react";
 import { getStrictContext } from "@/lib/hooks/get-strict-context";
 import { useControlledState } from "@/lib/hooks/use-controlled-state";
-import { cn } from "@/lib/utils/cn";
+import { styles } from "./motion-popover.stylex";
 
 type PopoverContextType = {
   isOpen: boolean;
@@ -72,10 +73,9 @@ function PopoverBackdrop({ className, ...props }: PopoverBackdropProps) {
   return (
     <PopoverPrimitive.Backdrop
       data-slot="popover-backdrop"
-      className={cn(
-        "fixed inset-0 isolate z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:bg-black/50",
-        className,
-      )}
+      className={[stylex.props(styles.backdrop).className, className]
+        .filter(Boolean)
+        .join(" ")}
       {...props}
     />
   );

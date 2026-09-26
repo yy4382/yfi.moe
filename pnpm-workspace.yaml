@@ -25,7 +25,6 @@ minimumReleaseAge: 10080
 minimumReleaseAgeStrict: true
 
 allowBuilds:
-  "@tailwindcss/oxide": true
   cn-font-split: true
   esbuild: true
   koffi: true

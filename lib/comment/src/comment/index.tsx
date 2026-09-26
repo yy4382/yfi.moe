@@ -1,7 +1,10 @@
+import * as stylex from "@stylexjs/stylex";
 import { AutoResizeHeight } from "@/components/transitions/auto-resize-height";
 import { useSearchParamRefetchSessionEffect } from "@/lib/auth/refetch-session-url";
 import { CommentProvider } from "../components/provider";
+import "../components/ui/ui.css";
 import { CommentBoxNew } from "./box";
+import { styles } from "./index.stylex";
 import { CommentList } from "./list";
 
 export type CommentYulineProps = {
@@ -15,7 +18,7 @@ export default function CommentYuline({
   return (
     <CommentProvider serverURL={serverURL} pathname={pathname}>
       <AutoResizeHeight duration={0.1}>
-        <div className="p-0.5">
+        <div {...stylex.props(styles.root)}>
           <CommentBoxNew />
         </div>
       </AutoResizeHeight>

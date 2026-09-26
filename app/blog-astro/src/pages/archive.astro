@@ -1,4 +1,6 @@
 ---
+import * as stylex from "@stylexjs/stylex";
+import { styles } from "@/styles/pages/archive.stylex";
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import Section from "@/components/ui/section.astro";
 import { getSortedPosts } from "@/lib/utils/content";
@@ -33,37 +35,31 @@ const seoConfig = getSeo({
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <Section
-    class="flex h-52 flex-col items-start justify-center px-4 lg:h-96"
-    bg="grid"
-  >
-    <div class="mx-auto w-full max-w-prose">
-      <h1 class="text-5xl font-bold text-heading @3xl:text-6xl">归档</h1>
-      <p class="mt-4 ml-1 text-lg text-content">共有 {posts.length} 篇文章</p>
+  <Section styles={styles.hero} bg="grid">
+    <div {...stylex.attrs(styles.heroContent)}>
+      <h1 {...stylex.attrs(styles.title)}>归档</h1>
+      <p {...stylex.attrs(styles.description)}>共有 {posts.length} 篇文章</p>
     </div>
   </Section>
-  <Section class="px-4 py-18">
-    <div class="mx-auto flex max-w-prose flex-col gap-8">
+  <Section styles={styles.section}>
+    <div {...stylex.attrs(styles.archive)}>
       {
         groupedPosts.map((group) => (
-          <div class="flex flex-col gap-4">
-            <h2 class="text-2xl font-bold">
+          <div {...stylex.attrs(styles.group)}>
+            <h2 {...stylex.attrs(styles.year)}>
               {group.year}{" "}
-              <span class="text-sm font-normal text-comment">
+              <span {...stylex.attrs(styles.count)}>
                 ({group.posts.length})
               </span>
             </h2>
-            <ul class="list-none text-sm lg:text-base">
+            <ul {...stylex.attrs(styles.list)}>
               {group.posts.map((post) => (
-                <li class="flex items-center justify-between">
-                  <span class="flex min-w-0 shrink items-center">
-                    <span class="inline-block w-12 pr-2 font-light tabular-nums lg:w-16">
+                <li {...stylex.attrs(styles.row)}>
+                  <span {...stylex.attrs(styles.entry)}>
+                    <span {...stylex.attrs(styles.date)}>
                       {format(post.data.publishedDate, "MM/dd")}
                     </span>
-                    <a
-                      class="min-w-0 truncate py-0.5 leading-6 transition-colors hover:text-accent-foreground pointer-coarse:py-1"
-                      href={`/post/${post.id}`}
-                    >
+                    <a {...stylex.attrs(styles.link)} href={`/post/${post.id}`}>
                       {post.data.title}
                     </a>
                   </span>

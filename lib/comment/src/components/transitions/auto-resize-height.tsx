@@ -1,10 +1,13 @@
+import * as stylex from "@stylexjs/stylex";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { styles as transitionStyles } from "./auto-resize-height.stylex";
 
 interface AnimateChangeInHeightProps {
   children: React.ReactNode;
   className?: string;
+  styles?: stylex.StyleXStyles;
   duration?: number;
 }
 
@@ -18,6 +21,7 @@ interface AnimateChangeInHeightProps {
 export const AutoResizeHeight: React.FC<AnimateChangeInHeightProps> = ({
   children,
   className,
+  styles,
   duration = 0.6,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -38,10 +42,13 @@ export const AutoResizeHeight: React.FC<AnimateChangeInHeightProps> = ({
     }
   }, []);
 
+  const styleProps = stylex.props(transitionStyles.root, styles);
+
   return (
     <motion.div
-      className={cn("overflow-hidden", className)}
-      style={{ height }}
+      {...styleProps}
+      className={cn(styleProps.className, className)}
+      style={{ ...styleProps.style, height }}
       initial={false}
       animate={{ height }}
       transition={{ duration, ease: "easeOut" }}

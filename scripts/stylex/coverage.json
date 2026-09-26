@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "covered": [
+    {
+      "component": "layouts/BaseLayout",
+      "evidence": ["all app-page screenshots"]
+    },
+    {
+      "component": "layouts/NavLayout",
+      "evidence": ["all app-page screenshots except none"]
+    },
+    { "component": "layouts/page-layout", "evidence": ["about", "credits"] },
+    {
+      "component": "ui/section",
+      "evidence": ["home-hero-section", "article-hero"]
+    },
+    {
+      "component": "nav/navbar",
+      "evidence": ["navbar", "mobile-scrolled-navbar"]
+    },
+    { "component": "nav/navbar/logo", "evidence": ["navbar"] },
+    { "component": "nav/navbar/nav-link-list", "evidence": ["navbar"] },
+    {
+      "component": "nav/navbar/nav-links-drawer",
+      "evidence": ["mobile-nav-drawer"]
+    },
+    {
+      "component": "nav/footer",
+      "evidence": ["footer", "footer-copy-success", "footer-copy-error"]
+    },
+    { "component": "posts/list-hero", "evidence": ["list-hero"] },
+    {
+      "component": "posts/post-list-layout",
+      "evidence": ["post-list-1", "tag-stylex"]
+    },
+    { "component": "posts/post-list-item", "evidence": ["post-list-item"] },
+    {
+      "component": "posts/post-attr-time",
+      "evidence": ["post-time", "date-popover"]
+    },
+    {
+      "component": "posts/post-attr-time-tooltip",
+      "evidence": ["date-popover"]
+    },
+    { "component": "posts/post-attr-tags", "evidence": ["post-tags"] },
+    {
+      "component": "posts/pagination",
+      "evidence": ["pagination", "post-list-2"]
+    },
+    { "component": "article/article-hero", "evidence": ["article-hero"] },
+    { "component": "article/article-content", "evidence": ["article-content"] },
+    { "component": "article/series-card", "evidence": ["series-card"] },
+    { "component": "article/copyright-card", "evidence": ["copyright-card"] },
+    { "component": "article/similar-posts", "evidence": ["similar-posts"] },
+    { "component": "article/prev-next", "evidence": ["prev-next"] },
+    {
+      "component": "article/toc/Toc",
+      "evidence": ["toc", "mobile-toc-popover"]
+    },
+    {
+      "component": "article/toc/TocEntry",
+      "evidence": ["toc", "mobile-toc-popover"]
+    },
+    {
+      "component": "article/reading-progress",
+      "evidence": ["article app-page screenshots", "mobile-scrolled-navbar"]
+    },
+    {
+      "component": "markdown/markdown-article",
+      "evidence": ["article-content"]
+    },
+    {
+      "component": "markdown/components/gh-card",
+      "evidence": [
+        "github-card",
+        "github-card-loading",
+        "github-card-rate-limit",
+        "github-card-error"
+      ]
+    },
+    {
+      "component": "markdown/components/copy-button",
+      "evidence": ["copy-button", "copy-button-success", "copy-button-error"]
+    },
+    {
+      "component": "ui/motion-popover",
+      "evidence": ["date-popover", "mobile-toc-popover"]
+    },
+    {
+      "component": "comments/CommentList and shell",
+      "evidence": [
+        "comment-shell",
+        "comment-list",
+        "comment-error",
+        "comment-pagination",
+        "comment-delete-success"
+      ]
+    },
+    {
+      "component": "comments/VisitorBox and UserBox",
+      "evidence": [
+        "comment-visitor-login",
+        "comment-visitor-editor",
+        "comment-user-editor"
+      ]
+    },
+    {
+      "component": "comments/InputBox",
+      "evidence": [
+        "comment-visitor-editor",
+        "comment-reply-editor",
+        "comment-user-editor"
+      ]
+    },
+    { "component": "comments/MagicLinkDialog", "evidence": ["comment-dialog"] },
+    {
+      "component": "comments/CommentParent and CommentItem",
+      "evidence": [
+        "comment-parent",
+        "comment-item",
+        "comment-reply-editor",
+        "comment-reply-pagination",
+        "comment-edit",
+        "comment-update-success",
+        "comment-update-error"
+      ]
+    },
+    {
+      "component": "comments/CommentReactions",
+      "evidence": [
+        "comment-reactions",
+        "comment-reaction-picker",
+        "comment-reaction-success",
+        "comment-reaction-error"
+      ]
+    },
+    {
+      "component": "comments/CommentDropdown",
+      "evidence": [
+        "comment-dropdown",
+        "comment-edit",
+        "comment-delete-success",
+        "comment-delete-error",
+        "comment-admin-menu"
+      ]
+    },
+    {
+      "component": "comments/admin spam state",
+      "evidence": ["comment-admin-spam-badge", "comment-admin-menu"]
+    },
+    {
+      "component": "comments/AutoResizeHeight",
+      "evidence": ["comment-auto-resize"]
+    },
+    {
+      "component": "comments/ui primitives",
+      "evidence": [
+        "comment-button",
+        "comment-input",
+        "comment-label",
+        "comment-tabs",
+        "comment-dialog",
+        "comment-dropdown"
+      ]
+    },
+    {
+      "component": "management/subscribe states",
+      "evidence": [
+        "notification-ready",
+        "notification-missing-query",
+        "subscribe-pending",
+        "subscribe-error",
+        "subscribe-success",
+        "resubscribe-success"
+      ]
+    },
+    {
+      "component": "providers/scroll-detect",
+      "evidence": ["mobile-scrolled-navbar"]
+    }
+  ],
+  "partial": [
+    {
+      "component": "comments auth transport",
+      "evidence": [
+        "authenticated and visitor editors, login and registration dialog states"
+      ],
+      "missing": ["real OAuth/magic-link redirect"]
+    }
+  ],
+  "notVisual": [
+    {
+      "component": "html-head/Favicon",
+      "reason": "browser chrome is outside page screenshots"
+    },
+    {
+      "component": "html-head/Posthog and TagManager",
+      "reason": "production-only analytics with no visible UI"
+    },
+    {
+      "component": "markdown/article-embedded-elements",
+      "reason": "adapter module; visual children are covered separately"
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 ---
+import * as stylex from "@stylexjs/stylex";
+import { styles, projectMarker } from "@/styles/pages/home.stylex";
 import Section from "@/components/ui/section.astro";
 import NavLayout from "@/components/layouts/NavLayout.astro";
 import { Image } from "astro:assets";
@@ -6,7 +8,6 @@ import logo from "@/assets/logo.png";
 import { authorName, contactInfo, projects } from "@/config/author";
 import { getSortedPosts } from "@/lib/utils/content";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils/cn";
 import readingTime from "reading-time";
 import { getSeo } from "@/lib/utils/SEO";
 
@@ -28,103 +29,100 @@ const seoConfig = getSeo({
 ---
 
 <NavLayout seoConfig={seoConfig}>
-  <Section
-    class="flex min-h-96 flex-col center gap-4 md:min-h-[40rem]"
-    bg="grid"
-  >
-    <div class="flex center gap-4 md:gap-8">
-      <Image src={logo} alt="logo" width={80} height={80} class="rounded-md" />
-      <h1 class="text-5xl font-bold lg:text-8xl">{authorName}</h1>
+  <Section styles={styles.hero} bg="grid">
+    <div {...stylex.attrs(styles.brand)}>
+      <Image
+        src={logo}
+        alt="logo"
+        width={80}
+        height={80}
+        {...stylex.attrs(styles.logo)}
+      />
+      <h1 {...stylex.attrs(styles.name)}>{authorName}</h1>
     </div>
   </Section>
-  <Section class="min-h-18" />
-  <Section class="relative pt-20 pb-16 sm:pt-8">
+  <Section styles={styles.spacer} />
+  <Section styles={styles.section}>
     <span class="section-number">01</span>
-    <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">文章</h2>
-    <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
+    <h2 {...stylex.attrs(styles.heading, styles.sectionHeading)}>文章</h2>
+    <p {...stylex.attrs(styles.description)}>
       从 {
         format(firstDate, "yyyy 年 M 月 d 日")
       }的第一篇文章开始，本站已经更新了……
     </p>
-    <div class="dashed flex flex-col">
-      <div
-        class="grid-row-3 sm:grid-row-1 relative grid place-items-stretch border-y border-container sm:grid-cols-3"
-      >
-        <div
-          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
-        >
-          <div class="text-3xl font-bold text-heading">
+    <div class={`dashed ${stylex.attrs(styles.stack).class}`}>
+      <div {...stylex.attrs(styles.statistics)}>
+        <div {...stylex.attrs(styles.statistic, styles.statisticDivider)}>
+          <div {...stylex.attrs(styles.heading, styles.headingColor)}>
             {statistics.articles} 篇
           </div>
-          <div class="text-comment">文章</div>
+          <div {...stylex.attrs(styles.muted)}>文章</div>
         </div>
-        <div
-          class="flex flex-col center border-b border-container py-8 sm:border-r sm:border-b-0"
-        >
-          <div class="text-3xl font-bold text-heading">
+        <div {...stylex.attrs(styles.statistic, styles.statisticDivider)}>
+          <div {...stylex.attrs(styles.heading, styles.headingColor)}>
             {(statistics.words / 10000).toFixed(2)} 万
           </div>
-          <div class="text-comment">字数</div>
+          <div {...stylex.attrs(styles.muted)}>字数</div>
         </div>
-        <div class="flex flex-col center border-container py-8">
-          <div class="text-3xl font-bold text-heading">
+        <div {...stylex.attrs(styles.statistic)}>
+          <div {...stylex.attrs(styles.heading, styles.headingColor)}>
             {statistics.tags} 个
           </div>
-          <div class="text-comment">标签</div>
+          <div {...stylex.attrs(styles.muted)}>标签</div>
         </div>
       </div>
       <a
-        class="flex center gap-1 color-transition-card-btn py-6 font-semibold"
+        {...stylex.attrs(styles.centered, styles.cardAction, styles.more)}
         href="/post"
       >
-        文章列表 <span class="i-mingcute-external-link-line size-5"></span>
+        文章列表 <span
+          class={`i-mingcute-external-link-line ${stylex.attrs(styles.externalIcon).class}`}
+        ></span>
       </a>
     </div>
   </Section>
-  <Section class="min-h-18" />
+  <Section styles={styles.spacer} />
   {/* projects info */}
-  <Section class="relative pt-20 pb-16 sm:pt-8">
+  <Section styles={styles.section}>
     <span class="section-number">02</span>
-    <h2 class="mb-2 px-8 text-3xl font-bold sm:px-10">项目</h2>
-    <p class="mb-12 max-w-[65ch] px-8 sm:px-10">
-      在 <a href="https://github.com/yy4382" class="underline">GitHub</a> 上有更多开源项目，不妨点个
-      Star 吧。
+    <h2 {...stylex.attrs(styles.heading, styles.sectionHeading)}>项目</h2>
+    <p {...stylex.attrs(styles.description)}>
+      在 <a href="https://github.com/yy4382" {...stylex.attrs(styles.underline)}
+        >GitHub</a
+      > 上有更多开源项目，不妨点个 Star 吧。
     </p>
-    <div class="dashed flex flex-col">
+    <div class={`dashed ${stylex.attrs(styles.stack).class}`}>
       {
         projects.map((p) => (
-          <div
-            class={cn(
-              "group grid min-h-48 grid-cols-[1fr_5rem] grid-rows-1 *:py-8 sm:grid-cols-[1fr_10rem] lg:grid-cols-[12rem_1fr_10rem]",
-              "border-b border-container-light",
-            )}
-          >
-            <div class="hidden center border-r border-container-light lg:flex">
+          <div {...stylex.attrs(styles.project, projectMarker)}>
+            <div {...stylex.attrs(styles.projectIcon)}>
               {/* <Icon name={p.icon} size={100} /> */}
               <p.icon width={100} height={100} />
             </div>
-            <div class="flex flex-col justify-center gap-2 border-r border-container-light px-8 sm:px-12">
-              <div class="mb-4 flex items-center justify-start lg:hidden">
+            <div {...stylex.attrs(styles.projectDescription)}>
+              <div {...stylex.attrs(styles.compactProjectIcon)}>
                 {/* <Icon name={p.icon} size={64} /> */}
                 <p.icon width={64} height={64} />
               </div>
-              <p class="text-comment">{p.desc}</p>
-              <h3 class="text-xl font-bold">{p.title}</h3>
+              <p {...stylex.attrs(styles.muted)}>{p.desc}</p>
+              <h3 {...stylex.attrs(styles.projectTitle)}>{p.title}</h3>
             </div>
-            <div class="grid grid-cols-1 place-items-stretch !py-0 font-bold text-comment/80 group-hover:text-content">
+            <div {...stylex.attrs(styles.projectLinks)}>
               {p.links.map((l, i) => (
                 <a
                   href={l.href}
                   target="_blank"
-                  class={cn(
-                    "flex center color-transition-card-btn",
-                    i !== p.links.length - 1 &&
-                      "border-b border-container-light",
+                  {...stylex.attrs(
+                    styles.centered,
+                    styles.cardAction,
+                    i !== p.links.length - 1 && styles.projectLinkDivider,
                   )}
                 >
-                  <div class="inline-flex gap-2">
-                    <span class:list={[l.icon, "size-6!"]} />{" "}
-                    <span class="hidden sm:inline">{l.text}</span>
+                  <div {...stylex.attrs(styles.projectLinkContent)}>
+                    <span
+                      class:list={[l.icon, stylex.attrs(styles.linkIcon).class]}
+                    />{" "}
+                    <span {...stylex.attrs(styles.linkText)}>{l.text}</span>
                   </div>
                 </a>
               ))}
@@ -133,22 +131,22 @@ const seoConfig = getSeo({
         ))
       }
       <a
-        class="flex center gap-1 color-transition-card-btn py-6 font-semibold"
+        {...stylex.attrs(styles.centered, styles.cardAction, styles.more)}
         href="https://github.com/yy4382"
       >
-        更多 <span class="i-mingcute-external-link-line size-5"></span>
+        更多 <span
+          class={`i-mingcute-external-link-line ${stylex.attrs(styles.externalIcon).class}`}
+        ></span>
       </a>
     </div>
   </Section>
-  <Section class="min-h-18" />
+  <Section styles={styles.spacer} />
   {/* contact info */}
-  <Section class="relative pt-18 pb-8 sm:pt-8">
+  <Section styles={styles.contactSection}>
     <span class="section-number">03</span>
-    <div
-      class="relative flex size-full flex-col items-start justify-center gap-6 px-8 sm:flex-row sm:items-center sm:px-10"
-    >
-      <h2 class="text-3xl font-bold">联系我</h2>
-      <div class="flex gap-4">
+    <div {...stylex.attrs(styles.contact)}>
+      <h2 {...stylex.attrs(styles.heading)}>联系我</h2>
+      <div {...stylex.attrs(styles.contactLinks)}>
         {
           contactInfo.map((c) => {
             return (
@@ -157,10 +155,12 @@ const seoConfig = getSeo({
                 target="_blank"
                 aria-label={c.name}
                 style={`background-color: ${c.color}`}
-                class="size-10 rounded-full p-2"
+                class={stylex.attrs(styles.contactLink).class}
               >
                 {/* <Icon name={c.icon} size={24} class="text-white" /> */}
-                <span class:list={[c.icon, "size-6! text-white!"]} />
+                <span
+                  class:list={[c.icon, stylex.attrs(styles.contactIcon).class]}
+                />
               </a>
             );
           })
@@ -171,10 +171,9 @@ const seoConfig = getSeo({
 </NavLayout>
 
 <style>
-  @reference "../styles/global.css";
   .dashed {
     position: relative;
-    @variant before {
+    &::before {
       content: "";
       pointer-events: none;
       position: absolute;
@@ -188,7 +187,7 @@ const seoConfig = getSeo({
         transparent 0 30px
       );
     }
-    @variant after {
+    &::after {
       content: "";
       pointer-events: none;
       position: absolute;
@@ -209,11 +208,11 @@ const seoConfig = getSeo({
     border-style: solid;
     border-bottom-width: 1px;
     border-right-width: 1px;
-    @variant sm {
+    @media (min-width: 40rem) {
       border-right-width: 0px;
       transform: translateX(-100%);
     }
-    @variant xl {
+    @media (min-width: 80rem) {
       border-left-width: 1px;
     }
 

@@ -1,4 +1,5 @@
-import { cn } from "@/lib/utils/cn";
+import * as stylex from "@stylexjs/stylex";
+import { styles } from "./nav-link-list.stylex";
 
 const navLinks = [
   {
@@ -21,21 +22,21 @@ const navLinks = [
 
 export function NavLinkList({ url }: { url: URL }) {
   return (
-    <ul className="flex list-none flex-nowrap gap-4">
-      {navLinks.map((link) => (
-        <li key={link.href}>
-          <a
-            href={link.href}
-            data-active={link.active(url)}
-            className={cn([
-              "data-[active=true]:text-accent-foreground",
-              "text-muted-foreground transition-colors hover:text-accent-foreground",
-            ])}
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
+    <ul {...stylex.props(styles.list)}>
+      {navLinks.map((link) => {
+        const active = link.active(url);
+        return (
+          <li key={link.href}>
+            <a
+              href={link.href}
+              data-active={active}
+              {...stylex.props(styles.link, active && styles.active)}
+            >
+              {link.label}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   );
 }

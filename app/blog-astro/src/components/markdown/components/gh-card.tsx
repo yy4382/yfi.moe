@@ -1,6 +1,8 @@
 import type { components } from "@octokit/openapi-types";
+import * as stylex from "@stylexjs/stylex";
 import { useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { cardMarker, styles } from "./gh-card.stylex";
 
 type GetRepoResp = components["schemas"]["repository"];
 
@@ -16,16 +18,25 @@ const languageColorMap: Record<string, string> = {
 };
 
 const GhCardSkeleton = () => (
-  <div className="not-prose group relative flex h-36 w-100 max-w-sm animate-pulse rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
-    <div className="flex flex-1 flex-col justify-between">
-      <div className="space-y-3">
-        <div className="h-5 w-3/4 rounded bg-zinc-300 dark:bg-zinc-700"></div>
-        <div className="h-4 w-full rounded bg-zinc-300 dark:bg-zinc-700"></div>
-        <div className="h-4 w-1/2 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+  <div className={`not-prose ${stylex.props(styles.skeleton).className}`}>
+    <div {...stylex.props(styles.skeletonBody)}>
+      <div>
+        <div {...stylex.props(styles.skeletonLine, styles.skeletonTitle)}></div>
+        <div
+          {...stylex.props(styles.skeletonLine, styles.skeletonDescription)}
+        ></div>
+        <div
+          {...stylex.props(
+            styles.skeletonLine,
+            styles.skeletonDescriptionShort,
+          )}
+        ></div>
       </div>
-      <div className="flex items-center gap-4 pt-2">
-        <div className="h-4 w-16 rounded bg-zinc-300 dark:bg-zinc-700"></div>
-        <div className="h-4 w-12 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+      <div {...stylex.props(styles.skeletonMeta)}>
+        <div
+          {...stylex.props(styles.skeletonLine, styles.skeletonLanguage)}
+        ></div>
+        <div {...stylex.props(styles.skeletonLine, styles.skeletonStars)}></div>
       </div>
     </div>
   </div>
@@ -34,7 +45,7 @@ const GhCardSkeleton = () => (
 export const GhCard = ({ user, repo }: { user: string; repo: string }) => {
   if (!user || !repo) {
     return (
-      <div className="text-red-500">
+      <div {...stylex.props(styles.invalid)}>
         Invalid GitHub repository URL provided: {user}/{repo}
       </div>
     );
@@ -42,14 +53,14 @@ export const GhCard = ({ user, repo }: { user: string; repo: string }) => {
   const repoUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <div className="flex w-full justify-center">
+    <div {...stylex.props(styles.centered)}>
       <ErrorBoundary
         fallbackRender={() => (
           <a
             href={repoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="not-prose group relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center text-red-500 transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+            className={`not-prose ${stylex.props(styles.messageCard, styles.fallbackMessage).className}`}
           >
             加载 GitHub 数据失败，点击直接访问仓库 {user}/{repo}。
           </a>
@@ -107,7 +118,7 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
         href={repoUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="not-prose block max-w-sm"
+        className={`not-prose ${stylex.props(styles.loadingLink).className}`}
       >
         <GhCardSkeleton />
       </a>
@@ -120,7 +131,7 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
         href={repoUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="not-prose group relative flex h-36 w-100 max-w-sm items-center justify-center rounded-lg border border-zinc-200 bg-white p-4 text-center text-comment transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+        className={`not-prose ${stylex.props(styles.messageCard, styles.errorMessage).className}`}
       >
         {errorMessage}
         <br />
@@ -133,31 +144,34 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
     return null;
   }
 
+  const cardProps = stylex.props(
+    cardMarker,
+    styles.card,
+    styles.cardBorder(`${color}30`),
+  );
+
   return (
     <a
       href={data.html_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="not-prose group relative flex max-w-md rounded-lg border bg-white text-left transition-all hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
-      style={{ borderColor: `${color}30` }}
+      {...cardProps}
+      className={`not-prose ${cardProps.className}`}
     >
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex-1 space-y-1">
-          <p className="font-semibold text-heading">{data.full_name}</p>
-          <p className="text-sm text-comment">{data.description}</p>
+      <div {...stylex.props(styles.cardBody)}>
+        <div {...stylex.props(styles.summary)}>
+          <p {...stylex.props(styles.repoName)}>{data.full_name}</p>
+          <p {...stylex.props(styles.description)}>{data.description}</p>
         </div>
 
-        <div className="mt-4 flex items-center gap-4 text-sm text-comment">
+        <div {...stylex.props(styles.metadata)}>
           {data.language && (
-            <div className="flex items-center gap-1.5">
-              <span
-                className="h-3 w-3 rounded-full"
-                style={{ backgroundColor: color }}
-              />
+            <div {...stylex.props(styles.language)}>
+              <span {...stylex.props(styles.languageDot(color))} />
               <span>{data.language}</span>
             </div>
           )}
-          <div className="flex items-center gap-1">
+          <div {...stylex.props(styles.stars)}>
             {/* Icon placeholder */}
             <span role="img" aria-label="star">
               ★
@@ -168,11 +182,11 @@ function GhCardImpl({ user, repo }: { user: string; repo: string }) {
       </div>
 
       {data.owner?.avatar_url && (
-        <div className="relative hidden shrink-0 self-center sm:block">
+        <div {...stylex.props(styles.avatarContainer)}>
           <img
             src={data.owner.avatar_url}
             alt={data.owner.login}
-            className="mr-8 h-16 w-16 rounded-xl transition-transform group-hover:scale-105"
+            {...stylex.props(styles.avatar)}
             width={64}
             height={64}
           />

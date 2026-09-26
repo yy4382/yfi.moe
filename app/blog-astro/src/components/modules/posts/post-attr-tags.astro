@@ -1,4 +1,7 @@
 ---
+import * as stylex from "@stylexjs/stylex";
+import { styles } from "./post-attr-tags.stylex";
+
 interface Props {
   tags: string[];
 }
@@ -6,17 +9,16 @@ interface Props {
 const { tags } = Astro.props;
 ---
 
-<div class="flex items-center select-none">
-  <span class="mr-1 i-lucide-hash size-4"></span>
-  <span class="space-x-0.5">
+<div {...stylex.attrs(styles.root)}>
+  <span class={`i-lucide-hash ${stylex.attrs(styles.icon).class}`}></span>
+  <span>
     {
       tags.map((tag, index) => (
         <>
-          {index !== 0 && <span class="text-comment">|</span>}
-          <a
-            href={`/tags/${tag}`}
-            class="transition hover:text-accent-foreground"
-          >
+          {index !== 0 && (
+            <span {...stylex.attrs(styles.item, styles.separator)}>|</span>
+          )}
+          <a href={`/tags/${tag}`} {...stylex.attrs(styles.item, styles.link)}>
             {tag}
           </a>
         </>

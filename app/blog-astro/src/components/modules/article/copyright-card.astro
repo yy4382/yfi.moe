@@ -1,29 +1,24 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import Sign from "@/assets/signature-yunfi.svg?raw";
 import Section from "@/components/ui/section.astro";
+import { styles } from "./copyright-card.stylex";
 ---
 
-<Section class="overflow-hidden py-10" padding="article">
+<Section styles={styles.section} padding="article">
   <div
-    class:list={[
-      "mx-auto prose max-w-[75ch] !text-sm dark:prose-invert prose-p:text-comment/80 prose-a:!text-content/90",
-    ]}
+    class={`prose prose-theme copyright-prose ${stylex.attrs(styles.content).class}`}
   >
-    <div class="signature-wrapper float-right">
+    <div class={`signature-wrapper ${stylex.attrs(styles.signature).class}`}>
       <Fragment set:html={Sign} />
     </div>
-    <!-- <div
-      class="absolute -top-2 -right-2 flex text-8xl text-black opacity-5 md:top-1/2 md:right-0 md:translate-x-1/4 md:-translate-y-1/2 md:text-[8rem] dark:text-white"
-    >
-      <Icon name="fa6-brands:creative-commons" />
-    </div> -->
-    <p class="!mt-0 !mb-2">
+    <p {...stylex.attrs(styles.firstParagraph)}>
       本文使用“<a
         href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en"
         >署名-非商业性使用-相同方式共享 4.0 国际(CC BY-NC-SA 4.0)</a
       >”进行许可。
     </p>
-    <p class="!mt-0">
+    <p {...stylex.attrs(styles.lastParagraph)}>
       商业转载请联系站长获得授权，非商业转载请注明本文出处及文章链接。
       如果您再混合、转换或者基于本作品进行创作，您必须基于<a
         href="https://creativecommons.org/share-your-work/licensing-considerations/compatible-licenses/"
@@ -34,22 +29,34 @@ import Section from "@/components/ui/section.astro";
 </Section>
 
 <style is:global>
-  @reference "../../../styles/global.css";
-
   .signature-wrapper {
     --signature-length: 2550px;
     & > svg {
-      @apply ml-4 h-auto w-20 opacity-100 sm:-mt-1 sm:-mr-3;
+      width: 5rem;
+      height: auto;
+      margin-left: 1rem;
+      opacity: 1;
+
+      @media (min-width: 40rem) {
+        margin-top: -0.25rem;
+        margin-right: -0.75rem;
+      }
     }
   }
   /* https://antfu.me/posts/animated-svg-logo */
   .signature-wrapper #main-stroke {
-    @apply stroke-black opacity-100 dark:stroke-white;
+    stroke: black;
+    opacity: 1;
     stroke-dashoffset: 1px;
     stroke-dasharray: var(--signature-length) 0;
     animation: grow 7s ease-out forwards infinite;
     transform-origin: center;
     animation-delay: 0s;
+  }
+  @media (prefers-color-scheme: dark) {
+    .signature-wrapper #main-stroke {
+      stroke: white;
+    }
   }
   @media (prefers-reduced-motion) {
     path {

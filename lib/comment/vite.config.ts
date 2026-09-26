@@ -1,10 +1,12 @@
 /// <reference types="vitest/config" />
 import babel from "@rolldown/plugin-babel";
+import stylex from "@stylexjs/unplugin";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import Icons from "unplugin-icons/vite";
 import { defineConfig } from "vite";
+import { stylexLayers } from "../../stylex-layers";
 
 let analyzer;
 if (process.env.ANALYZE === "true") {
@@ -16,6 +18,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    (process.env.VITEST ? stylex.rollup : stylex.vite)({
+      dev: false,
+      classNamePrefix: "c",
+      runtimeInjection: false,
+      // Independent library builds must not reuse the app's priority indexes.
+      useCSSLayers: stylexLayers("comment"),
+      lightningcssOptions: { minify: true },
+    }),
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     Icons({ compiler: "jsx", jsx: "react" }),
@@ -28,21 +38,23 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   build: {
+    cssCodeSplit: false,
     sourcemap: true,
     minify: false,
     lib: {
       entry: resolve(__dirname, "src/comment/index.tsx"),
       name: "Yuline",
       fileName: "yuline",
+      cssFileName: "yuline",
       formats: ["es"],
     },
     rollupOptions: {
       external: [
+        "@stylexjs/stylex",
         "react",
         "react/compiler-runtime",
         "react-dom",
         "react/jsx-runtime",
-        "tailwind-merge",
         "sonner",
         "@tanstack/react-query",
         "zod",

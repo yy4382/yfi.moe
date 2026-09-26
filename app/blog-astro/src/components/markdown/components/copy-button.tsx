@@ -1,8 +1,10 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { CheckIcon, CopyIcon, XIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
+import { styles } from "./copy-button.stylex";
 
 export function CopyButton() {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -32,7 +34,7 @@ export function CopyButton() {
       ref={buttonRef}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="absolute top-2 right-2 inline-flex size-8 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-violet-300/20 [&_svg]:pointer-events-none [&_svg]:size-4"
+      {...stylex.props(styles.button)}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
@@ -42,7 +44,7 @@ export function CopyButton() {
           exit={{ scale: 0.9 }}
           transition={{ duration: 0.15 }}
         >
-          <Icon />
+          <Icon {...stylex.props(styles.icon)} />
         </motion.span>
       </AnimatePresence>
     </motion.button>

@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { ListIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from "react";
@@ -13,6 +14,7 @@ import {
   PopoverBackdrop,
 } from "@/components/ui/motion-popover";
 import TocEntry from "./TocEntry";
+import { styles } from "./toc.stylex";
 
 // MARK: Constants
 
@@ -202,18 +204,21 @@ function TocPopover({ headings }: TocPopoverProps) {
   const activeIndex = useActiveHeading(headings);
 
   return (
-    <div className="sticky top-(--navbar-height) isolate z-10 flex justify-end">
+    <div {...stylex.props(styles.popover)}>
       <Popover modal={true}>
-        <PopoverTrigger className="pointer-events-auto flex size-10 center border-b border-l border-container bg-background">
+        <PopoverTrigger {...stylex.props(styles.trigger)}>
           <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <ListIcon className="size-6 text-heading" />
+            <ListIcon {...stylex.props(styles.icon)} />
           </motion.span>
         </PopoverTrigger>
         <PopoverPortal>
           <PopoverBackdrop />
-          <PopoverPositioner sideOffset={5} className="z-50">
+          <PopoverPositioner
+            sideOffset={5}
+            {...stylex.props(styles.positioner)}
+          >
             <PopoverPopup>
-              <div className="pointer-events-auto w-76 border border-container bg-background px-6 py-8 text-comment">
+              <div {...stylex.props(styles.panel)}>
                 <TocEntry headings={headings} activeIndex={activeIndex} />
               </div>
             </PopoverPopup>
@@ -233,16 +238,16 @@ function TocSidebar({ headings, position }: TocSidebarProps) {
   const activeIndex = useActiveHeading(headings);
 
   return (
-    <div className="sticky top-(--navbar-height) isolate z-10 py-8">
+    <div {...stylex.props(styles.sidebar)}>
       <div
-        className="pointer-events-auto w-fit border-t border-b border-dashed border-container bg-background px-2 pt-4 pb-8 text-sm text-comment/75 dark:text-comment/90"
+        {...stylex.props(styles.sidebarPanel)}
         style={{
           transform: `translateX(${position.left}px)`,
           minWidth: `${position.minWidth}px`,
           maxWidth: `${position.maxWidth}px`,
         }}
       >
-        <div className="mb-2 text-xl">文章目录</div>
+        <div {...stylex.props(styles.title)}>文章目录</div>
         <TocEntry headings={headings} activeIndex={activeIndex} />
       </div>
     </div>

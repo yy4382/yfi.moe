@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { type MutationStatus, useMutationState } from "@tanstack/react-query";
 import { useAtom, type WritableAtom } from "jotai";
 import { useId } from "react";
@@ -5,6 +6,7 @@ import MingcuteCloseLine from "~icons/mingcute/close-line";
 import MingcuteLoadingLine from "~icons/mingcute/loading-line";
 import MingcuteSendPlaneLine from "~icons/mingcute/send-plane-line";
 import { COMMENT_MAX_LENGTH } from "../utils/constants";
+import { styles } from "./input-box.stylex";
 
 interface InputBoxProps {
   submit: () => void;
@@ -45,20 +47,20 @@ export function InputBox({
     }).at(0) ?? "idle";
 
   return (
-    <div className="group @container relative flex min-h-36 w-full flex-col justify-between rounded-sm border border-container p-1 transition focus-within:ring focus-within:ring-primary">
+    <div {...stylex.props(styles.root)}>
       {onCancel && (
-        <div className="absolute -top-3 -right-2">
+        <div {...stylex.props(styles.cancelPosition)}>
           <button
             aria-label="取消编辑"
             onClick={onCancel}
-            className="rounded-full bg-zinc-200 p-1 hover:scale-105 active:scale-95 dark:bg-zinc-800"
+            {...stylex.props(styles.cancelButton)}
           >
-            <MingcuteCloseLine className="size-3" />
+            <MingcuteCloseLine {...stylex.props(styles.cancelIcon)} />
           </button>
         </div>
       )}
 
-      <label htmlFor={textareaId} className="sr-only">
+      <label htmlFor={textareaId} {...stylex.props(styles.visuallyHidden)}>
         评论内容
       </label>
       <textarea
@@ -74,7 +76,7 @@ export function InputBox({
           }
         }}
         placeholder={placeholder ?? "留下你的足迹……"}
-        className="field-sizing-content min-h-18 w-full flex-1 resize-none bg-transparent px-1 py-0.5 text-sm outline-none"
+        {...stylex.props(styles.textarea)}
         disabled={status === "pending"}
       />
 
@@ -105,13 +107,11 @@ function InputBoxFooter({
   submitLabel,
 }: InputBoxFooterProps) {
   return (
-    <div className="flex items-center justify-between gap-2 px-1 text-sm text-comment">
-      <div className="flex items-center gap-2 text-xs text-comment/90">
-        <div className="flex items-center gap-2 @max-2xs:hidden">
-          支持 Markdown
-        </div>
+    <div {...stylex.props(styles.footer)}>
+      <div {...stylex.props(styles.footerHint)}>
+        <div {...stylex.props(styles.markdownHint)}>支持 Markdown</div>
       </div>
-      <div className="flex items-center gap-2">
+      <div {...stylex.props(styles.actions)}>
         <div>
           {content.length} / {COMMENT_MAX_LENGTH}
         </div>
@@ -119,13 +119,15 @@ function InputBoxFooter({
         <button
           aria-label={submitLabel}
           onClick={() => submit()}
-          className="flex items-center gap-0.5 hover:scale-105 active:scale-95 disabled:opacity-50"
+          {...stylex.props(styles.submit)}
           disabled={status === "pending" || !content.trim()}
         >
           {status === "pending" ? (
-            <MingcuteLoadingLine className="size-4 animate-spin" />
+            <MingcuteLoadingLine
+              {...stylex.props(styles.actionIcon, styles.loadingIcon)}
+            />
           ) : (
-            <MingcuteSendPlaneLine className="size-4" />
+            <MingcuteSendPlaneLine {...stylex.props(styles.actionIcon)} />
           )}
           发送
         </button>
@@ -142,7 +144,7 @@ function AnonymousCheckbox({ atom }: AnonymousCheckboxProps) {
   const [isAnonymous, setIsAnonymous] = useAtom(atom);
 
   return (
-    <label className="flex items-center gap-1">
+    <label {...stylex.props(styles.anonymous)}>
       <input
         type="checkbox"
         checked={isAnonymous}

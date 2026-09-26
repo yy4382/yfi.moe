@@ -1,8 +1,10 @@
 ---
+import * as stylex from "@stylexjs/stylex";
 import Section from "@/components/ui/section.astro";
 import PostAttrTime from "@/components/modules/posts/post-attr-time.astro";
 import PostAttrTags from "@/components/modules/posts/post-attr-tags.astro";
 import type { ContentTimeData } from "@/content.config";
+import { styles } from "./article-hero.stylex";
 
 interface Props {
   title: string;
@@ -13,11 +15,9 @@ interface Props {
 const { title, time, tags } = Astro.props;
 ---
 
-<Section class="mx-auto flex flex-col center gap-6 py-24" padding="article">
-  <h1 class="text-center text-3xl font-bold text-heading">{title}</h1>
-  <div
-    class="flex flex-col items-center gap-2 text-[0.8rem] text-comment md:flex-row lg:gap-3"
-  >
+<Section styles={styles.section} padding="article">
+  <h1 {...stylex.attrs(styles.title)}>{title}</h1>
+  <div {...stylex.attrs(styles.attributes)}>
     {time && <PostAttrTime {...time} />}
     {tags && <PostAttrTags tags={tags} />}
   </div>
