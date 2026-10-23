@@ -6,6 +6,39 @@ on:
   workflow_dispatch:
 
 jobs:
+  backend-docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend Docker image
+        run: docker build --tag backend-smoke .
+
+      - name: Check backend container startup
+        run: |
+          trap 'docker logs backend-smoke; docker rm --force backend-smoke' EXIT
+          docker run --detach --name backend-smoke \
+            --env-file app/backend/.env.example \
+            --env BETTER_AUTH_SECRET=backend-smoke-test-secret-at-least-32-characters \
+            --env UNSUBSCRIBE_SECRET=backend-smoke-test-unsubscribe-secret \
+            --env EMAIL_NOTIFICATION_ENABLED=false \
+            backend-smoke
+          for attempt in $(seq 1 30); do
+            if docker exec backend-smoke node --input-type=module -e '
+              const response = await fetch("http://localhost:3001/api/health");
+              const body = await response.json();
+              if (!response.ok || body.status !== "ok") process.exit(1);
+            '; then
+              exit 0
+            fi
+            if [ "$(docker inspect --format "{{.State.Running}}" backend-smoke)" != true ]; then
+              exit 1
+            fi
+            sleep 1
+          done
+          exit 1
+
   format:
     runs-on: ubuntu-latest
     steps:

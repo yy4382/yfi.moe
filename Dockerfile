@@ -16,4 +16,4 @@ FROM base AS backend
 COPY --from=build /prod/backend /prod/backend
 WORKDIR /prod/backend
 EXPOSE 3001
-CMD [ "node", "dist/index.js" ]
+CMD [ "node", "dist/index.mjs" ]
