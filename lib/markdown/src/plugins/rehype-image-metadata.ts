@@ -79,7 +79,7 @@ export function rehypeImageMetadata(options: RehypeImageMetadataOptions = {}) {
 }
 
 function getSrc(node: Element) {
-  const { src } = node.properties ?? {};
+  const src: unknown = node.properties?.src;
   if (typeof src === "string") return src;
   if (Array.isArray(src)) {
     return src.find((value) => typeof value === "string");

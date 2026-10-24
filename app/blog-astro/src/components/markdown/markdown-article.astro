@@ -2,6 +2,8 @@
 import * as stylex from "@stylexjs/stylex";
 import type { ArticleRenderResult } from "@repo/markdown/article";
 import { toHtml } from "hast-util-to-html";
+// Register the raw HTML nodes used for server-rendered embedded elements.
+import type {} from "mdast-util-to-hast";
 import { SKIP, visit } from "unist-util-visit";
 
 import "@repo/markdown/style";

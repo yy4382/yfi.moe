@@ -20,12 +20,12 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@playwright/test": "^1.61.1",
+    "@playwright/test": "^1.64.1",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "husky": "^9.1.7",
-    "prettier": "^3.8.5",
-    "prettier-plugin-astro": "^0.14.1",
-    "turbo": "^2.10.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "turbo": "^2.11.9",
     "typescript": "catalog:"
   },
   "packageManager": "pnpm@11.9.0",

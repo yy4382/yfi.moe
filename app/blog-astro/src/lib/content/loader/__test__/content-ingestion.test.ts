@@ -82,7 +82,7 @@ function markdown(slug: string, title: string, body: string) {
 }
 
 describe("content ingestion", () => {
-  beforeAll(() => githubServer.listen({ onUnhandledRequest: "error" }));
+  beforeAll(() => githubServer.listen({ onUnhandledFrame: "error" }));
 
   afterAll(() => githubServer.close());
 

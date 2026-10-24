@@ -4,27 +4,36 @@ packages:
 
 catalog:
   "@eslint/js": ^10.0.1
-  "@tanstack/react-query": ^5.101.1
-  "@types/node": 26.0.1
-  "@types/react": ^19.2.17
-  "@types/react-dom": ^19.2.3
-  better-auth: ^1.6.22
-  eslint: ^10.6.0
-  hono: ^4.12.27
-  motion: ^12.42.0
-  radix-ui: ^1.6.0
-  react: ^19.2.7
-  react-dom: ^19.2.7
-  sonner: ^2.0.7
+  "@tanstack/react-query": ^5.104.3
+  "@types/node": 26.6.5
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  better-auth: ^1.7.10
+  eslint: ^10.13.0
+  hono: ^4.13.13
+  motion: ^14.3.0
+  radix-ui: ^1.8.1
+  react: ^19.3.1
+  react-dom: ^19.3.1
+  sonner: ^2.0.8
+  # Astro's checker and typescript-eslint still require the JavaScript compiler API.
   typescript: ^6.0.3
-  typescript-eslint: ^8.62.0
-  vitest: ^4.1.9
-  zod: ^4.4.3
+  typescript-eslint: ^8.71.2
+  vitest: ^5.0.5
+  zod: ^4.6.7
 
 minimumReleaseAge: 10080
 minimumReleaseAgeStrict: true
 
+# Reviewed security patches that have not yet cleared the seven-day delay.
+minimumReleaseAgeExclude:
+  # GHSA-8c8m-p3m8-cjg8, GHSA-m943-m63m-w62w, GHSA-85x2-q946-cp5h
+  - nodemailer@10.1.4
+  # GHSA-w74x-v6f9-j3xg and related URI normalization fixes
+  - fast-uri@3.1.9
+
 allowBuilds:
+  "@tailwindcss/oxide": set this to true or false
   cn-font-split: true
   esbuild: true
   koffi: true
@@ -36,6 +45,12 @@ overrides:
   "@types/node": "catalog:"
   better-auth>next: "-"
   cn-font-metrics>fontaine: 0.6.0
+  # Upstream ranges still resolve vulnerable releases; retain these until updated.
+  "@esbuild-kit/core-utils>esbuild": ^0.28.2
+  "@shuding/opentype.js>fflate": ^0.7.5
+  satori>fflate: ^0.7.5
+  fast-uri@<3.1.9: ^3.1.9
+  rollup@>=4.0.0 <4.59.0: ^4.59.0
 
 packageExtensions:
   "@standard-community/standard-json@0.3.5":
